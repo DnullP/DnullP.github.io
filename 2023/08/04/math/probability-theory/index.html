@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>概率论期末复习 | Dnull_P Welcome~</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="第一章 基本概念 随机试验：可以在相同条件下重复进行，每次试验的可能结果不止一个，能明确所有可能的结果，不能确定每次的结果，记为 $E$  样本空间：所有可能结果的集合，记为 $S$  样本点：其中一个可能结果，记为 $S_i$  随机事件、基本事件、必然事件是样本空间的子集、单个样本点、样本空间自身的集合  这些事件可以通过集合运算来计算（合取析取）  频率：进行 $n$次试验，事件 $A$发生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率论期末复习">
+<meta property="og:url" content="https://dnullp.github.io/2023/08/04/math/probability-theory/index.html">
+<meta property="og:site_name" content="Dnull_P Welcome~">
+<meta property="og:description" content="第一章 基本概念 随机试验：可以在相同条件下重复进行，每次试验的可能结果不止一个，能明确所有可能的结果，不能确定每次的结果，记为 $E$  样本空间：所有可能结果的集合，记为 $S$  样本点：其中一个可能结果，记为 $S_i$  随机事件、基本事件、必然事件是样本空间的子集、单个样本点、样本空间自身的集合  这些事件可以通过集合运算来计算（合取析取）  频率：进行 $n$次试验，事件 $A$发生">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-08-04T12:42:48.386Z">
+<meta property="article:modified_time" content="2023-02-26T15:46:30.096Z">
+<meta property="article:author" content="Dnull_P">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="概率论">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Dnull_P Welcome~" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dnull_P Welcome~</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://DnullP.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-math/probability-theory" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/math/probability-theory/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.386Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">课程复习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      概率论期末复习
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="第一章-基本概念"><a href="#第一章-基本概念" class="headerlink" title="第一章 基本概念"></a>第一章 基本概念</h1><ul>
+<li><p>随机试验：可以在相同条件下重复进行，每次试验的可能结果不止一个，能明确所有可能的结果，不能确定每次的结果，记为 $E$</p>
+</li>
+<li><p>样本空间：所有可能结果的集合，记为 $S$</p>
+</li>
+<li><p>样本点：其中一个可能结果，记为 $S_i$</p>
+</li>
+<li><p>随机事件、基本事件、必然事件是样本空间的子集、单个样本点、样本空间自身的集合</p>
+</li>
+<li><p>这些事件可以通过集合运算来计算（合取析取）</p>
+</li>
+<li><p>频率：进行 $n$次试验，事件 $A$发生次数为 $n_A$，称 $n_A$为频数，$\frac{n_A}{n}$为频率，记为 $f_n(A)$</p>
+</li>
+<li><p>概率：概率是 $n$接近无穷时的一个近似值，是一个事件固有的属性，而频率是观测得到的数值</p>
+</li>
+<li><p>事件的概率的运算遵守集合间运算的规则，需要考虑容斥原理等</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>古典概型（等可能概型）</p>
+<ul>
+<li>样本空间只有有限个元素</li>
+<li>基本事件发生可能性相同</li>
+</ul>
+</li>
+<li><p>条件概率</p>
+<ul>
+<li>在事件 $B$发生的前提下，事件 $A$发生的概率</li>
+<li>可以表示为：<br>$$P(A|B) &#x3D; \frac{P(AB)}{P(B)}$$</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>全概率公式：<br>事件 $A$发生的概率等于样本空间的一个划分的全部条件概率之和，可以表示为：<br>$$P(A) &#x3D; \sum{P(A|B_i)}$$<br>其中 $B_i$是样本空间的划分</p>
+</li>
+<li><p>贝叶斯公式：<br>$$P(B_i|A) &#x3D; \frac{P(B_iA)}{P(A)} &#x3D; \frac{P(A|B_i)P(B_i)}{\sum{P(A|B_j)P(B_j)}}$$</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>独立性：两个事件的发生不会相互影响概率<br>此时有 $P(AB) &#x3D; P(A|B)P(B) &#x3D; P(A)P(B)$</li>
+</ul>
+<h1 id="第二章-随机变量和分布"><a href="#第二章-随机变量和分布" class="headerlink" title="第二章 随机变量和分布"></a>第二章 随机变量和分布</h1><ul>
+<li><p>随机变量：<br>将每个事件对应一个实数，这个从集合映射到实数的函数我们称为随机变量，符号语言表述如下：<br>$S &#x3D; {e}，X &#x3D; X(e)$</p>
+</li>
+<li><p>离散型随机变量：<br>有可列无限个或有限个可能取到的值的随机变量为离散型</p>
+</li>
+<li><p>概率分布：<br>对每个可能取值都有一个发生的概率，表达这个概率的函数我们称为概率分布函数<br>tips：关于分布、概率密度这些概念我觉得书上的区别比较模糊，同时也没有带上英文术语方便查证，所以我用以下方式区别术语：</p>
+<ul>
+<li>概率分布函数（累计分布函数）是概率按照随机变量进行积分的函数，书上称为分布函数，对于连续型随机变量是积分，而离散型就只是概率的累计相加</li>
+<li>概率密度函数，一般是对于连续型随机变量进行局部概率描述的函数，对于离散型随机变量我们可以直接是用一一映射的方式</li>
+<li>概率分布，是指随机变量不同取值概率的一个分布情况</li>
+<li>分布律，用来表达一个事件的发生概率（实际上就是离散型概率密度函数），符号表达如下：<br>$$P{X &#x3D; x_k} &#x3D; p_k, k &#x3D; 1,2…$$<br>连续型随机变量的分布可以用累计分布函数表示：<br>$$P{x_1&lt;X&lt;x_2} &#x3D; P{X&lt;x_2}-P{X&lt;x_1}$$<br>所以$P{X&lt;x}$其实就是累计分布函数</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="三个离散型概率分布"><a href="#三个离散型概率分布" class="headerlink" title="三个离散型概率分布"></a>三个离散型概率分布</h2><ul>
+<li><p>0-1分布：<br>对于随机变量只有0和1的试验（样本空间只有两个事件），其概率分布我们称为01分布，其分布律可表示为（为了打字方便就用括号代替花括号了）：<br>$$P(X&#x3D;k)&#x3D;p^k(1-p)^{1-k}, k&#x3D;1,0$$</p>
+</li>
+<li><p>$n$重$Bernoulli$试验就是只有两个事件的样本空间的随机试验，连续做$n$次，其结果（我们把发生事件1的次数相同的结果作为一个事件，构成新的样本空间）的概率分布我们称为二项分布：<br>$$P(X&#x3D;k)&#x3D;\tbinom{n}{k}p^k(1-p)^{n-p}$$<br>二项分布有两个参数$n$和$p$，满足二项分布的随机变量可以表示为：<br>$$X\sim b(n,p)$$</p>
+</li>
+<li><p>泊松分布：<br>$$P(X&#x3D;k) &#x3D; \frac{\lambda^ke^{-\lambda}}{k!}$$<br>泊松分布有一个参数$\lambda$，可以表示为：<br>$$X(k) &#x3D; \pi(\lambda)$$</p>
+</li>
+<li><p>泊松定理<br>二项分布的参数$p$和$n$满足$pn &#x3D; \lambda$时，当$n\rarr \infty$时，二项分布逼近泊松分布，可表达如下：<br>$$\lim_{n\rarr \infty}\tbinom{n}{k}p_n^k(1-p_n)^{n-k} &#x3D; \frac{\lambda^ke^{-\lambda}}{k!}$$</p>
+</li>
+</ul>
+<hr>
+<h2 id="三种连续型概率分布"><a href="#三种连续型概率分布" class="headerlink" title="三种连续型概率分布"></a>三种连续型概率分布</h2><p>概率分布在书上指分布函数，连续型随机变量是用概率密度函数表示，离散型使用分布律表示</p>
+<ul>
+<li><p>均匀分布：<br>$$f(x) &#x3D; \begin{cases} \frac{1}{b-a} &amp; a\leq x\leq b \ 0 &amp; \text{otherwise} \end{cases}$$<br>均匀分布的参数是$a$和$b$，可以表示为：<br>$$X\sim U(a,b)$$</p>
+</li>
+<li><p>指数分布：<br>$$f(x) &#x3D; \begin{cases} \lambda e^{-\lambda x} &amp; x\geq 0 \ 0 &amp; \text{otherwise} \end{cases}$$<br>指数分布的参数是$\lambda$，可以表示为：<br>$$X\sim Exp(\lambda)$$</p>
+</li>
+<li><p>正态分布：<br>$$f(x) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$<br>正态分布的参数是$\mu$和$\sigma$，可以表示为：<br>$$X\sim N(\mu,\sigma)$$</p>
+<ul>
+<li><p>正态分布的图像曲线关于$\mu$对称，当$x &#x3D; \mu$时，曲线的最大值为$\frac{1}{\sqrt{2\pi\sigma^2}}$，当$\sigma$越大，曲线越平缓，当$\sigma$越小，曲线越陡峭</p>
+</li>
+<li><p>有限个满足正态分布的相互独立的随机变量，其线性组合也满足正态分布，且参数满足：<br>$$\mu &#x3D; \sum_{i&#x3D;1}^nC_i\mu_i$$<br>$$\sigma^2 &#x3D; \sum_{i&#x3D;1}^nC_i^2\sigma_i^2$$</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="随机变量的函数的分布"><a href="#随机变量的函数的分布" class="headerlink" title="随机变量的函数的分布"></a>随机变量的函数的分布</h2><p>我们现在有随机变量$X$的概率密度函数$f_X(x)$，对于随机变量$X$存在函数$Y&#x3D;g(X)$，然后其反函数是$h(x)$，则$Y$的概率密度函数为：<br>$$f_Y(y) &#x3D; \begin{cases} f_X(h(y))\left|\frac{d}{dy}h(y)\right|，&amp; (\alpha&lt;y&lt;\beta)\<br>0，&amp; otherwise\end{cases}$$</p>
+<hr>
+<h1 id="第三章-多维随机变量及其分布"><a href="#第三章-多维随机变量及其分布" class="headerlink" title="第三章 多维随机变量及其分布"></a>第三章 多维随机变量及其分布</h1><p>对于二维随机变量我们称为联合分布函数</p>
+<p>对于离散型随机变量来说，联合分布律可以用二维表格表示，对于连续型随机变量可以用二维函数表示概率密度函数</p>
+<p>相对的，对于一个二维概率密度函数，只对其中一个变量积分，的带的概率密度我们称为边缘分布，也就是在不管其中一个变量取值的情况下，另一个变量的概率分布（概率密度）</p>
+<h2 id="条件分布"><a href="#条件分布" class="headerlink" title="条件分布"></a>条件分布</h2><p>由之前的条件概率公式可以得到，一个联合分布的条件分布可以通过以下公式计算：<br>$$P(X&#x3D;x|Y&#x3D;y) &#x3D; \frac{P(X&#x3D;x,Y&#x3D;Y)}{P(Y&#x3D;y)}$$<br>用概率密度表示如下：<br>$$f_{X|Y}(x|y) &#x3D; \frac{f_{X,Y}(x,y)}{f_Y(y)}$$</p>
+<p>对于相互独立的随机变量，其联合概率分布满足：<br>$$f_{X,Y}(x,y) &#x3D; f_X(x)f_Y(y)$$<br>$$P(X\le x,Y\le y) &#x3D; P(X\le x)P(Y\le y)$$<br>$$F_{X,Y}(x,y) &#x3D; F_X(x)F_Y(y)$$</p>
+<h2 id="两个随机变量的函数的分布"><a href="#两个随机变量的函数的分布" class="headerlink" title="两个随机变量的函数的分布"></a>两个随机变量的函数的分布</h2><ul>
+<li><p>$Z &#x3D; X + Y$<br>$$f_Z(z) &#x3D; \int_{-\infty}^{\infty}f_X(x)f_Y(z-x)dx$$<br>$$f_z(z) &#x3D; \int_{-\infty}^{\infty}f_X(z-y)f_Y(y)dy$$<br>我们又称之为卷积公式，可以理解为将$x$或$y$代换为用$z$表示的形式，然后对另一个变量进行积分</p>
+</li>
+<li><p>$Z &#x3D; Y&#x2F;X$ and $Z &#x3D; XY$<br>$$f_Z(z) &#x3D; \int_{-\infty}^{\infty}|x|f(x,zx)dx$$<br>$$f_Z(z) &#x3D; \int_{-\infty}^{\infty}|\frac{1}{x}|f(x,z&#x2F;x)dx$$<br>这些公式的推导过程都可以简要概括如下：</p>
+<ul>
+<li>写出$Z$的分布函数：<br>$$F_Z(z) &#x3D; P(Z\le z) &#x3D; P(Y&#x2F;X \le z)$$</li>
+<li>然后将概率分布用联合分布函数表示出来：<br>$$<br>\iint\limits_{G_1\cup G_2}f(x,y)dxdy\<br>&#x3D; \iint\limits_{y&#x2F;x\le z;x&lt;0}f(x,y)dxdy + \iint\limits_{y&#x2F;x\le z;x&gt;0}f(x,y)dxdy\<br>$$</li>
+<li>然后将$y &#x3D; xz$带入上式求出最后积分式即可<br>对于乘积和相加的推导过程可以使用同样的方法推导而得</li>
+</ul>
+</li>
+<li><p>$M &#x3D; max{X,Y}$<br>对于若干个不同的随机变量，$F_{max}(z) &#x3D; F_{X_1}(z)F_{X_2}(z)F_{X_3}(z)…$<br>相似的可以推出：$F_{min}(z) &#x3D; 1-[1-F_{X_1}(z)][1-F_{X_2}(z)][1-F_{X_3}(z)]…$</p>
+</li>
+</ul>
+<hr>
+<h1 id="第四章-随机变量的数字特征"><a href="#第四章-随机变量的数字特征" class="headerlink" title="第四章 随机变量的数字特征"></a>第四章 随机变量的数字特征</h1><p>概率分布描述了随机变量取值的可能性，而对于一个随机变量的分布具有某些数值特征的刻画，包括期望、方差等</p>
+<ul>
+<li><p>期望<br>期望又叫均值，对于离散随机变量可以直接将各个变量取值和概率相乘再相加得到，公式表示如下：<br>$$E(X) &#x3D; \sum\limits_{i&#x3D;1}^n x_iP(X&#x3D;x_i)$$<br>对于连续型随机变量则是对取值和概率密度相乘的积分，公式表示如下：<br>$$E(X) &#x3D; \int\limits_{-\infty}^{\infty}xf_X(x)dx$$</p>
+</li>
+<li><p>期望的性质</p>
+<ul>
+<li>$E(aX+b) &#x3D; aE(X)+b$</li>
+<li>如果$X$和$Y$相互独立，则$E(XY) &#x3D; E(X)E(Y)$</li>
+</ul>
+</li>
+<li><p>方差（variance）<br>方差是衡量随机变量与期望的偏差的一个值，可以用期望表示如下：<br>$$Var(X) &#x3D; E[(X-E(X))^2]$$<br>方差也可以用字母$D$表示<br>方差的开方我们称为标准差，用字母$\sigma$表示</p>
+</li>
+<li><p>方差的性质：</p>
+<ul>
+<li>方差可以用以下公式计算：<br>$$Var(X) &#x3D; E(X^2) - E(X)^2$$<br>该公式用积分式推出</li>
+<li>$$X^* &#x3D; \frac{X-\mu}{\sigma}$$<br>$X^*$我们称为标准化变量，其关于 $x &#x3D; 0$对称，且方差为1</li>
+<li>$$D(C) &#x3D; 0$$</li>
+<li>$$D(CX) &#x3D; C^2D(X)$$</li>
+<li>$$D(X+Y) &#x3D; D(X)+D(Y)+2E{[X-E(X)][Y-E(Y)]}$$<ul>
+<li>如果$X$和$Y$相互独立，则$D(X+Y) &#x3D; D(X)+D(Y)$，这表明 $2E{[X-E(X)][Y-E(Y)]}$是衡量$X$和$Y$的相互独立的一个指标</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>切比雪夫不等式：<br>$$P(|X-E(X)|\ge k) \le \frac{D(X)}{k^2}$$</p>
+<ul>
+<li>这个不等式的含义是：随机变量和期望的差大于一个阈值的概率应该小于方差除以阈值的平方，这是对随机变量与期望偏差的一个估计</li>
+<li>这个不等式还可写成：<br>$$P(|X-E(X)|\le k) \ge 1-\frac{D(X)}{k^2}$$</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>协方差（covariance）<br>协方差是衡量两个随机变量的相关程度的一个值，可以用期望表示如下：<br>$$Cov(X,Y) &#x3D; E[(X-E(X))(Y-E(Y))]$$<br>可以理解为将方差中的一个随机变量替换为了另一个随机变量<br>我们知道：<br>$$\frac{D(X)}{\sqrt{D(X)}\sqrt{D(X)}} &#x3D; 1$$<br>我们用类似的思路可以设：<br>$$\rho_{AB} &#x3D; \frac{Cov(A,B)}{\sqrt{D(A)}\sqrt{D(B)}}$$<br>我们称之为相关系数</p>
+</li>
+<li><p>相关系数的取值：</p>
+<ul>
+<li>如果$A$和$B$相互独立，则$\rho_{AB} &#x3D; 0$</li>
+<li>如果$A$和$B$完全满足线性关系，则$\rho_{AB} &#x3D; 1$</li>
+<li>$\rho$越大，则两者的相关程度越高</li>
+</ul>
+</li>
+<li><p>协方差的性质：</p>
+<ul>
+<li>$$Cov(X,Y) &#x3D; Cov(Y,X)$$</li>
+<li>$$Cov(aX+b,cY+d) &#x3D; abCov(X,Y)$$</li>
+<li>$$Cov(X+Y,Z) &#x3D; Cov(X,Z)+Cov(Y,Z)$$<br>用上面的三条性质也可以推导出方差的性质，方差可以说是协方差的一种特殊情况</li>
+<li>值得注意的是，协方差评估的是随机变量的相关性，和独立性不一样，如果两个随机变量相互独立，那么它们不相关，但是两个随机变量相关，它们却不一定相互独立</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="矩（Moment）"><a href="#矩（Moment）" class="headerlink" title="矩（Moment）"></a>矩（Moment）</h2><p>矩这个名字相当的具有迷惑性，矩原本是物理学中的一个概念，但是到统计学这里已经和原本的含义几乎没有关系了，所以我们并不需要去详细追究矩这个名字到底有何含义</p>
+<ul>
+<li><p>$n$阶关于常数$c$矩的公式如下：<br>$$<br>\begin{align}<br>  \mu_n  &amp;&#x3D; E[(X-c)^n] \<br>  &amp;&#x3D; \iint_{-\infty}^{\infty}(x-c)^n f(x)dx \<br>\end{align}<br>$$</p>
+</li>
+<li><p>对于上面这个式子，我们有：</p>
+<ul>
+<li>对于参数 $n$对应的矩我们称为<strong>n阶矩</strong></li>
+<li>对于参数 $c$<ul>
+<li>如果 $c&#x3D;0$，我们称为<strong>原点矩</strong></li>
+<li>如果 $c&#x3D;E(X)$，我们称为<strong>中心矩</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果我们有多个随机变量：<br>$$E{[X-E(X)]^k[Y-E(Y)]^l}$$<br>我们称之为**X和Y的k+l阶混合中心矩</p>
+</li>
+</ul>
+<h2 id="以上是矩的定义和分类，矩是我们描述随机变量的数字特征，我们之前提到过的：-方差：关于X的二阶中心矩-期望：关于X的一阶原点矩-协方差：关于X和Y的二阶混合中心矩这些都属于矩，用于描述随机变量"><a href="#以上是矩的定义和分类，矩是我们描述随机变量的数字特征，我们之前提到过的：-方差：关于X的二阶中心矩-期望：关于X的一阶原点矩-协方差：关于X和Y的二阶混合中心矩这些都属于矩，用于描述随机变量" class="headerlink" title="以上是矩的定义和分类，矩是我们描述随机变量的数字特征，我们之前提到过的：- 方差：关于X的二阶中心矩- 期望：关于X的一阶原点矩- 协方差：关于X和Y的二阶混合中心矩这些都属于矩，用于描述随机变量"></a>以上是矩的定义和分类，矩是我们描述随机变量的数字特征，我们之前提到过的：<br>- 方差：关于X的二阶中心矩<br>- 期望：关于X的一阶原点矩<br>- 协方差：关于X和Y的二阶混合中心矩<br>这些都属于矩，用于描述随机变量</h2><ul>
+<li>多维随机变量：<br>一个向量的所有元素都是随机变量，我们认为他是一个多维随机变量</li>
+</ul>
+<p>对于一个多维随机变量，以二维随机变量$(X_1,X_2)$为例子，我们可以定义它的<strong>协方差矩阵</strong>（相当于一维变量的协方差）：<br>$$<br>c_1 &#x3D; Cov(X_1,X_1) \<br>c_2 &#x3D; Cov(X_1,X_2) \<br>c_3 &#x3D; Cov(X_2,X_1) \<br>c_4 &#x3D; Cov(X_2,X_2) \<br>Matrix &#x3D; \begin{bmatrix}<br>c_1 &amp; c_2 \<br>c_3 &amp; c_4<br>\end{bmatrix}<br>$$<br>这个矩阵既包含了描述单个随机变量方差的信息，也包含了描述两个随机变量协方差的信息</p>
+<ul>
+<li>多维随机变量的概率密度可以用协方差矩阵来表示</li>
+</ul>
+<hr>
+<h1 id="第五章-大数定律和中心极限定理"><a href="#第五章-大数定律和中心极限定理" class="headerlink" title="第五章 大数定律和中心极限定理"></a>第五章 大数定律和中心极限定理</h1><p>关于大数定理和中心极限定理这一节主要是概率论的基础理论</p>
+<ul>
+<li><p>弱大数定理（Weak Law of Large Numbers）<br>对于一些独立同分布的随机变量，变量的数量接近无穷多时，它们的均值会无限接近这个随机变量的期望</p>
+</li>
+<li><p>伯努利大数定理<br>书上没有英文命名，网上也只有中文资料简单的介绍了一下，大概就是n次伯努利试验，其事件发生次数所占的比例随着n接近无穷而接近单个事件发生的概率p<br>这是波莱尔大数定理（Borel’s Law of Large Numbers）的弱大数定理版本，关于强弱大数定理书上没有介绍和区别，就不说了</p>
+</li>
+</ul>
+<p>大数定理都是关于频率逼近概率的一些理论，在实用上感觉意义不大，主要是概率论理论成立的基础，以及帮助我们理解概率的本质</p>
+<hr>
+<ul>
+<li>中心极限定理：<ul>
+<li><p>独立同分布中心极限定理：<br>对于若干独立同分布的随机变量，如果随机变量的数目接近于无穷大，那么它们的和将会满足正态分布，且正态分布参数为：<br>$$\mu_{sum} &#x3D; n\mu \ \sigma_{sum} &#x3D; \sqrt{n}\sigma$$<br>该定理可以表示如下：<br>$$\frac{\frac{1}{n}\sum\limits_{k&#x3D;1}^{n}X_k-\mu}{\sigma&#x2F;\sqrt{n}}\sim N(0,1)$$<br>或者：<br>$$\frac{\sum\limits_{k&#x3D;1}^{n}X_k-\mu n}{\sigma\sqrt{n}}\sim N(0,1)$$<br>这个定理也可以吻合前面正态分布的线性组合部分</p>
+</li>
+<li><p>李雅普诺夫定理（Lyapunov’s central limit theory):<br>对于若干独立但是不一定同分布的随机变量，我们可以写出类似的定理：<br>$$\frac{\sum\limits_{k&#x3D;1}^{n}X_k-\sum\limits_{k&#x3D;1}^{n}\mu_k}{\sqrt{D(\sum\limits_{k&#x3D;1}^{n}X_k)}}\sim N(0,1)$$</p>
+</li>
+<li><p>棣莫佛－拉普拉斯定理（de Moivre - Laplace theorem）：<br>这个定理是经典中心极限理论（classical CLT）的一个特别情况<br>对于一个n次伯努利试验，我们把每次试验结果当作一次0-1分布的随机变量，然后把他们套用CLT即可得到一个二项分布的近似分布——二项分布的极限逼近于一个正态分布</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>总结一下大数定理和中心极限定理：</p>
+<ul>
+<li>大数定理是独立同分布的随机变量足够多时，它们的均值会无限接近于随机变量的期望，也就是说频率会逼近概率，大数定理是概率论成立的基础</li>
+<li>中心极限定理则揭示了一个现象：<br>任何分布的随机变量的和都会趋近于正态分布，而一个二项分布甚至可以直接逼近一个正态分布，这无疑揭示了正态分布的重要性</li>
+</ul>
+<hr>
+<h1 id="第六章-样本及抽样分布"><a href="#第六章-样本及抽样分布" class="headerlink" title="第六章 样本及抽样分布"></a>第六章 样本及抽样分布</h1><p>从这一章开始就进入了数理统计的部分，概率论部分是对于已知的分布进行分析，并通过各种数字特征描述一个或一组随机变量，而数理统计是基于样本数据，对未知的分布进行估计、推断的理论</p>
+<hr>
+<ul>
+<li>随机样本：<ul>
+<li>总体：一个试验可能的观察值的所有可能</li>
+<li>个体：每一个可能的观察值</li>
+<li>容量：总体的可能数量</li>
+</ul>
+</li>
+</ul>
+<p>总体的概念和之前的样本空间的概念比较像，但是之前是概率论的概念，也就是说，之前的概率是基于已经确定的事件的分布和概率确定的<br>但是总体是数理统计相关的，它代表了实验中可以观察到的个体结果的总和</p>
+<p>比如说我们有一千个学生，然后我们观察每个学生的身高，一个学生观察到的身高我们称为个体，所有学生可能观察到的身高我们称为总体<br>总体这个概念是基于一定数量的试验，或者说抽样才存在的</p>
+<ul>
+<li>对于独立同分布的若干次试验，我们得到的 $n$个随机变量我们称其为样本，样本的具体观察值我们称为样本值</li>
+</ul>
+<p>具体来说，样本就是一个试验的若干次结果的集合，它决定了我们要取多少次试验的结果，而取出不同的样本观察值可能每次都不一样<br>而之前的总体和个体是描述这个试验的属性，从总体中抽取个体形成样本，通过分析样本来推测总体</p>
+<hr>
+<ul>
+<li><p>直方图：<br>将处于不同区间的样本值数据分到各自区间中，做出统计图</p>
+</li>
+<li><p>箱线图：<br>箱线图主要由五个数值确定：</p>
+<ul>
+<li>最大值</li>
+<li>最小值</li>
+<li>第四分之一分位值 $Q_1$</li>
+<li>中位数</li>
+<li>第四分之三分位值 $Q_3$<br>然后这五个点分成四段，第一段和第四段用线连接，第二段和第三段用矩形连接，这样就形成了一个箱子<br>我们称 $IQR &#x3D; Q_3 - Q_1$为四分位间距，如果一个数据的值小于 $Q_1 - 1.5IQR$ 或者大于 $Q_3 + 1.5IQR$，那么我们认为这个数据是个异常值，需要进行处理</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>我们说了，抽样样本是对随机变量进行有限次的测量，每次抽样得到的结果我们称为观察值，样本代表的是从总体中获得若干个体的数量或方法</p>
+<p>但是有时候我们需要的不是样本本身，而是样本的一个函数，我们称之为<strong>统计量</strong>比如我们的样本：<br>$$X_1,X_2,X_3,X_4,X_5…X_n$$<br>我们定义以下统计量：</p>
+<ul>
+<li><p>样本均值：<br>$$\bar{X} &#x3D; \frac{1}{n}\sum\limits_{i&#x3D;1}^{n}X_i$$</p>
+</li>
+<li><p>样本方差：<br>  $$S^2 &#x3D; \frac{1}{n-1}\sum\limits_{i&#x3D;1}^{n}(X_i-\bar{X})^2 &#x3D; \frac{1}{n-1}(\sum\limits_{i&#x3D;1}^{n}X_i^2 - n\bar{X}^2)$$</p>
+</li>
+<li><p>样本标准差：<br>$$S &#x3D; \sqrt{S^2} &#x3D; \sqrt{\frac{1}{n-1}\sum\limits_{i&#x3D;1}^{n}(X_i-\bar{X})^2}$$</p>
+</li>
+<li><p>样本 $k$阶原点矩：<br>$$\mu_k &#x3D; E(X^k) &#x3D; \frac{1}{n}\sum\limits_{i&#x3D;1}^{n}X_i^k$$</p>
+</li>
+<li><p>样本 $k$阶中心矩：<br>$$\mu_k &#x3D; E((X-\bar{X})^k) &#x3D; \frac{1}{n}\sum\limits_{i&#x3D;1}^{n}(X_i-\bar{X})^k$$</p>
+</li>
+</ul>
+<p>当样本中的 $n$足够大时，由之前的大数定理我们可以得到：此时样本的统计量将会逼近于总体的分布所对应的数字特征</p>
+<ul>
+<li><p>经验分布函数<br>$$F_n(x) &#x3D; P(X\leq x) &#x3D; \frac{1}{n}\sum\limits_{i&#x3D;1}^{n}I(X_i\leq x)$$<br>经验分布函数也是一个样本的统计量，但是是对应于总体分布函数的统计量</p>
+</li>
+<li><p>格里汶科定理<br>$$P{\lim\limits_{n\rarr\infty}\sup\limits_{-\infty&lt;x&lt;+\infty}|F_n(x)-F(x)|&#x3D;0}&#x3D;1$$<br>这个式子的意思是当 $n$接近无穷时，经验分布函数以概率1无限逼近于总体分布函数，可以类比之前的大数定律等</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>$\chi^2$分布（卡方分布）<br>首先假设我我们有一组样本：<br>$$X_1,X_2,X_3,X_4,X_5…X_n$$<br>假设这些样本都服从$N\sim(0,1)$的正态分布，那么我们可以得到：<br>$$\chi^2 &#x3D; X_1^2+X_2^2+X_3^2+X_4^2+X_5^2+…+X_n^2$$<br>这个 $\chi^2$所服从的分布就是 $\chi^2$分布，它的概率密度函数为：<br>$$f(x) &#x3D; \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}x^{\frac{n}{2}-1}e^{-\frac{x}{2}}$$</p>
+<ul>
+<li>我们称一个 $\chi^2$分布的随机变量的数量为<strong>自由度</strong>，写作$\chi^2 \sim\chi^2(n)$</li>
+<li>$\chi^2$分布具有可加性，公式表达为：<br>$$\chi^2_1 + \chi^2_2 \sim \chi^2(n_1 + n_2)$$</li>
+<li>$\chi^2$分布的期望为：<br>$$E(\chi^2) &#x3D; n$$</li>
+<li>$\chi^2$分布的方差为：<br>$$Var(\chi^2) &#x3D; 2n$$</li>
+<li>$\chi^2$分布的上$\alpha$分位数：<br>我们作出卡方分布的分布图，占据了面积比例为$\alpha$的前面部分所对应的取值，就是卡方分布的上$\alpha$分位数<br><br></br></li>
+</ul>
+</li>
+<li><p>$t$分布（学生分布）<br>假设我们有两个随机变量 $X,Y$，其中 $X \sim N(0,1)$，$Y \sim \chi^2(n)$，且 $X,Y$相互独立，那我们可以得到：<br>$$t &#x3D; \frac{X}{\sqrt{Y&#x2F;n}}\sim t(n)$$<br>学生分布的概率密度函数复杂，不用记了，我们可以大概记住其概率分布的图像，类似于正态分布一样对称的拱形<br>事实上，当 $\lim n\rarr \infty$时，$t$分布逼近于正态分布$N(0,1)$<br>关于 $t$分布的上$\alpha$分位数也有相关的表可以查询</p>
+</li>
+<li><p>$F$分布<br>假设我们有两个随机变量 $X,Y$，其中 $X \sim \chi^2(n_1)$，$Y \sim \chi^2(n_2)$，且 $X,Y$相互独立，那我们可以得到：<br>$$F &#x3D; \frac{X&#x2F;n_1}{Y&#x2F;n_2}\sim F(n_1,n_2)$$</p>
+</li>
+</ul>
+<hr>
+<h2 id="正态总体的样本均值于样本方差的分布"><a href="#正态总体的样本均值于样本方差的分布" class="headerlink" title="正态总体的样本均值于样本方差的分布"></a>正态总体的样本均值于样本方差的分布</h2><p>首先假设我们有一个满足正态分布 $N(\mu,\sigma^2)$的总体，我们从这个总体中抽取一个样本，记为 $X_1,X_2,X_3,X_4,X_5…X_n$，那么我们可以得到：</p>
+<ul>
+<li><p>这个样本的均值为 $\bar{X}$，方差为 $S^2$<br>那么有：<br>$$<br>E(\bar{X}) &#x3D; \mu \<br>D(\bar{X}) &#x3D; \frac{\sigma^2}{n} \<br>$$<br>这表示如果样本取的次数够多，那么样本的均值的均值还是接近于总体的均值，但是样本均值的方差会按照样本的大小 $n$减小，仔细想想就能明白多次取样的均值会使得均值变化更小，更接近平均<br>换而言之我们有以下结论：<br>$$\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$$</p>
+</li>
+<li><p>此外，我们还有以下不加证明的结论：</p>
+<ul>
+<li>$$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2(n-1)$$</li>
+<li>$\bar{X}$与 $S^2$相互独立<br>也就是说样本的均值和样本的方差互不影响</li>
+<li>$$\frac{\bar{X}-\mu}{\frac{S}{\sqrt{n}}} \sim t(n-1)$$</li>
+</ul>
+</li>
+<li><p>如果我们有两个来自不同正态总体的样本，记为：<br>$$X_1,X_2,X_3,X_4,X_5…X_n \sim N(\mu_1,\sigma_1^2)$$<br>$$Y_1,Y_2,Y_3,Y_4,Y_5…Y_n \sim N(\mu_2,\sigma_2^2)$$<br>那么我们可以得到以下结论：</p>
+<ul>
+<li>$$\frac{S_1^2&#x2F;S_2^2}{\sigma_1^2&#x2F;\sigma_2^2}\sim F(n_1-1,n_2-1)$$<br>由于 $\sigma_1$和 $\sigma_2$是常数，所以可以理解为两个样本的统计量的比值服从于和两个样本大小有关的 $F$分布</li>
+</ul>
+</li>
+<li><p>基于上面的结论，当$\sigma_1^2 &#x3D; \sigma_2^2 &#x3D; \sigma$时，我们有以下结论：<br>$$\frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_W\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} \sim t(n_1+n_2-2)$$<br>其中的 $S_W$为：<br>$$S_W^2 &#x3D; \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$</p>
+</li>
+</ul>
+<hr>
+<h1 id="第七章-参数估计"><a href="#第七章-参数估计" class="headerlink" title="第七章 参数估计"></a>第七章 参数估计</h1><p>假设我们已知总体满足的分布形式，但是不知道具体的参数，那么我们可以通过样本来估计总体的分布的参数</p>
+<h2 id="点估计"><a href="#点估计" class="headerlink" title="点估计"></a>点估计</h2><p>点估计法就是通过样本直接估计参数的一个值，所以称为点估计，而后面的区间估计则是通过样本估计参数的取值范围</p>
+<ul>
+<li><p>矩估计<br>矩估计法就是基于矩来对参数进行估计的方式，具体的步骤如下：</p>
+<ul>
+<li>首先依据大数定律我们知道，样本矩依概率收敛于总体矩，所以我们可以假定样本就等于总体矩：<br>$$\bar{X} &#x3D; E(X)$$<br>$$S^2 &#x3D; D(X)$$</li>
+<li>然后总体矩我们可以由参数计算出来，或者由参数直接获得，比如正态分布的均值和方差，就可以直接带入以上式子，从而得到：<br>$$\bar{X} &#x3D; \mu$$<br>$$S^2 &#x3D; \sigma^2$$</li>
+<li>然后我们把要求的参数移到左边，并把样本矩带入式子，就可以得到方程组：<br>$$\mu &#x3D; \frac{1}{n}\sum_{i&#x3D;1}^n X_i$$<br>$$\sigma^2 &#x3D; \frac{1}{n}\sum_{i&#x3D;1}^n (X_i-\bar{X})^2$$<br>矩估计法只能用于需要求的参数可以用矩表示出来的情况，比如均匀分布，或者直接要求的参数就是矩，比如正态分布</li>
+</ul>
+</li>
+<li><p>最大似然法估计<br>最大似然法估计的基本思想如下：<br>首先我们要知道待估总体的分布形式，然后写出其概率密度函数（或者是分布律），然后我们可以写出一个样本出现的概率为：<br>$$L(\theta) &#x3D; P(X_1,X_2,X_3,X_4,X_5…X_n) &#x3D; \prod_{i&#x3D;1}^n f(x_i,\theta)$$<br>其中的 $\theta$就是我们要求的参数<br>我们称$L(\theta)$为<strong>似然函数</strong>，然后我们假定我们出现的这个样本是概率最大的样本，也就是说这个样本的取值应该是最大值，而似然函数中唯一的变量为$\theta$，所以我们的只要让$\theta$的取值可以使得似然函数最大，即可得到其估计值<br>如果存在多个参数需要估计，我们就针对每个参数，对似然函数求偏导，然后联立方程组即可</p>
+<p>以下我们以一个正态分布的参数求解作为例子：</p>
+<ul>
+<li>现在假设我们有一个总体$X \sim N(\mu,\sigma^2)$，然后我们有一个样本$X_1,X_2,X_3,X_4,X_5…X_n$，来自该总体，我们要求$\mu$和$\sigma^2$的最大似然估计量</li>
+<li>首先我们写出正态分布的概率密度函数：<br>$$f(x;\mu,\sigma^2) &#x3D; \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})$$</li>
+<li>然后我们可以写出似然函数如下：<br>$$<br>\begin{aligned}<br>L(\mu,\sigma^2) &amp;&#x3D; \prod_{i&#x3D;1}^n f(x_i;\mu,\sigma^2) \<br>&amp;&#x3D; \prod_{i&#x3D;1}^n \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x_i-\mu)^2}{2\sigma^2}) \<br>&amp;&#x3D; (\frac{1}{\sqrt{2\pi}\sigma})^nexp(-\frac{\sum{(x_i-\mu)^2}}{2\sigma^2})<br>\end{aligned}<br>$$</li>
+<li>然后等式两边同时取对数（方便求导运算）：<br>$$<br>\begin{aligned}<br>lnL(\mu,\sigma^2) &#x3D; nln(\frac{1}{\sqrt{2\pi}\sigma})-\frac{\sum{(x_i-\mu)^2}}{2\sigma^2}<br>\end{aligned}<br>$$</li>
+<li>然后我们对似然函数求$\sigma$和$\mu$的偏导：<br>$$<br>\begin{aligned}<br>\frac{\partial lnL(\mu,\sigma^2)}{\partial \mu} &amp;&#x3D; \frac{\sum{(x_i-\mu)}}{\sigma^2} &#x3D; 0\<br>\frac{\partial lnL(\mu,\sigma^2)}{\partial \sigma^2} &amp;&#x3D; -\frac{n}{2\sigma^2}+\frac{\sum{(x_i-\mu)^2}}{\sigma^4} &#x3D; 0<br>\end{aligned}<br>$$<br>联立二式即可得到：<br>$$<br>\begin{aligned}<br>\mu &amp;&#x3D; \frac{1}{n}\sum_{i&#x3D;1}^n X_i  &#x3D; \bar{X}\<br>\sigma^2 &amp;&#x3D; \frac{1}{n}\sum_{i&#x3D;1}^n (X_i-\mu)^2 &#x3D; \frac{1}{n}\sum_{i&#x3D;1}^n (X_i-\bar{X})^2 &#x3D; S^2<br>\end{aligned}<br>$$</li>
+</ul>
+</li>
+<li><p>基于截尾样本的最大似然估计<br>对于电池或者灯具的使用寿命这样的随机变量，测试所需要的时间可能很长，所以我们通过两种截尾方式来减少测量时间：</p>
+<ul>
+<li>定时截尾样本：这种方式是我们设定一个时间，在这个时间内损坏的灯泡我们记录其寿命，然后到时间后，所有还工作的灯泡我们都按照未损坏处理</li>
+<li>定数截尾样本：类比上面一种方式，我们的样本只记录到指定的损坏数量</li>
+</ul>
+<p>然后我们就对所有被截尾的灯泡的概率做一个积分计算：</p>
+<ul>
+<li>假设我们的截尾时间为 $t_m$，那么一个灯泡截尾的概率为：<br>$$P(X&gt;t_m) &#x3D; \int_{t_m}^{\infty} f(x;\theta)dx$$<br>然后我们有 $m$个灯泡被截尾，那么被截尾的概率就是：<br>$$<br>\binom{n}{m}\left(\int_{t_m}^{\infty} f(x;\theta)dx\right )^{n-m}<br>$$<br>然后把截尾的概率乘在似然函数上，就得到了基于截尾样本的最大似然估计：<br>$$<br>\begin{aligned}<br>L(\theta) &amp;&#x3D; \prod_{i&#x3D;1}^n f(x_i;\theta) \<br>&amp;&#x3D; \prod_{i&#x3D;1}^n f(x_i;\theta)\binom{n}{m}\left(\int_{t_m}^{\infty} f(x;\theta)dx\right )^{n-m}<br>\end{aligned}<br>$$</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>无偏估计量<br>我们认为：<ul>
+<li>如果对于一个估计量$\hat{\theta}$有：<br>$$E(\hat{\theta}) &#x3D; \theta$$<br>那么我们就称这个估计量是无偏的</li>
+</ul>
+</li>
+<li>有效性<br>如果对于两个估计量$\hat{\theta}_1$和$\hat{\theta}_2$有：<br>$$Var(\hat{\theta}_1) \leq Var(\hat{\theta}_2)$$<br>那么我们则称$\hat{\theta}_2$比$\hat{\theta}_1$更有效</li>
+<li>相合性<br>对于估计量$\hat{\theta}(X_1,X_2…,X_n)$，如果$n\rightarrow \infty$时，$\hat{\theta}$的方差收敛于$theta$，那么我们就称这个估计量是相合的</li>
+</ul>
+<hr>
+<h2 id="区间估计"><a href="#区间估计" class="headerlink" title="区间估计"></a>区间估计</h2><p>点估计是根据一组样本，来估计一个参数的值，而区间估计是根据一组样本估计一个参数的取值范围，并且给出准确的参数在该范围内的概率</p>
+<p>区间估计的主要方法是寻找一个<strong>枢轴量</strong>，这是一个分布与未知参数无关的函数，我们记为：<br>$$W &#x3D; W(X_1,X_2,…,X_n;\theta)$$</p>
+<p>比如在第六章最后提到的那些不加证明的结论：<br>$$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2(n-1)$$<br>如果$n$是已知的话，那么这就可以当作一个枢轴量，因为$S^2$只是样本的统计量</p>
+<p>找到这个枢轴量后，我们设定一个区间：<br>$$\chi^2_{1-\alpha&#x2F;2}(n-1) \leq \frac{(n-1)S^2}{\sigma^2} \leq \chi^2_{\alpha&#x2F;2}(n-1)$$<br>然后查表带入卡方分布的值即可求出方差的置信区间</p>
+<p>下面详细解释几种常见参数的区间估计方法：</p>
+<ul>
+<li><p>单个正态总体$N(\mu,\sigma^2)$的均值</p>
+<ul>
+<li><p>如果$\sigma$为已知值，我们则采用枢轴量：<br>$$\frac{\bar{X}-\mu}{\sigma&#x2F;\sqrt{n}} \sim N(0,1)$$</p>
+</li>
+<li><p>如果$\sigma$为未知值，我们则采用枢轴量：<br>$$\frac{\bar{X}-\mu}{S&#x2F;\sqrt{n}} \sim t(n-1)$$</p>
+</li>
+</ul>
+</li>
+<li><p>单个正态总体$N(\mu,\sigma^2)$的方差<br>此处只考虑$\mu$未知的情况，我们采用枢轴量：<br>$$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$</p>
+</li>
+<li><p>两个正态总体$N(\mu_1,\sigma_1^2)$和$N(\mu_2,\sigma_2^2)$的均值差和方差比</p>
+<ul>
+<li>均值差<ul>
+<li>如果$\sigma_1$和$\sigma_2$都为已知值，我们则采用枢轴量：<br>$$\frac{\bar{X}_1-\bar{X}_2-\mu_1+\mu_2}{\sqrt{\sigma_1^2&#x2F;n_1+\sigma_2^2&#x2F;n_2}} \sim N(0,1)$$</li>
+<li>如果$\sigma_1$和$\sigma_2$都为未知值，我们则采用枢轴量：<br>$$\frac{(X_1-X_2)-(\mu_1-\mu_2)}{S_W\sqrt{1&#x2F;n_1+1&#x2F;n_2}}\sim t(n_1+n_2-2)$$<br>其中$S_W^2$为两个总体的方差的加权平均：<br>$$S_W^2 &#x3D; \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$</li>
+</ul>
+</li>
+<li>方差比<br>如果$\sigma_1$和$\sigma_2$都为已知值，我们则采用枢轴量：<br>$$\frac{S_1^2&#x2F;S_2^2}{\sigma_1^2&#x2F;\sigma_2^2} \sim F(n_1-1,n_2-1)$$</li>
+</ul>
+</li>
+</ul>
+<p>只要记住了第六章的这些公式，就可以通过对应的枢轴量来求出区间估计了</p>
+<ul>
+<li><p>01分布参数的区间估计<br>书上只介绍了当 $n$足够大时的区间估计，此时的样本满足二项分布，而二项分布逼近于正态分布，所以我们可以采用正态分布的区间估计方法来求出区间估计：<br>$$\frac{\bar{X}-p}{\sqrt{\frac{p(1-p)}{n}}} \sim N(0,1)$$</p>
+</li>
+<li><p>单侧置信区间<br>当置信区间只有一侧时，注意 $\alpha$的取值不要除以2即可</p>
+</li>
+</ul>
+<hr>
+<h1 id="第八章-假设检验"><a href="#第八章-假设检验" class="headerlink" title="第八章 假设检验"></a>第八章 假设检验</h1><p>我们要检验一个总体是否满足一个分布（这个分布已经给定且不知道是否正确），我们可以用假设检验的方式来验证，具体步骤如下：</p>
+<p>比如现在我们要验证一个总体是否满足正态分布 $N(\mu_0,\sigma^2_0)$：</p>
+<ul>
+<li><p>提出两个互相对立的假设：<br>$$H_0: \mu &#x3D; \mu_0$$<br>$$H_1: \mu \neq \mu_0$$<br>其中$H_0$为原假设，$H_1$为备择假设</p>
+</li>
+<li><p>我们认为方差一般要比均值更稳定，所以我们默认 $\sigma$为正确值，而只验证 $\mu$的正确性</p>
+</li>
+<li><p>我们采用统计量：<br>$$Z &#x3D; \frac{\bar{X}-\mu_0}{\sigma&#x2F;\sqrt{n}} \sim N(0,1)$$<br>如果我们的样本的 $Z$值的绝对值大于某一个值，那么我么则认为这个样本不满足 $H_0$，即拒绝 $H_0$，而这个值的大小决定了我们的判断的正确概率，我们类似参数估计中的方式，将其设定为 $z_{\alpha&#x2F;2}$</p>
+</li>
+<li><p>其中的 $\alpha$我们称为<strong>显著性水平</strong>，它决定了我们的判断的正确概率，一般取值为0.05或0.01，而 $Z$被称为<strong>检验统计量</strong></p>
+</li>
+<li><p>错误分为两种：</p>
+<ul>
+<li>当 $H_0$为真时，我们拒绝 $H_0$，这被称为<strong>第一类错误</strong></li>
+<li>当 $H_0$为假时，我们接受 $H_0$，这被称为<strong>第二类错误</strong><br>我们可以通过该变 $\alpha$的值来控制两类错误的概率，但是这样会导致另一类错误的概率增大<br>我们一般只考虑减小第一类错误的概率，令其发生概率为 $\alpha$，这被称为<strong>显著性检验</strong></li>
+</ul>
+</li>
+<li><p>单边检验<br>当我们的假设为两个相反的不等式时：<br>$$<br>H_0: \mu \leq \mu_0\<br>H_1: \mu &gt; \mu_0<br>$$<br>这被称为右边检验<br>此时我们要检验 $H_0$，那么我们依然使用同样的检验统计量，但是我们将不再使用绝对值，因为样本的 $\mu$要比假设小，所以我们的检验统计量也会偏小，那么我们可以认为拒绝域为统计量大于某个值，而这个值就设定为 $x_\alpha$<br>左边检验反过来即可</p>
+</li>
+</ul>
+<hr>
+<h2 id="正态总体均值的假设检验"><a href="#正态总体均值的假设检验" class="headerlink" title="正态总体均值的假设检验"></a>正态总体均值的假设检验</h2><ul>
+<li><p>均值$\mu$的检验：</p>
+<ul>
+<li><p>知道 $\sigma$时：<br>我们使用统计量：<br>$$Z &#x3D; \frac{\bar{X}-\mu_0}{\sigma\sqrt{n}} \sim N(0,1) $$</p>
+</li>
+<li><p>不知道 $\sigma$时：<br>我们使用统计量：<br>$$T &#x3D; \frac{\bar{X}-\mu_0}{S\sqrt{n}} \sim t(n-1)$$</p>
+</li>
+</ul>
+</li>
+<li><p>两个正态总体的均值差：<br>我们使用统计量：<br>$$T &#x3D; \frac{\bar{X}_1-\bar{X}_2-\mu_1+\mu_2}{S_W\sqrt{1&#x2F;n_1+1&#x2F;n_2}} \sim t(n_1+n_2-2)$$<br>其中 $S_W^2$为两个总体的方差的加权平均：<br>$$S_W^2 &#x3D; \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$</p>
+</li>
+<li><p>正态总体方差的假设检验：<br>我们使用统计量：<br>$$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/math/probability-theory/" data-id="clkwkwsgy006wk8uvfhn2bppf" data-title="概率论期末复习" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">概率论</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/08/04/math-physics/descretMath/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          离散数学——逻辑运算
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/04/math/importance-of-probability-distibution/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">概率论期中论文</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C#学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C++学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CFT%E9%A2%98%E7%9B%AE%E9%9A%8F%E7%AC%94/">CFT题目随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSAPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">CSAPP学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode%E7%BB%83%E4%B9%A0/">LeetCode练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Matlab%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">Matlab学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">OI算法和数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%BB%83%E4%B9%A0/">OI练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qt%E5%AD%A6%E4%B9%A0/">Qt学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/compiler/">compiler</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B9%90%E7%90%86/">乐理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/">信号与系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/">笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/%E7%BF%BB%E8%AF%91/">翻译</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">思维导图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">数学基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/">计算机图形</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">语言学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">课程复习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E8%AF%BB%E5%90%8E%E6%84%9F/">读后感</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API/" rel="tag">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bellman-ford/" rel="tag">Bellman-ford</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag">C++学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMatlab/" rel="tag">CMatlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">C计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DP/" rel="tag">DP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EM%E7%AE%97%E6%B3%95/" rel="tag">EM算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kruskal/" rel="tag">Kruskal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LCA/" rel="tag">LCA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag">Lambda表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OI/" rel="tag">OI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prim/" rel="tag">Prim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/" rel="tag">Qt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCIM/" rel="tag">SCIM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SG%E5%87%BD%E6%95%B0/" rel="tag">SG函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPFA/" rel="tag">SPFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ST%E8%A1%A8/" rel="tag">ST表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stride-Scheduling/" rel="tag">Stride Scheduling</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tarjan/" rel="tag">Tarjan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Three-Easy-Pieces/" rel="tag">Three-Easy-Pieces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UNIX/" rel="tag">UNIX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VAX-VMS/" rel="tag">VAX&#x2F;VMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/" rel="tag">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/convolution/" rel="tag">convolution</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu/" rel="tag">cpu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu%E5%8E%9F%E7%90%86/" rel="tag">cpu原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/" rel="tag">data-structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decision-tree/" rel="tag">decision tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dijkstra/" rel="tag">dijkstra</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fourier-transform/" rel="tag">fourier transform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/" rel="tag">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/" rel="tag">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mechine-learning/" rel="tag">mechine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nim%E5%8D%9A%E5%BC%88/" rel="tag">nim博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/operating-system/" rel="tag">operating-system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/perceptron/" rel="tag">perceptron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/signal/" rel="tag">signal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/special-function/" rel="tag">special function</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/" rel="tag">ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unity/" rel="tag">unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/upload/" rel="tag">upload</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" rel="tag">上下文切换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" rel="tag">不等式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" rel="tag">主定理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" rel="tag">二分图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" rel="tag">二叉堆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" rel="tag">二叉查找树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag">二进制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" rel="tag">代码能力</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag">优先队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" rel="tag">优化程序性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" rel="tag">关联容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98/" rel="tag">内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="tag">内存分配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" rel="tag">内存地址</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="tag">内存空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">内存虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" rel="tag">分布式编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" rel="tag">分比例调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%B2%BB/" rel="tag">分治</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="tag">前缀和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%B2%E7%82%B9/" rel="tag">割点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" rel="tag">动态内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="tag">区间最大值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" rel="tag">区间查询</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" rel="tag">区间维护</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="tag">博弈论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" rel="tag">地图生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" rel="tag">地址翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" rel="tag">多级反馈队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%AE%E5%88%86/" rel="tag">差分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" rel="tag">巴什博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" rel="tag">异常控制流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">形式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" rel="tag">彩票调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" rel="tag">思维导图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E6%83%B3/" rel="tag">感想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" rel="tag">教学资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" rel="tag">数据流分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6/" rel="tag">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" rel="tag">文件上传攻击</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" rel="tag">文件操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">无序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="tag">智能指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" rel="tag">最大字串和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" rel="tag">最大流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" rel="tag">最小生成树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag">最短路</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91/" rel="tag">树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" rel="tag">树上倍增</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" rel="tag">树形数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" rel="tag">树链剖分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">概率论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" rel="tag">段式内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">段式内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96/" rel="tag">汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" rel="tag">浅拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" rel="tag">深拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93/" rel="tag">渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" rel="tag">游戏编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E6%80%A7/" rel="tag">特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" rel="tag">直接运行程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A9%E9%98%B5/" rel="tag">矩阵</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A2%8E%E7%89%87/" rel="tag">碎片</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag">离散数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" rel="tag">空闲内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" rel="tag">空闲链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7/" rel="tag">线性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag">线段树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81/" rel="tag">编码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">编码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" rel="tag">编译器优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag">网络流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">自动机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD/" rel="tag">英语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" rel="tag">计算机图形</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" rel="tag">计算机理论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95/" rel="tag">语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E8%A8%80/" rel="tag">语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" rel="tag">调度算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" rel="tag">输入法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" rel="tag">进程调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E6%8E%A5/" rel="tag">链接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" rel="tag">静态分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag">项目</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">顺序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" rel="tag">预处理宏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" rel="tag">预处理指令</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Bellman-ford/" style="font-size: 10px;">Bellman-ford</a> <a href="/tags/C/" style="font-size: 16.43px;">C++</a> <a href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">C++学习记录</a> <a href="/tags/CMatlab/" style="font-size: 10px;">CMatlab</a> <a href="/tags/CTF/" style="font-size: 10.71px;">CTF</a> <a href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">C计算机网络</a> <a href="/tags/DNS/" style="font-size: 10.71px;">DNS</a> <a href="/tags/DP/" style="font-size: 10px;">DP</a> <a href="/tags/EM%E7%AE%97%E6%B3%95/" style="font-size: 10px;">EM算法</a> <a href="/tags/HMM/" style="font-size: 10px;">HMM</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/Kruskal/" style="font-size: 10px;">Kruskal</a> <a href="/tags/LCA/" style="font-size: 10px;">LCA</a> <a href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" style="font-size: 10px;">Lambda表达式</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/OI/" style="font-size: 10px;">OI</a> <a href="/tags/Prim/" style="font-size: 10px;">Prim</a> <a href="/tags/Qt/" style="font-size: 10px;">Qt</a> <a href="/tags/SCIM/" style="font-size: 10px;">SCIM</a> <a href="/tags/SG%E5%87%BD%E6%95%B0/" style="font-size: 10px;">SG函数</a> <a href="/tags/SPFA/" style="font-size: 10px;">SPFA</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/ST%E8%A1%A8/" style="font-size: 10px;">ST表</a> <a href="/tags/SVM/" style="font-size: 10px;">SVM</a> <a href="/tags/Stride-Scheduling/" style="font-size: 10px;">Stride Scheduling</a> <a href="/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/tags/Tarjan/" style="font-size: 10.71px;">Tarjan</a> <a href="/tags/Three-Easy-Pieces/" style="font-size: 10px;">Three-Easy-Pieces</a> <a href="/tags/UNIX/" style="font-size: 10px;">UNIX</a> <a href="/tags/VAX-VMS/" style="font-size: 10px;">VAX/VMS</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/c/" style="font-size: 12.86px;">c#</a> <a href="/tags/concurrency/" style="font-size: 14.29px;">concurrency</a> <a href="/tags/convolution/" style="font-size: 10px;">convolution</a> <a href="/tags/cpu/" style="font-size: 10px;">cpu</a> <a href="/tags/cpu%E5%8E%9F%E7%90%86/" style="font-size: 10px;">cpu原理</a> <a href="/tags/data-structure/" style="font-size: 10px;">data-structure</a> <a href="/tags/decision-tree/" style="font-size: 10px;">decision tree</a> <a href="/tags/dijkstra/" style="font-size: 10px;">dijkstra</a> <a href="/tags/fourier-transform/" style="font-size: 10px;">fourier transform</a> <a href="/tags/golang/" style="font-size: 10.71px;">golang</a> <a href="/tags/linux/" style="font-size: 10.71px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10.71px;">machine learning</a> <a href="/tags/math/" style="font-size: 10.71px;">math</a> <a href="/tags/mechine-learning/" style="font-size: 10px;">mechine learning</a> <a href="/tags/nim%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">nim博弈</a> <a href="/tags/operating-system/" style="font-size: 14.29px;">operating-system</a> <a href="/tags/perceptron/" style="font-size: 10px;">perceptron</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/special-function/" style="font-size: 10px;">special function</a> <a href="/tags/system/" style="font-size: 10.71px;">system</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/unity/" style="font-size: 10px;">unity</a> <a href="/tags/upload/" style="font-size: 10px;">upload</a> <a href="/tags/wireshark%E7%BB%83%E4%B9%A0/" style="font-size: 12.86px;">wireshark练习</a> <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" style="font-size: 10px;">上下文切换</a> <a href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" style="font-size: 10px;">不等式</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" style="font-size: 15.71px;">中间代码生成</a> <a href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" style="font-size: 10px;">主定理</a> <a href="/tags/%E4%B9%90%E7%90%86/" style="font-size: 10.71px;">乐理</a> <a href="/tags/%E4%BA%8C%E5%88%86/" style="font-size: 10.71px;">二分</a> <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" style="font-size: 10px;">二分图</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" style="font-size: 10.71px;">二叉堆</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" style="font-size: 10px;">二叉查找树</a> <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" style="font-size: 11.43px;">二进制</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 15.71px;">代码</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" style="font-size: 10.71px;">代码优化</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" style="font-size: 10px;">代码能力</a> <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">优先队列</a> <a href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" style="font-size: 10px;">优化程序性能</a> <a href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">关联容器</a> <a href="/tags/%E5%86%85%E5%AD%98/" style="font-size: 10px;">内存</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" style="font-size: 10px;">内存分配</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" style="font-size: 10px;">内存地址</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" style="font-size: 10.71px;">内存空间</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10.71px;">内存管理</a> <a href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">内存虚拟化</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" style="font-size: 10px;">分布式编译</a> <a href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">分比例调度</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 10px;">分治</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" style="font-size: 10px;">前缀和</a> <a href="/tags/%E5%89%B2%E7%82%B9/" style="font-size: 10px;">割点</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" style="font-size: 10px;">动态内存</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 10px;">动画</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" style="font-size: 10px;">区间最大值</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" style="font-size: 10px;">区间查询</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" style="font-size: 11.43px;">区间维护</a> <a href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" style="font-size: 10px;">博弈论</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 11.43px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">地址翻译</a> <a href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">多级反馈队列</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E5%B7%AE%E5%88%86/" style="font-size: 11.43px;">差分</a> <a href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">巴什博弈</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 10.71px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" style="font-size: 10px;">异常控制流</a> <a href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">形式语言</a> <a href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">彩票调度</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">微信小程序</a> <a href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" style="font-size: 10px;">思维导图</a> <a href="/tags/%E6%84%9F%E6%83%B3/" style="font-size: 11.43px;">感想</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 17.86px;">操作系统</a> <a href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" style="font-size: 10px;">教学资料</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 11.43px;">数学</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">数据流分析</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%95%B0%E7%BB%84/" style="font-size: 10px;">数组</a> <a href="/tags/%E6%96%87%E4%BB%B6/" style="font-size: 10px;">文件</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" style="font-size: 10px;">文件上传攻击</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" style="font-size: 10px;">文件操作</a> <a href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">无序容器</a> <a href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" style="font-size: 10px;">智能指针</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" style="font-size: 10px;">最大字串和</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" style="font-size: 10px;">最大流</a> <a href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" style="font-size: 10px;">最小生成树</a> <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" style="font-size: 10px;">最短路</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%A0%91/" style="font-size: 10px;">树</a> <a href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" style="font-size: 10px;">树上倍增</a> <a href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" style="font-size: 10px;">树形数组</a> <a href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" style="font-size: 10px;">树链剖分</a> <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 10.71px;">概率论</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10.71px;">模板</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" style="font-size: 10px;">段式内存</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10px;">段式内存管理</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 10.71px;">汇编</a> <a href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">浅拷贝</a> <a href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">深拷贝</a> <a href="/tags/%E6%B8%B2%E6%9F%93/" style="font-size: 10px;">渲染</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">游戏编程</a> <a href="/tags/%E7%89%B9%E6%80%A7/" style="font-size: 11.43px;">特性</a> <a href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">直接运行程序</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A2%8E%E7%89%87/" style="font-size: 10px;">碎片</a> <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" style="font-size: 13.57px;">离散数学</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" style="font-size: 10px;">空闲内存</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">空闲链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BA%BF%E6%80%A7/" style="font-size: 10.71px;">线性</a> <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" style="font-size: 10px;">线段树</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a> <a href="/tags/%E7%BC%96%E7%A0%81/" style="font-size: 11.43px;">编码</a> <a href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">编码规范</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10.71px;">编程语言</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 17.14px;">编译原理</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" style="font-size: 10px;">编译器优化</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" style="font-size: 10.71px;">网络流</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" style="font-size: 12.86px;">自动机</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 10px;">英语</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">虚拟化</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">计算机图形</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" style="font-size: 12.86px;">计算机理论</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" style="font-size: 18.57px;">计算机系统</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 19.29px;">设计模式</a> <a href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">词法分析</a> <a href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语义分析</a> <a href="/tags/%E8%AF%AD%E6%B3%95/" style="font-size: 12.14px;">语法</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语法分析</a> <a href="/tags/%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">语言</a> <a href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" style="font-size: 10px;">调度算法</a> <a href="/tags/%E8%B4%AA%E5%BF%83/" style="font-size: 10px;">贪心</a> <a href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" style="font-size: 10px;">输入法</a> <a href="/tags/%E8%BF%9B%E7%A8%8B/" style="font-size: 11.43px;">进程</a> <a href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">进程调度</a> <a href="/tags/%E9%93%BE%E6%8E%A5/" style="font-size: 10px;">链接</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 11.43px;">随笔</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">静态分析</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 20px;">面向对象</a> <a href="/tags/%E9%A1%B9%E7%9B%AE/" style="font-size: 10px;">项目</a> <a href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">顺序容器</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" style="font-size: 10px;">预处理宏</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" style="font-size: 10px;">预处理指令</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/08/04/Wechat-P/first--time-trying/">第一个微信小程序——创建与总览</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/QT/FirstApplication/">第一个Qt程序——文本查询</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/leading-chapter/">Operating System Chapter 1</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-Segmentation/">段式内存管理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-proportionalShare/">分比例调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Dnull_P<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

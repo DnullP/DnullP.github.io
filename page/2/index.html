@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Dnull_P Welcome~</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A BUPTer( awlful)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dnull_P Welcome~">
+<meta property="og:url" content="https://dnullp.github.io/page/2/index.html">
+<meta property="og:site_name" content="Dnull_P Welcome~">
+<meta property="og:description" content="A BUPTer( awlful)">
+<meta property="og:locale">
+<meta property="article:author" content="Dnull_P">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Dnull_P Welcome~" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dnull_P Welcome~</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://DnullP.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-operating-system/CH1-free-memory-management" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/operating-system/CH1-free-memory-management/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.426Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>►<a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/operating-system/CH1-free-memory-management/">空闲内存的管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="空闲内存的管理"><a href="#空闲内存的管理" class="headerlink" title="空闲内存的管理"></a>空闲内存的管理</h1><p>关于这一段我还是相对熟悉的, 在做数据结构的大作业时选择了一个空闲链表的实现, 这一段的记录也会相对简洁</p>
+<h2 id="内存碎片"><a href="#内存碎片" class="headerlink" title="内存碎片"></a>内存碎片</h2><ul>
+<li>内部碎片(internal fragmentation): 内部碎片是由于最小分配的内存块大小大于实际分配大小所导致的内存碎片, 例如, 一个进程需要分配 10 个字节的内存, 但是内存管理器只能分配 16 个字节的内存块, 这样就会产生 6 个字节的内部碎片</li>
+<li>外部碎片(external fragmentation): 当我们分配的内存空间不是最小分配单元时, 我们可以通过分割一个内存块来分配需要的内存空间, 而剩下的部分会形成一个新的空闲空间, 被称为外部碎片</li>
+</ul>
+<p>空闲内存和碎片的合理分配可以让内存可以分配更大的内存块, 为此我们需要先在决定管理策略前, 实现基本的内存维护机制</p>
+<h2 id="空闲链表和已占用空间"><a href="#空闲链表和已占用空间" class="headerlink" title="空闲链表和已占用空间"></a>空闲链表和已占用空间</h2><p>对于一片内存中的空闲空间, 我们是通过空闲链表来管理的, 并且该链表是就在内存空间中<strong>集成(embedded)</strong> 的, 比如说我们有一片空闲的内存空间如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">size:1000</th>
+<th align="center">next:0x1000</th>
+<th align="center">data:…</th>
+<th align="center">size:1000</th>
+<th align="center">next:0x2000</th>
+<th align="center">data:…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">通过在空间头部加入两个字段, 来构成一个空闲链表</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">需要注意的是, 像这样连续的两空闲空间, 在产生时我们就应该将两块合并为一个, 以减少碎片的产生</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>同时, 对于一个已分配的空间也添加相应的字段来描述器大小和做验证:</p>
+<table>
+<thead>
+<tr>
+<th align="center">size:1000</th>
+<th align="center">magic:1234567</th>
+<th align="center">data:…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">我们可以向<code>free()</code>传递指向该占用块开头的指针, 知道该占用块的大小, 然后检测下一个字段的<code>magic</code>值是否为我们希望的值, 来判定这是一个完整的占用块(不能检测到一个大小就随意清楚后面的内存块)</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">需要注意的是, 我们在进程中调用<code>free()</code>传递的是虚拟内存的地址, 但是这个地址映射到物理内存上是不同的的地方</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h2 id="空闲链表的维护策略"><a href="#空闲链表的维护策略" class="headerlink" title="空闲链表的维护策略"></a>空闲链表的维护策略</h2><p>当我们分配申请内存时, 需要先找到物理内存中足够大的空闲空间, 然后再将新分配的内存映射到这个区域之上, 但是我们希望在分配完了这个空间后能够产生尽量少的内存碎片, 所以就有了空闲链表的维护(分配)策略</p>
+<p>需要注意的是, 我们所说的内存碎片也是物理内存中所产生的东西, 我们直接打交道的虚拟内存是不存在这种概念的, 这些策略都是OS来采用的方法, 只有OS才能和物理内存打交道</p>
+<ul>
+<li>首次适应(first-fit): 首次适应是最简单的一种策略, 也是最容易实现的一种策略, 它的思想是从空闲链表的头部开始遍历, 找到第一个满足要求的空闲空间, 然后将其分配出去</li>
+<li>最佳适应(best-fit): 最佳适应是从空闲链表中找到一个最小的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少内部碎片的产生</li>
+<li>最坏适应(worst-fit): 最坏适应是从空闲链表中找到一个最大的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少外部碎片的产生</li>
+<li>下一次适应(next-fit): 下一次适应是在首次适应的基础上进行的优化, 它的思想是从上一次分配的空闲空间的下一个空闲空间开始遍历, 这样能够使得内存的分配位置更加均匀</li>
+</ul>
+<p>以上是四种简单的分配策略, 但是还有一些更加优秀, 但是也更加复杂的分配方式</p>
+<p>在提及这些方式之前, 我们需要先明确, 我们上面讨论的情况是基于段式储存的, 一是段本身就已经是长度不固定的内存块了, 二是我们在段内部分配空间时也是按长度来取内存块的, 所以才会产生<strong>外部碎片</strong><br>但是当我们采用分页式储存时, 我们的内存块大小都为固定的页大小, 我们分配内存的最小单位从字节变成了页, 所以我们的占用内存块和空闲内存块大小都是页大小(一般为4kb)的整数倍, 这样就不会产生外部碎片了——我们总能找到一块刚刚好大小的页来分配<br>所以针对外部碎片的这些策略都是基于段式储存或者直接映射物理内存的, 广泛采用的分页式储存不会产生外部碎片, 只有内部碎片(页大小固定, 大多数情况使用不完)</p>
+<hr>
+<p>然后我们就能提及一个稍微复杂的针对非分页式的分配策略: <strong>Segregated Free List(分离空闲链表)</strong></p>
+<p>既然我们已经知道固定长度的分块不会产生外部碎片, 那么我们就尽量在不定长的分块中找到长度相同的区块, 然后把他们单独连成一个<strong>隔离开的</strong>链表, 这种部分的<strong>类分页</strong>方式就能一定程度上减少外部碎片的产生</p>
+<p>其中的slab allocator就是这种方式的一种实现, 这个内存分配器将OS常用的那些对象单独创建一个空闲链表, 比如锁, 信号量, int等等, 同时减少了内部和外部碎片的产生</p>
+<hr>
+<p>然后要介绍的是另一个强大的分配算法: <strong>伙伴系统(buddy system)</strong>:<br>我们对于一段大小为$2^n$的空闲空间, 将其<strong>递归地</strong>二分出一个最小的满足我们分配需求的空间, 比如我们现在有一块大小为$64kb$的空间, 需要分配一个$7kb$的空间:</p>
+<ul>
+<li><p>我们可以通过二分分出一块$8kb$的空间, 此时产生了$1kb$的内部碎片, 此时的内存我们可以表示如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">8kb</th>
+<th align="center">8kb</th>
+<th align="center">16kb</th>
+<th align="center">32kb</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">占用7kb</td>
+<td align="center">空闲8kb</td>
+<td align="center">空闲16kb</td>
+<td align="center">空闲32kb</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>这个算法在分配方面只能分配$2$的幂次方大小的内存, 产生的内部碎片不确定和分页相比谁更优, 但是该算法在合并空闲内存(碎片)时更有优势:</p>
+<ul>
+<li>我们释放了一个占用的空间后, 可以直接检测相邻的内存空间是否被占用, 然后可以直接将两个相同大小的内存空间合并</li>
+<li>树形数组的原理可以和伙伴算法做一个比较参考, 两者都是大小为二进制数来分割区间的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/operating-system/CH1-free-memory-management/" data-id="clkwkwsh50086k8uv5ft3cqhr" data-title="空闲内存的管理" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="tag">内存分配</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A2%8E%E7%89%87/" rel="tag">碎片</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" rel="tag">空闲内存</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" rel="tag">空闲链表</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-operating-system/CH1-directExecution" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/operating-system/CH1-directExecution/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.424Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>►<a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/operating-system/CH1-directExecution/">直接运行程序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这一部分主要分为两个主题：</p>
+<ul>
+<li>如何限制进程对设备的访问更改，又能让进程一定程度上调用设备</li>
+<li>如何在多个进程之间切换</li>
+</ul>
+<h3 id="Restricted-Operations"><a href="#Restricted-Operations" class="headerlink" title="Restricted Operations"></a>Restricted Operations</h3><h4 id="引入权限分层"><a href="#引入权限分层" class="headerlink" title="引入权限分层"></a>引入权限分层</h4><p>为了限制进程对内存或者其他设备的访问、更改等，OS引入了两个不同的模式：</p>
+<ul>
+<li>user mode</li>
+<li>kernel mode</li>
+</ul>
+<p>在user mode中，程序只能执行有限的指令、访问有限的空间，如果程序试图访问一个非法的内存位置，那么OS将会中断程序</p>
+<p>在kernel mode中，程序能够访问任何地方，执行任何指令</p>
+<p>通过引入一个权限的分层，使得进程无法随意访问其他位置，那么现在的问题是如何让进程执行一些允许的内存访问与操作，比如我们的程序需要从硬盘读取数据，或者需要知道现在的内存剩余量为多少等等</p>
+<h4 id="设置API"><a href="#设置API" class="headerlink" title="设置API"></a>设置API</h4><p>为了让用户模式的进程能够在OS的管理下访问内存和设备，OS为kernel mode制定了一系列的操作和面向user mode开放的API</p>
+<p>比如我们之前就提到过的<code>exec</code>、<code>kill</code>等都属于系统调用（API of system）</p>
+<p>用户模式下，通过把指定的参数写入规定的寄存器（register）中，然后使用 <code>int</code>指令（一条汇编指令），搭配中断码<code>0x80</code>表示系统调用，OS会转入内核态，设备控制由进程交给OS，OS从寄存器中读取响应的参数，包括对应系统调用的代码，然后执行相应的系统调用，完成之后将返回值写入对应的寄存器，然后将context从栈中重新读取出</p>
+<p>切换到内核态时，进程的context会被存入kernel stack中，类似于用户调用函数的原理一样，但是kernel stack相比user space stack需要在内核态才能使用</p>
+<h4 id="trap机制"><a href="#trap机制" class="headerlink" title="trap机制"></a>trap机制</h4><p>系统的中断是通过trap机制实现的<br>来自硬件的错误、异常，来自进程的系统调用，来自用户输入的指令，都会向OS发送trap信号，接收到信号后如果没有特别设定中断处理程序，trap机制会根据信号的类型，依据trap table找到默认的中断处理程序的位置，并进行调用</p>
+<p>trap table在OS启动时就已经读取完毕，一般在OS的源码内部就以及编写好了</p>
+<h3 id="Switching-Between-Processes"><a href="#Switching-Between-Processes" class="headerlink" title="Switching Between Processes"></a>Switching Between Processes</h3><p>上下文切换已经相对熟悉，不用做太多介绍，但是有一个问题是：<br>如果在一次中断中，正在进行上下文切换，此时另一个中断发生了，那么OS会如何操作呢？<br>这一部分将在并发（concurrency）中讲述，将关系到锁的一系列问题</p>
+<p>此外，CPU在同一时间只能运行一个程序，当一般进程占用了CPU时，OS无法直接获得设备的操作权，所以OS一般有两种途径获得一个正在运行其他进程的CPU的操作权：</p>
+<ul>
+<li>当进程触发了中断或者系统调用时，OS可以获得CPU操作权，并判断是否继续运行该进程</li>
+<li>系统启动时会启动一个timer interrupter，每隔一定的时间就触发一次中断，强制将操作递给OS，并进行相应的管理</li>
+</ul>
+<h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>重点关键词：</p>
+<ul>
+<li>kernel mode和user mode</li>
+<li>system call和trap机制</li>
+<li>context Switching</li>
+</ul>
+<h3 id="homework"><a href="#homework" class="headerlink" title="homework"></a>homework</h3><p>课后要求估计上下文切换的时间和系统调用的时间</p>
+<p>系统调用的时间比较好测量，在一次系统调用前后加上一个时间获取函数，然后相减即可，为提高精度还需要再减去两次连续使用的时间函数（去掉时间函数调用本身花耗的时间），并且提高测量次数</p>
+<p>上线文切换相对比较麻烦，为了完成上下文切换的性能评估需要关注几点：</p>
+<ul>
+<li>保证两个进程在同一个CPU上运行</li>
+<li>排除时间函数本身的函数调用时间</li>
+</ul>
+<p>为此我们需要写两个进程，一个运行无限循环，并在每次循环中放弃进程（通过<code>sched_yield()</code>方法），然后再写一个进程进行有限次数的循环，在每次循环中放弃进程，这样有限次循环花费的时间就大约是进程间上下文切换的总和，除以进程次数就是一轮切换的平均时间</p>
+<p>代码如下：<br>固定次数部分：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sched.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> pid = getpid();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pid);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv_2</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timezone</span> <span class="title">tz</span>;</span></span><br><span class="line">    <span class="type">cpu_set_t</span> cst;</span><br><span class="line">    CPU_SET(<span class="number">0</span>, &amp;cst);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> t_0 = sched_setaffinity(getpid(), <span class="keyword">sizeof</span>(cst), &amp;cst);</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> t_1 = gettimeofday(&amp;tv, &amp;tz);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld.%ld\n&quot;</span>, tv.tv_sec, tv.tv_usec);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> times = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    t_1 = gettimeofday(&amp;tv, &amp;tz);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">2000000</span>; j++) &#123;</span><br><span class="line">        sched_yield();</span><br><span class="line">    &#125;</span><br><span class="line">    t_1 = gettimeofday(&amp;tv_2, &amp;tz);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld.%ld\n&quot;</span>, tv_2.tv_sec - tv.tv_sec, tv_2.tv_usec - tv.tv_usec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先<code>sched_setaffinity()</code>设置了一个进程只能运行的cpu集合，把该进程固定在一个CPU上<br>然后 <code>gettimeofday()</code>获得当前的时间，固定循环记录上下文切换的总时间，但是上面的代码并没有考虑 <code>gettimeofday()</code>本身函数调用花耗的时间</p>
+<p>无限循环部分：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sched.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> pid = getpid();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pid);</span><br><span class="line"></span><br><span class="line">    <span class="type">cpu_set_t</span> cst;</span><br><span class="line">    CPU_SET(<span class="number">0</span>, &amp;cst);</span><br><span class="line">    sched_setaffinity(getpid(), <span class="keyword">sizeof</span>(cst), &amp;cst);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        sched_yield();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和上面类似，但是是无限循环，所以需要先启动这个进程</p>
+<p>最后计算结果一轮上下文切换为1600ns左右，一次则为800ns左右，由于我使用的是虚拟机，所以和实际机器的上下文切换可能有所不同，另外，由于OS的进程调度机制，所以上下文切换的次数可能会比循环次数多许多，难以验证这样的计算结果</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/operating-system/CH1-directExecution/" data-id="clkwkwsh50085k8uvbsjj8lj8" data-title="直接运行程序" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E5%AD%98/" rel="tag">内存</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" rel="tag">直接运行程序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-operating-system/CH1-CPUSchedualing" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/operating-system/CH1-CPUSchedualing/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.423Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>►<a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/operating-system/CH1-CPUSchedualing/">CPU进程调度</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CPU进程调度"><a href="#CPU进程调度" class="headerlink" title="CPU进程调度"></a>CPU进程调度</h1><p>在多线程程序广泛使用之前，cpu的调度主要是针对进程间的调度，我们这里讨论的cpu调度方法也主要是针对进程的，关于进程调度和线程调度的区别我们在最后再讨论</p>
+<p>我们将根据书上的介绍一步步记录各个调度方式</p>
+<h2 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h2><p>FIFO（First In First Out）先进先出调度方式，首先我们有一个队列，先进入的进程先从队头出来，并由cpu进行计算处理，这样的方式就是FIFO，讲究一个先来先做原则</p>
+<h2 id="SJF"><a href="#SJF" class="headerlink" title="SJF"></a>SJF</h2><p>SJF（Shortest Job First）最短作业优先调度方式，当我们的任务同时到达时该怎么做？我们需要先引入一个调度算法的性能指标：<strong>turnaround</strong></p>
+<ul>
+<li>turnaround<br>turnaround是指从进程提交到完成的时间，我们可以用下面的公式来计算：<br>$$T_{turnaround} &#x3D; T_{finish} - T_{submit}$$<br>我们评价一个调度算法的指标就是平均的turnaround，所有进程的平均turnaround越小，说明调度算法越好</li>
+</ul>
+<p>现在回到SJF算法，当若干任务同时到达时，我们需要选择一个最短的任务来执行，这样的方式就是SJF，讲究一个最短的先做原则<br>原理和排队接水问题一样，通过贪心的思想可以知道，让接水事件少的人先接可以让总的等待时间最短</p>
+<h2 id="STCF"><a href="#STCF" class="headerlink" title="STCF"></a>STCF</h2><p>那么如果我们的任务不是同时到达该怎么办呢？<br>如果接水时间最长的人先到达了，那么其他人就需要等待这个人先接完水，这样对于turnaround肯定是不利的<br>STCF（Shortest Time to Completion First）最短剩余时间优先调度方式，当我们的任务不是同时到达时，我们需要选择一个最短的剩余时间来执行，这样的方式就是STCF，讲究一个最短的先做原则<br>也就是说当一个任务到达时，我们计算当前所有进程所剩的时间，通过上下文切换选择一个最短的来执行</p>
+<h2 id="Response-Time"><a href="#Response-Time" class="headerlink" title="Response Time"></a>Response Time</h2><p>如果我们在一个终端中执行一个指令，同时系统正在执行很多其他的进程，我们希望我们的指令能够很快得到响应，而不是排队等待。这种情况下我们就需要引入一个新的指标：<strong>response time</strong></p>
+<p>response time是指从进程提交到第一次响应（第一次开始运行）的时间，我们可以用下面的公式来计算：<br>$$T_{response} &#x3D; T_{first arrival} - T_{submit}$$</p>
+<p>为了优化进程的response time，我们需要引入一个新的调度算法：<strong>RR</strong></p>
+<h2 id="RR"><a href="#RR" class="headerlink" title="RR"></a>RR</h2><p>RR（Round Robin）轮转调度方式，为了让进程能够快速得到响应，我们需要让进程轮流执行，这样的方式就是RR，讲究一个轮流执行原则</p>
+<p>我们把同一时间需要进行的进程进行分片，每个进程分成长度相同的若干时间片，我们称为time quantum，每个进程在分配到CPU时，只能执行一个时间片，执行完一个时间片后，如果进程还没有执行完，就会被挂起，然后轮到下一个进程执行，直到所有进程都执行完毕</p>
+<p>这样可以保证每个进程在时间片大小的时间内可以得到响应，大幅度优化了response time</p>
+<p>time quantum的大小是RR调度法的关键，当time quantum很大时，response time得不到足够的优化，当time response很小时，上下文切换会花耗更多的时间，导致效率降低，在两者间做一个平衡，是操作系统设计者需要考虑的问题</p>
+<h2 id="Incorporating-I-O"><a href="#Incorporating-I-O" class="headerlink" title="Incorporating I&#x2F;O"></a>Incorporating I&#x2F;O</h2><p>进程运行时可能会产生I&#x2F;O操作，这时候进程会被挂起，等待I&#x2F;O操作完成后，进程才会继续执行，这个时期我们称为进程处于<strong>阻塞状态（blocked state）</strong>，此时我们切换到另一个进程执行，当I&#x2F;O操作完成后，进程会被唤醒，切换回原来的进程继续执行</p>
+<p>之前我们就讨论过，从阻塞状态到就绪状态后，进程可以选择立刻执行，也可以等待其他进程执行完毕后再执行，这个选择是由操作系统决定的，而在CPU密集型进程中，CPU的利用率较高，我们会比较希望就绪的程序排队等待，而在I&#x2F;O密集型进程中，CPU的利用率较低，我们会希望就绪的程序立刻执行，因为这个就绪的程序有更高的概率调用I&#x2F;O操作，从而腾出CPU的时间，让其他进程执行</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>实际上我们并不知道进程的长短，我们会在下面几章进一步学习更先进的调度方式</p>
+<p>除了上述介绍的调度算法，CPU还有很多种调度算法，包括：</p>
+<ul>
+<li>Priority Scheduling<br>这种调度方式通过优先级调度进程，优先级高的进程会优先执行，优先级低的进程会被挂起，等待优先级高的进程执行完毕后再执行</li>
+<li>Multi-level Queue Scheduling<br>这个调度方法把进程分成几类，每个类有一个队列，每个队列有自己的调度算法，比如FCFS，RR等，每个队列的调度算法可以不同，这样可以让不同类型的进程得到更好的调度</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/operating-system/CH1-CPUSchedualing/" data-id="clkwkwsh40081k8uv1qauddm9" data-title="CPU进程调度" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpu/" rel="tag">cpu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" rel="tag">进程调度</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-operating-system/CH1-2-Memoryspace" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/operating-system/CH1-2-Memoryspace/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.422Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>►<a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/operating-system/CH1-2-Memoryspace/">内存空间</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="内存空间"><a href="#内存空间" class="headerlink" title="内存空间"></a>内存空间</h1><ul>
+<li><p>早期计算机的内存空间<br>早期计算机只需要运行一个程序，所以内存结构为：</p>
+<ul>
+<li>头部为操作系统所用的内存</li>
+<li>后半部分为单个程序所用的部分</li>
+</ul>
+</li>
+<li><p>多程序计算机的内存空间<br>此时的内存空间如下：</p>
+<ul>
+<li>操作系统依然占据头部</li>
+<li>多个进程占用剩下的部分，并且每个进程有一个区域的划分</li>
+<li>会有多出来的区域未被进程使用</li>
+</ul>
+</li>
+<li><p>内存地址<br>为了方便程序员访问内存中指定的地址，我们使用内存地址对内存进行访问，但是值得注意的是，内存地址分为逻辑地址和物理地址，逻辑地址是程序员访问内存的地址，而物理地址是内存中实际的地址，两个地址之间是映射关系，需要通过地址转换来实现，具体的实现细节分页等原理在CSAPP中内存部分提及</p>
+</li>
+<li><p>进程的内存<br>书上构建了一个简单的模型：</p>
+<ul>
+<li>进程的内存头部为Progarm code</li>
+<li>然后紧跟着是堆（Heap）部分，其大小向下增加（地址变大）</li>
+<li>内存底部是栈（Stack）部分，其大小向上增加（地址变小）</li>
+</ul>
+</li>
+<li><p>内存虚拟化<br>为了能让不同的进程拥有独立安全的内存空间，并且能够方便的连续访问，我们对物理内存进行了虚拟化，交由OS进行控制管理<br>内存虚拟化需要考虑以下的问题：</p>
+<ul>
+<li><p>透明性<br>透明性的意思是指，进程并不知道自己所用的内存空间是虚拟化的，只需要单独考虑自己空间的使用即可，而操作系统负责将进程认为的“物理地址”转化为真正的物理内存的地址</p>
+</li>
+<li><p>高效性<br>为了让OS能够在管理查询内存时的高效性，我们会用到一些需要硬件支持的技术，比如TLB等</p>
+</li>
+<li><p>保护性<br>为了保证进程的安全性，我们需要对进程的内存空间进行保护，比如只读，只写等，以及如何让进程访问内存的权限进行控制</p>
+</li>
+</ul>
+</li>
+<li><p>进程的内存分类</p>
+<ul>
+<li>堆（Heap）<br>堆是进程中动态分配的内存空间</li>
+<li>栈（Stack）<br>栈在程序的编译阶段就已经完成了分配，由编译器来处理分配的大小顺序等<br>具体的栈的原理在CSAPP中已经详细学过，如果有更多的内容再单独记录</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Homework"><a href="#Homework" class="headerlink" title="Homework"></a>Homework</h2><p>作业部分没有什么值得注意的，只简要记录一下 <code>pmap</code>的使用方法：</p>
+<p>当我们输入<code>pmap -X</code>指令获取一个进程的内存后，终端显示如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">dnull@DESKTOP-0ACA874:/mnt/d/this/linuxtemp$ pmap -X 9</span><br><span class="line">9:   -bash</span><br><span class="line">     Address Perm   Offset Device Inode Size  Rss  Pss Referenced Anonymous LazyFree ShmemPmdMapped FilePmdMapped Shared_Hugetlb Private_Hugetlb Swap SwapPss Locked THPeligible Mapping</span><br><span class="line">560749578000 r--p 00000000  08:20  1241  188  188  188        188         0        0              0             0              0               0    0       0      0           0 bash</span><br><span class="line">5607495a7000 r-xp 0002f000  08:20  1241  892  884  884        884         0        0              0             0              0               0    0       0      0           0 bash</span><br><span class="line">560749686000 r--p 0010e000  08:20  1241  232  104  104        104         0        0              0             0              0               0    0       0      0           0 bash</span><br><span class="line">5607496c1000 r--p 00148000  08:20  1241   16   16   16         16        16        0              0             0              0               0    0       0      0           0 bash</span><br><span class="line">5607496c5000 rw-p 0014c000  08:20  1241   36   36   36         36        36        0              0             0              0               0    0       0      0           0 bash</span><br><span class="line">5607496ce000 rw-p 00000000  00:00     0   44   28   28         28        28        0              0             0              0               0    0       0      0           0</span><br><span class="line">56074a1df000 rw-p 00000000  00:00     0 1560 1432 1432       1432      1432        0              0             0              0               0    0       0      0           0 [heap]</span><br><span class="line">7f45f6ae2000 r--p 00000000  08:20  2331  348  128   66        128         0        0              0             0              0               0    0       0      0           0 LC_CTYPE</span><br><span class="line">7f45f6b39000 r--p 00000000  08:20  2338    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_NUMERIC</span><br><span class="line">7f45f6b3a000 r--p 00000000  08:20  2341    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_TIME</span><br><span class="line">7f45f6b3b000 r--p 00000000  08:20  2330    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_COLLATE</span><br><span class="line">7f45f6b3c000 r--p 00000000  08:20  2336    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_MONETARY</span><br><span class="line">7f45f6b3d000 r--p 00000000  08:20  2335    4    4    2          4         0        0              0             0              0               0    0       0      0           0 SYS_LC_MESSAGES</span><br><span class="line">7f45f6b3e000 r--s 00000000  08:20  6259   28   28   14         28         0        0              0             0              0               0    0       0      0           0 gconv-modules.cache</span><br><span class="line">7f45f6b45000 rw-p 00000000  00:00     0   12    8    8          8         8        0              0             0              0               0    0       0      0           0</span><br><span class="line">7f45f6b48000 r--p 00000000  08:20  6488  160  160   80        160         0        0              0             0              0               0    0       0      0           0 libc.so.6</span><br><span class="line">7f45f6b70000 r-xp 00028000  08:20  6488 1620 1220  712       1220         0        0              0             0              0               0    0       0      0           0 libc.so.6</span><br><span class="line">7f45f6d05000 r--p 001bd000  08:20  6488  352  152   82        152         0        0              0             0              0               0    0       0      0           0 libc.so.6</span><br><span class="line">7f45f6d5d000 r--p 00214000  08:20  6488   16   16   16         16        16        0              0             0              0               0    0       0      0           0 libc.so.6</span><br><span class="line">7f45f6d61000 rw-p 00218000  08:20  6488    8    8    8          8         8        0              0             0              0               0    0       0      0           0 libc.so.6</span><br><span class="line">7f45f6d63000 rw-p 00000000  00:00     0   52   24   24         24        24        0              0             0              0               0    0       0      0           0</span><br><span class="line">7f45f6d70000 r--p 00000000  08:20  6805   56   56   56         56         0        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3</span><br><span class="line">7f45f6d7e000 r-xp 0000e000  08:20  6805   68   64   64         64         0        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3</span><br><span class="line">7f45f6d8f000 r--p 0001f000  08:20  6805   56   52   52         52         0        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3</span><br><span class="line">7f45f6d9d000 r--p 0002c000  08:20  6805   16   16   16         16        16        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3</span><br><span class="line">7f45f6da1000 rw-p 00030000  08:20  6805    4    4    4          4         4        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3</span><br><span class="line">7f45f6da2000 r--p 00000000  08:20  2339    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_PAPER</span><br><span class="line">7f45f6da3000 r--p 00000000  08:20  2337    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_NAME</span><br><span class="line">7f45f6da4000 r--p 00000000  08:20  2329    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_ADDRESS</span><br><span class="line">7f45f6da5000 r--p 00000000  08:20  2340    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_TELEPHONE</span><br><span class="line">7f45f6da6000 r--p 00000000  08:20  2333    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_MEASUREMENT</span><br><span class="line">7f45f6da7000 rw-p 00000000  00:00     0    8    8    8          8         8        0              0             0              0               0    0       0      0           0</span><br><span class="line">7f45f6da9000 r--p 00000000  08:20  6292    8    8    4          8         0        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2</span><br><span class="line">7f45f6dab000 r-xp 00002000  08:20  6292  168  168   84        168         0        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2</span><br><span class="line">7f45f6dd5000 r--p 0002c000  08:20  6292   44   40   20         40         0        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2</span><br><span class="line">7f45f6de0000 r--p 00000000  08:20  2332    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_IDENTIFICATION</span><br><span class="line">7f45f6de1000 r--p 00037000  08:20  6292    8    8    8          8         8        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2</span><br><span class="line">7f45f6de3000 rw-p 00039000  08:20  6292    8    8    8          8         8        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2</span><br><span class="line">7ffc82ecf000 rw-p 00000000  00:00     0  132  112  112        112       112        0              0             0              0               0    0       0      0           0 [stack]</span><br><span class="line">7ffc82eff000 r--p 00000000  00:00     0   16    0    0          0         0        0              0             0              0               0    0       0      0           0 [vvar]</span><br><span class="line">7ffc82f03000 r-xp 00000000  00:00     0    4    4    0          4         0        0              0             0              0               0    0       0      0           0 [vdso]</span><br><span class="line">                                        ==== ==== ==== ========== ========= ======== ============== ============= ============== =============== ==== ======= ====== ===========</span><br><span class="line">                                        6204 5024 4156       5024      1724        0              0             0              0               0    0       0      0           0 KB</span><br></pre></td></tr></table></figure>
+<p>我们发现进程运行的地址为<code>0x7f45f6d7e000</code>这样的地址，但是我们在CSAPP中学习时的汇编程序的入口点都是 <code>0x400000</code>这样的地址，这是因为我们编译时生成的是位置无关代码，的实际地址是OS的大内存空间中选一个基址，然后通过偏移计算出来的</p>
+<p>我们可以在编译时加上<code>-no-pie</code>参数，这样就会生成位置相关代码了，代码就会被强制加载到<code>0x400000</code>这样的地址，但是这样做很有可能导致程序无法运行，原因如下：</p>
+<ul>
+<li>位置相关代码的入口点是固定的，如果这个入口点被其他程序占用，可能导致程序的运行错误，具体的表现和操作系统的类型有关</li>
+</ul>
+<hr>
+<p>由于第一章内容太少，就和第二章一起说了</p>
+<h1 id="第二章-内存的API"><a href="#第二章-内存的API" class="headerlink" title="第二章 内存的API"></a>第二章 内存的API</h1><p>这一章主要介绍了内存管理的两个主要API，<code>malloc</code>和<code>free</code>，以及一些内存管理的相关知识</p>
+<ul>
+<li><code>malloc(size_t size)</code>：分配一块大小为<code>size</code>的内存空间，返回指向这块内存空间的指针，如果分配失败，返回<code>NULL</code></li>
+<li><code>free(void *ptr)</code>：释放<code>ptr</code>指向的内存空间，如果<code>ptr</code>为<code>NULL</code>，则不做任何操作</li>
+</ul>
+<p>通过<code>malloc</code>和<code>free</code>，我们可以对堆内存部分进行分配和释放</p>
+<p>这部分作为程序基础已经在很多地方都已经学习过了，所以我们记录一下书上提到的关于内存的一些常见错误：</p>
+<ul>
+<li><p>forget to allocate memory<br>没有给一个指针分配内存就使用，如果该指针为局部变量，由于储存在栈中，其具体值并不确定，如果储存在BSS（Block Started by Symbol）中，其指针为0</p>
+</li>
+<li><p>not allocating enough memory<br>没有给一个数组之类的对象分配足够的内存导致越界</p>
+</li>
+<li><p>forgetting to initialize memory<br>给指针分配内存后没有初始化导致数据错误，我们的指针分配的内存位于堆内存，可能有之前的数据残留，所以不初始化可能得到一个未知的数值</p>
+</li>
+<li><p>forgetting to free memory<br>不释放内存将导致内存泄漏，使得可用内存空间不足</p>
+</li>
+<li><p>free memory before you are done with it<br>释放一个还在使用中的内存，在之后将无法再访问这个内存空间，造成段错误</p>
+</li>
+<li><p>free memory twice<br>释放一个已经释放的内存，这样会导致程序崩溃</p>
+</li>
+</ul>
+<h2 id="OS对内存操作的支持"><a href="#OS对内存操作的支持" class="headerlink" title="OS对内存操作的支持"></a>OS对内存操作的支持</h2><p>我们提到的<code>malloc()</code>和<code>free()</code>都是C语言的标准库函数，而不是系统调用，这些库函数的实现中用到了包括<code>brk()</code>和<code>sbrk()</code>在内的系统调用，这些系统调用并不推荐被使用，因为容易导致错误</p>
+<p>此外还有一个方法<code>mmap()</code>，它可以将文件映射到内存中，这样就可以直接对文件进行读写操作，而不需要通过系统调用<code>read()</code>和<code>write()</code>。通过<code>mmap()</code>，可以实现外部排序等问题（在内存空间外对大数据文件进行操作排序等）</p>
+<ul>
+<li><p>一些其他的方法</p>
+<ul>
+<li><code>calloc()</code>：这种申请内存的方法会把申请的空间初始化为0</li>
+<li><code>ralloc()</code>：这个申请方式则会拷贝一个已经分配的内存空间中的值，然后申请一个更大的空间，并将值拷贝其中</li>
+</ul>
+</li>
+<li><p>关于linux上检测内存泄漏的工具：<strong>valgrind</strong><br>使用指令为：<code>valgrind --leak-check=full ./a.out</code><br>后面的启动程序要要使用<code>./</code>启动</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/operating-system/CH1-2-Memoryspace/" data-id="clkwkwsh3007sk8uv7rti08lr" data-title="内存空间" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" rel="tag">内存地址</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="tag">内存空间</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">内存虚拟化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-openGL/2022-9-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/openGL/2022-9-2/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.419Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/">计算机图形</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/openGL/2022-9-2/">OpenGL学习记录（一）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="环境的配置"><a href="#环境的配置" class="headerlink" title="环境的配置"></a>环境的配置</h2><p>OpenGL是一组通用的图形库标准，具体的软硬件实现方式各有不同，一般由显卡内部的固件自带，在不同系统下调用OpenGL核心的方式不同，所以通过第三方库来实现对OpenGL上下文的创建</p>
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ol>
+<li>下载源代码，通过Cmake搭建工程，并编译出lib文件</li>
+<li>新建工程，并添加头文件引用、lib库引用、链接器配置</li>
+</ol>
+<h2 id="关于头文件glad-h"><a href="#关于头文件glad-h" class="headerlink" title="关于头文件glad.h"></a>关于头文件glad.h</h2><p>OpenGL的驱动版本众多，一般在运行时作为动态库储存在内存中，需要通过函数查询其内存地址，glad文件将这一步骤封装好，使得编写程序时不必为函数指针的维护做考虑</p>
+<h2 id="基本代码的解析"><a href="#基本代码的解析" class="headerlink" title="基本代码的解析"></a>基本代码的解析</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;glad/glad.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;GLFW/glfw3.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">framebuffer_size_callback</span><span class="params">(GLFWwindow* window, <span class="type">int</span> width, <span class="type">int</span> height)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">processInput</span><span class="params">(GLFWwindow* window)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">glfwInit</span>();</span><br><span class="line">	<span class="built_in">glfwWindowHint</span>(GLFW_CONTEXT_VERSION_MAJOR, <span class="number">3</span>);</span><br><span class="line">	<span class="built_in">glfwWindowHint</span>(GLFW_CONTEXT_VERSION_MINOR, <span class="number">3</span>);</span><br><span class="line">	<span class="built_in">glfwWindowHint</span>(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);</span><br><span class="line">	<span class="comment">//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);</span></span><br><span class="line">	GLFWwindow* window = <span class="built_in">glfwCreateWindow</span>(<span class="number">800</span>, <span class="number">600</span>, <span class="string">&quot;LearnOpenGL&quot;</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="keyword">if</span> (window == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;Failed to create GLFW window&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		<span class="built_in">glfwTerminate</span>();</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">glfwMakeContextCurrent</span>(window);</span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">gladLoadGLLoader</span>((GLADloadproc)glfwGetProcAddress))</span><br><span class="line">	&#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;Failed to initialize GLAD&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">glViewport</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">800</span>, <span class="number">600</span>);</span><br><span class="line">	<span class="built_in">glfwSetFramebufferSizeCallback</span>(window, framebuffer_size_callback);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!<span class="built_in">glfwWindowShouldClose</span>(window))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">processInput</span>(window);</span><br><span class="line"></span><br><span class="line">		<span class="built_in">glClearColor</span>(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.3f</span>, <span class="number">1.0f</span>);</span><br><span class="line">		<span class="built_in">glClear</span>(GL_COLOR_BUFFER_BIT);</span><br><span class="line">		<span class="built_in">glfwPollEvents</span>();</span><br><span class="line">		<span class="built_in">glfwSwapBuffers</span>(window);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">glfwTerminate</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">framebuffer_size_callback</span><span class="params">(GLFWwindow* window, <span class="type">int</span> width, <span class="type">int</span> height)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">glViewport</span>(<span class="number">0</span>, <span class="number">0</span>, width, height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">processInput</span><span class="params">(GLFWwindow* window)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">glfwGetKey</span>(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)</span><br><span class="line">		<span class="built_in">glfwSetWindowShouldClose</span>(window, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上为完整的代码，下面将逐句进行记录</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/openGL/2022-9-2/" data-id="clkwkwsh2007ok8uv5yz5crqc" data-title="OpenGL学习记录（一）" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93/" rel="tag">渲染</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" rel="tag">计算机图形</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-network/works-projects/wireShark-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/network/works-projects/wireShark-2/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.413Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a>►<a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/network/works-projects/wireShark-2/">wireshark practice 2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>the data is as follows:<br><a href="/pdf/wireshark_2_1.pdf">print_data_2_1</a></p>
+<ol>
+<li><p>Is your browser running HTTP version 1.0 or 1.1?  What version of HTTP is the server running?</p>
+<p> 两者都是<code>HTTP/1.1</code></p>
+</li>
+<li><p>What languages (if any) does your browser indicate that it can accept to the server?<br> <code>ccept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,en-GB; q=0.6\r\n</code><br> 由上可知优先的语言包括: 中文, 英文<br> 其中zh-CN是中文普通话, 包括繁体和简体, 而zh包括了方言在内的所有中   文</p>
+</li>
+<li><p>What is the IP address of your computer?  Of the gaia.cs.umass.edu server?</p>
+<p> Mine is <code>10.122.242.69</code><br> gaia.cs.umass.edu is <code>128.119.245.12</code></p>
+</li>
+<li><p>What is the status code returned from the server to your browser?</p>
+<p> <code>200 OK</code></p>
+</li>
+<li><p>When was the HTML file that you are retrieving last modified at the server?</p>
+<p> <code>Fri, 24 Feb 2023 06:08:02 GMT</code></p>
+</li>
+<li><p>How many bytes of content are being returned to your browser?</p>
+<p> <code>Content-Length 128</code></p>
+</li>
+<li><p>By inspecting the raw data in the packet content window, do you see any headers within the data that are not displayed in the packet-listing window?  If so, name one.</p>
+</li>
+</ol>
+<p>我没看出来, 网上答案也说没有</p>
+<hr>
+<p>第二部分是关于缓存和检测文件是否修改的测试:</p>
+<p><a href="/pdf/wireshark_2_2.pdf">print_data_2_2</a></p>
+<ol start="8">
+<li><p>Inspect the contents of the first HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE” line in the HTTP GET?</p>
+<p> No, I don’t see it.</p>
+</li>
+<li><p>Inspect the contents of the server response. Did the server explicitly return the contents of the file?   How can you tell?</p>
+<p> Yes, the server explicitly return the contents of the file. I can see the content of the file in the packet content window.</p>
+</li>
+<li><p>Now inspect the contents of the second HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE:” line in the HTTP GET? If so, what information follows the “IF-MODIFIED-SINCE:” header?</p>
+<p>yes, I see it.<br>The information is <code>If-Modified-Since: Thu, 02 Mar 2023 06:59:01 GMT</code></p>
+</li>
+<li><p>What is the HTTP status code and phrase returned from the server in response to this second HTTP GET?  Did the server explicitly return the contents of the file?   Explain.</p>
+<p>The status code is <code>304 Not Modified</code>, and the server didn’t explicitly return the contents of the file.<br>Because the file has cached in the browser, so the server have no need to return the contents of the file.</p>
+</li>
+</ol>
+<hr>
+<p>第三部分是关于大文件的分段传输:</p>
+<p><a href="/pdf/wireshark_2_3.pdf">print_data_2_3</a></p>
+<ol start="12">
+<li><p>How many HTTP GET request messages did your browser send?  Which packet number in the trace contains the GET message for the Bill or Rights?<br>Only 1 send. And the packet number contains 300, 301, 302, 303.</p>
+</li>
+<li><p>Which packet number in the trace contains the status code and phrase associated with the response to the HTTP GET request?</p>
+<p>there is the relative print:<br><a href="/pdf/wireshark_2_3_1.pdf">print_data_2_3_1</a><br>From the print we can leran that all the mentioned information is contained in the <strong>packet 300</strong>.</p>
+</li>
+<li><p>What is the status code and phrase in the response?</p>
+<p><code>200 OK</code></p>
+</li>
+<li><p>How many data-containing TCP segments were needed to carry the single HTTP response and the text of the Bill of Rights?</p>
+<p><code>4</code>, for each the maximum payload of HTTP is 1380 bytes, and 1436 bytes is the total length of the packet.</p>
+</li>
+</ol>
+<hr>
+<p>第四部分是关于包含内部object资源的html的 ( 比如含有图片的网络)</p>
+<p><a href="/pdf/wireshark_2_4.pdf">print_data_4</a></p>
+<ol start="16">
+<li><p>   How many HTTP GET request messages did your browser send?  To which Internet addresses were these GET requests sent?</p>
+<p> <code>5</code>GETs were sent, and the addresses are:</p>
+<ul>
+<li><code>Destination Address: 128.119.245.12</code>-request the HTML, ico and pearson.png</li>
+<li><code>Destination Address: 178.79.137.164</code>-request the image</li>
+</ul>
+</li>
+<li><p>   Can you tell whether your browser downloaded the two images serially, or whether they were downloaded from the two web sites in parallel?  Explain.</p>
+<p> They are downloaded serially from two different web sites(2 IP addresses)</p>
+</li>
+</ol>
+<hr>
+<p>下一部分是关于认证的内容:</p>
+<ol start="18">
+<li><p>   What is the server’s response (status code and phrase) in response to the initial HTTP GET message from your browser?</p>
+<p> <code>401 Unauthorized</code></p>
+</li>
+<li><p>   When your browser’s sends the HTTP GET message for the second time, what new field is included in the HTTP GET message?</p>
+<p> <code>Authorization: Basic ZG51bGxfUFBQUFA6MTMxMzExMzQ1YXNk\r\n</code><br> anyone can decode it by base64, and the result is<br> <code>Credentials: dnull_PPPPP:131311345asd</code></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/network/works-projects/wireShark-2/" data-id="clkwkwshj00adk8uvcbl5eaht" data-title="wireshark practice 2" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-network/works-projects/wireShark-1-inro" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/network/works-projects/wireShark-1-inro/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.412Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a>►<a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/network/works-projects/wireShark-1-inro/">wireshark practice 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>计网开课了, 复习一下遗忘的东西, 顺便做一下课本后的wireshark实验</p>
+<h1 id="lab1-intro-to-wireshark"><a href="#lab1-intro-to-wireshark" class="headerlink" title="lab1: intro to wireshark"></a>lab1: intro to wireshark</h1><ol>
+<li>List 3 different protocols that appear in the protocol column in the unfiltered packet-listing window in step 7 above.</li>
+</ol>
+<ul>
+<li>DNS</li>
+<li>TCP</li>
+<li>UDP</li>
+<li>TLSv1.2</li>
+<li>SSDP</li>
+<li>ICMPv6</li>
+</ul>
+<hr>
+<ol start="2">
+<li>How long did it take from when the HTTP GET message was sent until the HTTP OK reply was received? (By default, the value of the Time column in the packet-listing window is the amount of time, in seconds, since Wireshark tracing began.  To display the Time field in time-of-day format, select the Wireshark View pull down menu, then select Time Display Format, then select Time-of-day.)</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>419</th>
+<th>13:34:02.688933</th>
+<th>10.122.242.69</th>
+<th>128.119.245.12</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>447</td>
+<td>13:34:03.015422</td>
+<td>128.119.245.12</td>
+<td>10.122.242.69</td>
+</tr>
+<tr>
+<td>以上为发送<code>GET</code>和接收数据帧的数据</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>可计算出时间差为<code>0.326489</code>秒</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<ol start="3">
+<li>What is the Internet address of the gaia.cs.umass.edu (also known as www-net.cs.umass.edu)?  What is the Internet address of your computer?</li>
+</ol>
+<p><code>10.122.242.69</code>这是我的IP地址(北京邮电大学的, 别查了)<br><code>128.119.245.12</code>这是服务器地址</p>
+<hr>
+<ol start="4">
+<li>Print the two HTTP messages (GET and OK) referred to in question 2 above. To do so, select Print from the Wireshark File command menu, and select the “Selected Packet Only” and “Print as displayed” radial buttons, and then click OK.</li>
+</ol>
+<p>打印文件如下:<br><a href="/pdf/wireshark1.pdf">print_1</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/network/works-projects/wireShark-1-inro/" data-id="clkwkwshh00a1k8uvfgo45tc9" data-title="wireshark practice 1" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-network/self-studying-notes/notes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/network/self-studying-notes/notes/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.409Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/network/self-studying-notes/notes/">计算机网络记录反思</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="第一章思路整理"><a href="#第一章思路整理" class="headerlink" title="第一章思路整理"></a>第一章思路整理</h3><p>第一次看这本书，刚开始有点没把握好节奏，在几个地方产生了一些误解，现在重新将本章的内容梳理一下，意在自我学习</p>
+<h4 id="什么是因特网？"><a href="#什么是因特网？" class="headerlink" title="什么是因特网？"></a>什么是因特网？</h4><p>这一段列举了因特网的组成部分，包括：</p>
+<ul>
+<li>通信链路(communication link)<br>通信链路就是连接网络的线路，通过不同的<strong>物理媒介</strong>实现</li>
+<li>分组交换机(packet switch)<br>分组交换机包括<strong>路由器</strong>和<strong>链路层交换机</strong></li>
+<li>路由器<br>负责forwarding的节点</li>
+<li>链路层交换机</li>
+<li>ISP(因特网服务提供商)</li>
+<li>协议<br>协议是通信的一个双方使用的规则</li>
+<li>标准<br>标准是由机构(institution)制定的统一的标准</li>
+</ul>
+<p>在总述了以上内容后，书上简述了<strong>套接字接口</strong>的存在</p>
+<p>接着介绍<strong>协议</strong>：两个或多个通信实体间交换<strong>报文</strong>的格式和顺序，以及报文发送和接收后的一系列操作</p>
+<h4 id="网络边缘"><a href="#网络边缘" class="headerlink" title="网络边缘"></a>网络边缘</h4><p>接下来两节，以<strong>边缘</strong>和<strong>核心</strong>来对互联网进行描述</p>
+<p>网络边缘就是我们平时使用的接入互联网的设备，包括个人电脑、手机到服务器都属于边缘网络的部分</p>
+<p>于是介绍的重点就放到了这些<strong>主机</strong>（端系统）如何连接到因特网中——<strong>接入网</strong></p>
+<ul>
+<li><p>数字用户线（DSL）<br>DSL是家庭接入因特网的线路，主要是通过电话接入</p>
+</li>
+<li><p>电话接入<br>调制解调器通过已有的电话线作为接入网，将数字信号转为模拟信号</p>
+</li>
+<li><p>HFC(混合光纤同轴)<br><strong>电缆因特网接入</strong>，利用有线电视的缆线接入，常常用到电缆和光纤</p>
+</li>
+<li><p>FTTH(光纤到户)<br>新兴技术，从本地中心局拉一根光缆，单独连接每个家庭并接入因特网</p>
+</li>
+</ul>
+<h5 id="物理媒体"><a href="#物理媒体" class="headerlink" title="物理媒体"></a>物理媒体</h5><ul>
+<li>导引型媒体</li>
+<li>非导引型媒体</li>
+</ul>
+<h4 id="网络核心-network-core"><a href="#网络核心-network-core" class="headerlink" title="网络核心(network core)"></a>网络核心(network core)</h4><p>网络核心部分就是包括路由器和链路在内的构成互相连接的网络结构的部分</p>
+<h5 id="分组交换和电路交换"><a href="#分组交换和电路交换" class="headerlink" title="分组交换和电路交换"></a>分组交换和电路交换</h5><ul>
+<li><p>分组交换<br>应用层的信息被break into pieces，这些片段称为message(报文)，在source和destination之间通过分组交换器（packet switch&#x2F;主要包括router）<br>分组交换中使用的<strong>储存转发传输</strong>（switch在将分组向链路输出前，必须保证已经收到了完整的分组数据），所以router存在缓存来保存不完整的分组</p>
+<p>tips：<br>由于分组交换的特点，会存在<strong>排队时延</strong>、<strong>分组丢失</strong>（丢包packet loss）的情况<br>此外，路由器上存在转发表，并通过<strong>路由选择协议</strong>来计算packet的转发目的地</p>
+</li>
+<li><p>电路交换<br>相比于分组交换，电路交换显得更加久远，其原本是实现电话的信息传递方式<br>它通过end-to-end connection（端对端连接），建立一条专用的电路（电路不是链路）<br>通过<strong>频分复用</strong>和<strong>时分复用</strong>来实现多用户共享一条链路</p>
+<p>其中的频分复用在面对网络拥挤时，损失的数据比时分复用多，且频分复用可能存在空闲的资源没被利用（没有传输数据的用户占用频段），而时分复用在这方面的优化更佳</p>
+</li>
+</ul>
+<h5 id="网络的网络"><a href="#网络的网络" class="headerlink" title="网络的网络"></a>网络的网络</h5><p>网络边缘通过接入网，和LSP连接，而现在的互联网有多级的LSP，并通过IXP（因特网交换点）连接在一起，上层的LSP向下层的LSP收费</p>
+<p>像谷歌这样的企业建立了自己的数据库，作为上层LSP，直接和下层接入LSP相连</p>
+<h5 id="分组交换的时延、packet-loss和吞吐量（throughput）"><a href="#分组交换的时延、packet-loss和吞吐量（throughput）" class="headerlink" title="分组交换的时延、packet loss和吞吐量（throughput）"></a>分组交换的时延、packet loss和吞吐量（throughput）</h5><p>时延分为个部分：</p>
+<ul>
+<li>处理时延</li>
+<li>排队时延</li>
+<li>传输时延</li>
+<li>传播时延</li>
+</ul>
+<p>容易理解，不做解释</p>
+<p>packet loss：路由器缓存不足导致分组丢失</p>
+<ul>
+<li><p>流量强度（traffic intensity）：设a为单位时间内接收的分组数量，L为每个分组的大小，R是<strong>传输</strong>速率，则$\frac{La}{R}$为流量强度，是评判排队时延和丢包率的信息</p>
+</li>
+<li><p><strong>吞吐量</strong>：</p>
+<ul>
+<li>瞬时吞吐量</li>
+<li>平均吞吐量</li>
+</ul>
+</li>
+</ul>
+<h4 id="协议层次和服务模型"><a href="#协议层次和服务模型" class="headerlink" title="协议层次和服务模型"></a>协议层次和服务模型</h4><ul>
+<li>OSI七层模型<br>传统的网络协议模型</li>
+<li>五层因特网协议栈<ul>
+<li>应用层</li>
+<li>运输层</li>
+<li>网络层</li>
+<li>链路层</li>
+<li>物理层</li>
+</ul>
+</li>
+</ul>
+<p>原本OSI七层模型还有两层：表示层和会话层，现在被并入了应用层，由程序员决定是否加入这两层，并在代码中实现</p>
+<p>层与层之间传输的数据通过<strong>封装</strong>后，在不同的服务层中完成操作，具体步骤如下：</p>
+<ul>
+<li><p>首先，应用程序的数据被break into pieces，不同端系统上的应用程序之间交换这些被切割的信息，这些信息分组被称为<strong>报文</strong>（message）</p>
+</li>
+<li><p>然后，这些报文被send down到运输层，运输层通过TCP和UDP等协议和另一个端系统上的接口取得联系，构成一个“连接”，然后把数据封装成<strong>报文段</strong>，并send down到网络层</p>
+</li>
+<li><p>网络层是主机和网络核心的管理主体，到达网络层的数据被封装成<strong>数据报</strong>，通过路由选择向目标主机传输转发，其中的重要协议为<strong>IP协议</strong>，用于标记网络中的所有设备的地址</p>
+</li>
+<li><p>直到网络层位置，前面三层都可以说是服务于主机之间的协议层，但是链路层是存在于两个路由器之间的协议层。它为数据在链路上的传输和接收、处理等制定了标准，这一层将数据封装为<strong>帧</strong></p>
+</li>
+<li><p>物理层，我讨厌大学物理</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/network/self-studying-notes/notes/" data-id="clkwkwshh009xk8uveddee2uj" data-title="计算机网络记录反思" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">C计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-network/self-studying-notes/2023-4-21" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/network/self-studying-notes/2023-4-21/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.408Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/network/self-studying-notes/2023-4-21/">重温TCP细节</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>半年过去了, 学校开始了计算机网络课程, 在重温并完成实验的过程中, 对一些细节和原理有了一些新的理解, 在此记录一下</p>
+<h2 id="TCP的全双工传输"><a href="#TCP的全双工传输" class="headerlink" title="TCP的全双工传输"></a>TCP的全双工传输</h2><hr>
+<p>首先, TCP协议是双全工传输, 也就是说, 数据可以在两个方向上进行传输</p>
+<p>然后在抓包时, 对这种传输方式有了直观的反应:</p>
+<p><img src="/image/network/wireshark-4.png"></p>
+<p>这是一段服务器接收文件的抓包, 服务器接收到报文返回ACK的编号增长是可以理解的, 但是传输文件的报文也有ACK的编号, 并且一直为1, 这是才反应过来, 在TCP中的ACK是传输文件捎带的, 只是为了让接收的一方知道自己发送的报文被接收到哪个序号了</p>
+<p>在这里的服务器并没有向我发送过报文, 所以我发送捎带的ACK一直为1</p>
+<hr>
+<h2 id="TCP的窗口大小"><a href="#TCP的窗口大小" class="headerlink" title="TCP的窗口大小"></a>TCP的窗口大小</h2><p><img src="/image/network/wireshark-4-2.png"><br>我们知道接收方会告诉发送方自己的窗口剩余大小, 表示自己还能接收多少数据, 并且窗口的起点固定为最早的还未被接收的数据, 后面的数据可以被暂时缓存在窗口之中<br>起点的数据包收到后开始向后滑动</p>
+<p>发送方会根据剩余的窗口大小来决定是否继续发送新的数据</p>
+<p>按照传统的TCP报文格式, window字段有16位, 最大值为65535, 但是现在的网速一般很快, 这么小的窗口很快就会被塞满</p>
+<p>所以我们在TCP的optional field中加入了一个新的字段, 叫做window scale, 按照倍数来扩展窗口大小</p>
+<hr>
+<h2 id="PSH位的作用"><a href="#PSH位的作用" class="headerlink" title="PSH位的作用"></a>PSH位的作用</h2><p><img src="/image/network/wireshark-4-3.png"></p>
+<p>按照文档说明, PSH位说明该报文需要立刻传递给上层协议, 而不是留在缓存窗口中等待处理</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/network/self-studying-notes/2023-4-21/" data-id="clkwkwshg009sk8uv9s0ud3lg" data-title="重温TCP细节" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-network/self-studying-notes/2022-11-5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/04/network/self-studying-notes/2022-11-5/" class="article-date">
+  <time class="dt-published" datetime="2023-08-04T12:42:48.407Z" itemprop="datePublished">2023-08-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a>►<a class="article-category-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/">笔记</a>►<a class="article-category-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/%E7%BF%BB%E8%AF%91/">翻译</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/04/network/self-studying-notes/2022-11-5/">6.7节阅读与翻译</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>只是阅读时用于辅助记忆的笔记翻译，所以很多地方略过未翻译，请勿当作翻译参考</p>
+<h2 id="Retrospective-A-Day-in-the-Life-of-a-Web-Page-Request"><a href="#Retrospective-A-Day-in-the-Life-of-a-Web-Page-Request" class="headerlink" title="Retrospective: A Day in the Life of a Web Page Request"></a>Retrospective: A Day in the Life of a Web Page Request</h2><h2 id="回顾：一次网页请求的历程"><a href="#回顾：一次网页请求的历程" class="headerlink" title="回顾：一次网页请求的历程"></a>回顾：一次网页请求的历程</h2><p><code>Now that we’ve covered the link layer in this chapter, and the network, transport and application layers in earlier chapters, our journey down the protocol stack is complete!</code></p>
+<p>现在我们已经在这章中涉及了链路层，在之前学习了网络层，传输层和应用层，我们的自顶向下协议栈的旅程已经结束了</p>
+<p><code>In the very beginning of this book (Section 1.1), we wrote “much of this book is concerned with computer network protocols,” and in the first five chapters, we’ve certainly seen that this is indeed the case! Before heading into the topical chapters in second part of this book, we’d like to wrap up our journey down the protocol stack by taking an integrated, holistic view of the protocols we’ve learned about so far.One way then to take this “big picture” view is to identify the many (many!) protocols that are involved in satisfying even the simplest request: downloading a Web page.</code></p>
+<p>在这本书的最开始，我们说“这本书是关于计算机网络协议的”，并且在前五章中，我们确实这么学习了。<br>在开始这本书第二部分之前，让我们先对我们已学内容做一个融合的、整体的概览，以此来对自顶向下的协议栈做一个总结。<br>其中一种总结方式就是对 满足一个最简单的请求中的大量的相关协议做认识，比如请求一个网页。</p>
+<p><code>Figure 6.32 illustrates our setting: a student, Bob, connects a laptop to his school’s Ethernet switch and downloads a Web page (say the home page of www.google.com).As we now know, there’s a lot going on “under the hood” to satisfy this seemingly simple request.A Wireshark lab at the end of this chapter examines trace files containing a number of the packets involved in similar scenarios in more detail.</code></p>
+<p>6.32图阐述了我们的setting：</p>
+<p><img src="/image/network/2022_11_5_pic_1.png"></p>
+<p>学生Bob用一台笔记本电脑连接上了学校的以太网交换机，并下载以一个网页<br>我们知道，这样一个简单的请求下面有很多隐藏的细节，这一章的最后有一个wireshark实验，检查了更多包含相关场景下package的追踪文件</p>
+<h4 id="Getting-Started-DHCP-UDP-IP-and-Ethernet"><a href="#Getting-Started-DHCP-UDP-IP-and-Ethernet" class="headerlink" title="Getting Started: DHCP, UDP, IP, and Ethernet"></a>Getting Started: DHCP, UDP, IP, and Ethernet</h4><p><code>Let’s suppose that Bob boots up his laptop and then connects it to an Ethernet cable connected to the school’s Ethernet switch, which in turn is connected to the school’s router, as shown in Figure 6.32.The school’s router is connected to an ISP, in this example, comcast.net.In this example, comcast.net is providing the DNS service for the school;thus, the DNS server resides in the Comcast network rather than the school network.We’ll assume that the DHCP server is running within the router, as is often the case.</code></p>
+<p>我们假设，Bob启动了他的电脑，然后连接到了以太网电缆，从而连接到学校的以太网交换机，从而又连接到了学校的路由器<br>学校路由器连接到ISP，这里的例子是Comcast<br>同时Comcast. net也是DNS服务的提供者，因此，DNS服务器在Comcast网络中，而不是在学校里<br>我们假设DHCP服务器在路由器里运行，就像通常情况一样</p>
+<p><code>When Bob first connects his laptop to the network, he can’t do anything (e.g., download a Web page) without an IP address.Thus, the first network-related action taken by Bob’s laptop is to run the DHCP protocol to obtain an IP address, as well as other information, from the local DHCP server:</code></p>
+<p>当Bob第一次连接到网络中时，他还没有IP地址，什么都做不了<br>所以，第一件要干的和网络相关的事情就是执行DHCP协议来获得IP地址 以及其它信息</p>
+<p><code>1. The operating system on Bob’s laptop creates a DHCP request message (Section 4.3.3) and puts this message within a UDP segment (Section 3.3) with destination port 67 (DHCP server) and source port 68 (DHCP client).The UDP segment is then placed within an IP datagram (Section 4.3.1) with a broadcast IP destination address (255.255.255.255) and a source IP address of 0.0.0.0, since Bob’s laptop doesn’t yet have an IP address.</code></p>
+<p>Bob电脑上的操作系统创建了一个DHCP请求信息，并且将其装入一个UDP报文中，目标端口为67（DHCP server），源端口为68（DHCP client）<br>然后UDP报文被装入IP数据报中，并通过广播地址255.255.255.255发送，源地址为0.0.0.0</p>
+<p><code>2. The IP datagram containing the DHCP request message is then placed within an Ethernet frame (Section 6.4.2).The Ethernet frame has a destination MAC addresses of FF:FF:FF:FF:FF:FF so that the frame will be broadcast to all devices connected to the switch (hopefully including a DHCP server);the frame’s source MAC address is that of Bob’s laptop, 00:16:D3:23:68:8A.</code></p>
+<p>然后IP数据报被装入一个链路层帧中<br>链路层帧有一个MAC地址（FF:FF:FF:FF:FF:FF），所以帧会被广播到所有相连接的交换机（其中很可能包括DHCP服务器），帧的源地址为Bob电脑的网卡接口的MAC地址</p>
+<p><code>3. The broadcast Ethernet frame containing the DHCP request is the first frame sent by Bob’s laptop to the Ethernet switch.The switch broadcasts the incoming frame on all outgoing ports, including the port connected to the router.</code></p>
+<p>包含DCHP请求的帧是Bob电脑向以太网交换机发出的第一个帧，交换机将接收到的帧向所有出端口广播</p>
+<p><code>4. The router receives the broadcast Ethernet frame containing the DHCP request on its interface with MAC address 00:22:6B:45:1F:1B and the IP datagram is extracted from the Ethernet frame.The datagram&#39;s broadcast IP destination address indicates that this IP datagram should be processed by upper layer protocols at this node, so the datagram&#39;s payload (a UDP segment) is thus demultiplexed (Section 3.2) up to UDP, and the DHCP request message is extracted from the UDP segment.The DHCP server now has the DHCP request message.</code></p>
+<p>路由器 通过带有一个MAC地址的接口 接收到了广播的 包含DCHP请求的帧，并把IP数据报提取出来，IP数据报中的目的地址 指定了 数据报的荷载应该上交给当前节点的 上层协议，所以其中的UDP报文段被多路分解到了UDP协议中，然后DCHP协议报文被分解到指定的端口<br>现在DCHP服务器有请求信息了</p>
+<p><code>5. Let’s suppose that the DHCP server running within the router can allocate IP addresses in the CIDR (Section 4.3.3) block 68.85.2.0/24.In this example, all IP addresses used within the school are thus within Comcast’s address block.Let’s suppose the DHCP server allocates address 68.85.2.101 to Bob’s laptop.The DHCP server creates a DHCP ACK message (Section 4.3.3) containing this IP address, as well as the IP address of the DNS server (68.87.71.226), the IP address for the default gateway router (68.85.2.1), and the subnet block (68.85.2.0/24) (equivalently, the “network mask”).The DHCP message is put inside a UDP segment, which is put inside an IP datagram, which is put inside an Ethernet frame.The Ethernet frame has a source MAC address of the router&#39;s interface to the home network (00:22:6B:45:1F:1B) and a destination MAC address of Bob&#39;s laptop (00:16:D3:23:68:8A).</code></p>
+<p>我们假设路由器内运行的DHCP服务器 可以在某个CIDR地址块内分配地址，此处的所有的学校分配的IP地址都是在Comcast网络段内的<br>假设现在已经为Bob的电脑分配好了IP地址，DCHP服务器创建了一个ACK信息，其中包含了分配给Bob的IP地址、DNS服务器的地址、默认网关的服务器地址，以及子网的IP范围（CIDR，也可以说是子网掩码）<br>这些信息通过UDP发送，向下传入数据报、数据帧，这一次链路层帧的目的MAC地址是已知的，不用通过广播MAC地址，但是IP地址依然还是要广播（Bob电脑还没有IP地址）</p>
+<p>题外话：DCHP请求前会先发送 DCHP发现报文，这样Bob的主机可能发现多个DCHP服务器，然后设备会在其中选择更优的服务器发送请求</p>
+<p><code>6. The Ethernet frame containing the DHCP ACK is sent (unicast) by the router to the switch.Because the switch is self-learning (Section 6.4.3) and previously received an Ethernet frame (containing the DHCP request) from Bob&#39;s laptop, the switch knows to forward a frame addressed to 00:16:D3:23:68:8A only to the output port leading to Bob&#39;s laptop.7. Bob’s laptop receives the Ethernet frame containing the DHCP ACK, extracts the IP datagram from the Ethernet frame, extracts the UDP segment from the IP datagram, and extracts the DHCP ACK message from the UDP segment.Bob’s DHCP client then records its IP address and the IP address of its DNS server.It also installs the address of the default gateway into its IP forwarding table (Section 4.1).Bob’s laptop will send all datagrams with destination address outside of its subnet 68.85.2.0/24 to the default gateway.At this point, Bob’s laptop has initialized its networking components and is ready to begin processing the Web page fetch.(Note that only the last two DHCP steps of the four presented in Chapter 4 are actually necessary.)</code></p>
+<p>包含DCHP ACK的帧被发送到交换机，由于交换机的 自学习性，在先前已经接收过一个来自目的地的帧，所以交换机知道向哪个方向转发这个帧<br>Bob的电脑接收帧，并上传到IP层，复用到UDP，最后DCHP协议接收到信息，然后电脑记录下自己的IP地址，并且配置DNS服务器<br>同时，电脑也会根据DCHP配置默认网关，如果电脑发送的IP数据报的目标地址超过了当前子网，该数据包会发往默认网关</p>
+<p>至此，Bob的电脑已经完成了网络基础组件的初始化，做好了取得网页的准备</p>
+<h4 id="Still-Getting-Started-DNS-and-ARP"><a href="#Still-Getting-Started-DNS-and-ARP" class="headerlink" title="Still Getting Started: DNS and ARP"></a>Still Getting Started: DNS and ARP</h4><p><code>When Bob types the URL for www.google.com into his Web browser, he begins the long chain of events that will eventually result in Google’s home page being displayed by his Web browser.Bob’s Web browser begins the process by creating a TCP socket (Section 2.7) that will be used to send the HTTP request (Section 2.2) to www.google.com.In order to create the socket, Bob’s laptop will need to know the IP address of www.google.com. We learned in Section 2.5, that the DNS protocol is used to provide this name-to-IP-address translation service.</code></p>
+<p>当Bob在浏览器内输入<a target="_blank" rel="noopener" href="http://www.google.com时,一连串的事件接连发生,最后使得google的主页出现在了bob的浏览器中/">www.google.com时，一连串的事件接连发生，最后使得Google的主页出现在了Bob的浏览器中</a><br>Bob的浏览器开始时，建立一个TCP连接用于发送HTTP请求，为了建立这个Socket，他需要先知道Google的IP地址<br>DNS协议便是用于此处，以提供 域名到地址的转化</p>
+<p><code>8. The operating system on Bob’s laptop thus creates a DNS query message (Section 2.5.3), putting the string “www.google.com” in the question section of the DNS message.This DNS message is then placed within a UDP segment with a destination port of 53 (DNS server).The UDP segment is then placed within an IP datagram with an IP destination address of 68.87.71.226 (the address of the DNS server returned in the DHCP ACK in step 5) and a source IP address of 68.85.2.101.</code></p>
+<p>Bob电脑的操作系统创建DNS请求信息，在该信息内装入“<a target="_blank" rel="noopener" href="http://www.google.com”的字符串,然后置入一个udp报文段中,目标地址为dns服务器(在dhcp阶段已经配置),端口为53(dns服务的端口)/">www.google.com”的字符串，然后置入一个UDP报文段中，目标地址为DNS服务器（在DHCP阶段已经配置），端口为53（DNS服务的端口）</a><br>然后UDP报文段置入一个IP数据报中，其中包含了目的地址和源地址</p>
+<p><code>9. Bob’s laptop then places the datagram containing the DNS query message in an Ethernet frame.This frame will be sent (addressed, at the link layer) to the gateway router in Bob’s school’s network.However, even though Bob’s laptop knows the IP address of the school’s gateway router (68.85.2.1) via the DHCP ACK message in step 5 above, it doesn’t know the gateway router’s MAC address.In order to obtain the MAC address of the gateway router, Bob’s laptop will need to use the ARP protocol (Section 6.4.1).</code></p>
+<p>然后Bob的电脑把包含DNS查询信息的数据段置入以太网帧中，发送到学校的网关路由器<br>此时信息中不知道网关路由器的地址，所以Bob的电脑需要使用ARP协议</p>
+<p><code>10. Bob&#39;s laptop creates an ARP query message with a target IP address of 68.85.2.1 (the default gateway), places the ARP message within an Ethernet frame with a broadcast destination address (FF:FF:FF:FF:FF:FF)and sends the Ethernet frame to the switch, which delivers the frame to all connected devices, including the gateway router.</code></p>
+<p>Bob的电脑创建了一个ARP请求，目标地址为默认网关的IP地址，将ARP信息置入一个带有广播地址的链路层帧中（FF:FF:FF:FF:FF:FF），交换机于是在以太网中广播这个信息</p>
+<p><code>11. The gateway router receives the frame containing the ARP query message on the interface to the school network, and finds that the target IP address of 68.85.2.1 in the ARP message matches the IP address of its interface.The gateway router thus prepares an ARP reply, indicating that its MAC address of 00:22:6B:45:1F:1B corresponds to IP address 68.85.2.1.It places the ARP reply message in an Ethernet frame, with a destination address of 00:16:D3:23:68:8A (Bob’s laptop) and sends the frame to the switch, which delivers the frame to Bob’s laptop.</code></p>
+<p>网关路由器在学校网络一端的接口上 接收到了包含ARP请求信息的帧，并且发现目标IP和自己相匹配，于是准备一个ARP响应，其中解释了它的与IP地址对应的MAC地址，并向Bob的电脑发送（此时它知道Bob电脑的MAC地址）</p>
+<p><code>12. Bob’s laptop receives the frame containing the ARP reply message and extracts the MAC address of the gateway router (00:22:6B:45:1F:1B) from the ARP reply message.</code></p>
+<p>Bob的电脑接收到ARP回应，并得到网关的MAC地址，向其发送DNS请求</p>
+<p><code>13. Bob’s laptop can now (finally!) address the Ethernet frame containing the DNS query to the gateway router’s MAC address.Note that the IP datagram in this frame has an IP destination address of 68.87.71.226 (the DNS server), while the frame has a destination address of 00:22:6B:45:1F:1B (the gateway router).Bob’s laptop sends this frame to the switch, which delivers the frame to the gateway router.</code></p>
+<p>仍然是从运输层到网络层到链路层，然后向交换机发送帧，交换机向网关路由器发送</p>
+<h4 id="Still-Getting-Started-Intra-Domain-Routing-to-the-DNS-Server"><a href="#Still-Getting-Started-Intra-Domain-Routing-to-the-DNS-Server" class="headerlink" title="Still Getting Started: Intra-Domain Routing to the DNS Server"></a>Still Getting Started: Intra-Domain Routing to the DNS Server</h4><p><code>14. The gateway router receives the frame and extracts the IP datagram containing the DNS query. The router looks up the destination address of this datagram (68.87.71.226) and determines from its forwarding table that the datagram should be sent to the leftmost router in the Comcast network in Figure 6.32.The IP datagram is placed inside a link-layer frame appropriate for the link connecting the school’s router to the leftmost Comcast router and the frame is sent over this link.</code></p>
+<p>网关路由器接收到IP数据报，确定地址后查询转发表，以确定要转发的子网的“最左路由器”（就像是最近的可达网关路由器），然后将其放入对应的链路缓存中，进行转发</p>
+<p><code>15. The leftmost router in the Comcast network receives the frame, extracts the IP datagram, examines the datagram&#39;s destination address (68.87.71.226) and determines the outgoing interface on which to forward the datagram toward the DNS server from its forwarding table, which hasbeen filled in by Comcast&#39;s intra-domain protocol (such as RIP, OSPF or IS-IS, Section 5.3) as well as the Internet&#39;s inter-domain protocol, BGP (Section 5.4).</code></p>
+<p>最左路由器收到帧后，依然查看转发表（已经被SA内部路由协议和外部协议填写好了），然后转发</p>
+<p><code>16. Eventually the IP datagram containing the DNS query arrives at the DNS server.The DNS server extracts the DNS query message, looks up the name www.google.com in its DNS database (Section 2.5), and finds the DNS resource record that contains the IP address (64.233.169.105) for www.google.com.(assuming that it is currently cached in the DNS server).Recall that this cached data originated in the authoritative DNS server (Section 2.5.2) for google.com.The DNS server forms a DNS reply message containing this hostname-to-IP- address mapping, and places the DNS reply message in a UDP segment, and the segment within an IP datagram addressed to Bob’s laptop (68.85.2.101).This datagram will be forwarded back through the Comcast network to the school’s router and from there, via the Ethernet switch to Bob’s laptop.17. Bob’s laptop extracts the IP address of the server www.google.com from the DNS message.Finally, after a lot of work, Bob’s laptop is now ready to con- tact the www.google.com server!</code></p>
+<p>最后数据报到达DNS服务器，DNS分解出DNS请求，并查询其数据库，发现了其中对应的IP地址（我们假设该服务器已经 缓存了这个地址）<br>回想一下，这个缓存的数据 源自于一个权威DNS服务器<br>这个DNS服务器组建了一个DNS回应信息，其中包括了域名到IP的映射信息，并将其置入UDP报文段中， 通过同样的方式到数据报、帧、转发，到达Bob的电脑<br>终于得到了最后的地址，Bob可以上网了</p>
+<h4 id="Web-Client-Server-Interaction-TCP-and-HTTP"><a href="#Web-Client-Server-Interaction-TCP-and-HTTP" class="headerlink" title="Web Client-Server Interaction: TCP and HTTP"></a>Web Client-Server Interaction: TCP and HTTP</h4><p><code>18. Now that Bob’s laptop has the IP address of www.google.com, it can create the TCP socket (Section 2.7) that will be used to send the HTTP GET message (Section 2.2.3) to www.google.com.When Bob creates the TCP socket, the TCP in Bob’s laptop must first perform a three-way handshake (Section 3.5.6) with the TCP in www.google.com.Bob&#39;s laptop thus first creates a TCP SYN segment with destination port 80 (for HTTP), places the TCP segment inside an IP datagram with a destination IP address of 64.233.169.105 (www.google.com), places the datagram inside a frame witha destination MAC address of 00:22:6B:45:1F:1B (the gateway router) and sends the frame to the switch.</code></p>
+<p>现在Bob的电脑有了IP地址，可以创建一个TCP socket连接了，这将用于发送HTTP的GET信息<br>当Bob创建了TCP socket时，Bob的电脑首先要执行三次握手，因此，首先创建一个带有目标地址的TCP SYN数据段，将该报文段传输过去</p>
+<p><code>19. The routers in the school network, Comcast’s network, and Google’s network forward the datagram containing the TCP SYN toward www.google.com, using the forwarding table in each router, as in steps 14–16 above.Recall that the router forwarding table entries governing forwarding of packets over the inter-domain link between the Comcast and Google networks are determined by the BGP protocol (Chapter 5).</code></p>
+<p>和之前一样的传输步骤，回想一下路由器的转发表的域间传输是由BGP协议决定的</p>
+<p><code>20. Eventually, the datagram containing the TCP SYN arrives at www.google.com.The TCP SYN message is extracted from the datagram and demultiplexed to the welcome socket associated with port 80. A connection socket (Section 2.7) is created for the TCP connection between the Google HTTP server and Bob’s laptop.A TCP SYNACK (Section 3.5.6) segment is generated, placed inside a datagram addressed to Bob’s laptop, and finally placed inside a link-layer frame appropriate for the link connecting www.google.com to its first-hop router.</code></p>
+<p>最后，TCP SYN到达服务器，并被分解给80号端口的welcome socket，，然后一个TCP链接建立了（服务器预留资源，分配起始编号），然后一个TCP SYNACK报文生成，并被传输到Bob的电脑上</p>
+<p><code>21. The datagram containing the TCP SYNACK segment is forwarded through the Google, Comcast, and school networks, eventually arriving at the Ethernet controller in Bob’s laptop.The datagram is demultiplexed within the operating system to the TCP socket created in step 18, which enters the connected state.</code></p>
+<p>Bob的电脑接收到了TCP SYNACK，并被分解到TCP协议中，使其进入连接状态</p>
+<p><code>22. With the socket on Bob’s laptop now (finally!) ready to send bytes to www.google.com, Bob’s browser creates the HTTP GET message (Section 2.2.3) containing the URL to be fetched.The HTTP GET message is then written into the socket, with the GET message becoming the payload of a TCP segment.The TCP segment is placed in a datagram and sent and delivered to www.google.com as in steps 18–20 above.</code></p>
+<p>现在Bob电脑上的Socket准备好发送字节了，浏览器首先创建一个HTTP GET请求，包含了即将去取得的URL<br>然后GET请求被写入socket，传输到目标</p>
+<p><code>23. The HTTP server at www.google.com reads the HTTP GET message from the TCP socket, creates an HTTP response message (Section 2.2), places the requested Web page content in the body of the HTTP response message, and sends the messageinto the TCP socket.</code></p>
+<p>HTTP服务器收到了请求后，创建回应信息，把对应的网页置入其中，发送回来</p>
+<p><code>24. The datagram containing the HTTP reply message is forwarded through the Google, Comcast, and school networks, and arrives at Bob’s laptop.Bob’s Web browser program reads the HTTP response from the socket, extracts the html for the Web page from the body of the HTTP response, and finally (finally!) displays the Web page!</code></p>
+<p>最后浏览器接收到网页信息，解析并在浏览器中显示出来</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/04/network/self-studying-notes/2022-11-5/" data-id="clkwkwshh009wk8uv3zslf6ni" data-title="6.7节阅读与翻译" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/3/">weiter &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C#学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C++学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CFT%E9%A2%98%E7%9B%AE%E9%9A%8F%E7%AC%94/">CFT题目随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSAPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">CSAPP学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode%E7%BB%83%E4%B9%A0/">LeetCode练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Matlab%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">Matlab学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">OI算法和数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%BB%83%E4%B9%A0/">OI练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qt%E5%AD%A6%E4%B9%A0/">Qt学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/compiler/">compiler</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B9%90%E7%90%86/">乐理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/">信号与系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/">笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/%E7%BF%BB%E8%AF%91/">翻译</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">思维导图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">数学基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/">计算机图形</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">语言学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">课程复习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E8%AF%BB%E5%90%8E%E6%84%9F/">读后感</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API/" rel="tag">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bellman-ford/" rel="tag">Bellman-ford</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag">C++学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMatlab/" rel="tag">CMatlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">C计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DP/" rel="tag">DP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EM%E7%AE%97%E6%B3%95/" rel="tag">EM算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kruskal/" rel="tag">Kruskal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LCA/" rel="tag">LCA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag">Lambda表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OI/" rel="tag">OI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prim/" rel="tag">Prim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/" rel="tag">Qt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCIM/" rel="tag">SCIM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SG%E5%87%BD%E6%95%B0/" rel="tag">SG函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPFA/" rel="tag">SPFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ST%E8%A1%A8/" rel="tag">ST表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stride-Scheduling/" rel="tag">Stride Scheduling</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tarjan/" rel="tag">Tarjan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Three-Easy-Pieces/" rel="tag">Three-Easy-Pieces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UNIX/" rel="tag">UNIX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VAX-VMS/" rel="tag">VAX&#x2F;VMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/" rel="tag">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/convolution/" rel="tag">convolution</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu/" rel="tag">cpu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu%E5%8E%9F%E7%90%86/" rel="tag">cpu原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/" rel="tag">data-structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decision-tree/" rel="tag">decision tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dijkstra/" rel="tag">dijkstra</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fourier-transform/" rel="tag">fourier transform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/" rel="tag">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/" rel="tag">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mechine-learning/" rel="tag">mechine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nim%E5%8D%9A%E5%BC%88/" rel="tag">nim博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/operating-system/" rel="tag">operating-system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/perceptron/" rel="tag">perceptron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/signal/" rel="tag">signal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/special-function/" rel="tag">special function</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/" rel="tag">ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unity/" rel="tag">unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/upload/" rel="tag">upload</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" rel="tag">上下文切换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" rel="tag">不等式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" rel="tag">主定理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" rel="tag">二分图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" rel="tag">二叉堆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" rel="tag">二叉查找树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag">二进制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" rel="tag">代码能力</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag">优先队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" rel="tag">优化程序性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" rel="tag">关联容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98/" rel="tag">内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="tag">内存分配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" rel="tag">内存地址</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="tag">内存空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">内存虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" rel="tag">分布式编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" rel="tag">分比例调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%B2%BB/" rel="tag">分治</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="tag">前缀和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%B2%E7%82%B9/" rel="tag">割点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" rel="tag">动态内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="tag">区间最大值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" rel="tag">区间查询</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" rel="tag">区间维护</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="tag">博弈论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" rel="tag">地图生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" rel="tag">地址翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" rel="tag">多级反馈队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%AE%E5%88%86/" rel="tag">差分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" rel="tag">巴什博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" rel="tag">异常控制流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">形式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" rel="tag">彩票调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" rel="tag">思维导图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E6%83%B3/" rel="tag">感想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" rel="tag">教学资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" rel="tag">数据流分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6/" rel="tag">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" rel="tag">文件上传攻击</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" rel="tag">文件操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">无序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="tag">智能指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" rel="tag">最大字串和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" rel="tag">最大流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" rel="tag">最小生成树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag">最短路</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91/" rel="tag">树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" rel="tag">树上倍增</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" rel="tag">树形数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" rel="tag">树链剖分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">概率论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" rel="tag">段式内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">段式内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96/" rel="tag">汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" rel="tag">浅拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" rel="tag">深拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93/" rel="tag">渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" rel="tag">游戏编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E6%80%A7/" rel="tag">特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" rel="tag">直接运行程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A9%E9%98%B5/" rel="tag">矩阵</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A2%8E%E7%89%87/" rel="tag">碎片</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag">离散数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" rel="tag">空闲内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" rel="tag">空闲链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7/" rel="tag">线性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag">线段树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81/" rel="tag">编码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">编码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" rel="tag">编译器优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag">网络流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">自动机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD/" rel="tag">英语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" rel="tag">计算机图形</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" rel="tag">计算机理论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95/" rel="tag">语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E8%A8%80/" rel="tag">语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" rel="tag">调度算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" rel="tag">输入法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" rel="tag">进程调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E6%8E%A5/" rel="tag">链接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" rel="tag">静态分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag">项目</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">顺序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" rel="tag">预处理宏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" rel="tag">预处理指令</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Bellman-ford/" style="font-size: 10px;">Bellman-ford</a> <a href="/tags/C/" style="font-size: 16.43px;">C++</a> <a href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">C++学习记录</a> <a href="/tags/CMatlab/" style="font-size: 10px;">CMatlab</a> <a href="/tags/CTF/" style="font-size: 10.71px;">CTF</a> <a href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">C计算机网络</a> <a href="/tags/DNS/" style="font-size: 10.71px;">DNS</a> <a href="/tags/DP/" style="font-size: 10px;">DP</a> <a href="/tags/EM%E7%AE%97%E6%B3%95/" style="font-size: 10px;">EM算法</a> <a href="/tags/HMM/" style="font-size: 10px;">HMM</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/Kruskal/" style="font-size: 10px;">Kruskal</a> <a href="/tags/LCA/" style="font-size: 10px;">LCA</a> <a href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" style="font-size: 10px;">Lambda表达式</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/OI/" style="font-size: 10px;">OI</a> <a href="/tags/Prim/" style="font-size: 10px;">Prim</a> <a href="/tags/Qt/" style="font-size: 10px;">Qt</a> <a href="/tags/SCIM/" style="font-size: 10px;">SCIM</a> <a href="/tags/SG%E5%87%BD%E6%95%B0/" style="font-size: 10px;">SG函数</a> <a href="/tags/SPFA/" style="font-size: 10px;">SPFA</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/ST%E8%A1%A8/" style="font-size: 10px;">ST表</a> <a href="/tags/SVM/" style="font-size: 10px;">SVM</a> <a href="/tags/Stride-Scheduling/" style="font-size: 10px;">Stride Scheduling</a> <a href="/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/tags/Tarjan/" style="font-size: 10.71px;">Tarjan</a> <a href="/tags/Three-Easy-Pieces/" style="font-size: 10px;">Three-Easy-Pieces</a> <a href="/tags/UNIX/" style="font-size: 10px;">UNIX</a> <a href="/tags/VAX-VMS/" style="font-size: 10px;">VAX/VMS</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/c/" style="font-size: 12.86px;">c#</a> <a href="/tags/concurrency/" style="font-size: 14.29px;">concurrency</a> <a href="/tags/convolution/" style="font-size: 10px;">convolution</a> <a href="/tags/cpu/" style="font-size: 10px;">cpu</a> <a href="/tags/cpu%E5%8E%9F%E7%90%86/" style="font-size: 10px;">cpu原理</a> <a href="/tags/data-structure/" style="font-size: 10px;">data-structure</a> <a href="/tags/decision-tree/" style="font-size: 10px;">decision tree</a> <a href="/tags/dijkstra/" style="font-size: 10px;">dijkstra</a> <a href="/tags/fourier-transform/" style="font-size: 10px;">fourier transform</a> <a href="/tags/golang/" style="font-size: 10.71px;">golang</a> <a href="/tags/linux/" style="font-size: 10.71px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10.71px;">machine learning</a> <a href="/tags/math/" style="font-size: 10.71px;">math</a> <a href="/tags/mechine-learning/" style="font-size: 10px;">mechine learning</a> <a href="/tags/nim%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">nim博弈</a> <a href="/tags/operating-system/" style="font-size: 14.29px;">operating-system</a> <a href="/tags/perceptron/" style="font-size: 10px;">perceptron</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/special-function/" style="font-size: 10px;">special function</a> <a href="/tags/system/" style="font-size: 10.71px;">system</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/unity/" style="font-size: 10px;">unity</a> <a href="/tags/upload/" style="font-size: 10px;">upload</a> <a href="/tags/wireshark%E7%BB%83%E4%B9%A0/" style="font-size: 12.86px;">wireshark练习</a> <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" style="font-size: 10px;">上下文切换</a> <a href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" style="font-size: 10px;">不等式</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" style="font-size: 15.71px;">中间代码生成</a> <a href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" style="font-size: 10px;">主定理</a> <a href="/tags/%E4%B9%90%E7%90%86/" style="font-size: 10.71px;">乐理</a> <a href="/tags/%E4%BA%8C%E5%88%86/" style="font-size: 10.71px;">二分</a> <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" style="font-size: 10px;">二分图</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" style="font-size: 10.71px;">二叉堆</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" style="font-size: 10px;">二叉查找树</a> <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" style="font-size: 11.43px;">二进制</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 15.71px;">代码</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" style="font-size: 10.71px;">代码优化</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" style="font-size: 10px;">代码能力</a> <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">优先队列</a> <a href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" style="font-size: 10px;">优化程序性能</a> <a href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">关联容器</a> <a href="/tags/%E5%86%85%E5%AD%98/" style="font-size: 10px;">内存</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" style="font-size: 10px;">内存分配</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" style="font-size: 10px;">内存地址</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" style="font-size: 10.71px;">内存空间</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10.71px;">内存管理</a> <a href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">内存虚拟化</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" style="font-size: 10px;">分布式编译</a> <a href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">分比例调度</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 10px;">分治</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" style="font-size: 10px;">前缀和</a> <a href="/tags/%E5%89%B2%E7%82%B9/" style="font-size: 10px;">割点</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" style="font-size: 10px;">动态内存</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 10px;">动画</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" style="font-size: 10px;">区间最大值</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" style="font-size: 10px;">区间查询</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" style="font-size: 11.43px;">区间维护</a> <a href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" style="font-size: 10px;">博弈论</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 11.43px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">地址翻译</a> <a href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">多级反馈队列</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E5%B7%AE%E5%88%86/" style="font-size: 11.43px;">差分</a> <a href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">巴什博弈</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 10.71px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" style="font-size: 10px;">异常控制流</a> <a href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">形式语言</a> <a href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">彩票调度</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">微信小程序</a> <a href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" style="font-size: 10px;">思维导图</a> <a href="/tags/%E6%84%9F%E6%83%B3/" style="font-size: 11.43px;">感想</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 17.86px;">操作系统</a> <a href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" style="font-size: 10px;">教学资料</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 11.43px;">数学</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">数据流分析</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%95%B0%E7%BB%84/" style="font-size: 10px;">数组</a> <a href="/tags/%E6%96%87%E4%BB%B6/" style="font-size: 10px;">文件</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" style="font-size: 10px;">文件上传攻击</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" style="font-size: 10px;">文件操作</a> <a href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">无序容器</a> <a href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" style="font-size: 10px;">智能指针</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" style="font-size: 10px;">最大字串和</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" style="font-size: 10px;">最大流</a> <a href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" style="font-size: 10px;">最小生成树</a> <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" style="font-size: 10px;">最短路</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%A0%91/" style="font-size: 10px;">树</a> <a href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" style="font-size: 10px;">树上倍增</a> <a href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" style="font-size: 10px;">树形数组</a> <a href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" style="font-size: 10px;">树链剖分</a> <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 10.71px;">概率论</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10.71px;">模板</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" style="font-size: 10px;">段式内存</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10px;">段式内存管理</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 10.71px;">汇编</a> <a href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">浅拷贝</a> <a href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">深拷贝</a> <a href="/tags/%E6%B8%B2%E6%9F%93/" style="font-size: 10px;">渲染</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">游戏编程</a> <a href="/tags/%E7%89%B9%E6%80%A7/" style="font-size: 11.43px;">特性</a> <a href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">直接运行程序</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A2%8E%E7%89%87/" style="font-size: 10px;">碎片</a> <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" style="font-size: 13.57px;">离散数学</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" style="font-size: 10px;">空闲内存</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">空闲链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BA%BF%E6%80%A7/" style="font-size: 10.71px;">线性</a> <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" style="font-size: 10px;">线段树</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a> <a href="/tags/%E7%BC%96%E7%A0%81/" style="font-size: 11.43px;">编码</a> <a href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">编码规范</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10.71px;">编程语言</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 17.14px;">编译原理</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" style="font-size: 10px;">编译器优化</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" style="font-size: 10.71px;">网络流</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" style="font-size: 12.86px;">自动机</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 10px;">英语</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">虚拟化</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">计算机图形</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" style="font-size: 12.86px;">计算机理论</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" style="font-size: 18.57px;">计算机系统</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 19.29px;">设计模式</a> <a href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">词法分析</a> <a href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语义分析</a> <a href="/tags/%E8%AF%AD%E6%B3%95/" style="font-size: 12.14px;">语法</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语法分析</a> <a href="/tags/%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">语言</a> <a href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" style="font-size: 10px;">调度算法</a> <a href="/tags/%E8%B4%AA%E5%BF%83/" style="font-size: 10px;">贪心</a> <a href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" style="font-size: 10px;">输入法</a> <a href="/tags/%E8%BF%9B%E7%A8%8B/" style="font-size: 11.43px;">进程</a> <a href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">进程调度</a> <a href="/tags/%E9%93%BE%E6%8E%A5/" style="font-size: 10px;">链接</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 11.43px;">随笔</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">静态分析</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 20px;">面向对象</a> <a href="/tags/%E9%A1%B9%E7%9B%AE/" style="font-size: 10px;">项目</a> <a href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">顺序容器</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" style="font-size: 10px;">预处理宏</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" style="font-size: 10px;">预处理指令</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/08/04/Wechat-P/first--time-trying/">第一个微信小程序——创建与总览</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/QT/FirstApplication/">第一个Qt程序——文本查询</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/leading-chapter/">Operating System Chapter 1</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-Segmentation/">段式内存管理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-proportionalShare/">分比例调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Dnull_P<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

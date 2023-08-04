@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Dnull_P Welcome~</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A BUPTer( awlful)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dnull_P Welcome~">
+<meta property="og:url" content="https://dnullp.github.io/page/12/index.html">
+<meta property="og:site_name" content="Dnull_P Welcome~">
+<meta property="og:description" content="A BUPTer( awlful)">
+<meta property="og:locale">
+<meta property="article:author" content="Dnull_P">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Dnull_P Welcome~" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dnull_P Welcome~</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://DnullP.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-network/works-projects/wireShark-5-DHCP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/02/network/works-projects/wireShark-5-DHCP/" class="article-date">
+  <time class="dt-published" datetime="2023-08-01T16:00:00.000Z" itemprop="datePublished">2023-08-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a>►<a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/08/02/network/works-projects/wireShark-5-DHCP/">wireshark practice 3 - DNS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>   Are DHCP messages sent over UDP or TCP? </p>
+<p>  <code>All DHCP messages are sent over UDP.</code></p>
+</li>
+<li><p>   Draw a timing datagram illustrating the sequence of the first four-packet Discover&#x2F;Offer&#x2F;Request&#x2F;ACK DHCP  exchange between the client and server. For each packet, indicated the source and destination port numbers. Are the port numbers the same as in the example given in this lab assignment? </p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">    participant Client</span><br><span class="line">    participant Server</span><br><span class="line">    Client-&gt;&gt;Server: DHCP Discover(67)</span><br><span class="line">    Server-&gt;&gt;Client: DHCP Offer(68)</span><br><span class="line">    Client-&gt;&gt;Server: DHCP Request(67)</span><br><span class="line">    Server-&gt;&gt;Client: DHCP ACK(68)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>   What is the link-layer (e.g., Ethernet) address of your host?</p>
+</li>
+<li><p>   What values in the DHCP discover message differentiate this message from the DHCP request message?</p>
+</li>
+<li><p>   What is the value of the Transaction-ID in each of the first four (Discover&#x2F;Offer&#x2F;Request&#x2F;ACK) DHCP messages?  What are the values of the Transaction-ID in the second set (Request&#x2F;ACK) set of DHCP messages?  What is the purpose of the Transaction-ID field?</p>
+</li>
+<li><p>   A host uses DHCP to obtain an IP address, among other things. But a host’s IP address is not confirmed until the end of the four-message exchange!  If the IP address is not set until the end of the four-message exchange, then what values are used in the IP datagrams in the four-message exchange?  For each of the four DHCP messages (Discover&#x2F;Offer&#x2F;Request&#x2F;ACK DHCP), indicate the source and destination IP addresses that are carried in the encapsulating IP datagram.</p>
+</li>
+<li><p>   What is the IP address of your DHCP server?</p>
+</li>
+<li><p>   What IP address is the DHCP server offering to your host in the DHCP Offer message?  Indicate which DHCP message contains the offered DHCP address.</p>
+</li>
+<li><p>   In the example screenshot in this assignment, there is no relay agent between the host and the DHCP server. What values in the trace indicate the absence of a relay agent?  Is there a relay agent in your experiment? If so what is the IP address of the agent?</p>
+</li>
+<li><p>   Explain the purpose of the router and subnet mask lines in the DHCP offer message.</p>
+</li>
+<li><p>   In the DHCP trace file noted in footnote 2, the DHCP server offers a specific IP address to the client (see also question 8. above).  In the client’s response to the first server OFFER message, does the client accept this IP address?  Where in the client’s RESPONSE is the client’s requested address?</p>
+</li>
+<li><p>   Explain the purpose of the lease time. How long is the lease time in your experiment?</p>
+</li>
+<li><p>   What is the purpose of the DHCP release message?  Does the DHCP server issue an acknowledgment of receipt of the client’s DHCP request?  What would happen if the client’s DHCP release message is lost?</p>
+</li>
+<li><p>   Clear the bootp filter from your Wireshark window. Were any ARP packets sent or received during the DHCP packet-exchange period? If so, explain the purpose of those ARP packets.</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/08/02/network/works-projects/wireShark-5-DHCP/" data-id="clkwkwshi00a6k8uv3sggbd01" data-title="wireshark practice 3 - DNS" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-golang-basic/projectManage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/07/27/golang-basic/projectManage/" class="article-date">
+  <time class="dt-published" datetime="2023-07-26T16:00:00.000Z" itemprop="datePublished">2023-07-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/07/27/golang-basic/projectManage/">Golang的项目管理基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文只是个人学习的知识整理和记录, 不含有教程性质, 仅供参考</p>
+<h1 id="Golang的项目管理基础"><a href="#Golang的项目管理基础" class="headerlink" title="Golang的项目管理基础"></a>Golang的项目管理基础</h1><p>[toc]</p>
+<p>这里要讨论的内容主要包括:</p>
+<ul>
+<li>golang的依赖管理</li>
+<li>golang的模块</li>
+<li>golang的package</li>
+<li>golang的workspace</li>
+</ul>
+<p>我们层层递进介绍每一个级别的管理在做什么</p>
+<h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><p>golang的源码文件格式为<code>xxx.go</code>, 每个文件都必须归属于一个package, 这个package我们在程序的第一行声明, 例如:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> calc</span><br></pre></td></tr></table></figure>
+
+<p>文件是我们实现源代码的位置</p>
+<h2 id="package"><a href="#package" class="headerlink" title="package"></a>package</h2><p>package是golang组织和管理代码的基本单位, 每个文件都必须归属于一个package. 我们规定同一个目录下的所有文件都归属于同一个package, 除了<code>xxx_test</code>包可以和对应的被测试包在同一个目录下</p>
+<ul>
+<li>属于同一个package的文件可以互相访问对方的变量和函数</li>
+<li>package的名字可以和目录名不同, 但是需要注意:<ul>
+<li>import一个包时是通过目录名字引入的</li>
+<li>使用一个包时是通过package name使用的</li>
+</ul>
+</li>
+</ul>
+<p>比如我存在以下目录:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- tttt</span><br><span class="line">    - walk.go</span><br><span class="line">    - walk_test.go</span><br></pre></td></tr></table></figure>
+<p>我在import walk时需要使用<code>import &quot;path_to_module/tttt&quot;</code>, 但是使用时需要根据<code>walk.go</code>设定的package name来使用: <code>walk.Walk()</code></p>
+<p>package导出的变量和函数的规则和struct一样, 首字母大写的变量和函数可以被外部包访问, 小写的变量和函数只能在内部包内部访问</p>
+<h2 id="module"><a href="#module" class="headerlink" title="module"></a>module</h2><p>模块是golang管理项目的基本单位, 一个项目需要的依赖和包的管理都在moddule中完成</p>
+<p>为了建立一个module, 我们需要先在我们的目录之下执行<code>go mod init module_name</code>指令, 这个指令会创建一个<code>go.mod</code>文件, 这个文件记录了我们的module的名字和依赖</p>
+<p>一个<code>go.mod</code>就声明了一个模块, 其对应目录下的所有文件和package都属于这个模块, 当我们想要引入一个package时, 需要通过对应的module路径来引入, 比如我们有以下目录:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">work</span><br><span class="line">│   go.mod</span><br><span class="line">│   go.sum</span><br><span class="line">│</span><br><span class="line">├───main</span><br><span class="line">│       main.go</span><br><span class="line">│</span><br><span class="line">└───walk</span><br><span class="line">        walk.go</span><br><span class="line">        walk_test.go</span><br></pre></td></tr></table></figure>
+
+<p>我们在</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/07/27/golang-basic/projectManage/" data-id="clkwkwsgw006ik8uvg6wz7qja" data-title="Golang的项目管理基础" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-golang-basic/basic-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/07/25/golang-basic/basic-1/" class="article-date">
+  <time class="dt-published" datetime="2023-07-24T16:00:00.000Z" itemprop="datePublished">2023-07-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/07/25/golang-basic/basic-1/">Golang基础练习</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="来自A-Tour-of-Go的两道练习"><a href="#来自A-Tour-of-Go的两道练习" class="headerlink" title="来自A Tour of Go的两道练习"></a>来自A Tour of Go的两道练习</h1><h2 id="并发比较二叉树元素是否相同"><a href="#并发比较二叉树元素是否相同" class="headerlink" title="并发比较二叉树元素是否相同"></a>并发比较二叉树元素是否相同</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>这道题中我们使用<code>tree.New(x)</code>来生成一个有十个元素$x, 2x, 3x, …, 10x$的具有随机结构的二叉树, 我们需要实现<code>Walk</code>函数来遍历一个二叉树, 并通过<code>Same</code>函数来比较两个二叉树是否相同, 我们使用Go语言的并发特性和<code>channel</code>来实现这个功能</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>首先Walk函数遍历节点的值我们加入一个channel中, 作为后续的使用,</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wait sync.WaitGroup</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Walk</span><span class="params">(t *tree.Tree, ch <span class="keyword">chan</span> <span class="type">int</span>, depth <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	ch &lt;- t.Value</span><br><span class="line">	<span class="keyword">if</span> depth == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> <span class="built_in">close</span>(ch)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> wait.Done()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> t.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">		wait.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> Walk(t.Left, ch, depth+<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> t.Right != <span class="literal">nil</span> &#123;</span><br><span class="line">		wait.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> Walk(t.Right, ch, depth+<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> depth == <span class="number">0</span> &#123;</span><br><span class="line">		wait.Wait()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以看到, 代码中除了正常的左右节点遍历外, 对于深度为0的节点我们进行了特殊判定, 通过<code>defer</code>语句来关闭channel, 并且通过<code>sync.WaitGroup</code>来等待所有的goroutine结束, 从而保证channel中的数据全部被读取</p>
+<p>关闭<code>channel</code>是为了后续的并发比较能够检测到树已经遍历完毕, 这里我们知道树的大小固定为10, 所以可以通过简单的计数来实现, 但大多数情况需要通过某个信号来判断树已经判断完毕</p>
+<p>需要注意的编码规范:</p>
+<ul>
+<li>函数名遵循大驼峰命名法</li>
+<li>变量名遵循小驼峰命名法</li>
+</ul>
+<p>针对上面的代码, 我们可以通过封装函数来优化其可读性:</p>
+<ul>
+<li><p>对于<code>defer</code>部分, 我们可以只defer一个函数, 将我们的逻辑判断封装其中, 而不是在不同的程序点进行判断:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> depth == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="built_in">close</span>(ch)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		wait.Done()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对于条件判断部分, 左右部分的遍历是相同的操作, 所以我们封装为一个操作:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ToChild := <span class="function"><span class="keyword">func</span><span class="params">(child *tree.Tree)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> child != <span class="literal">nil</span> &#123;</span><br><span class="line">        wait.Add(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">go</span> Walk(child, ch, depth+<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们的代码可以简化为:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wait sync.WaitGroup</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Walk</span><span class="params">(t *tree.Tree, ch <span class="keyword">chan</span> <span class="type">int</span>, depth <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	ch &lt;- t.Value</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> depth == <span class="number">0</span> &#123;</span><br><span class="line">            <span class="built_in">close</span>(ch)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            wait.Done()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    ToChild := <span class="function"><span class="keyword">func</span><span class="params">(child *tree.Tree)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> child != <span class="literal">nil</span> &#123;</span><br><span class="line">            wait.Add(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">go</span> Walk(child, ch, depth+<span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ToChild(t.Left)</span><br><span class="line">    ToChild(t.Right)</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">if</span> depth == <span class="number">0</span> &#123;</span><br><span class="line">        wait.Wait()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这样的编程方式在Javascript中很常见, 熟悉之后对于提高代码的整洁性相当有益</p>
+</li>
+</ul>
+<p>接下来我们为<code>Walk</code>函数编写对应的单元测试</p>
+<p>首先我们创建相应的测试文件:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- tree</span><br><span class="line">    - compare_tree.go</span><br><span class="line">    - compare_tree_test.go</span><br></pre></td></tr></table></figure>
+
+<p>文件命名的规范为:</p>
+<ul>
+<li>文件全部使用小写字母命名, 使用下划线分词</li>
+<li>测试文件在最后加上<code>_test</code>后缀</li>
+</ul>
+<p>测试文件在构建时忽略, 在执行<code>go test</code>时运行</p>
+<p>这里由于涉及到了多文件的项目, 我们需要事先明确一下golang的项目管理方式: <a href="https://dnullp.github.io/2023/07/27/golang/projectManage/">Golang的项目管理基础</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/07/25/golang-basic/basic-1/" data-id="clkwkwsgv006ek8uv2t893cme" data-title="Golang基础练习" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-essay/afterReadingCleanCode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/07/25/essay/afterReadingCleanCode/" class="article-date">
+  <time class="dt-published" datetime="2023-07-24T16:00:00.000Z" itemprop="datePublished">2023-07-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>►<a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/%E8%AF%BB%E5%90%8E%E6%84%9F/">读后感</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/07/25/essay/afterReadingCleanCode/">Clean Code阅读笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><em>Clean Code</em> called 《代码整洁之道》in Chinese give a lot of guidance on how to write readable code. </p>
+<p>在此为此书的阅读做出整理</p>
+<hr>
+<h1 id="代码整洁之道阅读笔记"><a href="#代码整洁之道阅读笔记" class="headerlink" title="代码整洁之道阅读笔记"></a>代码整洁之道阅读笔记</h1><ul>
+<li><p>给变量取名字要清晰，避免多个名字的混淆，这对于英语词汇量的要求会很高</p>
+</li>
+<li><p>函数的取名最好用动词，用来描述函数的行为，如果能够给出一个好命名的话, 只需要看函数和变量命名就能知道代码的行为, 我们认为这是好代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">public</span> List&lt;<span class="type">int</span>[]&gt; getThem() &#123;</span><br><span class="line">    List&lt;<span class="type">int</span>[]&gt; list1 = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;<span class="type">int</span>[]&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span>[] x : theList)</span><br><span class="line">        <span class="keyword">if</span> (x[<span class="number">0</span>] == <span class="number">4</span>)</span><br><span class="line">            list1.add(x);</span><br><span class="line">    <span class="keyword">return</span> list1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">public</span> List&lt;<span class="type">int</span>[]&gt; getFlaggedCells() &#123;</span><br><span class="line">    List&lt;<span class="type">int</span>[]&gt; flaggedCells = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;<span class="type">int</span>[]&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span>[] cell : gameBoard)</span><br><span class="line">        <span class="keyword">if</span> (cell[STATUS_VALUE] == FLAGGED)</span><br><span class="line">            flaggedCells.add(cell);</span><br><span class="line">    <span class="keyword">return</span> flaggedCells;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  没有人知道<code>getThem</code>到底是想要得到什么, <code>list1</code>也只是让人知道这是个列表, 想要理解代码逻辑必须仔细阅读才行<br>  如果按照下面的代码命名, 我们能够一眼看出函数的作用: 得到被标记的格子. 然后我们可以看出代码是在从棋盘上遍历所有格子, 然后检查各自的状态, 并将标记的各自取出返回<br>  代码就像是在”tell a story”, 能够通过阅读理解, 而不是分析理解</p>
+</li>
+</ul>
+<p>&emsp;</p>
+<ul>
+<li>函数和变量的命名可以形成动宾结构, 对象和成员函数的命名可以形成主谓结构, 遵守这样的原则可以让代码更加清晰<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">targetStudent.isGirl();</span><br><span class="line">targetStudent.setScore(100);</span><br><span class="line"></span><br><span class="line">targetClass.deleteStudent(targetStudent);</span><br></pre></td></tr></table></figure>
+这样的代码即便我们不去阅读class的源码, 也能够一眼看出代码的作用</li>
+</ul>
+<p>&emsp;</p>
+<ul>
+<li>为了尽量维护动宾结构和主谓结构, 我们函数的参数最好不要超过两个参数 (可变参数除外), 三个参数的函数我们认为已经是极其糟糕的结构了<br>一个函数只要负责一个功能就行了, 最理想的情况是每个函数总行数不超过5行, 除非函数需要实现高聚合度的复杂功能<br>对于一些情况, 需要完成某些功能确实需要大量的参数设定时, 不要局限于用一个函数来实现. 比如我们要实现一个http的request, 我们需要设定url, header, timeout等参数信息, 使用一个函数来实现就十分的不优雅.<br>具体的, 我们对于一个request编写一个class, 将参数设定为成员变量, 然后针对每一个参数编写设置函数, 最后编写一个<code>send</code>函数来发送请求, 这样的代码就十分的优雅了, 这种设计模式我们称为<strong>建造者</strong>模式</li>
+</ul>
+<p>&emsp;</p>
+<ul>
+<li><p>注释不是必要的, 我们需要达到的至高境界是, 能够只通过函数和变量的命名, 就能够把代码的含义表述清楚</p>
+</li>
+<li><p>上面一条不是你不写注释的理由, 相信我, 你的代码写不到这么好</p>
+</li>
+<li><p>下面是一些通过注释写明的信息:</p>
+<ul>
+<li>合法信息: 包括了代码的作者, 版权信息, 代码的版本号等</li>
+<li>对于复杂内容的阐明: 我们不能保证代码中所有内容都能通过函数和变量名表述清楚, 比如我在一处使用了正则表达式匹配, 正则表达式本身的可读性是很差的, 所以我或许需要用注释来阐明一下它的含义和匹配对象</li>
+<li>TODO注释: 用来标记一些未完成的工作, 以及一些需要改进的地方</li>
+</ul>
+</li>
+<li><p>阐明代码意图和解释模糊代码, 这是弥补代码不足的方式</p>
+</li>
+<li><p>对于一段代码, 如果需要警告用户一些重要的使用规则, 那么使用注释是没问题的, 比如对于一个计算函数:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//WARNING: totalAmount can&#x27;t be zero</span></span><br><span class="line"><span class="type">double</span> <span class="title function_">calTheUtilization</span><span class="params">(<span class="type">int</span> usedAmount, <span class="type">int</span> totalAmount)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="type">double</span>)usedAmount / totalAmount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提示用户参数的使用限制, 这是一个合理的注释使用</p>
+</li>
+<li><p>对每一个参数都做注释并不是必要的, 但是对于一些规范的库而言, 给与尽可能详细的注释是有必要的</p>
+</li>
+<li><p>现在的IDE一般会提供良好的注释辅助, 将函数, class, 参数的注释直接显示给用户, 也提供了引用查找之类的便捷功能, 所以一些旧时代遗留下来注释习惯我们往往不必去在意</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/07/25/essay/afterReadingCleanCode/" data-id="clkwkwsh1007jk8uvbgf12r1t" data-title="Clean Code阅读笔记" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" rel="tag">代码能力</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">编码规范</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/staticProgramAnalysis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/07/21/compiler/staticProgramAnalysis/" class="article-date">
+  <time class="dt-published" datetime="2023-07-20T16:00:00.000Z" itemprop="datePublished">2023-07-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/07/21/compiler/staticProgramAnalysis/">静态程序分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本笔记是基于龙书和南京大学《软件分析》课程的学习笔记, 本文不具有教程科普的性质, 只是个人学习过程中的理解记录</p>
+<hr>
+<h1 id="静态程序分析"><a href="#静态程序分析" class="headerlink" title="静态程序分析"></a>静态程序分析</h1><h2 id="intermideate-representation"><a href="#intermideate-representation" class="headerlink" title="intermideate representation"></a>intermideate representation</h2><p>不同的中间表示适用于不同的静态分析</p>
+<h2 id="Reaching-Definitions-Analysis"><a href="#Reaching-Definitions-Analysis" class="headerlink" title="Reaching Definitions Analysis"></a>Reaching Definitions Analysis</h2><ul>
+<li><strong>Reaching Definitions(到达定值)</strong><br>我们可以定值理解为任何修改一个变量的操作, 比如赋值, 自加, 函数调用等等<br>在程序流图中, 任何一个位置我们可以当作<strong>程序点(program point)</strong>, 能够到达这个位置产生作用的定值我们称为<strong>到达定值</strong><br>一个定值会<strong>kill(杀死)</strong> 所有之前的其他相同变量的定值</li>
+</ul>
+<h3 id="到达定值的表示"><a href="#到达定值的表示" class="headerlink" title="到达定值的表示"></a>到达定值的表示</h3><p>我们使用一个01向量来表示一个到达定值是否被杀死:</p>
+<p>$(01001010011)$</p>
+<p>每存在一个reaching definition就有一个01位</p>
+<h3 id="到达定值的转移方程"><a href="#到达定值的转移方程" class="headerlink" title="到达定值的转移方程"></a>到达定值的转移方程</h3><p>$$<br>\begin{aligned}<br>\text{in}[n] &amp;&#x3D; \bigcup_{p \in pred[n]} \text{out}[p] \<br>\text{out}[n] &amp;&#x3D; \text{gen}[n] \cup (\text{in}[n] - \text{kill}[n])<br>\end{aligned}<br>$$</p>
+<p>前者表示基本上一个程序点的输出是下一个程序点的输入, 多个程序点的输出取并集后作为输入</p>
+<p>后者表示一个程序点的输出是其自身的定值加上输入中没有被杀死的定值</p>
+<h3 id="到达定值的迭代算法-Iterative-Algorithm"><a href="#到达定值的迭代算法-Iterative-Algorithm" class="headerlink" title="到达定值的迭代算法 (Iterative Algorithm)"></a>到达定值的迭代算法 (Iterative Algorithm)</h3><p>设定所有的$OUT$为空, 然后通过转移方程对每一个基本块进行迭代, 直到所有的$IN$和$OUT$都不再变化</p>
+<hr>
+<h2 id="活跃变量分析"><a href="#活跃变量分析" class="headerlink" title="活跃变量分析"></a>活跃变量分析</h2><p>活跃变量分析可以看作到达定值分析的逆向版本</p>
+<p>一个变量可以找到一条到达某个使用该变量的路径, 我们则称之为活跃变量</p>
+<h3 id="活跃变量的转移方程"><a href="#活跃变量的转移方程" class="headerlink" title="活跃变量的转移方程"></a>活跃变量的转移方程</h3><p>$$<br>\begin{aligned}<br>\text{in}[n] &amp;&#x3D; \text{use}[n] \cup (\text{out}[n] - \text{def}[n]) \<br>\text{out}[n] &amp;&#x3D; \bigcup_{s \in succ[n]} \text{in}[s]<br>\end{aligned}<br>$$</p>
+<hr>
+<h2 id="可用表达式的分析"><a href="#可用表达式的分析" class="headerlink" title="可用表达式的分析"></a>可用表达式的分析</h2><p>可用表达式分析用于分析一个表达式是否在某个程序点之前已经被计算过, 如果是, 则可以直接使用之前的计算结果</p>
+<h3 id="可用表达式的转移方程"><a href="#可用表达式的转移方程" class="headerlink" title="可用表达式的转移方程"></a>可用表达式的转移方程</h3><p>$$<br>\begin{aligned}<br>\text{in}[n] &amp;&#x3D; \bigcap_{p \in pred[n]} \text{out}[p] \<br>\text{out}[n] &amp;&#x3D; \text{gen}[n] \cup (\text{in}[n] - \text{kill}[n])<br>\end{aligned}<br>$$</p>
+<p>BB中的$kill$和$gen$不变, 但是控制流的并集变成了交集, 表示只有每一条路径都有计算这个表达式, 才能在这个BB中使用这个表达式</p>
+<p>此处的$kill$和$gen$和到达定值有所不同, 这里由于分析对象是表达式, 所以$kill$一个表达式需要的是表达式中的变量被修改, 同时产生新的表达式</p>
+<hr>
+<p>下面是对于数据流分析框架的抽象总结, 需要离散数学 (抽象代数) 的基础</p>
+<p>为此我们依次记录以下需要掌握的关键点:</p>
+<h2 id="数学前置"><a href="#数学前置" class="headerlink" title="数学前置"></a>数学前置</h2><ul>
+<li>偏序集和全序集</li>
+<li>对应的UB(upper bound)和LB(lower bound)</li>
+<li>格: 任意两个元素都有上下界的偏序集</li>
+<li>全格: 任意集合都有上下界的偏序集</li>
+<li>半格: 任意两个元素都只有上界或者下界的偏序集</li>
+</ul>
+<h2 id="不动点定理"><a href="#不动点定理" class="headerlink" title="不动点定理"></a>不动点定理</h2><p>对于一个全格, 如果存在函数$f$满足:<br>$$<br>x \lt y \Rightarrow f(x) \lt f(y)<br>$$</p>
+<p>那么我们称函数$f$满足单调性</p>
+<p>对于一个全格我们可以得到最大下界$\bot$和最小上界$\top$</p>
+<p>如果我们对这个值进行迭代, $f^k(\bot)$终能找到一个$k$满足$f^k(\bot) &#x3D; f^{k+1}(\bot)$, 我们称这个值为不动点</p>
+<h2 id="程序状态可以看作半格"><a href="#程序状态可以看作半格" class="headerlink" title="程序状态可以看作半格"></a>程序状态可以看作半格</h2><p>首先我们以到达定值为例子, 到达定值的程序状态是集合, 集合间存在偏序关系, 我们可以将其进一步抽象为半格:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[1,2,3] --&gt; B[1,2]</span><br><span class="line">    A[1,2,3] --&gt; C[1,3]</span><br><span class="line">    A[1,2,3] --&gt; D[2,3]</span><br><span class="line">    B[1,2] --&gt; E[1]</span><br><span class="line">    B[1,2] --&gt; F[2]</span><br><span class="line">    C[1,3] --&gt; G[1]</span><br><span class="line">    C[1,3] --&gt; H[3]</span><br><span class="line">    D[2,3] --&gt; I[2]</span><br><span class="line">    D[2,3] --&gt; J[3]</span><br><span class="line">    E --&gt; K[ ]</span><br><span class="line">    F --&gt; K[ ]</span><br><span class="line">    G --&gt; K[ ]</span><br><span class="line">    H --&gt; K[ ]</span><br><span class="line">    I --&gt; K[ ]</span><br><span class="line">    J --&gt; K[ ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>按照上面的图例, 我们对于一个函数$f$满足单调性, 则对于$f({1,2,3})$总能找到一个不动点</p>
+<p>所以迭代算法终会收敛</p>
+<h2 id="MOP-Meet-Over-All-Paths-solution"><a href="#MOP-Meet-Over-All-Paths-solution" class="headerlink" title="MOP(Meet-Over-All-Paths solution)"></a>MOP(Meet-Over-All-Paths solution)</h2><p>这种算法和迭代算法不太一样</p>
+<p>迭代算法每次迭代对全部节点进行更新, 直到没有节点改变为止, 但是MOP算法每次迭代只对一个节点进行更新, 直到所有节点都更新完毕</p>
+<p>具体来说, MOP算法会计算出到达一个节点的所有路径, 并将结果进行meet操作</p>
+<p>$$<br>\text{out}[n] &#x3D; \underset{p \in pred[n]}{\mathop{\bigcap &#x2F; \bigcup}} F(\text{in}[p])<br>$$</p>
+<p>将每个到达该程序点的路径进行meet操作, 得到该程序点的输出</p>
+<p>迭代算法和MOP算法的区别可以用下面的式子理解:</p>
+<p>迭代算法:<br>$$<br>\text{out}[n] &#x3D; F(x \cup y)<br>$$</p>
+<p>MOP算法:<br>$$<br>\text{out}[n] &#x3D; F(x) \cup F(y)<br>$$</p>
+<p>这就要求函数$F$满足可分配性:<br>$$<br>F(x \cup y) &#x3D; F(x) \cup F(y)<br>$$</p>
+<p>然而不是所有的数据流分析框架都有这个性质, 常量传播框架就不存在此性质</p>
+<hr>
+<h2 id="常量传播"><a href="#常量传播" class="headerlink" title="常量传播"></a>常量传播</h2><p>TODO</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/07/21/compiler/staticProgramAnalysis/" data-id="clkwkwsga0032k8uv1yfbd5zt" data-title="静态程序分析" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" rel="tag">静态分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-essay/2023-7-21" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/07/21/essay/2023-7-21/" class="article-date">
+  <time class="dt-published" datetime="2023-07-20T16:00:00.000Z" itemprop="datePublished">2023-07-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>►<a class="article-category-link" href="/categories/%E9%9A%8F%E7%AC%94/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/07/21/essay/2023-7-21/">对数据流分析的一点理解总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>由于是理解和心得是会随着时间的变化而改变的, 本文只是初学时的想法整理</p>
+<h2 id="About-program-state"><a href="#About-program-state" class="headerlink" title="About program state"></a>About program state</h2><p>程序状态包括了运行时栈和堆, 寄存器等储存设备, 所有的数据信息的总和构成了程序某一时刻的状态</p>
+<p>每一段的intermediate-code statement都会对程序状态产生影响, 我们可以看作一个将状态输入, 输出为新状态的函数:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A((state 1)) --&gt; B[code]</span><br><span class="line">B --&gt; C((state 2))</span><br></pre></td></tr></table></figure>
+
+<p>其中的$state_1$和$state_2$的位置我们都可以看作一个program point</p>
+<p>我们只从状态的众多要素中提取其中我们关注的那一部分, 来作为我们的数据流分析的对象</p>
+<p>我们将这些状态抽象为data-flow value:<br>$$<br>OUT[s]<br>\<br>IN[s]<br>$$</p>
+<p>对于每个statement, 我们为其抽象出一个transfer function(转移函数)来表达状态的改变:</p>
+<p>$$<br>OUT[s] &#x3D; f(IN[s])\<br>IN[s] &#x3D; g(OUT[s])<br>$$<br>前者我们称为正向分析, 后者我们称为逆向分析</p>
+<p>如果产生了多个输出作为一个输入的路径的话, 我们需要根据具体的情况选择处理方式. 一般而言, 我们可以使用求并的方式来直接合并状态:</p>
+<p>$$<br>OUT[s] &#x3D; \bigcup_{p \in pred[s]} IN[p]<br>$$</p>
+<p>只关注每个程序点$p_i$的话, 我们一般将其理解为所谓的<strong>数据流</strong><br>而转移方程以及BB(basic block)我们可以理解为控制流的一部分</p>
+<p>准确来说, 控制流是程序执行的走向, 而数据流是数据的传递和改变走向</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/07/21/essay/2023-7-21/" data-id="clkwkwsh0007ck8uv7hsg8fbq" data-title="对数据流分析的一点理解总结" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" rel="tag">数据流分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/CH9-MechineDependentOptimism" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/07/10/compiler/CH9-MechineDependentOptimism/" class="article-date">
+  <time class="dt-published" datetime="2023-07-09T16:00:00.000Z" itemprop="datePublished">2023-07-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/07/10/compiler/CH9-MechineDependentOptimism/">机器无关优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>数据流分析是这一章前半部分的重要内容, 包含了数据流分析初步:</p>
+<ul>
+<li>到达定值分析</li>
+<li>活跃变量分析</li>
+<li>可用表达式分析</li>
+</ul>
+<p>然后介绍了数据流分析的抽象框架, 介绍了迭代算法和MOP算法的差异, 然后引入了<strong>不可分配</strong>的数据流分析框架——常量传播</p>
+<p>然后是冗余代码消除, 这一部分也主要是数据流分析的应用, 相关的内容会单独放到各个静态分析的笔记中记录.</p>
+<hr>
+<h1 id="Loop-in-the-flow-graph"><a href="#Loop-in-the-flow-graph" class="headerlink" title="Loop in the flow graph"></a>Loop in the flow graph</h1><h2 id="Dominator-支配节点"><a href="#Dominator-支配节点" class="headerlink" title="Dominator(支配节点)"></a>Dominator(支配节点)</h2><p>我们称节点<code>n</code>支配了节点<code>m</code>当且仅当, 从入口到<code>m</code>的所有路径都必须经过<code>n</code></p>
+<p>寻找一个每个节点的dominator使用以下数据流框架:</p>
+<p><img src="/image/compiler/5.png" alt="5"></p>
+<p>现在我们考虑CFG中的边</p>
+<h3 id="DFST"><a href="#DFST" class="headerlink" title="DFST"></a>DFST</h3><p>深度优先生成树(Depth First Spanning Tree)是按照深度优先搜索生成的树, 并且按照搜索顺序给与每个节点一个编号(时间戳)</p>
+<h3 id="Deep-first-Order"><a href="#Deep-first-Order" class="headerlink" title="Deep-first Order"></a>Deep-first Order</h3><p>深度优先序是后序优先遍历的reverse</p>
+<h3 id="Retreating-Edge"><a href="#Retreating-Edge" class="headerlink" title="Retreating Edge"></a>Retreating Edge</h3><p>如果一条边$n -&gt; m$是一条回退边, 那么有$dfn(n) &gt; dfn(m)$</p>
+<p>我们可知$dfn$较大者说明先搜索完成, 比较靠近叶子方向</p>
+<h3 id="back-edge"><a href="#back-edge" class="headerlink" title="back edge"></a>back edge</h3><p>back edge和retreating edge的定义有所不同:</p>
+<ul>
+<li>retreating edge: 是在$dfn$的层面上指向祖先的节点</li>
+<li>back edge: 是在dominate的层面上指向dominator</li>
+</ul>
+<p>我们可以知道, back edge一定是retreating edge, 但是retreating edge不一定是back edge</p>
+<p>如果一个CFG中的全部retreating edge都是back edge, 那么我们称这个CFG是<strong>reducible(可约)</strong> 的</p>
+<h3 id="depth-of-the-CFG"><a href="#depth-of-the-CFG" class="headerlink" title="depth of the CFG"></a>depth of the CFG</h3><p>CFG中最大的无环(acyclic)的路径的长度称为这条路径的深度<br>这个深度是独立于实际所选的DFST的</p>
+<h3 id="Natural-Loop"><a href="#Natural-Loop" class="headerlink" title="Natural Loop"></a>Natural Loop</h3><p>自然循环具有以下两个性质:</p>
+<ul>
+<li>具有唯一入口点节点, 称为循环头(header), 它必须支配循环中所有节点</li>
+<li>必然存在一条进入header的back edge</li>
+</ul>
+<h3 id="迭代数据流算法的收敛速度"><a href="#迭代数据流算法的收敛速度" class="headerlink" title="迭代数据流算法的收敛速度"></a>迭代数据流算法的收敛速度</h3><p>这一部分主要是在论述迭代算法的收敛速度</p>
+<p>我们之前已经给程序画出了DFST, 根据DFST我们可以给出每个节点的dfn<br>如果我们每轮迭代都按照dfn的顺序进行, 那么我们可以保证数据流<strong>从低到高</strong>传递, 如果一个数据从高dfn传递到了低dfn, 那么我们可以得知数据通过某条retreating edge传递, 想要让它到达应该到达的位置需要进行下一轮迭代</p>
+<p>于是我们可以得知迭代轮数为CFG的深度加一 (需要一轮不修改任何值的迭代来检测)</p>
+<hr>
+<p>第一部分我们建立了关于CFG中对于循环的基本模型, 接下来基于之前的循环模型, 我们建立起<strong>基于区域</strong>的数据流分析</p>
+<p>TODO</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/07/10/compiler/CH9-MechineDependentOptimism/" data-id="clkwkwsga0030k8uvguckb8kp" data-title="机器无关优化" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/CH8-CodeGeneration" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/06/30/compiler/CH8-CodeGeneration/" class="article-date">
+  <time class="dt-published" datetime="2023-06-29T16:00:00.000Z" itemprop="datePublished">2023-06-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/06/30/compiler/CH8-CodeGeneration/">代码生成</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本文不具有教程科普的性质, 只是个人学习过程中的理解记录</p>
+<hr>
+<p>在得到中间代码以后, 我们可以优化中间代码, 并生成目标代码(一般为汇编代码), 最后通过汇编器生成目标程序</p>
+<p>而优化中间代码并生成目标代码部分我们称为后端, 是我们编译器的最后一个阶段</p>
+<hr>
+<p>代码生成(code generation)包含以下几个重要的部分:</p>
+<ul>
+<li>instruction selection: 选择指令</li>
+<li>register allocation: 寄存器分配</li>
+<li>register assignment: 赋值</li>
+<li>instruction order: 指令排序</li>
+</ul>
+<h2 id="instruction-selection"><a href="#instruction-selection" class="headerlink" title="instruction selection"></a>instruction selection</h2><p>我们需要为对应的中间代码选择合适的指令来完成相应的操作</p>
+<p>比如我们需要计算一个表达式<code>a = b + c</code>, 我们需要选择<code>add</code>指令来完成加法运算, 而在此之前我们需要将<code>b</code>和<code>c</code>的值分别存入寄存器中, 这又需要选择<code>load</code>指令</p>
+<h2 id="register-allocation"><a href="#register-allocation" class="headerlink" title="register allocation"></a>register allocation</h2><p>寄存器的分配是一个复杂的问题, 我们可用的寄存器一般是有限的, 而寄存器中的数据对于CPU来说又可以更快访问, 我们需要选择适合的数据存入寄存器中</p>
+<h2 id="register-assignment"><a href="#register-assignment" class="headerlink" title="register assignment"></a>register assignment</h2><p>选择了要存储的数据, 还需要选择存储的寄存器, 如果寄存器还有空余, 直接存取就行了, 但是如果寄存器满了, 我们就需要选择一个寄存器将其内容存入内存中, 然后再将新的数据存入寄存器中</p>
+<h2 id="instruction-order"><a href="#instruction-order" class="headerlink" title="instruction order"></a>instruction order</h2><p>有些指令可以优化或者更改顺序, 但是有些指令是不能的, 具体细节和规则都将在下面讨论</p>
+<hr>
+<h2 id="retargetable-compiler"><a href="#retargetable-compiler" class="headerlink" title="retargetable compiler"></a>retargetable compiler</h2><p>可以从多个指令集生成目标程序的编译器</p>
+<h2 id="Virtual-Machine"><a href="#Virtual-Machine" class="headerlink" title="Virtual Machine"></a>Virtual Machine</h2><p>虚拟机, 把字节码实时翻译成机器码运行, 称为即使编译器(just-in-time compiler)</p>
+<h2 id="CISC-and-RISC"><a href="#CISC-and-RISC" class="headerlink" title="CISC and RISC"></a>CISC and RISC</h2><ul>
+<li>CISC: 一般使用两地址码, 以及更复杂的寻址模式</li>
+<li>RISC: 一般使用三地址码</li>
+</ul>
+<hr>
+<h2 id="如何进行寄存器分配"><a href="#如何进行寄存器分配" class="headerlink" title="如何进行寄存器分配"></a>如何进行寄存器分配</h2><p>我们将中间代码表示为一个flow graph, 每个节点表示一个basic block, basic block是由程序的控制流来分割的: 一个basic block的入口只有一个, 一个basic block的出口也只有一个, 除了最后一个basic block, 其余的basic block的出口都是下一个basic block的入口</p>
+<p>分割规则如下:</p>
+<ul>
+<li>if语句分割: 从if处分割基本块, 一般包含then和else两个基本块</li>
+<li>循环语句分割: 循环语句的出口连接自己的入口, 并且连接跳出循环后的部分</li>
+</ul>
+<p>比如以下代码:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">\\ block1</span><br><span class="line"></span><br><span class="line"><span class="title function_">if</span> <span class="params">(a &gt; <span class="number">0</span>)</span> &#123;</span><br><span class="line">    b = a + <span class="number">1</span>;</span><br><span class="line">    \\ block2</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    b = a - <span class="number">1</span>;</span><br><span class="line">    \\ block3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以将其分割为以下几个基本块:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[entry] --&gt; B[block1]</span><br><span class="line">    B --&gt; C[block2]</span><br><span class="line">    B --&gt; D[block3]</span><br><span class="line">    C --&gt; E[exit]</span><br><span class="line">    D --&gt; E</span><br></pre></td></tr></table></figure>
+
+<p>然后我们在基本块的出口和入口处按照以下规则标记变量:</p>
+<ul>
+<li>如果一个变量在基本块中没有被改变(赋值)就被使用了, 那么我们认为这个变量在这个基本块中活跃, 我们将其标记在基本块入口</li>
+<li>在出口处连接的所有入口处标记的变量的并集, 我们认为这些变量在出口处活跃, 我们将其标记在基本块出口</li>
+</ul>
+<p>使用一个全局寄存器(这里的全局指的是全部的基本块)可以让位于<strong>入口</strong>处的变量减少读取的成本, 可以让位于<strong>出口</strong>的变量减少写回内存和重新读取的成本</p>
+<h3 id="Ershov数"><a href="#Ershov数" class="headerlink" title="Ershov数"></a>Ershov数</h3><p>Ershov数是用于计算表达式需要的寄存器数的一种方法</p>
+<p>现在假设我们已经有一个表达式树, 现在我们按照以下规则计算:</p>
+<ul>
+<li>所有叶子节点标号为0</li>
+<li>只有一个子节点的节点标号与子节点相同</li>
+<li>有两个子节点标号不同, 则其标号为较大子节点的标号</li>
+<li>有两个子节点标号相同, 则其标号为子节点的标号加1</li>
+</ul>
+<p>最后根节点的值就是计算表达式需要的寄存器数量, 在计算过程中如果寄存器数量不足, 我们需要将一些变量存到内存中, 在需要时再加载回来</p>
+<h3 id="使用DP来生成表达式代码"><a href="#使用DP来生成表达式代码" class="headerlink" title="使用DP来生成表达式代码"></a>使用DP来生成表达式代码</h3><p>我们可以使用DP来生成子表达式的最优代码, 然后再生成整个表达式的最优代码</p>
+<p>对于每个子树使用不同数量的寄存器计算, 代价花费是不同的</p>
+<hr>
+<h2 id="代码的简化"><a href="#代码的简化" class="headerlink" title="代码的简化"></a>代码的简化</h2><h3 id="表达式化简"><a href="#表达式化简" class="headerlink" title="表达式化简"></a>表达式化简</h3><p>DAG图可以用于表示程序的表达式, 并进行相应的优化</p>
+<p>比如以下的代码:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = b + c;</span><br><span class="line">b = b - d;</span><br><span class="line">c = c + d;</span><br><span class="line">e = b + c;</span><br></pre></td></tr></table></figure>
+
+<p>我们将其表示为DAG图:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    +:e --&gt; -:b</span><br><span class="line">    +:e --&gt; +:c</span><br><span class="line">    +:a --&gt; b0</span><br><span class="line">    +:a --&gt; c0</span><br><span class="line">    -:b --&gt; b0</span><br><span class="line">    -:b --&gt; d0</span><br><span class="line">    +:c --&gt; c0</span><br><span class="line">    +:c --&gt; d0</span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>d0, b0, c0</code>表示在被赋值前的变量</p>
+<p>从上到下, 如果某个根节点在后续并没有被用到, 我们就将其视为<strong>死代码(dead code)</strong>, 可以将其删除</p>
+<p>如果两个变量的计算表达式相同, 可以使用同一个节点表示, 从而化简代码, 比如:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = b + c;</span><br><span class="line">b = a - d;</span><br><span class="line">c = b + c;</span><br><span class="line">d = a - d;</span><br></pre></td></tr></table></figure>
+
+<p>化为DAG:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    +:a --&gt; b0</span><br><span class="line">    +:a --&gt; c0</span><br><span class="line">    -:b --&gt; +:a</span><br><span class="line">    -:b --&gt; d0</span><br><span class="line">    +:c --&gt; -:b</span><br><span class="line">    +:c --&gt; c0</span><br><span class="line">    -:d --&gt; +:a</span><br><span class="line">    -:d --&gt; d0</span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>-:b</code>和<code>-:d</code>可以合并为一个节点, 从而化简代码:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    +:a --&gt; b0</span><br><span class="line">    +:a --&gt; c0</span><br><span class="line">    -:bd --&gt; +:a</span><br><span class="line">    -:bd --&gt; d0</span><br><span class="line">    +:c --&gt; -:bd</span><br><span class="line">    +:c --&gt; c0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Peephole优化"><a href="#Peephole优化" class="headerlink" title="Peephole优化"></a>Peephole优化</h3><p>窥孔优化</p>
+<p>我们使用一个窗口, 从上至下扫描代码, 对于代码中出现的特定结构进行优化, 就称为窥孔优化, 这种优化可以优化表达式以外的更多代码语句</p>
+<p>其中的优化包括了:</p>
+<ul>
+<li>冗余指令删除</li>
+<li>控制流优化</li>
+<li>代数化简</li>
+<li>机器特有指令使用</li>
+</ul>
+<hr>
+<h2 id="代码生成的顺序"><a href="#代码生成的顺序" class="headerlink" title="代码生成的顺序"></a>代码生成的顺序</h2><p>我们构造DAG中有<code>a</code>和<code>a0</code>, 其中的<code>a0</code>表示<code>a</code>在被赋值前的值, 所以在<code>a</code>的赋值语句之后, 新的<code>a</code>节点取代了<code>a0</code>节点, 我们称<code>a0</code>节点被<strong>杀死</strong>了</p>
+<p>这里需要特别注意的是指针的使用:</p>
+<ul>
+<li>在<code>=*</code>之前的所有值都要当作被<code>=*</code>操作使用过, 这影响到死代码消除</li>
+<li><code>*=</code>会<strong>杀死</strong>所有的之前的节点</li>
+</ul>
+<p>由于数组和指针有着相似原理, 所以:</p>
+<ul>
+<li><code>[]=</code>会杀死所有的<code>=[]</code>的节点</li>
+</ul>
+<hr>
+<h2 id="代码的生成"><a href="#代码的生成" class="headerlink" title="代码的生成"></a>代码的生成</h2><p>讨论过寄存器的分配, 代码化简和生成顺序后, 代码可以按照基本块来生成</p>
+<p>此外, 我们通过为每个寄存器维护一个表, 我们称为Register Descriptor(寄存器描述符), 用来表示有哪些变量的值可以用这个寄存器来表示</p>
+<p>相对的, 我们也为每个变量维护一个表, 我们称为Address Descriptor(地址描述符), 用来表示这个变量的值可以在哪些寄存器获得</p>
+<h3 id="通过树生成代码"><a href="#通过树生成代码" class="headerlink" title="通过树生成代码"></a>通过树生成代码</h3><p>我们通过解析代码树中的某些结构, 来生成对应的代码, 其中解析树可以使用前缀表达式来表示, 于是这最后变成了一个SDT的问题, 我们需要制定相应的语法制导方案</p>
+<hr>
+<h2 id="局部代码优化和全局代码优化"><a href="#局部代码优化和全局代码优化" class="headerlink" title="局部代码优化和全局代码优化"></a>局部代码优化和全局代码优化</h2><p>以上的表达式化简, 窥孔优化, 寄存器分配优化都是基于局部的代码优化, 也就是只是在basic block中进行的优化</p>
+<p>在第九章中将进行全局代码优化的讨论, 全局代码优化是在完成了局部代码优化后, 对整个程序进行优化</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/06/30/compiler/CH8-CodeGeneration/" data-id="clkwkwsg9002xk8uv5un8ce05" data-title="代码生成" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/CH7-Environment" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/06/26/compiler/CH7-Environment/" class="article-date">
+  <time class="dt-published" datetime="2023-06-25T16:00:00.000Z" itemprop="datePublished">2023-06-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/06/26/compiler/CH7-Environment/">运行时环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="stack-and-heap"><a href="#stack-and-heap" class="headerlink" title="stack and heap"></a>stack and heap</h3><p>堆栈, 无需解释</p>
+<h3 id="activation-record"><a href="#activation-record" class="headerlink" title="activation record"></a>activation record</h3><p>活动记录表, 过程调用中保存的堆栈信息, 我们称为活动记录表, 也称为栈帧</p>
+<p>书中描述的完整结构如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Bottom</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Actual parameters</td>
+</tr>
+<tr>
+<td align="center">Returned value</td>
+</tr>
+<tr>
+<td align="center">Control link</td>
+</tr>
+<tr>
+<td align="center">Access link</td>
+</tr>
+<tr>
+<td align="center">Saved machine status</td>
+</tr>
+<tr>
+<td align="center">Local datas</td>
+</tr>
+<tr>
+<td align="center">Temporaries</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Actual parameters: 调用使用的参数</li>
+<li>Returned value: 返回值的预留空间</li>
+<li>Control link: 指向调用者的活动记录表</li>
+<li>Access link: 指向被调用过程需要用到的, 但是存在于其他activation record中的数据</li>
+<li>Saved machine status: 保存机器状态, 如寄存器, 程序计数器等</li>
+<li>Local datas: 被调用过程的局部变量</li>
+<li>Temporaries: 临时变量, 比如循环中创建声明的那些变量</li>
+</ul>
+<h3 id="activation-tree"><a href="#activation-tree" class="headerlink" title="activation tree"></a>activation tree</h3><p>激活树, 其实就是函数调用的DFA过程</p>
+<h3 id="display"><a href="#display" class="headerlink" title="display"></a>display</h3><p>展示表, 在函数可嵌套的语言里, 向上找对应函数的作用域是费时的, 所以使用一个display表来储存每个嵌套深度中的函数活动表的链表</p>
+<hr>
+<h3 id="heap-management"><a href="#heap-management" class="headerlink" title="heap management"></a>heap management</h3><p>堆管理没什么好说的, 关于空闲内存的管理和合并, 以及对于内存的分配都已经在操作系统和CSAPP中看过很多了</p>
+<h3 id="garbage-collection"><a href="#garbage-collection" class="headerlink" title="garbage collection"></a>garbage collection</h3><p>垃圾回收</p>
+<h3 id="type-safety"><a href="#type-safety" class="headerlink" title="type safety"></a>type safety</h3><p>类型安全是保证能适用垃圾回收的重要条件, 一个数据中每一部分的组成都是确定的, 我们称为类型安全, 像是java的内存是运行时动态分配的, 并不是编译时决定的, 但是运行时的分配的数据始终有唯一的类型, 所以是类型安全的</p>
+<p>但是C++对于已经分配的内存可以使用不同的指针来进行操作, 是不安全的</p>
+<p>不过只要不乱用指针, C++也是可以使用一些并不健壮(unsound)的垃圾回收机制的</p>
+<h3 id="reference-counting"><a href="#reference-counting" class="headerlink" title="reference counting"></a>reference counting</h3><p>引用计数, 为每个对象维护一个引用计数器, 每当有一个指针指向这个对象时, 计数器加一, 指针指向其他对象时, 计数器减一, 当计数器为0时, 说明这个对象没有被引用, 可以被回收</p>
+<h3 id="root-set"><a href="#root-set" class="headerlink" title="root set"></a>root set</h3><p>根集, 包括了所有的全局变量, 静态变量, 寄存器中的变量, 以及栈中的变量, 这些变量是不能被回收的, 所以作为reference的起点</p>
+<h3 id="defered-reference-counting"><a href="#defered-reference-counting" class="headerlink" title="defered reference counting"></a>defered reference counting</h3><p>延期引用计数, 在引用为0时并不立即回收, 而是等到需要的时候统一进行回收计算</p>
+<h3 id="mark-and-sweep"><a href="#mark-and-sweep" class="headerlink" title="mark and sweep"></a>mark and sweep</h3><p>标记, 扫描, 清除</p>
+<p>其中一种优化避免扫描整个heap区域, 而是通过集合运算, 从分配的空间中减去可达的空间, 得到不可达空间</p>
+<h3 id="mark-and-compact"><a href="#mark-and-compact" class="headerlink" title="mark and compact"></a>mark and compact</h3><p>扫描出的可达数据重新分配到heap的同一端, 从而保证可达数据在一块, 可分配空间在一块</p>
+<h3 id="copying-collector"><a href="#copying-collector" class="headerlink" title="copying collector"></a>copying collector</h3><p>将heap分为两块, 其中一块用于分配, 当空间满时, 将其中的可达数据全部复制到另一半heap中, 从而获得更多可用空间</p>
+<h3 id="short-pause-collector"><a href="#short-pause-collector" class="headerlink" title="short-pause collector"></a>short-pause collector</h3><p>以上几种方式都需要花耗较长的时间来完成GC, 以下提出的几种方式可以减少GC的暂停时间</p>
+<h3 id="incremental-collector"><a href="#incremental-collector" class="headerlink" title="incremental collector"></a>incremental collector</h3><p>增量式GC将上面的GC需要操作的过程分成几个部分, 分别插入(interleave)到mutator的不同位置, 从而将GC花耗的时间amortize到整个程序的运行中</p>
+<h3 id="partial-collector"><a href="#partial-collector" class="headerlink" title="partial collector"></a>partial collector</h3><p>只对heap中的一部分进行GC, 从而减少每次暂停的时间</p>
+<p>具体的包括了:</p>
+<ul>
+<li>generational collection: 将heap分为几代, 每次只对最新的几代进行GC</li>
+<li>train collection: 将heap分为几个车厢, 每次只对一个车厢进行GC</li>
+</ul>
+<p>GC中值得注意的是:</p>
+<ul>
+<li>需要注意增量式GC中, mutator使得某些对象的引用改变, 从而使得对象无法被扫描到</li>
+<li>需要注意在火车算法中, 可能出现无限创建新车厢的情况, 从而导致GC无法完成</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/06/26/compiler/CH7-Environment/" data-id="clkwkwsg9002vk8uve0es412d" data-title="运行时环境" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/CH6-IR-Generation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/05/25/compiler/CH6-IR-Generation/" class="article-date">
+  <time class="dt-published" datetime="2023-05-24T16:00:00.000Z" itemprop="datePublished">2023-05-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/05/25/compiler/CH6-IR-Generation/">中间代码生成</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Three-Address-Code"><a href="#Three-Address-Code" class="headerlink" title="Three-Address Code"></a>Three-Address Code</h2><p>三地址码, 包含若干种形式:</p>
+<ul>
+<li><code>x = y op z</code></li>
+<li><code>x = y</code></li>
+<li><code>x = op y</code></li>
+<li><code>x = *y</code></li>
+<li><code>*x = y</code></li>
+<li><code>x = &amp;y</code></li>
+<li><code>goto L</code></li>
+<li><code>if x goto L</code></li>
+<li><code>ifFalse x goto L</code></li>
+<li><code>param x</code></li>
+<li><code>x = call y</code></li>
+<li><code>x = y [z]</code></li>
+</ul>
+<h2 id="DAG"><a href="#DAG" class="headerlink" title="DAG"></a>DAG</h2><p>Directed Acyclic Graph, 有向无环图, 可以表示表示三地址码:</p>
+<p><code>a + a * c + (b - c) - (b - c)</code></p>
+<p>以此为例构建三地址码:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t1 = a * c</span><br><span class="line">t2 = a + t1</span><br><span class="line">t3 = b - c</span><br><span class="line">t4 = t2 + t3</span><br><span class="line">t5 = t4 - t3</span><br></pre></td></tr></table></figure>
+
+<p>同时构造DAG:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    -_2 --&gt; +_1</span><br><span class="line">    -_2 --&gt; -_1</span><br><span class="line">    +_1 --&gt; +_2</span><br><span class="line">    +_1 --&gt; -_1</span><br><span class="line">    +_2 --&gt; a</span><br><span class="line">    +_2 --&gt; *</span><br><span class="line">    * --&gt; a</span><br><span class="line">    * --&gt; c</span><br><span class="line">    -_1 --&gt; b</span><br><span class="line">    -_1 --&gt; c</span><br></pre></td></tr></table></figure>
+
+<p>主要理念就是相同的三地址码, 可以能够重复用来表示代码</p>
+<h2 id="quadruples"><a href="#quadruples" class="headerlink" title="quadruples"></a>quadruples</h2><p>四元式, 用来直接表示三地址码</p>
+<table>
+<thead>
+<tr>
+<th align="center">op</th>
+<th align="center">arg1</th>
+<th align="center">arg2</th>
+<th align="center">result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">+</td>
+<td align="center">a</td>
+<td align="center">c</td>
+<td align="center">t1</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="center">a</td>
+<td align="center">t1</td>
+<td align="center">t2</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">b</td>
+<td align="center">c</td>
+<td align="center">t3</td>
+</tr>
+</tbody></table>
+<p>类似以上结构, 直接储存三地址码</p>
+<h2 id="Triples"><a href="#Triples" class="headerlink" title="Triples"></a>Triples</h2><p>三元式, 用类似于DAG的变量复用模式来构建表</p>
+<table>
+<thead>
+<tr>
+<th align="center">line</th>
+<th align="center">op</th>
+<th align="center">arg1</th>
+<th align="center">arg2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">*</td>
+<td align="center">a</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">+</td>
+<td align="center">a</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">-</td>
+<td align="center">b</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">+</td>
+<td align="center">2</td>
+<td align="center">3</td>
+</tr>
+</tbody></table>
+<p>类似以上结构, 数字表示行号, 进行变量的引用<br>使用行号在进行编译器优化时有明显的不便: 当移动修改代码时, 行号就改变了, 所以通过建立映射表的方式来解决</p>
+<h2 id="Indirect-Triples"><a href="#Indirect-Triples" class="headerlink" title="Indirect Triples"></a>Indirect Triples</h2><p>间接三元式</p>
+<table>
+
+<th>
+
+<table>
+<thead>
+<tr>
+<th align="center">line</th>
+<th align="center">pointer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">66</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">67</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">78</td>
+<td align="center">3</td>
+</tr>
+</tbody></table>
+</th>
+
+<th>
+
+<table>
+<thead>
+<tr>
+<th align="center">op</th>
+<th align="center">arg1</th>
+<th align="center">arg2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">*</td>
+<td align="center">a</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">+</td>
+<td align="center">a</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">b</td>
+<td align="center">c</td>
+</tr>
+<tr>
+<td align="center">+</td>
+<td align="center">2</td>
+<td align="center">3</td>
+</tr>
+</tbody></table>
+</th>
+
+</table>
+
+<h2 id="static-single-assignment"><a href="#static-single-assignment" class="headerlink" title="static single assignment"></a>static single assignment</h2><p>静态单赋值, 简而言之就是三地址码中的每个变量都表示为单独的变量, 以便于编译器的某些优化</p>
+<hr>
+<h2 id="Incremental-Code-Generation"><a href="#Incremental-Code-Generation" class="headerlink" title="Incremental Code Generation"></a>Incremental Code Generation</h2><p>增量代码生成: 通过生成新的三地址码, 来避免使用很长的字符串属性</p>
+<h2 id="type-checking"><a href="#type-checking" class="headerlink" title="type checking"></a>type checking</h2><ul>
+<li>sound type system: 这里的sound表示健全的意思</li>
+<li>strongly typed language: 强类型语言</li>
+</ul>
+<h3 id="synthesis-inference"><a href="#synthesis-inference" class="headerlink" title="synthesis, inference"></a>synthesis, inference</h3><p>两者是类型检查的方式:</p>
+<ul>
+<li>类型综合:<br>通过在翻译方案中制定规则, 使得不同的类型之间的组合得到指定的类型:<br><code>int = int + int</code>, <code>float = int + float</code>, 像这样的规则就是综合产生的</li>
+<li>类型推断:<br>通过上下文来推断一个位置的类型:<br><code>if(C) S</code>这里的<code>C</code>一定是<code>bool</code>类型, <code>S</code>是代码块, 没有类型, 为<code>void</code></li>
+</ul>
+<h3 id="type-conversion"><a href="#type-conversion" class="headerlink" title="type conversion"></a>type conversion</h3><p>类型转换</p>
+<ul>
+<li><p>widening: 拓宽转换, 从信息少的类型到信息多的类型</p>
+</li>
+<li><p>narrowing: 窄化转换, 从信息多的类型到信息少的类型</p>
+</li>
+<li><p>coercion: 隐式类型转换, 由编译器自动进行, 我们称之为implicit的</p>
+</li>
+<li><p>cast: 显式类型转换, 由程序员自己进行, 我们称之为explicit的</p>
+</li>
+</ul>
+<h3 id="overloaded"><a href="#overloaded" class="headerlink" title="overloaded"></a>overloaded</h3><p>重载</p>
+<h3 id="substution-instance-unification"><a href="#substution-instance-unification" class="headerlink" title="substution, instance, unification"></a>substution, instance, unification</h3><p>这里首先区别类型变量和类型表达式:</p>
+<ul>
+<li>类型变量: 一般用α, β, γ等表示, 表示未知类型<code>list(α)</code>就算是一个类型变量</li>
+<li>类型表达式: 具有具体值得变量类型</li>
+</ul>
+<p>如果我们用某个类型替换类型变量中的变量, 记为$S(list(α)) &#x3D; list(int)$, 我们称之为替换, 也就是substitution</p>
+<p>其中得<code>list(int)</code>我们称之为类型变量<code>list(α)</code>的实例(instance)</p>
+<p>如果通过某个替换, 可以使得两个类型变量相等, 即$S(list(α)) &#x3D; S(list(β))$, 我们称之为<strong>合一替换</strong></p>
+<p>如果替换后的类型表达式是另一个替换后的类型变量的实例, 即$S(list(α))$是$S(list(β))$的实例, 我们称之为<strong>最一般合一替换</strong></p>
+<p>使用合一的方法可以实现检测和类型推断</p>
+<p>$$<br>((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_3)) \rightarrow list(\alpha_2) \<br>((\alpha_3 \rightarrow \alpha_4) \times list(\alpha_3)) \rightarrow \alpha_5<br>$$</p>
+<p>以上的两个函数类型, 通过合一替换, 可以得到:<br>$$<br>((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_1)) \rightarrow list(\alpha_2) \<br>$$</p>
+<p>也就是说我可以用一个函数的多态来同时接受其他两个函数, 因为两者的类型其实可以认为是等价的</p>
+<h3 id="control-flow"><a href="#control-flow" class="headerlink" title="control flow"></a>control flow</h3><p>控制流包括if, while, for, switch等等影响程序流程的语句</p>
+<h4 id="fall"><a href="#fall" class="headerlink" title="fall"></a>fall</h4><p>当条件满足时直接下一句就是对应的执行语句, 而不用使用<code>goto</code>进行跳转, 我们称之为<strong>fall(穿透)</strong></p>
+<h4 id="backpatching"><a href="#backpatching" class="headerlink" title="backpatching"></a>backpatching</h4><p>回填技术, 简单来说就是一些控制流在生成跳转语句时并不知道需要跳转的代码在哪一行, 所以使用一个临时符号来表示跳转的位置</p>
+<p>同时, 我们使用一个集合来表示这个跳转的位置, 将control flow中全部需要跳转到这个位置的代码都加入其中, 在这个位置确定后, 在返回去把这些跳转补全, 此称为回填技术</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/05/25/compiler/CH6-IR-Generation/" data-id="clkwkwsg8002sk8uv1lne5t4e" data-title="中间代码生成" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/11/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/13/">weiter &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C#学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C++学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CFT%E9%A2%98%E7%9B%AE%E9%9A%8F%E7%AC%94/">CFT题目随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSAPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">CSAPP学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode%E7%BB%83%E4%B9%A0/">LeetCode练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Matlab%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">Matlab学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">OI算法和数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%BB%83%E4%B9%A0/">OI练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qt%E5%AD%A6%E4%B9%A0/">Qt学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/compiler/">compiler</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B9%90%E7%90%86/">乐理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/">信号与系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/">笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/%E7%BF%BB%E8%AF%91/">翻译</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">思维导图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">数学基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/">计算机图形</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">语言学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">课程复习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E8%AF%BB%E5%90%8E%E6%84%9F/">读后感</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API/" rel="tag">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bellman-ford/" rel="tag">Bellman-ford</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag">C++学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMatlab/" rel="tag">CMatlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">C计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DP/" rel="tag">DP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EM%E7%AE%97%E6%B3%95/" rel="tag">EM算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kruskal/" rel="tag">Kruskal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LCA/" rel="tag">LCA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag">Lambda表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OI/" rel="tag">OI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prim/" rel="tag">Prim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/" rel="tag">Qt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCIM/" rel="tag">SCIM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SG%E5%87%BD%E6%95%B0/" rel="tag">SG函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPFA/" rel="tag">SPFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ST%E8%A1%A8/" rel="tag">ST表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stride-Scheduling/" rel="tag">Stride Scheduling</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tarjan/" rel="tag">Tarjan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Three-Easy-Pieces/" rel="tag">Three-Easy-Pieces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UNIX/" rel="tag">UNIX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VAX-VMS/" rel="tag">VAX&#x2F;VMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/" rel="tag">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/convolution/" rel="tag">convolution</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu/" rel="tag">cpu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu%E5%8E%9F%E7%90%86/" rel="tag">cpu原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/" rel="tag">data-structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decision-tree/" rel="tag">decision tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dijkstra/" rel="tag">dijkstra</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fourier-transform/" rel="tag">fourier transform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/" rel="tag">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/" rel="tag">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mechine-learning/" rel="tag">mechine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nim%E5%8D%9A%E5%BC%88/" rel="tag">nim博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/operating-system/" rel="tag">operating-system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/perceptron/" rel="tag">perceptron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/signal/" rel="tag">signal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/special-function/" rel="tag">special function</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/" rel="tag">ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unity/" rel="tag">unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/upload/" rel="tag">upload</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" rel="tag">上下文切换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" rel="tag">不等式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" rel="tag">主定理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" rel="tag">二分图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" rel="tag">二叉堆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" rel="tag">二叉查找树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag">二进制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" rel="tag">代码能力</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag">优先队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" rel="tag">优化程序性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" rel="tag">关联容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98/" rel="tag">内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="tag">内存分配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" rel="tag">内存地址</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="tag">内存空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">内存虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" rel="tag">分布式编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" rel="tag">分比例调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%B2%BB/" rel="tag">分治</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="tag">前缀和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%B2%E7%82%B9/" rel="tag">割点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" rel="tag">动态内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="tag">区间最大值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" rel="tag">区间查询</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" rel="tag">区间维护</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="tag">博弈论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" rel="tag">地图生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" rel="tag">地址翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" rel="tag">多级反馈队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%AE%E5%88%86/" rel="tag">差分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" rel="tag">巴什博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" rel="tag">异常控制流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">形式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" rel="tag">彩票调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" rel="tag">思维导图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E6%83%B3/" rel="tag">感想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" rel="tag">教学资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" rel="tag">数据流分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6/" rel="tag">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" rel="tag">文件上传攻击</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" rel="tag">文件操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">无序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="tag">智能指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" rel="tag">最大字串和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" rel="tag">最大流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" rel="tag">最小生成树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag">最短路</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91/" rel="tag">树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" rel="tag">树上倍增</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" rel="tag">树形数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" rel="tag">树链剖分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">概率论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" rel="tag">段式内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">段式内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96/" rel="tag">汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" rel="tag">浅拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" rel="tag">深拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93/" rel="tag">渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" rel="tag">游戏编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E6%80%A7/" rel="tag">特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" rel="tag">直接运行程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A9%E9%98%B5/" rel="tag">矩阵</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A2%8E%E7%89%87/" rel="tag">碎片</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag">离散数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" rel="tag">空闲内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" rel="tag">空闲链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7/" rel="tag">线性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag">线段树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81/" rel="tag">编码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">编码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" rel="tag">编译器优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag">网络流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">自动机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD/" rel="tag">英语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" rel="tag">计算机图形</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" rel="tag">计算机理论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95/" rel="tag">语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E8%A8%80/" rel="tag">语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" rel="tag">调度算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" rel="tag">输入法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" rel="tag">进程调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E6%8E%A5/" rel="tag">链接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" rel="tag">静态分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag">项目</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">顺序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" rel="tag">预处理宏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" rel="tag">预处理指令</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Bellman-ford/" style="font-size: 10px;">Bellman-ford</a> <a href="/tags/C/" style="font-size: 16.43px;">C++</a> <a href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">C++学习记录</a> <a href="/tags/CMatlab/" style="font-size: 10px;">CMatlab</a> <a href="/tags/CTF/" style="font-size: 10.71px;">CTF</a> <a href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">C计算机网络</a> <a href="/tags/DNS/" style="font-size: 10.71px;">DNS</a> <a href="/tags/DP/" style="font-size: 10px;">DP</a> <a href="/tags/EM%E7%AE%97%E6%B3%95/" style="font-size: 10px;">EM算法</a> <a href="/tags/HMM/" style="font-size: 10px;">HMM</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/Kruskal/" style="font-size: 10px;">Kruskal</a> <a href="/tags/LCA/" style="font-size: 10px;">LCA</a> <a href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" style="font-size: 10px;">Lambda表达式</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/OI/" style="font-size: 10px;">OI</a> <a href="/tags/Prim/" style="font-size: 10px;">Prim</a> <a href="/tags/Qt/" style="font-size: 10px;">Qt</a> <a href="/tags/SCIM/" style="font-size: 10px;">SCIM</a> <a href="/tags/SG%E5%87%BD%E6%95%B0/" style="font-size: 10px;">SG函数</a> <a href="/tags/SPFA/" style="font-size: 10px;">SPFA</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/ST%E8%A1%A8/" style="font-size: 10px;">ST表</a> <a href="/tags/SVM/" style="font-size: 10px;">SVM</a> <a href="/tags/Stride-Scheduling/" style="font-size: 10px;">Stride Scheduling</a> <a href="/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/tags/Tarjan/" style="font-size: 10.71px;">Tarjan</a> <a href="/tags/Three-Easy-Pieces/" style="font-size: 10px;">Three-Easy-Pieces</a> <a href="/tags/UNIX/" style="font-size: 10px;">UNIX</a> <a href="/tags/VAX-VMS/" style="font-size: 10px;">VAX/VMS</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/c/" style="font-size: 12.86px;">c#</a> <a href="/tags/concurrency/" style="font-size: 14.29px;">concurrency</a> <a href="/tags/convolution/" style="font-size: 10px;">convolution</a> <a href="/tags/cpu/" style="font-size: 10px;">cpu</a> <a href="/tags/cpu%E5%8E%9F%E7%90%86/" style="font-size: 10px;">cpu原理</a> <a href="/tags/data-structure/" style="font-size: 10px;">data-structure</a> <a href="/tags/decision-tree/" style="font-size: 10px;">decision tree</a> <a href="/tags/dijkstra/" style="font-size: 10px;">dijkstra</a> <a href="/tags/fourier-transform/" style="font-size: 10px;">fourier transform</a> <a href="/tags/golang/" style="font-size: 10.71px;">golang</a> <a href="/tags/linux/" style="font-size: 10.71px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10.71px;">machine learning</a> <a href="/tags/math/" style="font-size: 10.71px;">math</a> <a href="/tags/mechine-learning/" style="font-size: 10px;">mechine learning</a> <a href="/tags/nim%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">nim博弈</a> <a href="/tags/operating-system/" style="font-size: 14.29px;">operating-system</a> <a href="/tags/perceptron/" style="font-size: 10px;">perceptron</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/special-function/" style="font-size: 10px;">special function</a> <a href="/tags/system/" style="font-size: 10.71px;">system</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/unity/" style="font-size: 10px;">unity</a> <a href="/tags/upload/" style="font-size: 10px;">upload</a> <a href="/tags/wireshark%E7%BB%83%E4%B9%A0/" style="font-size: 12.86px;">wireshark练习</a> <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" style="font-size: 10px;">上下文切换</a> <a href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" style="font-size: 10px;">不等式</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" style="font-size: 15.71px;">中间代码生成</a> <a href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" style="font-size: 10px;">主定理</a> <a href="/tags/%E4%B9%90%E7%90%86/" style="font-size: 10.71px;">乐理</a> <a href="/tags/%E4%BA%8C%E5%88%86/" style="font-size: 10.71px;">二分</a> <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" style="font-size: 10px;">二分图</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" style="font-size: 10.71px;">二叉堆</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" style="font-size: 10px;">二叉查找树</a> <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" style="font-size: 11.43px;">二进制</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 15.71px;">代码</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" style="font-size: 10.71px;">代码优化</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" style="font-size: 10px;">代码能力</a> <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">优先队列</a> <a href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" style="font-size: 10px;">优化程序性能</a> <a href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">关联容器</a> <a href="/tags/%E5%86%85%E5%AD%98/" style="font-size: 10px;">内存</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" style="font-size: 10px;">内存分配</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" style="font-size: 10px;">内存地址</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" style="font-size: 10.71px;">内存空间</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10.71px;">内存管理</a> <a href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">内存虚拟化</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" style="font-size: 10px;">分布式编译</a> <a href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">分比例调度</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 10px;">分治</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" style="font-size: 10px;">前缀和</a> <a href="/tags/%E5%89%B2%E7%82%B9/" style="font-size: 10px;">割点</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" style="font-size: 10px;">动态内存</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 10px;">动画</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" style="font-size: 10px;">区间最大值</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" style="font-size: 10px;">区间查询</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" style="font-size: 11.43px;">区间维护</a> <a href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" style="font-size: 10px;">博弈论</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 11.43px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">地址翻译</a> <a href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">多级反馈队列</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E5%B7%AE%E5%88%86/" style="font-size: 11.43px;">差分</a> <a href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">巴什博弈</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 10.71px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" style="font-size: 10px;">异常控制流</a> <a href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">形式语言</a> <a href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">彩票调度</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">微信小程序</a> <a href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" style="font-size: 10px;">思维导图</a> <a href="/tags/%E6%84%9F%E6%83%B3/" style="font-size: 11.43px;">感想</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 17.86px;">操作系统</a> <a href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" style="font-size: 10px;">教学资料</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 11.43px;">数学</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">数据流分析</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%95%B0%E7%BB%84/" style="font-size: 10px;">数组</a> <a href="/tags/%E6%96%87%E4%BB%B6/" style="font-size: 10px;">文件</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" style="font-size: 10px;">文件上传攻击</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" style="font-size: 10px;">文件操作</a> <a href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">无序容器</a> <a href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" style="font-size: 10px;">智能指针</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" style="font-size: 10px;">最大字串和</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" style="font-size: 10px;">最大流</a> <a href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" style="font-size: 10px;">最小生成树</a> <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" style="font-size: 10px;">最短路</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%A0%91/" style="font-size: 10px;">树</a> <a href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" style="font-size: 10px;">树上倍增</a> <a href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" style="font-size: 10px;">树形数组</a> <a href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" style="font-size: 10px;">树链剖分</a> <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 10.71px;">概率论</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10.71px;">模板</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" style="font-size: 10px;">段式内存</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10px;">段式内存管理</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 10.71px;">汇编</a> <a href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">浅拷贝</a> <a href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">深拷贝</a> <a href="/tags/%E6%B8%B2%E6%9F%93/" style="font-size: 10px;">渲染</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">游戏编程</a> <a href="/tags/%E7%89%B9%E6%80%A7/" style="font-size: 11.43px;">特性</a> <a href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">直接运行程序</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A2%8E%E7%89%87/" style="font-size: 10px;">碎片</a> <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" style="font-size: 13.57px;">离散数学</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" style="font-size: 10px;">空闲内存</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">空闲链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BA%BF%E6%80%A7/" style="font-size: 10.71px;">线性</a> <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" style="font-size: 10px;">线段树</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a> <a href="/tags/%E7%BC%96%E7%A0%81/" style="font-size: 11.43px;">编码</a> <a href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">编码规范</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10.71px;">编程语言</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 17.14px;">编译原理</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" style="font-size: 10px;">编译器优化</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" style="font-size: 10.71px;">网络流</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" style="font-size: 12.86px;">自动机</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 10px;">英语</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">虚拟化</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">计算机图形</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" style="font-size: 12.86px;">计算机理论</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" style="font-size: 18.57px;">计算机系统</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 19.29px;">设计模式</a> <a href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">词法分析</a> <a href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语义分析</a> <a href="/tags/%E8%AF%AD%E6%B3%95/" style="font-size: 12.14px;">语法</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语法分析</a> <a href="/tags/%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">语言</a> <a href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" style="font-size: 10px;">调度算法</a> <a href="/tags/%E8%B4%AA%E5%BF%83/" style="font-size: 10px;">贪心</a> <a href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" style="font-size: 10px;">输入法</a> <a href="/tags/%E8%BF%9B%E7%A8%8B/" style="font-size: 11.43px;">进程</a> <a href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">进程调度</a> <a href="/tags/%E9%93%BE%E6%8E%A5/" style="font-size: 10px;">链接</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 11.43px;">随笔</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">静态分析</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 20px;">面向对象</a> <a href="/tags/%E9%A1%B9%E7%9B%AE/" style="font-size: 10px;">项目</a> <a href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">顺序容器</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" style="font-size: 10px;">预处理宏</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" style="font-size: 10px;">预处理指令</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/08/04/Wechat-P/first--time-trying/">第一个微信小程序——创建与总览</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/QT/FirstApplication/">第一个Qt程序——文本查询</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/leading-chapter/">Operating System Chapter 1</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-Segmentation/">段式内存管理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-proportionalShare/">分比例调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Dnull_P<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

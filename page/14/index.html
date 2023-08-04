@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Dnull_P Welcome~</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A BUPTer( awlful)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dnull_P Welcome~">
+<meta property="og:url" content="https://dnullp.github.io/page/14/index.html">
+<meta property="og:site_name" content="Dnull_P Welcome~">
+<meta property="og:description" content="A BUPTer( awlful)">
+<meta property="og:locale">
+<meta property="article:author" content="Dnull_P">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Dnull_P Welcome~" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dnull_P Welcome~</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://DnullP.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-compiler/CH3-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/25/compiler/CH3-note/" class="article-date">
+  <time class="dt-published" datetime="2023-04-24T16:00:00.000Z" itemprop="datePublished">2023-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/25/compiler/CH3-note/">编译原理-词法解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="依然还是关键词的记录"><a href="#依然还是关键词的记录" class="headerlink" title="依然还是关键词的记录"></a>依然还是关键词的记录</h2><h3 id="Lexeme-Token-Pattern"><a href="#Lexeme-Token-Pattern" class="headerlink" title="Lexeme, Token, Pattern"></a>Lexeme, Token, Pattern</h3><ul>
+<li>Token:<br>&lt;id, “a”&gt;<br>&lt;num, 10&gt;<br>像这样已经完成解析, 包含了若干属性的单元我们称为Token</li>
+<li>Pattern:<br>模式, 用来匹配一个串的, 比较常见的匹配包括了正则匹配</li>
+<li>Lexeme:<br>最小的语句单元, 我们可以认为一个模式所能匹配的最小单元为一个Lexeme(词素)<br><code>int a = 10</code></li>
+</ul>
+<p>在这里面, <code>int</code> <code>a</code> <code>=</code> <code>10</code> 都是词素, 匹配了每一个词素的规则(一般是正则表达式)称为模式, 模式匹配的结果<code>&lt;id, &#39;a&#39;&gt;</code>称为Token</p>
+<h3 id="concatenation-exponentiation"><a href="#concatenation-exponentiation" class="headerlink" title="concatenation, exponentiation"></a>concatenation, exponentiation</h3><ul>
+<li>concatenation<br>连接, 例如<code>ab</code>表示<code>a</code>和<code>b</code>的concatenation</li>
+<li>exponentiation<br>幂, 例如<code>a^3 = aaa</code>表示<code>a</code>的0次或多次concatenation</li>
+</ul>
+<h3 id="KMP和DFA"><a href="#KMP和DFA" class="headerlink" title="KMP和DFA"></a>KMP和DFA</h3><p>又见到KMP了, 回头再简单集记篇随笔说说kmp和DFA</p>
+<h3 id="NFA-DFA-Regular-Expression"><a href="#NFA-DFA-Regular-Expression" class="headerlink" title="NFA, DFA, Regular Expression"></a>NFA, DFA, Regular Expression</h3><p>这部分记自动机内了</p>
+<h3 id="Regular-Definition"><a href="#Regular-Definition" class="headerlink" title="Regular Definition"></a>Regular Definition</h3><p>正则定义是一些正则表达式定义的变量, 用以组成complex language, 比如: <code>digit = [0-9]</code>, <code>letter = [a-zA-Z]</code>都是正则定义</p>
+<h3 id="Flex"><a href="#Flex" class="headerlink" title="Flex"></a>Flex</h3><p>Flex是一个词法分析器生成器, 用来生成词法分析器, 词法分析器的输入是一个正则表达式, 输出是一个DFA, 用来匹配输入的字符串, 词法分析器的输出是一个Token序列</p>
+<ul>
+<li>flex中的正则表达式按照最长优先匹配</li>
+<li>按照编写的顺序优先匹配</li>
+</ul>
+<h3 id="two-buffers"><a href="#two-buffers" class="headerlink" title="two buffers"></a>two buffers</h3><p>缓冲区是必要的, 对于大型源码一次性读完浪费, 从磁盘读取又太慢, 但是使用缓冲区必然产生断层, 所以使用两个缓冲区来交替连接</p>
+<p>当读到一个缓冲区的结尾时, 将另一个缓冲区进行刷新, 然后读取头移动到另一个缓冲区即可</p>
+<p>一般我们编写代码时要避免缓冲区溢出, 比如对于一个超长的字符串, 我们应该拆分为String的concatenation形式</p>
+<h3 id="lexemepos-forward"><a href="#lexemepos-forward" class="headerlink" title="lexemepos, forward"></a>lexemepos, forward</h3><p>lexemepos记录词素的开始位置, forward向后读若干位, 直到到达一个无法转移的状态, 然后再之前的匹配中寻找满足要求的匹配</p>
+<hr>
+<h2 id="记几个概念点"><a href="#记几个概念点" class="headerlink" title="记几个概念点:"></a>记几个概念点:</h2><h3 id="词法分析器生成器的架构"><a href="#词法分析器生成器的架构" class="headerlink" title="词法分析器生成器的架构"></a>词法分析器生成器的架构</h3><p>flex读取了lex源码后, 会生成对应的词法分析器, 而词法分析器本身是个状态机, 我们可以选择用NFA和DFA来生成这个分析器, 不过一般会选用DFA, 其状态转移更简明</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/25/compiler/CH3-note/" data-id="clkwkwsg5002ck8uv8w4e82z4" data-title="编译原理-词法解析" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-network/works-projects/wireShark-4-TCP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/21/network/works-projects/wireShark-4-TCP/" class="article-date">
+  <time class="dt-published" datetime="2023-04-20T16:00:00.000Z" itemprop="datePublished">2023-04-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a>►<a class="article-category-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/21/network/works-projects/wireShark-4-TCP/">wireshark practice 4 - TCP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>   What is the IP address and TCP port number used by the client computer (source) that is transferring the file to gaia.cs.umass.edu?  To answer this question, it’s probably easiest to select an HTTP message and explore the details of the TCP packet used to carry this HTTP message, using the “details of the selected packet header window” (refer to Figure 2 in the “Getting Started with Wireshark” Lab if you’re uncertain about the Wireshark windows.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Source Port: 52188</span><br><span class="line">I am not sure whether it&#x27;s due to my proxy</span><br><span class="line"> so that the source port is not 80</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>   What is the IP address of gaia.cs.umass.edu? On what port number is it sending and receiving TCP segments for this connection?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Destination Address: 128.119.245.12</span><br><span class="line">Port: 80</span><br></pre></td></tr></table></figure>
+<p>If you have been able to create your own trace, answer the following question:</p>
+</li>
+<li><p>   What is the IP address and TCP port number used by your client computer (source) to transfer the file to gaia.cs.umass.edu?  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Source Address: 10.21.180.15</span><br><span class="line">Source Port: 52188</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<ol start="4">
+<li><p>   What is the sequence number of the TCP SYN segment that is used to initiate the TCP connection between the client computer and gaia.cs.umass.edu?  What is it in the segment that identifies the segment as a SYN segment?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Seq = 0</span><br><span class="line">the SYN tag is set in the Flag field</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>   What is the sequence number of the SYNACK segment sent by gaia.cs.umass.edu to the client computer in reply to the SYN?  What is the value of the Acknowledgement field in the SYNACK segment?  How did gaia.cs.umass.edu determine that value? What is it in the segment that identifies the segment as a SYNACK segment?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Seq = 0</span><br><span class="line">Ack = 1</span><br><span class="line">Ack的值取决于服务器接收到的数据包的数量</span><br><span class="line">服务器会返回流量窗口中的头部(base)位置的编号, 表示下一个需要接收的数据编号</span><br></pre></td></tr></table></figure></li>
+<li><p>   What is the sequence number of the TCP segment containing the HTTP POST command?  Note that in order to find the POST command, you’ll need to dig into the packet content field at the bottom of the Wireshark window, looking for a segment with a “POST” within its DATA field.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Seq = 1 contains the POST command</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>   Consider the TCP segment containing the HTTP POST as the first segment in the TCP connection. What are the sequence numbers of the first six segments in the TCP connection (including the segment containing the HTTP POST)?  At what time was each segment sent?  When was the ACK for each segment received?  Given the difference between when each TCP segment was sent, and when its acknowledgement was received, what is the RTT value for each of the six segments?  What is the EstimatedRTT value (see Section 3.5.3, page 242 in text) after the receipt of each ACK?  Assume that the value of the EstimatedRTT is equal to the measured RTT for the first segment, and then is computed using the EstimatedRTT equation on page 242 for all subsequent segments.<br>Note: Wireshark has a nice feature that allows you to plot the RTT for each of the TCP segments sent.  Select a TCP segment in the “listing of captured packets” window that is being sent from the client to the gaia.cs.umass.edu server.  Then select: Statistics-&gt;TCP Stream Graph-&gt;Round Trip Time Graph.</p>
+</li>
+</ol>
+<pre><code>计算部分就不算了, 但是在使用wireshark RTT图时, 
+示例中的传输时间可能太短了, 所以整个RTT只显示了
+一个点
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/21/network/works-projects/wireShark-4-TCP/" data-id="clkwkwshi00a2k8uv6u1l42dg" data-title="wireshark practice 4 - TCP" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP/" rel="tag">TCP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/CH1-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/10/compiler/CH1-note/" class="article-date">
+  <time class="dt-published" datetime="2023-04-09T16:00:00.000Z" itemprop="datePublished">2023-04-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/10/compiler/CH1-note/">编译原理-引言</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一些关键词的记录"><a href="#一些关键词的记录" class="headerlink" title="一些关键词的记录"></a>一些关键词的记录</h2><h3 id="name-identifier-variable"><a href="#name-identifier-variable" class="headerlink" title="name, identifier, variable"></a>name, identifier, variable</h3><ul>
+<li>name<br>名字关联的是一个实体, 例如变量, 函数, 类型, 常量等, 并且会根据环境(environment)的不同而有不同的内存位置</li>
+<li>identifier<br>标识符, 是名字的一个子集<br>相对于标识符, 名字还包括了表达式, 比如成员变量的表示<code>a.b</code></li>
+<li>variable<br>变量表示内存中的一个位置, 一个变量可以有多个名字</li>
+</ul>
+<h3 id="environment-state"><a href="#environment-state" class="headerlink" title="environment, state"></a>environment, state</h3><ul>
+<li>environment<br>环境是一个映射, 用来表示名字和变量(内存位置)之间的关系</li>
+<li>state<br>  状态是一个映射, 用来表示变量和值之间的关系</li>
+</ul>
+<h3 id="phase-pass"><a href="#phase-pass" class="headerlink" title="phase, pass"></a>phase, pass</h3><ul>
+<li>phase<br>编译器的阶段, 包括lexcial analysis, syntax analysis, semantic analysis, intermediate code generation, code optimization, code generation等</li>
+<li>pass<br>对程序的一次扫描称为一次pass</li>
+</ul>
+<h3 id="compiler-interpreter-assembler"><a href="#compiler-interpreter-assembler" class="headerlink" title="compiler, interpreter, assembler"></a>compiler, interpreter, assembler</h3><ul>
+<li>compiler<br>编译器, 将源程序翻译成目标程序代码</li>
+<li>interpreter<br>解释器, 直接读取源程序运行</li>
+<li>assembler<br>汇编器, 将汇编语言翻译成机器码, 可直接被内存加载运行</li>
+</ul>
+<h3 id="scope-block"><a href="#scope-block" class="headerlink" title="scope, block"></a>scope, block</h3><ul>
+<li>scope<br>作用域, 一个声明的作用范围</li>
+<li>block<br>代码块, 其中的声明作为一个作用域</li>
+<li>static scope<br>静态作用域, 作用域是在编译时确定的, 向上寻找包含声明的作用域</li>
+<li>dynamic scope<br>  动态作用域, 作用域是在运行时确定的, 从运行堆栈中寻找包含声明的作用域</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/10/compiler/CH1-note/" data-id="clkwkwsg40025k8uv7dvo2u7k" data-title="编译原理-引言" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-compiler/CH2-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/10/compiler/CH2-note/" class="article-date">
+  <time class="dt-published" datetime="2023-04-09T16:00:00.000Z" itemprop="datePublished">2023-04-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compiler/">compiler</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/10/compiler/CH2-note/">编译原理-A-Simple-directed-translator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一些关键词及含义的记录"><a href="#一些关键词及含义的记录" class="headerlink" title="一些关键词及含义的记录"></a>一些关键词及含义的记录</h2><h3 id="left-associative-right-associative"><a href="#left-associative-right-associative" class="headerlink" title="left-associative, right-associative"></a>left-associative, right-associative</h3><ul>
+<li><p>left-associative<br>如果一个运算符的结果是从左到右结合的, 则为left-associative, 比如加减乘除都是left-associative的</p>
+</li>
+<li><p>right-associative<br>如果一个运算符的结果是从右到左结合的, 则为right-associative, 比如幂运算和赋值就是right-associative的</p>
+</li>
+</ul>
+<h3 id="ambiguity"><a href="#ambiguity" class="headerlink" title="ambiguity"></a>ambiguity</h3><p>如果一个语言可以通过文法产生多个不同的语法树, 则称该文法是ambiguous的</p>
+<p>可以通过给运算加上优先级来消除ambiguity, 比如可以写出四则运算的文法如下:</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;expr&gt; ::= &lt;expr&gt; + &lt;term&gt; | &lt;expr&gt; - &lt;term&gt; | &lt;term&gt;</span><br><span class="line">&lt;term&gt; ::= &lt;term&gt; * &lt;factor&gt; | &lt;term&gt; / &lt;factor&gt; | &lt;factor&gt;</span><br><span class="line">&lt;factor&gt; ::= ( &lt;expr&gt; ) | &lt;number&gt;</span><br><span class="line">&lt;number&gt; ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9</span><br></pre></td></tr></table></figure>
+
+<h3 id="abstract-syntax-tree-concrete-syntax-tree"><a href="#abstract-syntax-tree-concrete-syntax-tree" class="headerlink" title="abstract syntax tree, concrete syntax tree"></a>abstract syntax tree, concrete syntax tree</h3><ul>
+<li>abstract syntax tree<br>语法树, 用来表示语法结构, 一般用来表示语法分析的结果<br>使用程序中的结构来作为节点, 比如<code>a + b + c</code>的语法树如下:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">p1[+] --&gt; a</span><br><span class="line">p1 --&gt; p2[+]</span><br><span class="line">p2 --&gt; b</span><br><span class="line">p2 --&gt; c</span><br></pre></td></tr></table></figure></li>
+<li>concrete syntax tree<br>解析树(parse tree), 用非终结符作为节点, 用来表示语法结构<br>使用文法中的符号来作为节点, 比如<code>a + b + c</code>的解析树如下:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">p1[expr] --&gt; p2[expr]</span><br><span class="line">p1 --&gt; p3[+]</span><br><span class="line">p1 --&gt; p4[term]</span><br><span class="line">p2 --&gt; p5[expr]</span><br><span class="line">p2 --&gt; p6[+]</span><br><span class="line">p2 --&gt; p7[term]</span><br><span class="line">p5 --&gt; p8[term]</span><br><span class="line">p4 --&gt; p9[c]</span><br><span class="line">p7 --&gt; p10[b]</span><br><span class="line">p8 --&gt; p11[a]</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/10/compiler/CH2-note/" data-id="clkwkwsg7002mk8uv3of5hmh7" data-title="编译原理-A-Simple-directed-translator" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-automata-theory/CH6-CFG-reduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/09/automata-theory/CH6-CFG-reduction/" class="article-date">
+  <time class="dt-published" datetime="2023-04-08T16:00:00.000Z" itemprop="datePublished">2023-04-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/09/automata-theory/CH6-CFG-reduction/">形式语言与自动机 CFG的化简和规范</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="上下文无关文法的化简"><a href="#上下文无关文法的化简" class="headerlink" title="上下文无关文法的化简"></a>上下文无关文法的化简</h1><p>上下文无关文法的化简可以分为三个部分:</p>
+<ul>
+<li>无用符号的消除</li>
+<li>空产生式的消除</li>
+<li>单一产生式的消除</li>
+</ul>
+<h2 id="无用符号的删除"><a href="#无用符号的删除" class="headerlink" title="无用符号的删除"></a>无用符号的删除</h2><p>我们给无用符号以下含义:</p>
+<ul>
+<li>从初始符号开始, 无法到达的符号都是无用的, 可以删除</li>
+<li>从每个终结符开始, 无法归约到的符号都是无用的, 可以删除</li>
+</ul>
+<p>于是我们去除无用符号的算法可以描述为:</p>
+<ol>
+<li>将初始符号加入一个集合, 并向后推导符号, 并将推导出的符号加入集合, 迭代直到集合不产生变化</li>
+<li>将所有终结符加入一个集合, 并向前推导符号, 并将推导出的符号加入集合, 迭代直到集合不产生变化</li>
+<li>不在两个集合中的符号都是无用的, 可以删除</li>
+</ol>
+<h2 id="空产生式的删除"><a href="#空产生式的删除" class="headerlink" title="空产生式的删除"></a>空产生式的删除</h2><p>除了语言本身就是空的情况, 文法中的其他空产生式都可以删除</p>
+<p>删除的方式可以简单概括为:</p>
+<ul>
+<li>将所有的空产生式产生的空符号, 带入上一级的符号中, 令其产生新的推导式, 并删除该空产生式</li>
+</ul>
+<p>语言描述比较抽象, 通过以下例子说明:</p>
+<ul>
+<li>原文法<ul>
+<li>S -&gt; aA</li>
+<li>A -&gt; b|ε</li>
+</ul>
+</li>
+<li>将A等于空的情况带入S中, 得到<ul>
+<li>S -&gt; a|aA</li>
+</ul>
+</li>
+<li>删除空产生式A -&gt; ε, 得到<ul>
+<li>S -&gt; a|aA</li>
+<li>A -&gt; b</li>
+</ul>
+</li>
+</ul>
+<h2 id="单一产生式的删除"><a href="#单一产生式的删除" class="headerlink" title="单一产生式的删除"></a>单一产生式的删除</h2><p>我们认为由一个非终结符推导出一个非终结的产生式是无用的, 可以用类似空产生式替换的方法删除, 例子如下:</p>
+<ul>
+<li><p>原文法</p>
+<ul>
+<li>S -&gt; aA</li>
+<li>A -&gt; aB|cD|e|F</li>
+<li>F -&gt; a|cB</li>
+</ul>
+</li>
+<li><p>这里的A -&gt; F是一个单一产生式, 是无用的, 通过将F的产生式带入A中, 得到删减后的文法:</p>
+</li>
+<li><p>S -&gt; aA</p>
+</li>
+<li><p>A -&gt; aB|cD|e|a|cB</p>
+</li>
+</ul>
+<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><ul>
+<li>由于删除单一产生式和空产生式有可能产生新的无用符号, 所以需要在最后再执行一遍无用符号的删除</li>
+</ul>
+<hr>
+<h1 id="上下文无关文法的规范"><a href="#上下文无关文法的规范" class="headerlink" title="上下文无关文法的规范"></a>上下文无关文法的规范</h1><ul>
+<li>乔姆斯基范式</li>
+<li>格雷巴赫范式</li>
+</ul>
+<h2 id="乔姆斯基范式"><a href="#乔姆斯基范式" class="headerlink" title="乔姆斯基范式"></a>乔姆斯基范式</h2><p>$$<br>A \rightarrow BC\<br>A \rightarrow a\<br>$$</p>
+<h2 id="格雷巴赫范式"><a href="#格雷巴赫范式" class="headerlink" title="格雷巴赫范式"></a>格雷巴赫范式</h2><p>$$<br>A \rightarrow a\<br>A \rightarrow aA_1A_2…A_n<br>$$</p>
+<p>为何得到格雷巴赫范式, 我们需要以下三个步骤:</p>
+<ul>
+<li><ol>
+<li>将CFG简化</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>将CFG转化为CNF</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>将CNF中的左递归去除</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>将CNF转换为CFG</li>
+</ol>
+</li>
+</ul>
+<p>例子: 将CFG转换为CNF:<br>$$<br>S → aSb | bSa | SS | a<br>$$</p>
+<ol>
+<li>化简<br>$$<br>S → aSb | bSa | SS | a |<br>$$<br>本身已是最简</li>
+<li>转化为CNF</li>
+</ol>
+<ul>
+<li>$$<br>S → ASB | BSA | SS\<br>S → a\<br>$$</li>
+<li>$$<br>S → AX | BY | SS | a\<br>X → SB\<br>Y → SA\<br>A → a\<br>B → b\<br>$$</li>
+</ul>
+<ol start="3">
+<li>去除左递归<br>  左递归为$S → SS$, 删除步骤如下:</li>
+</ol>
+<ul>
+<li>首先删除$S → SS$, 添加$C → SSC|\epsilon$</li>
+<li>将$C$添加到每个其他$S$的产生式中, 得到:<br>  $$<br>  S → AXC | BYC | aC\<br>  C → SSC | ε\<br>  X → SB\<br>  Y → SA\<br>  A → a\<br>  B → b\<br>  $$</li>
+<li>删除空产生式:<br>  $$<br>  S → AXC | BYC | aC | AX | BY | a\<br>  C → SSC | SS\<br>  X → SB\<br>  Y → SA\<br>  A → a\<br>  B → b\<br>  $$</li>
+</ul>
+<ol start="4">
+<li>替换首个变量:<br> $$<br> S → aXC | bYC | aC | aX | bY | a\<br> C → aSC | aS\<br> X → aB\<br> Y → aA\<br> A → a\<br> B → b\<br> $$<br>将CFG转换为GNF将有利于我们为其构造等价的下推自动机(PDA)</li>
+</ol>
+<hr>
+<h1 id="下推自动机"><a href="#下推自动机" class="headerlink" title="下推自动机"></a>下推自动机</h1><p>下推自动机在有限状态自动机的基础上, 添加了一个栈结构, 用来模拟文法的推导过程:</p>
+<p>比如我们有以下文法:<br>$$<br>S → AB\<br>A → 0A | ε\<br>B → 0B1 | 01<br>$$</p>
+<p>我们的推导过程如下:</p>
+<p><code>S</code> -&gt; <code>AB</code> -&gt; <code>0AB</code> -&gt; <code>AB + out:0</code> -&gt; <code>B</code> -&gt; <code>01</code> -&gt; <code>out: 01</code></p>
+<p>最后的输出为<code>001</code><br>左为栈顶, 右为栈底, 这个过程在栈上完成</p>
+<p>于是下推自动机就引入一个栈, 来表示文法的推导过程</p>
+<p>现在假如我们有一段输入<code>001</code>, 并且PDA栈中的元素只有开始状态$S$, 我们从左到右开始读取, 如果读取到0时, 我们可以找到正向推导中有0输出的一步, 但是并没有找到栈中为$S$时的读0情况, 所以我们认为此时为读空, 所以将$S$取出, 替代为$AB$</p>
+<p>这个第一步记为:<br>$$\delta(q_0, \epsilon, S) &#x3D; (q_0, AB)$$</p>
+<p>类似的我们可以写出这个PDA的所有转换:<br>$$<br>\delta(q_0, \epsilon, A) &#x3D; (q_0, 0A)\<br>\delta(q_0, \epsilon, A) &#x3D; (q_0, \epsilon)\<br>\delta(q_0, \epsilon, B) &#x3D; (q_0, 0B1)\<br>\delta(q_0, \epsilon, B) &#x3D; (q_0, 01)\<br>\delta(q_0, \epsilon, 1) &#x3D; (q_0, \epsilon)\<br>\delta(q_0, \epsilon, 0) &#x3D; (q_0, \epsilon)\<br>$$<br>这是全部读取写为空的情况, 也可以写为不为空的情况, 写法可以自由决定:<br>$$<br>\delta(q_0, 0, A) &#x3D; (q_0, A)\<br>\delta(q_0, \epsilon, A) &#x3D; (q_0, \epsilon)\<br>\delta(q_0, 0, B) &#x3D; (q_0, B1)\<br>\delta(q_0, 0, B) &#x3D; (q_0, 1)\<br>\delta(q_0, \epsilon, 1) &#x3D; (q_0, \epsilon)\<br>\delta(q_0, \epsilon, 0) &#x3D; (q_0, \epsilon)\<br>$$</p>
+<p>可以用状态转移图来表示:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stateDiagram</span><br><span class="line">    [*] --&gt; q0</span><br><span class="line">    q0 --&gt; q0: 0, A/A</span><br></pre></td></tr></table></figure>
+<p>表示读0时, 栈顶为A时, 取出A, 替换为A</p>
+<p>PDA的接收状态有两类, 一类是空栈接收, 一类是终态接收:</p>
+<ul>
+<li>空栈接收: 只要输入$w$能够使PDA进入空栈状态, 我们则接收句子</li>
+<li>终态接收: 只要输入$w$能够使PDA进入终态, 我们则接收句子<br>两种接收可以互相转换</li>
+</ul>
+<p>由PDA推导CFG的过程实在不好写, 跳过不记了, 原理其实相当简单</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/09/automata-theory/CH6-CFG-reduction/" data-id="clkwkwsg2001vk8uvdpzp8ui5" data-title="形式语言与自动机 CFG的化简和规范" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">形式语言</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag">离散数学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">自动机</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" rel="tag">计算机理论</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E8%A8%80/" rel="tag">语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ctf-note/upload-attack" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/05/ctf-note/upload-attack/" class="article-date">
+  <time class="dt-published" datetime="2023-04-04T16:00:00.000Z" itemprop="datePublished">2023-04-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CFT%E9%A2%98%E7%9B%AE%E9%9A%8F%E7%AC%94/">CFT题目随笔</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/05/ctf-note/upload-attack/">闲人的ctf记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>upload一共包含了20个pass</p>
+<p>每个pass要上传一个文件以攻击服务器<br>比如题目提供的server框架是php环境的, 所以我们可以通过提交一个php文件来攻击服务器</p>
+<p>比如我写了如下php代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 输出当前目录全部文件和文件夹 --&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$dir</span> = <span class="title function_ invoke__">opendir</span>(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line"><span class="keyword">while</span>(<span class="variable">$file</span> = <span class="title function_ invoke__">readdir</span>(<span class="variable">$dir</span>))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$file</span>.<span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">closedir</span>(<span class="variable">$dir</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line">&lt;!-- 输出根文件夹下的flag --&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$dir</span> = <span class="title function_ invoke__">opendir</span>(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line"><span class="keyword">while</span>(<span class="variable">$file</span> = <span class="title function_ invoke__">readdir</span>(<span class="variable">$dir</span>))&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$file</span> == <span class="string">&#x27;flag&#x27;</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;/flag&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">closedir</span>(<span class="variable">$dir</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我只要想办法将其上传到服务器, 并知道其在服务器中的位置就可以远程执行脚本攻击</p>
+<p>当然, 服务器不会就这么让你上传木马文件, 所以会采取各类措施来保证服务端的安全, 我们需要做的就是想办法绕过这些安全检测</p>
+<hr>
+<h2 id="pass-1"><a href="#pass-1" class="headerlink" title="pass 1"></a>pass 1</h2><p>这道题要上传一个webshell, 如果我们上传非图片格式文件, 网页会在本地的js脚本中检测文件名来判断是否为图片</p>
+<p>由于检测发生在本地, 所以解决方式多种多样, 我们可以直接看如下代码:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">checkFile</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> file = <span class="variable language_">document</span>.<span class="title function_">getElementsByName</span>(<span class="string">&#x27;upload_file&#x27;</span>)[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">        <span class="keyword">if</span> (file == <span class="literal">null</span> || file == <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">            <span class="title function_">alert</span>(<span class="string">&quot;请选择要上传的文件!&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//定义允许上传的文件类型</span></span><br><span class="line">        <span class="keyword">var</span> allow_ext = <span class="string">&quot;.jpg|.png|.gif&quot;</span>;</span><br><span class="line">        <span class="comment">//提取上传文件的类型</span></span><br><span class="line">        <span class="keyword">var</span> ext_name = file.<span class="title function_">substring</span>(file.<span class="title function_">lastIndexOf</span>(<span class="string">&quot;.&quot;</span>));</span><br><span class="line">        <span class="comment">//判断上传文件类型是否允许上传</span></span><br><span class="line">        <span class="keyword">if</span> (allow_ext.<span class="title function_">indexOf</span>(ext_name) == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> errMsg = <span class="string">&quot;该文件不允许上传，请上传&quot;</span> + allow_ext + <span class="string">&quot;类型的文件,当前文件类型为：&quot;</span> + ext_name;</span><br><span class="line">            <span class="title function_">alert</span>(errMsg);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>我选择在<code>allow_ext</code>中添加<code>.php</code>来绕过检测, 然后上传文件</p>
+<p>然后网页会对上传的文件进行反馈显示, 监测网络传输可以找到上传文件的目录:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /upload/interlude_fubuki.png HTTP/1.1</span><br><span class="line">Accept: image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,en-GB;q=0.6</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Host: dd8934b9-6fe8-492e-9bdd-59ae1bf61dfe.node4.buuoj.cn:81</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Proxy-Connection: keep-alive</span><br><span class="line">Referer: http://dd8934b9-6fe8-492e-9bdd-59ae1bf61dfe.node4.buuoj.cn:81/Pass-01/index.php</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62</span><br></pre></td></tr></table></figure>
+<p>于是我们只要对该目录下上传的php文件进行请求即可完成攻击</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/05/ctf-note/upload-attack/" data-id="clkwkwsg30022k8uvep3m7ub6" data-title="闲人的ctf记录" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/upload/" rel="tag">upload</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" rel="tag">文件上传攻击</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ctf-note/linux-usage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/04/ctf-note/linux-usage/" class="article-date">
+  <time class="dt-published" datetime="2023-04-03T16:00:00.000Z" itemprop="datePublished">2023-04-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CFT%E9%A2%98%E7%9B%AE%E9%9A%8F%E7%AC%94/">CFT题目随笔</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/04/ctf-note/linux-usage/">闲人的ctf记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>CFT的题包含的知识面相当广泛, 多做一做能学到不少东西, 所以在一天最后的时间里, 不妨看几道CTF题, 拓展拓展能力</p>
+<hr>
+<h2 id="Basic-Linux-Lab"><a href="#Basic-Linux-Lab" class="headerlink" title="Basic Linux Lab"></a>Basic Linux Lab</h2><p>这道题目要求登录指定的linux服务器并找到flag, 给出了服务器域名和端口, 所以我们使用ssh指令登录服务器:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -pxxxxx root@xxx.xxx.xxx.xxx</span><br></pre></td></tr></table></figure>
+<p>登录之后检查文件目录:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -a</span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">ls</span> -a</span><br><span class="line"><span class="built_in">ls</span> -All</span><br></pre></td></tr></table></figure>
+<p>几番查找下找到<code>flag.txt</code>文件, vim打开获得内容:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim flag.txt</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Basic-LFI-COURSE-1"><a href="#Basic-LFI-COURSE-1" class="headerlink" title="Basic LFI COURSE 1"></a>Basic LFI COURSE 1</h2><p><code>LFI(Local File Inclusion)是一种常见的web漏洞, 通过构造恶意的url, 可以让服务器读取本地文件, 从而获取敏感信息</code></p>
+<p>于是题目给了我们一个网址, 打开以后显示如下内容:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">/**</span></span><br><span class="line"><span class="meta"> * Created by PhpStorm.</span></span><br><span class="line"><span class="meta"> * User: jinzhao</span></span><br><span class="line"><span class="meta"> * Date: 2019/7/9</span></span><br><span class="line"><span class="meta"> * Time: 7:07 AM</span></span><br><span class="line"><span class="meta"> */</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">highlight_file(__FILE__);</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">if(isset($_GET[&#x27;file&#x27;])) &#123;</span></span><br><span class="line"><span class="meta">    $str = $_GET[&#x27;file&#x27;];</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">    include $_GET[&#x27;file&#x27;];</span></span><br><span class="line"><span class="meta">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>看起来是包含了一段php脚本, highlight_file返回了脚本的高亮显示<br><code>$_GET[&#39;file&#39;]</code>从传递参数中获得<code>file</code>并包含这个文件, 所以我需要知道服务器中的flag的位置<br>虽然直接输入<code>file=/flag</code>就找到答案就是了</p>
+<hr>
+<h2 id="Basic-BUU-BRUTE-1"><a href="#Basic-BUU-BRUTE-1" class="headerlink" title="Basic BUU BRUTE 1"></a>Basic BUU BRUTE 1</h2><p>简单的爆破, 没什么值得说的, 需要注意的是请求过快会导致服务器拒绝服务, 所以需要控制并行的请求速度</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/04/ctf-note/linux-usage/" data-id="clkwkwsg40028k8uvesor4hum" data-title="闲人的ctf记录" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-automata-theory/CH45-RL-MyhillNerode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/03/automata-theory/CH45-RL-MyhillNerode/" class="article-date">
+  <time class="dt-published" datetime="2023-04-02T16:00:00.000Z" itemprop="datePublished">2023-04-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/03/automata-theory/CH45-RL-MyhillNerode/">形式语言与自动机 Myhill-Nerode定理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Myhill-Nerode定理"><a href="#Myhill-Nerode定理" class="headerlink" title="Myhill-Nerode定理"></a>Myhill-Nerode定理</h1><p>定理规定以下三个命题同时成立:</p>
+<ol>
+<li>$L \subseteq \Sigma^*$是正则语言</li>
+<li>$L$是$\Sigma^*$上的某一个具有有穷指数的右不变等价关系$R$的某些等价类的并</li>
+<li>$R_L$具有有穷指数</li>
+</ol>
+<p>好, 看到书上的三个命题已经懵逼的了</p>
+<p>我们从第二条命题中提取我们所不知道的两个关键名词<strong>有穷指数</strong>和<strong>右不变等价关系$R$</strong></p>
+<h2 id="右不变等价关系"><a href="#右不变等价关系" class="headerlink" title="右不变等价关系"></a>右不变等价关系</h2><ul>
+<li>定义: 设$R$是$\Sigma^*$上的等价, 对于$\forall x, y \in \Sigma^*$, 如果$xRy$成立, 则$xzRyz$也成立, $z \in \Sigma^*$, 则称$R$为右不变等价关系</li>
+</ul>
+<p>然后我们可以定义以下两种右不变等价关系:</p>
+<ul>
+<li><p>$R_L$: 对于一个语言$L \subseteq \Sigma^*$, $xR_Ly$表示对于$\forall x,y,z \in \Sigma^*$, $xz \in L \Leftrightarrow yz \in L$<br>也就是说在任意的$x,y$后加上一个$z$, 两者要么都是$L$的成员, 要么都不是$L$的成员</p>
+</li>
+<li><p>$R_M$: 对于一个自动机$M$, $xR_My \Leftrightarrow \delta(q_0, x) &#x3D; \delta(q_0, y)$<br>也就是说, 两个字符串可以使得自动机停在同一个状态</p>
+</li>
+</ul>
+<p>通过这两种右不变等价关系我们可以把$\Sigma^*$分成若干<strong>等价类</strong></p>
+<p>对于一个自动机确定的右不变等价关系$R_M$, 我们可以得到对应的语言的$R_L(M)$</p>
+<h2 id="关系的指数"><a href="#关系的指数" class="headerlink" title="关系的指数"></a>关系的指数</h2><p>我们记$|\Sigma^*&#x2F;R|$为$R$关于$\Sigma^*$的指数, 简称$R$的指数, 其代表的是通过$R$关系能把$\Sigma^*$分成的等价类的数量</p>
+<hr>
+<p>有了这两个名词的了解就可以去理解Myhill-Nerode定理的三条等价命题了</p>
+<p>我们可以通过后两条命题判定一个语言是不是正则语言:</p>
+<ul>
+<li>我们可以通过构造某个右不变等价关系, 来使得L是其中等价类的并</li>
+<li>我们可以用$L$来构造右不变等价关系, 并判定其指数是否有穷</li>
+</ul>
+<hr>
+<h1 id="DFA最小化"><a href="#DFA最小化" class="headerlink" title="DFA最小化"></a>DFA最小化</h1><p>正则语言有对应的最小化DFA, 存在以下算法求解:</p>
+<ul>
+<li><p>首先我们给出一个DFA状态<strong>是否可区分</strong>的判断标准: 如果, 状态$q$和$p$同时只有一个能接受某个句子, 那么则称$q$和$p$是可区分的, 符号表达为:$\exists x \in \Sigma^*, \delta(q, x) \neq \delta(p, x) and \space one \space is \space accept$</p>
+</li>
+<li><p>求解最小化DFA的过程就是将所有的不可区分状态合并的过程</p>
+</li>
+</ul>
+<p>算法步骤:</p>
+<ol>
+<li>将所有$F \times (S-F)$的状态对标记为可区分</li>
+<li>对于所有的$F \times F$和$(S-F) \times (S-F)$的状态对, 我们通过搜索的方式, 将字母表$\Sigma$中的每个字母作为输入, 改变其状态, 如果搜索到某个状态对是可区分的, 则该状态对标记为可区分</li>
+<li>如此运行到最后, 剩下的状态对即为不可区分的状态对, 将其全部两两合为一个状态即可</li>
+</ol>
+<p>类似的去重思想在后面的上下文无关文法中也会有所体现</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/04/03/automata-theory/CH45-RL-MyhillNerode/" data-id="clkwkwsg1001rk8uv9y7ocut5" data-title="形式语言与自动机 Myhill-Nerode定理" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">形式语言</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag">离散数学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">自动机</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" rel="tag">计算机理论</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%AD%E8%A8%80/" rel="tag">语言</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-operating-system/CH2-Concurrency-datastruct" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/03/20/operating-system/CH2-Concurrency-datastruct/" class="article-date">
+  <time class="dt-published" datetime="2023-03-19T16:00:00.000Z" itemprop="datePublished">2023-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/20/operating-system/CH2-Concurrency-datastruct/">多线程数据结构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="多线程数据结构"><a href="#多线程数据结构" class="headerlink" title="多线程数据结构"></a>多线程数据结构</h1><h2 id="多线程计数器-counter"><a href="#多线程计数器-counter" class="headerlink" title="多线程计数器(counter)"></a>多线程计数器(counter)</h2><p>我们在之前的例子中我们有多线程计数器的实现, 只需要在对变量累加前后加上锁即可</p>
+<p>但是加锁和解锁的操作对这个简单的加数来说, 造成了很大的额外开销, 即便在多线程的摊销下所花的时间并没有增加</p>
+<p>为此有一种 <strong>approximate counter(近似计数器)</strong> 的方法:</p>
+<p>每个cpu都有一个计数器, 每个线程在各自的cpu上计数, 每过一段时间就会把自己的计数器的值加到一个全局共享的计数器上, 然后把自己的计数器清空, 如果想要在这个过程中读取计数器的值, 就需要将所有的计数器累加起来, 不过cpu在各自的局部计数器上不需要频繁的加锁解锁了, 只需要在累加到全局计数器的时候加锁即可</p>
+<h2 id="多线程链表"><a href="#多线程链表" class="headerlink" title="多线程链表"></a>多线程链表</h2><p>我们可以给链表的关键操作加上锁:</p>
+<ul>
+<li><p>insert<br>我们先申请一个新节点, 将新节点赋值, 然后加锁, 把它插入链表之中, 完成后解锁<br>我们加锁的过程是在修改链表的前后, 而不是申请新节点之前, 因为如果在申请新节点失败后, 我们的锁得不到释放, 就会造成资源占用, 死锁等问题</p>
+</li>
+<li><p>look_up<br>查询操作也需要加锁, 以免在查询中修改链表指针, 导致不可预测的情况出现</p>
+</li>
+</ul>
+<h2 id="多线程队列"><a href="#多线程队列" class="headerlink" title="多线程队列"></a>多线程队列</h2><p>对于一个队列, 只有前后指针需要修改, 所以加锁的也只有这一部分, 可以比较简单地实现</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/03/20/operating-system/CH2-Concurrency-datastruct/" data-id="clkwkwshb008uk8uvayvpbdrm" data-title="多线程数据结构" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/concurrency/" rel="tag">concurrency</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-structure/" rel="tag">data-structure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/operating-system/" rel="tag">operating-system</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-draft/EM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/03/18/draft/EM/" class="article-date">
+  <time class="dt-published" datetime="2023-03-17T16:00:00.000Z" itemprop="datePublished">2023-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/18/draft/EM/">EM算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>当我们使用极大似然估计(MLE)来估计参数时, 我们是已知若干样本, 通过求一个参数使得出现这些样本的概率最大, 来计算参数的</p>
+<p>如果在这种问题中, 如果我们将满足两个不同分布的类别混在一起, 此时要做最大似然估计, 并且将两类分开, 该怎么做呢?</p>
+<p>此时我们有两类分布的参数$\theta_a$和$\theta_b$, 还有样本属于$A$类样本的概率$\pi$, 我们简单用$\theta$表示三个参数的集合</p>
+<p>于是我们可以画出概率树:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    样本---|π|属于A类</span><br><span class="line">    样本---|1-π|属于B类</span><br><span class="line">    属于A类---|θ_a|正面1</span><br><span class="line">    属于A类---|1-θ_a|反面1</span><br><span class="line">    属于B类---|θ_b|正面2</span><br><span class="line">    属于B类---|1-θ_b|反面2</span><br></pre></td></tr></table></figure>
+<p>我们只能观测到概率树第三层的结果, 但是观测不到第二层, 所以我们无法直接用最大似然法来估计参数$\theta$</p>
+<p>为了解决问题, 我们先写出问题的似然函数:<br>$$<br>L(X,Z,\theta_a,\theta_b,\pi) &#x3D; L(X,Z,\theta)<br>$$<br>EM算法是一种迭代算法, 我们可以先给定一个初始化的参数$\theta^{(0)}$, 然后似然函数就可以写成:<br>$$<br>L(X,Z,\theta^{(0)}) &#x3D; \prod_{Z}{P(X_i,\theta^{(0)}; Z_i)}\<br>\log{L(X,Z,\theta^{(0)})} &#x3D; \sum_{Z}{\log{P(X_i,\theta^{(0)}; Z_i)}}<br>$$<br>此时函数中未知的就只有未观察到的数据$Z$, 我们就可以用极大似然法来求出$Z$的极大似然估计</p>
+<p>由于每一组$X_i$和$Z_i$是相互独立的, 所以我们可以单独求出每一个$Z_i$的极大似然估计, 我们可以写出下式:<br>$$<br>\begin{aligned}<br>P(Z_{i}|X_i,\theta^{(0)}) &amp;&#x3D; \frac{P(X_i|Z_{i},\theta^{(0)})P(Z_{i}|\theta^{(0)})}{P(X_i|\theta^{(0)})} \<br>&amp;&#x3D; \frac{P(X_i|Z_{i},\theta^{(0)})P(Z_{i}|\theta^{(0)})}{\sum_{Z_i}{P(X_i|Z_i,\theta^{(0)})P(Z_i|\theta^{(0)})}}<br>\end{aligned}<br>$$<br>为了方便求出上式的最值, 我们可以按照下表的信息化简上式:</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">正面</th>
+<th align="center">反面</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>属于A类</strong></td>
+<td align="center">$\piθ_a$</td>
+<td align="center">$\pi(1-θ_a)$</td>
+<td align="center">$\pi$</td>
+</tr>
+<tr>
+<td align="center"><strong>属于B类</strong></td>
+<td align="center">$(1-\pi)θ_b$</td>
+<td align="center">$(1-\pi)(1-θ_b)$</td>
+<td align="center">$(1-\pi)$</td>
+</tr>
+<tr>
+<td align="center"><strong>总和</strong></td>
+<td align="center">$\piθ_a+(1-\pi)θ_b$</td>
+<td align="center">$\pi(1-θ_a)+(1-\pi)(1-θ_b)$</td>
+<td align="center">$1$</td>
+</tr>
+</tbody></table>
+<p>$$<br>\begin{aligned}<br>P(Z_{i}|X_i,\theta^{(0)}) &amp;&#x3D; \frac{\theta_a^{(X_i)}(1-\theta_a)^{(1-X_i)}\pi^{Z_i}}{\theta_a^{(X_i)}(1-\theta_a)^{({1-X_i})}\pi^{Z_i}+\theta_b^{(X_i)}(1-\theta_b)^{({1-X_i})}(1-\pi)^{1-Z_i}} \<br>&amp;&#x3D; \mu_i<br>\end{aligned}<br>$$<br>然后我们就能根据上式计算出$Z$的极大似然估计, 上述步骤我们称为<strong>E步</strong>, 也就是<strong>Expectation步</strong></p>
+<p>有了$Z$数据的估计以后, 我们又能反过来用极大似然法估计$\theta$的值, 以此为迭代循环, 最后能够得到$\theta$的估计值, 并且获得了$Z$数据的估计值, 这个步骤我们称为<strong>M步</strong>, 也就是<strong>Maximization步</strong></p>
+<p>在E步中, 我们可以直接构造一个<strong>Q函数</strong>:<br>$$<br>Q(\theta,\theta^{(k)}) &#x3D; E_Z[\log P(X,Z;\theta)|X,\theta^{(k)}]<br>$$<br>也就是在给定观测结果和初始参数的情况下, 关于$Z$的极大似然函数的期望, 化简如下:<br>$$<br>\begin{aligned}<br>Q(\theta,\theta^{(k)}) &amp;&#x3D; E_Z[\log P(X,Z;\theta)|X,\theta^{(k)}] \<br>&amp;&#x3D; \sum_{Z}{\log P(X,Z;\theta)P(Z|X,\theta^{(k)})} \<br>\end{aligned}<br>$$<br>M步只要最大化Q函数就可以了</p>
+<h3 id="如何计算Q函数的最大化"><a href="#如何计算Q函数的最大化" class="headerlink" title="如何计算Q函数的最大化:"></a>如何计算Q函数的最大化:</h3><p>$$<br>\begin{aligned}<br>Q(\theta,\theta^{(k)}) &amp;&#x3D; \sum_{X}\sum_{Z}{\log P(X_i,Z_j;\theta)\underline{P(Z_i|X_j,\theta^{(k)}})} \<br>&amp;\text{横线部分用之前推出的式子代替}\<br>&amp;&#x3D; \sum_{X}{\mu_i\log{P(X_i|Z_a,\theta)}P(Z_a|\theta)+(1-\mu_i)}\log{P(X_i|Z_b,\theta)}P(Z_b|\theta) \<br>&amp;&#x3D; \sum_{X}{\mu_i\log{(\pi\theta_a^{(X_i)}(1-\theta_a)^{(1-X_i)}}}) + (1-\mu_i)\log{((1-\pi)\theta_b^{(X_i)}(1-\theta_b)^{(1-X_i)}}) \<br>\end{aligned}<br>$$<br>这个式子中包含了$\theta$和$\mu$两组未知参数, 我们对$\theta$中的参数求导, 并令结果为0, 化简以后就可以得到$\theta$的关于$\mu$的最大化的表达式<br>然后我们再通过E步骤中求出$\mu$的最大化值即可得到一轮迭代的参数</p>
+<hr>
+<p>这个算法真的给我不扎实的概率论基础上了一课, 关于Q函数的证明部分我已经不想管了, 具体的实现靠以上的信息已经足够了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dnullp.github.io/2023/03/18/draft/EM/" data-id="clkwkwsgp005mk8uv6y1044fc" data-title="EM算法" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EM%E7%AE%97%E6%B3%95/" rel="tag">EM算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/13/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/15/">weiter &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C#学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">C++学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CFT%E9%A2%98%E7%9B%AE%E9%9A%8F%E7%AC%94/">CFT题目随笔</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CSAPP%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">CSAPP学习笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode%E7%BB%83%E4%B9%A0/">LeetCode练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Matlab%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">Matlab学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%AE%97%E6%B3%95%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">OI算法和数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OI%E7%BB%83%E4%B9%A0/">OI练习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qt%E5%AD%A6%E4%B9%A0/">Qt学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/compiler/">compiler</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B9%90%E7%90%86/">乐理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/">信号与系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/">反思</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/">笔记</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8F%8D%E6%80%9D/%E7%AC%94%E8%AE%B0/%E7%BF%BB%E8%AF%91/">翻译</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA/">形式语言与自动机</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">微信小程序</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">思维导图</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Three-Easy-Pieces/">Three-Easy-Pieces</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">数学基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/">练习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BB%83%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/">计算机图形</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/">语言学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">课程复习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E8%AF%BB%E5%90%8E%E6%84%9F/">读后感</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API/" rel="tag">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bellman-ford/" rel="tag">Bellman-ford</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag">C++学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CMatlab/" rel="tag">CMatlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">C计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DP/" rel="tag">DP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EM%E7%AE%97%E6%B3%95/" rel="tag">EM算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HMM/" rel="tag">HMM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kruskal/" rel="tag">Kruskal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LCA/" rel="tag">LCA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag">Lambda表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/" rel="tag">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OI/" rel="tag">OI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prim/" rel="tag">Prim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Qt/" rel="tag">Qt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCIM/" rel="tag">SCIM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SG%E5%87%BD%E6%95%B0/" rel="tag">SG函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SPFA/" rel="tag">SPFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ST%E8%A1%A8/" rel="tag">ST表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVM/" rel="tag">SVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stride-Scheduling/" rel="tag">Stride Scheduling</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tarjan/" rel="tag">Tarjan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Three-Easy-Pieces/" rel="tag">Three-Easy-Pieces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UNIX/" rel="tag">UNIX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VAX-VMS/" rel="tag">VAX&#x2F;VMS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/concurrency/" rel="tag">concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/convolution/" rel="tag">convolution</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu/" rel="tag">cpu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpu%E5%8E%9F%E7%90%86/" rel="tag">cpu原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/" rel="tag">data-structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/decision-tree/" rel="tag">decision tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dijkstra/" rel="tag">dijkstra</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fourier-transform/" rel="tag">fourier transform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/" rel="tag">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/" rel="tag">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mechine-learning/" rel="tag">mechine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nim%E5%8D%9A%E5%BC%88/" rel="tag">nim博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/operating-system/" rel="tag">operating-system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/perceptron/" rel="tag">perceptron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/signal/" rel="tag">signal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/special-function/" rel="tag">special function</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/system/" rel="tag">system</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/" rel="tag">ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unity/" rel="tag">unity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/upload/" rel="tag">upload</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wireshark%E7%BB%83%E4%B9%A0/" rel="tag">wireshark练习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" rel="tag">上下文切换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" rel="tag">不等式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" rel="tag">中间代码生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" rel="tag">主定理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" rel="tag">二分图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" rel="tag">二叉堆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" rel="tag">二叉查找树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag">二进制</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81/" rel="tag">代码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" rel="tag">代码能力</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" rel="tag">优先队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" rel="tag">优化程序性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" rel="tag">关联容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98/" rel="tag">内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" rel="tag">内存分配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" rel="tag">内存地址</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" rel="tag">内存空间</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">内存虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" rel="tag">分布式编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" rel="tag">分比例调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%B2%BB/" rel="tag">分治</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E9%A1%B5/" rel="tag">分页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" rel="tag">前缀和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%B2%E7%82%B9/" rel="tag">割点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" rel="tag">动态内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" rel="tag">区间最大值</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" rel="tag">区间查询</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" rel="tag">区间维护</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="tag">博弈论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" rel="tag">地图生成</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" rel="tag">地址翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" rel="tag">多级反馈队列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8/" rel="tag">容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%AE%E5%88%86/" rel="tag">差分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" rel="tag">巴什博弈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" rel="tag">异常控制流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" rel="tag">形式语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" rel="tag">彩票调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">微信小程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" rel="tag">思维导图</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%84%9F%E6%83%B3/" rel="tag">感想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" rel="tag">教学资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" rel="tag">数据流分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%BB%84/" rel="tag">数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6/" rel="tag">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" rel="tag">文件上传攻击</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" rel="tag">文件操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">无序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="tag">智能指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" rel="tag">最大字串和</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" rel="tag">最大流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" rel="tag">最小生成树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="tag">最短路</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91/" rel="tag">树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" rel="tag">树上倍增</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" rel="tag">树形数组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" rel="tag">树链剖分</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">概率论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E6%9D%BF/" rel="tag">模板</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" rel="tag">段式内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">段式内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%87%E7%BC%96/" rel="tag">汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" rel="tag">浅拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" rel="tag">深拷贝</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93/" rel="tag">渲染</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" rel="tag">游戏编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E6%80%A7/" rel="tag">特性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" rel="tag">直接运行程序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A9%E9%98%B5/" rel="tag">矩阵</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A2%8E%E7%89%87/" rel="tag">碎片</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" rel="tag">离散数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" rel="tag">空闲内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" rel="tag">空闲链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7/" rel="tag">线性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="tag">线段树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81/" rel="tag">编码</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" rel="tag">编码规范</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" rel="tag">编译器优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" rel="tag">网络流</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" rel="tag">自动机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD/" rel="tag">英语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" rel="tag">计算机图形</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" rel="tag">计算机理论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" rel="tag">计算机系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">词法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" rel="tag">语义分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95/" rel="tag">语法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" rel="tag">语法分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E8%A8%80/" rel="tag">语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" rel="tag">调度算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" rel="tag">输入法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" rel="tag">进程调度</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E6%8E%A5/" rel="tag">链接</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88/" rel="tag">集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" rel="tag">静态分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag">项目</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" rel="tag">顺序容器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" rel="tag">预处理宏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" rel="tag">预处理指令</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Bellman-ford/" style="font-size: 10px;">Bellman-ford</a> <a href="/tags/C/" style="font-size: 16.43px;">C++</a> <a href="/tags/C-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">C++学习记录</a> <a href="/tags/CMatlab/" style="font-size: 10px;">CMatlab</a> <a href="/tags/CTF/" style="font-size: 10.71px;">CTF</a> <a href="/tags/C%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">C计算机网络</a> <a href="/tags/DNS/" style="font-size: 10.71px;">DNS</a> <a href="/tags/DP/" style="font-size: 10px;">DP</a> <a href="/tags/EM%E7%AE%97%E6%B3%95/" style="font-size: 10px;">EM算法</a> <a href="/tags/HMM/" style="font-size: 10px;">HMM</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/Kruskal/" style="font-size: 10px;">Kruskal</a> <a href="/tags/LCA/" style="font-size: 10px;">LCA</a> <a href="/tags/Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" style="font-size: 10px;">Lambda表达式</a> <a href="/tags/Leetcode/" style="font-size: 10px;">Leetcode</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/OI/" style="font-size: 10px;">OI</a> <a href="/tags/Prim/" style="font-size: 10px;">Prim</a> <a href="/tags/Qt/" style="font-size: 10px;">Qt</a> <a href="/tags/SCIM/" style="font-size: 10px;">SCIM</a> <a href="/tags/SG%E5%87%BD%E6%95%B0/" style="font-size: 10px;">SG函数</a> <a href="/tags/SPFA/" style="font-size: 10px;">SPFA</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/ST%E8%A1%A8/" style="font-size: 10px;">ST表</a> <a href="/tags/SVM/" style="font-size: 10px;">SVM</a> <a href="/tags/Stride-Scheduling/" style="font-size: 10px;">Stride Scheduling</a> <a href="/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/tags/Tarjan/" style="font-size: 10.71px;">Tarjan</a> <a href="/tags/Three-Easy-Pieces/" style="font-size: 10px;">Three-Easy-Pieces</a> <a href="/tags/UNIX/" style="font-size: 10px;">UNIX</a> <a href="/tags/VAX-VMS/" style="font-size: 10px;">VAX/VMS</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/c/" style="font-size: 12.86px;">c#</a> <a href="/tags/concurrency/" style="font-size: 14.29px;">concurrency</a> <a href="/tags/convolution/" style="font-size: 10px;">convolution</a> <a href="/tags/cpu/" style="font-size: 10px;">cpu</a> <a href="/tags/cpu%E5%8E%9F%E7%90%86/" style="font-size: 10px;">cpu原理</a> <a href="/tags/data-structure/" style="font-size: 10px;">data-structure</a> <a href="/tags/decision-tree/" style="font-size: 10px;">decision tree</a> <a href="/tags/dijkstra/" style="font-size: 10px;">dijkstra</a> <a href="/tags/fourier-transform/" style="font-size: 10px;">fourier transform</a> <a href="/tags/golang/" style="font-size: 10.71px;">golang</a> <a href="/tags/linux/" style="font-size: 10.71px;">linux</a> <a href="/tags/machine-learning/" style="font-size: 10.71px;">machine learning</a> <a href="/tags/math/" style="font-size: 10.71px;">math</a> <a href="/tags/mechine-learning/" style="font-size: 10px;">mechine learning</a> <a href="/tags/nim%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">nim博弈</a> <a href="/tags/operating-system/" style="font-size: 14.29px;">operating-system</a> <a href="/tags/perceptron/" style="font-size: 10px;">perceptron</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/special-function/" style="font-size: 10px;">special function</a> <a href="/tags/system/" style="font-size: 10.71px;">system</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/unity/" style="font-size: 10px;">unity</a> <a href="/tags/upload/" style="font-size: 10px;">upload</a> <a href="/tags/wireshark%E7%BB%83%E4%B9%A0/" style="font-size: 12.86px;">wireshark练习</a> <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" style="font-size: 10px;">上下文切换</a> <a href="/tags/%E4%B8%8D%E7%AD%89%E5%BC%8F/" style="font-size: 10px;">不等式</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/" style="font-size: 15.71px;">中间代码生成</a> <a href="/tags/%E4%B8%BB%E5%AE%9A%E7%90%86/" style="font-size: 10px;">主定理</a> <a href="/tags/%E4%B9%90%E7%90%86/" style="font-size: 10.71px;">乐理</a> <a href="/tags/%E4%BA%8C%E5%88%86/" style="font-size: 10.71px;">二分</a> <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE/" style="font-size: 10px;">二分图</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E5%A0%86/" style="font-size: 10.71px;">二叉堆</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/" style="font-size: 10px;">二叉查找树</a> <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" style="font-size: 11.43px;">二进制</a> <a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 15.71px;">代码</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" style="font-size: 10.71px;">代码优化</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E8%83%BD%E5%8A%9B/" style="font-size: 10px;">代码能力</a> <a href="/tags/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">优先队列</a> <a href="/tags/%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" style="font-size: 10px;">优化程序性能</a> <a href="/tags/%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">关联容器</a> <a href="/tags/%E5%86%85%E5%AD%98/" style="font-size: 10px;">内存</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" style="font-size: 10px;">内存分配</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" style="font-size: 10px;">内存地址</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/" style="font-size: 10.71px;">内存空间</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10.71px;">内存管理</a> <a href="/tags/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">内存虚拟化</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E8%AF%91/" style="font-size: 10px;">分布式编译</a> <a href="/tags/%E5%88%86%E6%AF%94%E4%BE%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">分比例调度</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 10px;">分治</a> <a href="/tags/%E5%88%86%E9%A1%B5/" style="font-size: 10px;">分页</a> <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" style="font-size: 10px;">前缀和</a> <a href="/tags/%E5%89%B2%E7%82%B9/" style="font-size: 10px;">割点</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/" style="font-size: 10px;">动态内存</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 10px;">动画</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9C%80%E5%A4%A7%E5%80%BC/" style="font-size: 10px;">区间最大值</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E6%9F%A5%E8%AF%A2/" style="font-size: 10px;">区间查询</a> <a href="/tags/%E5%8C%BA%E9%97%B4%E7%BB%B4%E6%8A%A4/" style="font-size: 11.43px;">区间维护</a> <a href="/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/" style="font-size: 10px;">博弈论</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 11.43px;">图论</a> <a href="/tags/%E5%9C%B0%E5%9B%BE%E7%94%9F%E6%88%90/" style="font-size: 10px;">地图生成</a> <a href="/tags/%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">地址翻译</a> <a href="/tags/%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97/" style="font-size: 10px;">多级反馈队列</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E5%B7%AE%E5%88%86/" style="font-size: 11.43px;">差分</a> <a href="/tags/%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88/" style="font-size: 10px;">巴什博弈</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 10.71px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81/" style="font-size: 10px;">异常控制流</a> <a href="/tags/%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">形式语言</a> <a href="/tags/%E5%BD%A9%E7%A5%A8%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">彩票调度</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">微信小程序</a> <a href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" style="font-size: 10px;">思维导图</a> <a href="/tags/%E6%84%9F%E6%83%B3/" style="font-size: 11.43px;">感想</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 17.86px;">操作系统</a> <a href="/tags/%E6%95%99%E5%AD%A6%E8%B5%84%E6%96%99/" style="font-size: 10px;">教学资料</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 11.43px;">数学</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">数据流分析</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%95%B0%E7%BB%84/" style="font-size: 10px;">数组</a> <a href="/tags/%E6%96%87%E4%BB%B6/" style="font-size: 10px;">文件</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" style="font-size: 10px;">文件上传攻击</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" style="font-size: 10px;">文件操作</a> <a href="/tags/%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">无序容器</a> <a href="/tags/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" style="font-size: 10px;">智能指针</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E5%AD%97%E4%B8%B2%E5%92%8C/" style="font-size: 10px;">最大字串和</a> <a href="/tags/%E6%9C%80%E5%A4%A7%E6%B5%81/" style="font-size: 10px;">最大流</a> <a href="/tags/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" style="font-size: 10px;">最小生成树</a> <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/" style="font-size: 10px;">最短路</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%A0%91/" style="font-size: 10px;">树</a> <a href="/tags/%E6%A0%91%E4%B8%8A%E5%80%8D%E5%A2%9E/" style="font-size: 10px;">树上倍增</a> <a href="/tags/%E6%A0%91%E5%BD%A2%E6%95%B0%E7%BB%84/" style="font-size: 10px;">树形数组</a> <a href="/tags/%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86/" style="font-size: 10px;">树链剖分</a> <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 10.71px;">概率论</a> <a href="/tags/%E6%A8%A1%E6%9D%BF/" style="font-size: 10.71px;">模板</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98/" style="font-size: 10px;">段式内存</a> <a href="/tags/%E6%AE%B5%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" style="font-size: 10px;">段式内存管理</a> <a href="/tags/%E6%B1%87%E7%BC%96/" style="font-size: 10.71px;">汇编</a> <a href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">浅拷贝</a> <a href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/" style="font-size: 10px;">深拷贝</a> <a href="/tags/%E6%B8%B2%E6%9F%93/" style="font-size: 10px;">渲染</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">游戏编程</a> <a href="/tags/%E7%89%B9%E6%80%A7/" style="font-size: 11.43px;">特性</a> <a href="/tags/%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F/" style="font-size: 10px;">直接运行程序</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A2%8E%E7%89%87/" style="font-size: 10px;">碎片</a> <a href="/tags/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" style="font-size: 13.57px;">离散数学</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E5%86%85%E5%AD%98/" style="font-size: 10px;">空闲内存</a> <a href="/tags/%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">空闲链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BA%BF%E6%80%A7/" style="font-size: 10.71px;">线性</a> <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/" style="font-size: 10px;">线段树</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a> <a href="/tags/%E7%BC%96%E7%A0%81/" style="font-size: 11.43px;">编码</a> <a href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" style="font-size: 10px;">编码规范</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10.71px;">编程语言</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 17.14px;">编译原理</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/" style="font-size: 10px;">编译器优化</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" style="font-size: 10.71px;">网络流</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E6%9C%BA/" style="font-size: 12.86px;">自动机</a> <a href="/tags/%E8%8B%B1%E8%AF%AD/" style="font-size: 10px;">英语</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">虚拟化</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2/" style="font-size: 10px;">计算机图形</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/" style="font-size: 12.86px;">计算机理论</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" style="font-size: 18.57px;">计算机系统</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">计算机网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 19.29px;">设计模式</a> <a href="/tags/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">词法分析</a> <a href="/tags/%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语义分析</a> <a href="/tags/%E8%AF%AD%E6%B3%95/" style="font-size: 12.14px;">语法</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90/" style="font-size: 15.71px;">语法分析</a> <a href="/tags/%E8%AF%AD%E8%A8%80/" style="font-size: 12.86px;">语言</a> <a href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" style="font-size: 10px;">调度算法</a> <a href="/tags/%E8%B4%AA%E5%BF%83/" style="font-size: 10px;">贪心</a> <a href="/tags/%E8%BE%93%E5%85%A5%E6%B3%95/" style="font-size: 10px;">输入法</a> <a href="/tags/%E8%BF%9B%E7%A8%8B/" style="font-size: 11.43px;">进程</a> <a href="/tags/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/" style="font-size: 10px;">进程调度</a> <a href="/tags/%E9%93%BE%E6%8E%A5/" style="font-size: 10px;">链接</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 11.43px;">随笔</a> <a href="/tags/%E9%9B%86%E5%90%88/" style="font-size: 10px;">集合</a> <a href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" style="font-size: 10px;">静态分析</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 20px;">面向对象</a> <a href="/tags/%E9%A1%B9%E7%9B%AE/" style="font-size: 10px;">项目</a> <a href="/tags/%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">顺序容器</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F/" style="font-size: 10px;">预处理宏</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4/" style="font-size: 10px;">预处理指令</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/08/04/Wechat-P/first--time-trying/">第一个微信小程序——创建与总览</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/QT/FirstApplication/">第一个Qt程序——文本查询</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/leading-chapter/">Operating System Chapter 1</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-Segmentation/">段式内存管理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/04/operating-system/CH1-proportionalShare/">分比例调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Dnull_P<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
