@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>形式语言与自动机 第一章 语言 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>形式语言与自动机 第一章 语言</h1>
+  <h1 id="形式语言与自动机-第一章-语言"><a href="#形式语言与自动机-第一章-语言" class="headerlink" title="形式语言与自动机 第一章 语言"></a>形式语言与自动机 第一章 语言</h1><p>前三个小节为离散数学相关内容，包括关系、集合、树等，不在该课程中学习</p>
+<h2 id="语言"><a href="#语言" class="headerlink" title="语言"></a>语言</h2><ul>
+<li><p>字母表：<br>字母表是由字符（character）或符号（symbol）组成的有限集合，我们的课本用符号<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span>表示</p>
+<ul>
+<li><p>基本性质</p>
+<ul>
+<li>整体性：每一个字母都是不可拆分的，计算机理论中我们一般称为<strong>原子性</strong></li>
+<li>可分辩性：简而言之，字母表不能是多重集^[多重集是指集合中的元素可以重复出现，比如集合{1,2,2,3}就是一个多重集]</li>
+</ul>
+</li>
+<li><p>计算性质</p>
+<ul>
+<li>字母表相乘：字母表相乘的结果是，将两个计算集合中的字母元素两两按顺序组合，得到的新集合，用符号表示如下：<br>  <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi mathvariant="normal">Σ</mi><mn>1</mn></msub><mo>×</mo><msub><mi mathvariant="normal">Σ</mi><mn>2</mn></msub><mo>&#x3D;</mo><mo stretchy="false">{</mo><mi>a</mi><mi>b</mi><mi mathvariant="normal">∣</mi><mi>a</mi><mo>∈</mo><msub><mi mathvariant="normal">Σ</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>b</mi><mo>∈</mo><msub><mi mathvariant="normal">Σ</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex"><br>  \Sigma_1 \times \Sigma_2 &#x3D; {ab | a \in \Sigma_1, b \in \Sigma_2}<br>  </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">ab</span><span class="mord">∣</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span></span></li>
+<li>字母表的幂：参考字母表相乘，但是对于幂次我们有以下性质:<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mn>0</mn></msup><mo>&#x3D;</mo><mo stretchy="false">{</mo><mi>ε</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\Sigma^0 &#x3D; {\varepsilon}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">ε</span><span class="mclose">}</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mi>n</mi></msup><mo>&#x3D;</mo><mi mathvariant="normal">Σ</mi><mo>×</mo><msup><mi mathvariant="normal">Σ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\Sigma^n &#x3D; \Sigma \times \Sigma^{n-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord">Σ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+<li>字母表的闭包（closure）^[当一个集合对某个运算闭合时, 我们称该集合满足闭包性质, 否则我们称最小的一个包含该集合的封闭集合为该集合的闭包]<ul>
+<li>正闭包：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mo>+</mo></msup><mo>&#x3D;</mo><mi mathvariant="normal">Σ</mi><mo>∪</mo><msup><mi mathvariant="normal">Σ</mi><mn>2</mn></msup><mo>∪</mo><msup><mi mathvariant="normal">Σ</mi><mn>3</mn></msup><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\Sigma^+ &#x3D; \Sigma \cup \Sigma^2 \cup \Sigma^3…</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7713em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mord">…</span></span></span></span></li>
+<li>克林闭包（Kleene closure）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup><mo>&#x3D;</mo><msup><mi mathvariant="normal">Σ</mi><mo>+</mo></msup><mo>∪</mo><mo stretchy="false">{</mo><mi>ε</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\Sigma^* &#x3D; \Sigma^+ \cup {\varepsilon}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7713em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">ε</span><span class="mclose">}</span></span></span></span><br>也就是说克林闭包只是比正闭包多了一个空语言<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ε</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>句子(sentence):<br>一个句子是由字母表中的字母组成的有限序列, 我们用字母<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>表示, 其符号语言定义如下:<br><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>x</mi><mo>∈</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup><mtext>, where </mtext><mi mathvariant="normal">Σ</mi><mtext> is a finite alphabet</mtext><mspace linebreak="newline"></mspace><mi>x</mi><mtext> is a sentence</mtext></mrow><annotation encoding="application/x-tex"><br>\forall x \in \Sigma^* \text{, where } \Sigma \text{ is a finite alphabet}\<br>x\text{ is a sentence}<br></annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">∀</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9331em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7387em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mord text"><span class="mord">, where </span></span><span class="mord">Σ</span><span class="mord text"><span class="mord"> is a finite alphabet</span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6679em;"></span><span class="mord mathnormal">x</span><span class="mord text"><span class="mord"> is a sentence</span></span></span></span></span></span><br>句子还可以称为字(word), 行(line), 串(string)</p>
+<ul>
+<li>当一个句子为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>a</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xay</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>, 且满足<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">x \in \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">y \in \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">a \in \Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span>时, 我们称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span>为句子<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>a</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xay</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>的一个出现</li>
+<li>句子的字母元素的数量我们称为句子的长度, 用符号表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>x</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|x|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">x</span><span class="mord">∣</span></span></span></span></li>
+<li>我们有两句子<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>满足<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">x \in \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">y \in \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span>, 我们称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">xy</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>为句子<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>的<strong>并置</strong>, 又叫<strong>连接</strong>,</li>
+<li>对于任意并置, 我们具有以下性质:<ul>
+<li>结合律</li>
+<li>左消去和右消去律</li>
+<li>唯一分解性: 可以由唯一的方式分解为若干字母</li>
+<li>单位元素: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mi>x</mi><mo>&#x3D;</mo><mi>x</mi><mo>&#x3D;</mo><mi>x</mi><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon x &#x3D; x &#x3D; x \epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">ϵ</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缀类:</p>
+<ul>
+<li>前缀</li>
+<li>后缀</li>
+<li>真前缀</li>
+<li>真后缀</li>
+<li>公共前缀</li>
+<li>公共后缀</li>
+<li>最大公共前缀</li>
+<li>最大公共后缀</li>
+<li>字串</li>
+<li>公共子串</li>
+<li>最大公共子串</li>
+</ul>
+</li>
+<li><p>语言:<br>对于一个集合<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>, 满足<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>⊆</mo><msup><mi mathvariant="normal">Σ</mi><mo>∗</mo></msup></mrow><annotation encoding="application/x-tex">L \subseteq \Sigma^*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊆</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span></span></span></span>, 我们称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span>的一个语言, 其中的元素为该语言的句子</p>
+<ul>
+<li>语言的乘积:<br>语言的乘积为两个语言的所有句子的并置的结果所组成的语言, 用符号表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>×</mo><msub><mi>L</mi><mn>2</mn></msub><mo>&#x3D;</mo><mo stretchy="false">{</mo><mi>x</mi><mi>y</mi><mi mathvariant="normal">∣</mi><mi>x</mi><mo>∈</mo><msub><mi>L</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>y</mi><mo>∈</mo><msub><mi>L</mi><mn>2</mn></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">L_1 \times L_2 &#x3D; {xy | x \in L_1, y \in L_2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span>‘</li>
+<li>语言和字母表一样, 也有闭包的概念:<ul>
+<li>正闭包: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mo>+</mo></msup><mo>&#x3D;</mo><mi>L</mi><mo>∪</mo><msup><mi>L</mi><mn>2</mn></msup><mo>∪</mo><msup><mi>L</mi><mn>3</mn></msup><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">L^+ &#x3D; L \cup L^2 \cup L^3…</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7713em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mord">…</span></span></span></span></li>
+<li>克林闭包: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mo>∗</mo></msup><mo>&#x3D;</mo><msup><mi>L</mi><mo>+</mo></msup><mo>∪</mo><mo stretchy="false">{</mo><mi>ε</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">L^* &#x3D; L^+ \cup {\varepsilon}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6887em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7713em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">ε</span><span class="mclose">}</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

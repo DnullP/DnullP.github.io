@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Composite pattern [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>Composite pattern</h1>
+  <h3 id="Composite"><a href="#Composite" class="headerlink" title="Composite"></a>Composite</h3><p>还是来自Refactorying·Guru网站的UML图<br><img src="https://refactoring.guru/images/patterns/diagrams/composite/structure-en.png"></p>
+<p>Composite pattern contains 4 main members:</p>
+<ul>
+<li>Component</li>
+<li>Composite</li>
+<li>Leaf</li>
+<li>Client</li>
+</ul>
+<p>首先介绍一下Composite的思想：<br>对于一些组成树形结构的对象，由于他们类型不同，在遍历时需要的判断不同的条件</p>
+<p>To simplify the process of traverse, we declare a <strong>interface</strong> Component to do the process when traveling through the node, Leaf and Composite are both implements of the Component, so they can do the same <strong>operation</strong> to finish the tasks.</p>
+<p>There is an example:</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">interface</span> <span class="token class-name">Graphic</span> is
+    method <span class="token function">move</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+    method <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Dot</span> <span class="token keyword">implements</span> <span class="token class-name">Graphic</span> is
+    field x<span class="token punctuation">,</span> y
+
+    constructor <span class="token class-name">Dot</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span>
+
+    method <span class="token function">move</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> is
+        <span class="token keyword">this</span><span class="token punctuation">.</span>x <span class="token operator">+=</span> x<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>y <span class="token operator">+=</span> y
+
+    method <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> is
+
+<span class="token keyword">class</span> <span class="token class-name">Circle</span> <span class="token keyword">extends</span> <span class="token class-name">Dot</span> is
+    field radius
+
+    constructor <span class="token class-name">Circle</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> radius<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span>
+
+    method <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> is
+
+<span class="token keyword">class</span> <span class="token class-name">CompoundGraphic</span> <span class="token keyword">implements</span> <span class="token class-name">Graphic</span> is
+    field children<span class="token operator">:</span> array of <span class="token class-name">Graphic</span>
+
+    method <span class="token function">add</span><span class="token punctuation">(</span>child<span class="token operator">:</span> <span class="token class-name">Graphic</span><span class="token punctuation">)</span> is
+
+    method <span class="token function">remove</span><span class="token punctuation">(</span>child<span class="token operator">:</span> <span class="token class-name">Graphic</span><span class="token punctuation">)</span> is
+
+    method <span class="token function">move</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> is
+        foreach <span class="token punctuation">(</span>child in children<span class="token punctuation">)</span> <span class="token keyword">do</span>
+            child<span class="token punctuation">.</span><span class="token function">move</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+
+    method <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> is
+
+<span class="token keyword">class</span> <span class="token class-name">ImageEditor</span> is
+    field all<span class="token operator">:</span> <span class="token class-name">CompoundGraphic</span>
+
+    method <span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span> is
+        all <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CompoundGraphic</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        all<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Dot</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        all<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Circle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    method <span class="token function">groupSelected</span><span class="token punctuation">(</span>components<span class="token operator">:</span> array of <span class="token class-name">Graphic</span><span class="token punctuation">)</span> is
+        group <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CompoundGraphic</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        foreach <span class="token punctuation">(</span>component in components<span class="token punctuation">)</span> <span class="token keyword">do</span>
+            group<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>component<span class="token punctuation">)</span>
+            all<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>component<span class="token punctuation">)</span>
+        all<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>group<span class="token punctuation">)</span>
+
+        all<span class="token punctuation">.</span><span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre><p>This piece of pseudocode declare <strong>Graphic</strong> as the component, and <strong>Dot</strong>, <strong>Circle</strong> are Leaf.<br><strong>CompoundGraphic</strong> is the composite, which is able to contain other <strong>Graphic</strong>.</p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>组合模式（composite）的主要思想就是一层一层的盒子（composite），盒子组成树形结构，盒子里面可以装其他的物品（Component），这些物品可能是其它类，也可能是盒子</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

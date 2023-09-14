@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chain of Responsibility [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>Chain of Responsibility</h1>
+  <h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><p>责任链模式属于表现型模式，注重的是代码逻辑的运行方式和类之间的协调工作方式</p>
+<p>Chain of Responsibility，正如其名，责任链模式是通过Handler组成链来处理某些请求的，其思想如下：</p>
+<ul>
+<li><p>假如现在我们要做一个身份验证，以确保正确合法的用户访问我们的服务器，我们需要先验证用户请求的密钥，然后需要验证用户的访问设备、环境等</p>
+</li>
+<li><p>在此之后，我们又添加了在短时间内失败多次的用户验证失败的功能，用来防止暴力破解密码</p>
+</li>
+<li><p>然后我们又添加了cookie验证来缓存用户的数据状态</p>
+</li>
+</ul>
+<p>慢慢的，我们的验证过程变得复杂起来，对于这样的情况，我们把每个验证处理做成一个handler，每个handler实现自相同的接口，并且包含下一个handler，当一个handler的验证通过后，就把请求传递给下一个handler进行下一步验证，如果不满足则后续验证也不必再进行，这样构成一条链表结构，链表的末端就是我们的服务器调用</p>
+<p>现在看看来自refactoring.guru的类结构图：</p>
+<p><img src="https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/structure.png"></p>
+<p>上面存在四个要素：</p>
+<ul>
+<li>Client</li>
+<li>Handler<br>这是全部Handler的接口，使得每个Handler可以自由排序组成链表</li>
+<li>BaseHandler<br>这个抽象类中比Handler接口多了一个 <code>next</code>字段，用于储存下一个Handler的引用，通过 <code>setNext()</code>方法设定下一个Handler</li>
+<li>ConcreteHandler<br>这里面具体实现了 <code>handle()</code>方法，并进行判断以确定是否调用下一个Handler</li>
+</ul>
+<p>下面是来自noob note的代码：</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractLogger</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token constant">INFO</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token constant">DEBUG</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token constant">ERROR</span> <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+ 
+   <span class="token keyword">protected</span> <span class="token keyword">int</span> level<span class="token punctuation">;</span>
+ 
+   <span class="token comment">//责任链中的下一个元素</span>
+   <span class="token keyword">protected</span> <span class="token class-name">AbstractLogger</span> nextLogger<span class="token punctuation">;</span>
+ 
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setNextLogger</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span> nextLogger<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>nextLogger <span class="token operator">=</span> nextLogger<span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">logMessage</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">,</span> <span class="token class-name">String</span> message<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">&lt;=</span> level<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+         <span class="token function">write</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span>nextLogger <span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+         nextLogger<span class="token punctuation">.</span><span class="token function">logMessage</span><span class="token punctuation">(</span>level<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token keyword">abstract</span> <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   
+<span class="token punctuation">&#125;</span></code></pre><p>这是BaseHandler，这里跳过了接口Handler而直接从BaseHandler开始，其实也没太大区别</p>
+<p>这里的log级别分为三个等级，当Handler等级小于等于目标等级时则记录log</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConsoleLogger</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractLogger</span> <span class="token punctuation">&#123;</span>
+ 
+   <span class="token keyword">public</span> <span class="token class-name">ConsoleLogger</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> level<span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>    
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Standard Console::Logger: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ErrorLogger</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractLogger</span> <span class="token punctuation">&#123;</span>
+ 
+   <span class="token keyword">public</span> <span class="token class-name">ErrorLogger</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> level<span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>    
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Error Console::Logger: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileLogger</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractLogger</span> <span class="token punctuation">&#123;</span>
+ 
+   <span class="token keyword">public</span> <span class="token class-name">FileLogger</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> level<span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>    
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"File::Logger: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>这里继承了三个logger，根据自身的level是否满足条件输出log</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ChainPatternDemo</span> <span class="token punctuation">&#123;</span>
+   
+   <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">AbstractLogger</span> <span class="token function">getChainOfLoggers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+ 
+      <span class="token class-name">AbstractLogger</span> errorLogger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ErrorLogger</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span><span class="token punctuation">.</span><span class="token constant">ERROR</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">AbstractLogger</span> fileLogger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileLogger</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span><span class="token punctuation">.</span><span class="token constant">DEBUG</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token class-name">AbstractLogger</span> consoleLogger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConsoleLogger</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span><span class="token punctuation">.</span><span class="token constant">INFO</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+      errorLogger<span class="token punctuation">.</span><span class="token function">setNextLogger</span><span class="token punctuation">(</span>fileLogger<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      fileLogger<span class="token punctuation">.</span><span class="token function">setNextLogger</span><span class="token punctuation">(</span>consoleLogger<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+      <span class="token keyword">return</span> errorLogger<span class="token punctuation">;</span>  
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token class-name">AbstractLogger</span> loggerChain <span class="token operator">=</span> <span class="token function">getChainOfLoggers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+      loggerChain<span class="token punctuation">.</span><span class="token function">logMessage</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span><span class="token punctuation">.</span><span class="token constant">INFO</span><span class="token punctuation">,</span> <span class="token string">"This is an information."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+      loggerChain<span class="token punctuation">.</span><span class="token function">logMessage</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span><span class="token punctuation">.</span><span class="token constant">DEBUG</span><span class="token punctuation">,</span> 
+         <span class="token string">"This is a debug level information."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+      loggerChain<span class="token punctuation">.</span><span class="token function">logMessage</span><span class="token punctuation">(</span><span class="token class-name">AbstractLogger</span><span class="token punctuation">.</span><span class="token constant">ERROR</span><span class="token punctuation">,</span> 
+         <span class="token string">"This is an error information."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>用户代码定义了三个不同的logger(Handler)，并将其连接起来，接下来使用 <code>getChainOfLoggers()</code>方法就能得到责任链，每一次进行的log记录都会根据传入的level参数进行不同级别的记录</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

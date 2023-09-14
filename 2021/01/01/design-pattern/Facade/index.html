@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>facade pattern [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>facade pattern</h1>
+  <h3 id="facade"><a href="#facade" class="headerlink" title="facade"></a>facade</h3><p>facade相对来说比较简单，其思想如下：<br>当我们有一个复杂的框架、系统时，我们需要通过这个框架实现某个功能，而不需要关系这个框架本身，也不需要用它实现其他功能时，则使用一个类，把这些功能封装为一个简单的类供客户使用</p>
+<p>依然使用来自Refactorying·Guru的插图：</p>
+<p><img src="https://refactoring.guru/images/patterns/diagrams/facade/structure.png"></p>
+<p>同时，为了防止新导出的facade类也变得复杂，我们可以分层使用多个Additional Facade类，把各个功能的实现分散到各个类中，用户只需要和需要功能的facade类交互即可，而Additional Facade类既可以被用户使用，也可以用来构建用户需要的facade类</p>
+<p>下面是java代码：</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Shape</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">void</span> <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//这是一个接口</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Rectangle</span> <span class="token keyword">implements</span> <span class="token class-name">Shape</span> <span class="token punctuation">&#123;</span>
+ 
+   <span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Rectangle::draw()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Square</span> <span class="token keyword">implements</span> <span class="token class-name">Shape</span> <span class="token punctuation">&#123;</span>
+ 
+   <span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Square::draw()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Circle</span> <span class="token keyword">implements</span> <span class="token class-name">Shape</span> <span class="token punctuation">&#123;</span>
+ 
+   <span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Circle::draw()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//通过这个接口实现了三个类，我们认为这是一个相对复杂的系统</span>
+<span class="token comment">//用户需要知道这个系统中有三个Shape，并且需要分别调用他们的draw()方法</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ShapeMaker</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">private</span> <span class="token class-name">Shape</span> circle<span class="token punctuation">;</span>
+   <span class="token keyword">private</span> <span class="token class-name">Shape</span> rectangle<span class="token punctuation">;</span>
+   <span class="token keyword">private</span> <span class="token class-name">Shape</span> square<span class="token punctuation">;</span>
+ 
+   <span class="token keyword">public</span> <span class="token class-name">ShapeMaker</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      circle <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Circle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      rectangle <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      square <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+ 
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">drawCircle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      circle<span class="token punctuation">.</span><span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">drawRectangle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      rectangle<span class="token punctuation">.</span><span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">drawSquare</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      square<span class="token punctuation">.</span><span class="token function">draw</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//现在定义一个facade类，用户可以简单地通过一个类的三个函数画出需要的三个图形</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FacadePatternDemo</span> <span class="token punctuation">&#123;</span>
+   <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token class-name">ShapeMaker</span> shapeMaker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ShapeMaker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+      shapeMaker<span class="token punctuation">.</span><span class="token function">drawCircle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      shapeMaker<span class="token punctuation">.</span><span class="token function">drawRectangle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      shapeMaker<span class="token punctuation">.</span><span class="token function">drawSquare</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

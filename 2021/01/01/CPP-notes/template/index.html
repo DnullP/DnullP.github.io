@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>C++的模板 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>C++的模板</h1>
+  <p>关于模板的相关内容，但事实上这部分的内容会比较简单</p>
+<!-- more --->
+
+<h3 id="模板不支持分布式编译"><a href="#模板不支持分布式编译" class="headerlink" title="模板不支持分布式编译"></a>模板不支持分布式编译</h3><p>由于模板是在实例化出其中一个版本的对象时才会编译对应的类，所以通过头文件连接不同的源文件时，其他源文件中的模板不能直接在另一个源文件中使用，因为没有创建实例</p>
+<ul>
+<li><p>类模板的成员函数在使用时才会实例化，所以就算是创造类模板的对象，也不能正常使用分布式编译。此外，这一特性使得类模板对象可以正常创建，但是对应的成员函数可能无法正常调用</p>
+</li>
+<li><p>类模板内的代码可以省略对应类的模板参数，直接使用模板名：</p>
+</li>
+<li><p>如果类模板包含一个友元成员，则友元成员可以访问所有模板的实例；</p>
+</li>
+</ul>
+<p>###当使用模板参数为类时，使用作用域运算符无法确定访问的成员是数据还是类型</p>
+<p><code>T::mem</code>——这样在T实例化之前不能确定mem是数据还是类型</p>
+<p>所以 <code>T::mem * p</code>就无法确认是两个数据相乘还是定义一个指针p</p>
+<p>默认情况下，C++认为mem会是数据，如果需要认为其是个类型，需要加上说明符 <code>typename</code></p>
+<h3 id="成员模板不能是虚函数"><a href="#成员模板不能是虚函数" class="headerlink" title="成员模板不能是虚函数"></a>成员模板不能是虚函数</h3><h3 id="类模板的成员模板"><a href="#类模板的成员模板" class="headerlink" title="类模板的成员模板"></a>类模板的成员模板</h3><p>在类模板外定义成员模板时，连续提供两个模板</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span><span class="token operator">&lt;</span>T<span class="token operator">></span>
+<span class="token keyword">template</span><span class="token operator">&lt;</span>It<span class="token operator">></span>
+T <span class="token class-name">class</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token double-colon punctuation">::</span><span class="token function">func</span><span class="token punctuation">(</span>It a<span class="token punctuation">,</span>It b<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span></code></pre><p>就像这样</p>
+<h3 id="定义、声明、实例化"><a href="#定义、声明、实例化" class="headerlink" title="定义、声明、实例化"></a>定义、声明、实例化</h3><p>声明是告诉程序这个对象存在，定义是详细地把这个对象造出来，实例化就是定义对应地过程</p>
+<p>当我们声明一个对象、类型存在时，可以加上<code>extern</code>修饰符，声明存在后，就相当于向程序承诺定义将在其他地方出现</p>
+<p>比如我在多个文件中都将使用 <code>class&lt;string&gt;</code>类型，这样每个文件在编译时都会创建一个<code>class&lt;string&gt;</code>的实例，这样会加大系统资源的消耗，但是如果在每个定义<code>class&lt;string&gt;</code>的地方加上 <code>extern</code>修饰符，就将定义改为了声明，此时再使用<code>class&lt;string&gt;</code>类型时，会去其他作用域寻找实例，而不用创建一个新的实例</p>
+<p>具体的原理内容将会在《深入理解计算机结构体系》中学习，在此不做更多了解</p>
+<p>实例化是一个很不直观的概念，关系到模板创建自定义类型，编译器可能在不知不觉中创建大量的重复类型，导致资源浪费，所以适当使用 <code>extern</code>声明可以减少不必要的资源开销</p>
+<p>链接过程还是很容易出错的</p>
+<h3 id="实例化定义会实例化所有成员"><a href="#实例化定义会实例化所有成员" class="headerlink" title="实例化定义会实例化所有成员"></a>实例化定义会实例化所有成员</h3><h3 id="函数模板的参数类型转换"><a href="#函数模板的参数类型转换" class="headerlink" title="函数模板的参数类型转换"></a>函数模板的参数类型转换</h3><p>函数模板在调用时不需要写上 <code>template&lt;&gt;</code>，而是直接写入实参就可以了</p>
+<p>传递实参之后，函数模板会根据参数类型把函数实例化，或者调用已经实例化的函数，这个时候有个问题，传递的参数是隐式转换成已经实例化的参数模板，还是创建一个新的实例呢？</p>
+<p>primer的解释是，普通类型向 <code>const</code>的转换，和指针转换可以调用重复的实例，而其他所有的类型转换都不会发生，而是创造新实例。</p>
+<ul>
+<li><p><strong>当函数模板中存在不可推断的类型实参时，需要显式提供参数模板</strong></p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T1</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">T2</span><span class="token punctuation">,</span> <span class="token keyword">typename</span> <span class="token class-name">T3</span><span class="token operator">></span>
+T1 <span class="token function">fun</span><span class="token punctuation">(</span>T2 a<span class="token punctuation">,</span> T3 b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">;</span> <span class="token punctuation">&#125;</span></code></pre><p>这样的函数模板必须提供参数列表</p>
+</li>
+<li><p><strong>当给定了模板参数后，函数模板的实参进行正常的类型转换</strong></p>
+</li>
+</ul>
+<h3 id="一些模板的用法"><a href="#一些模板的用法" class="headerlink" title="一些模板的用法"></a>一些模板的用法</h3><ul>
+<li><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">using</span> twin <span class="token operator">=</span> pair<span class="token operator">&lt;</span>T<span class="token punctuation">,</span> T<span class="token operator">></span><span class="token punctuation">;</span>
+
+twin<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> p_a<span class="token punctuation">;</span></code></pre><p>使用 <code>using</code>给模板设置别名</p>
+</li>
+<li><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">typedef</span> pair<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">></span> twin<span class="token punctuation">;</span></code></pre><p>此处给模板的一个实例别名，使用 <code>typedef</code>只能给某个实例取别名，不能直接用模板</p>
+</li>
+</ul>
+<h3 id="每个模板的实例都有各自的-static数据"><a href="#每个模板的实例都有各自的-static数据" class="headerlink" title="每个模板的实例都有各自的 static数据"></a>每个模板的实例都有各自的 <code>static</code>数据</h3><h3 id="使用模板的后置返回类型"><a href="#使用模板的后置返回类型" class="headerlink" title="使用模板的后置返回类型"></a>使用模板的后置返回类型</h3><p>当我们想要根据用户的模板参数来确定返回的类型时，使用 <code>decltype</code>作为后置返回类型</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">It</span><span class="token operator">></span>
+<span class="token keyword">auto</span> <span class="token function">func</span><span class="token punctuation">(</span>It beg<span class="token punctuation">,</span> It end<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token keyword">decltype</span><span class="token punctuation">(</span><span class="token operator">*</span>beg<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token operator">*</span><span class="token punctuation">(</span>beg <span class="token operator">+</span> <span class="token punctuation">(</span>end <span class="token operator">-</span> beg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><h3 id="类型转换模板"><a href="#类型转换模板" class="headerlink" title="类型转换模板"></a>类型转换模板</h3><p>这是一个用途很多的标准库模板，在这里只记录其一种用途</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">remove_reference<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&amp;</span><span class="token operator">></span><span class="token double-colon punctuation">::</span>type a<span class="token punctuation">;</span></code></pre><p>这样a的类型是 <code>int</code>而不是引用<br>这个模板接受一个引用类型，然后其成员 <code>type</code>对应为移除引用后的类型</p>
+<p>可以利用这个模板来修改上面的函数，使其返回 <code>beg</code>的拷贝，而不是引用</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">It</span><span class="token operator">></span>
+<span class="token keyword">auto</span> <span class="token function">func</span><span class="token punctuation">(</span>It beg<span class="token punctuation">,</span> It end<span class="token punctuation">)</span> <span class="token operator">-></span>
+    <span class="token keyword">typename</span> <span class="token class-name">remove_reference</span><span class="token operator">&lt;</span><span class="token keyword">decltype</span><span class="token punctuation">(</span><span class="token operator">*</span>beg<span class="token punctuation">)</span><span class="token operator">></span><span class="token double-colon punctuation">::</span>type
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token operator">*</span><span class="token punctuation">(</span>beg <span class="token operator">+</span> <span class="token punctuation">(</span>end <span class="token operator">-</span> beg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>这样就返回的是 <code>*beg</code>的拷贝，此外，由于 <code>type</code>是一个成员类型，所以需要加上 <code>typename</code>说明符</p>
+<h3 id="当使用函数指针指向模板时，根据指针的参数生成对应实例"><a href="#当使用函数指针指向模板时，根据指针的参数生成对应实例" class="headerlink" title="当使用函数指针指向模板时，根据指针的参数生成对应实例"></a>当使用函数指针指向模板时，根据指针的参数生成对应实例</h3><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">int</span> <span class="token function">func</span><span class="token punctuation">(</span>T a<span class="token punctuation">,</span> T b<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span><span class="token punctuation">(</span><span class="token operator">*</span>func_p<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token operator">=</span> func<span class="token punctuation">;</span></code></pre><p>如上代码，自动生成一个 <code>T = int</code>的实例，这样使用的前提是能够确定函数指针的形参</p>
+<h3 id="引用折叠机制"><a href="#引用折叠机制" class="headerlink" title="引用折叠机制"></a>引用折叠机制</h3><p>当我们向一个右值引用的类型传递一个左值时，一般情况是错误的，但是如果这个右值引用类型是模板的参数的话，那么传递的左值会自动识别为左值引用</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">typename</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">int</span> <span class="token function">func</span><span class="token punctuation">(</span>T <span class="token operator">&amp;&amp;</span>a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+  <span class="token function">func</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>这时，<code>main()</code>中的 <code>func()</code>生成的实例中，T对应的类型是 <code>int&amp;</code>，然后函数中的a变量对应的类型就是 <code>int&amp; &amp;&amp;</code></p>
+<p>这样产生了引用的引用，这在参数类型是模板参数的情况下是特别允许的，此时就会触发<strong>引用折叠</strong></p>
+<p>除了每一重引用都是右值引用的情况，其他所有引用都会折叠为左值引用</p>
+<ul>
+<li><code>T&amp;&amp; &amp;&amp; = T&amp;&amp;</code></li>
+<li><code>T&amp;&amp; &amp; = T&amp;</code></li>
+</ul>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>这个机制导致代码的情况更加复杂，比如：</p>
+<pre class="language-" data-language=""><code class="language-"></code></pre><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

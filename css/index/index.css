@@ -1,0 +1,17 @@
+.recommend-card-container {
+  display: flex;
+  width: 890px;
+  height: auto;
+  justify-content: center;
+  align-items: flex-start;
+}
+.card-container {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0);
+  gap: 20px;
+}

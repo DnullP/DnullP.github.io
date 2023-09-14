@@ -1,0 +1,119 @@
+.recommend-card-warp {
+  display: flex;
+  width: 61.8%;
+  height: 344px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0);
+}
+.recommend-card {
+  width: 494px;
+  height: 285px;
+  position: relative;
+  flex-shrink: 0;
+  background: #d9d9d9;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+.recommend-card:hover {
+  box-shadow: 8px 8px 8px 0px rgba(63,77,123,0.52);
+  transform: scale(1.01);
+}
+.recommend-card img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.recommend-card-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  gap: 7px;
+  z-index: 2;
+  opacity: 0;
+  background: rgba(255,255,255,0.298);
+  visibility: hidden;
+  transition: all 0.2s ease-in-out;
+}
+.recommend-card:hover .recommend-card-content {
+  visibility: visible;
+  opacity: 1;
+}
+.recommend-card:hover .recommend-card-content .recommend-card-content-article-item:nth-child(1) {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.1s ease-in-out 0.1s, opacity 0.1s ease-in-out 0.1s, scale 0.1s ease-in-out;
+}
+.recommend-card:hover .recommend-card-content .recommend-card-content-article-item:nth-child(2) {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.1s ease-in-out 0.2s, opacity 0.1s ease-in-out 0.2s, scale 0.1s ease-in-out;
+}
+.recommend-card-content-article-item {
+  display: inline-flex;
+  width: 100%;
+  height: 44px;
+  gap: 7px;
+  flex-shrink: 0;
+  z-index: 3;
+  background-color: rgba(255,255,255,0.427);
+  opacity: 0;
+  transform: translateX(-20%);
+}
+.recommend-card-content-article-item:hover {
+  scale: 1.05;
+}
+.recommend-card-content-article-item a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  font-family: jf-openhuninn;
+  color: #cddeff;
+  -webkit-text-stroke: 1px #000;
+}
+.placard-warp {
+  display: flex;
+  width: 38.2%;
+  height: 344px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0);
+}
+.placard {
+  width: 278px;
+  height: 285px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: #fffddb;
+  box-shadow: 8px 8px 8px 0px rgba(63,77,123,0.52);
+}
+.placard-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: auto;
+  flex-shrink: 0;
+  font-family: jf-openhuninn;
+}

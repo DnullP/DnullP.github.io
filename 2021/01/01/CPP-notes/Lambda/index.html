@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>C++的Lambda表达式 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>C++的Lambda表达式</h1>
+  <p>Lambda表达式真的是我从来没有接触过的一类语法，于C++11中补充</p>
+<!-- more --->
+
+<h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>C++中存在一类可调用对象，可以通过调用运算符 <code>()</code>来进行调用<br>函数就是一种最常见的可调用对象</p>
+<p>有时候我们编写函数时会遇到这么一种情况：</p>
+<p>我需要在一个函数中调用另一个函数实现具体的功能，调用的函数需要使用到父函数的局部变量，此时如果我把这个变量作为参数传递过去就使得函数的原型过于冗杂了，而我又不可能为了一个函数的变量使用而去定义一个全局变量，此时，我们可以使用Lambda表达式来优化代码</p>
+<p>Lambda表达式和函数一样作为一种可调用对象存在</p>
+<p>如下定义一个lambda表达式：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> lam <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre><p>其中 <code>auto</code>对应的类型是 <code>lambda []int (int a)-&gt;int</code><br>我们对照一下函数的声明 <code>auto f(int a)-&gt;int</code><br>可以注意到，两者的形式其实蛮像的，但是lambda表达式中间没有函数的命名，并且要多一个捕获列表，返回值类型强制使用尾置类型</p>
+<p>其实lambda表达式可以说是一种匿名函数，即不能通过名字来调用的函数<br>而且每一个lambda表达式都是一个自定义类，编译器会先建立一个对应的lambda表达式的类型，再创建一个实例</p>
+<p>作为一种匿名函数，除了不可以直接通过标识来调用外，所有函数支持的操作lambda表达式都可以使用</p>
+<h2 id="捕获列表"><a href="#捕获列表" class="headerlink" title="捕获列表"></a>捕获列表</h2><p>那么lambda表达式最重要的东西就是它的捕获列表，lambda表达式会自动从父函数中捕获对应名字的变量，然后作为子函数的lambda表达式也可以使用</p>
+<p>使用方式如下：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">auto</span> lam <span class="token operator">=</span> <span class="token punctuation">[</span>size<span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">father_fucn</span><span class="token punctuation">(</span><span class="token keyword">int</span> ar_1<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> size <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+    cout <span class="token operator">&lt;&lt;</span> <span class="token function">lam</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>以上使用的lambda表达式会自动捕获父函数中的<code>size</code>变量</p>
+<p>默认情况下，捕获是采用传值的方式，也就是每次调用会拷贝一份 <code>size</code>在子函数中<br>如果使用 <code>&amp;</code>或 <code>=</code>号可以改变其捕获方式，具体的使用就不说了</p>
+<h2 id="结合算法库使用"><a href="#结合算法库使用" class="headerlink" title="结合算法库使用"></a>结合算法库使用</h2><p>标准算法库中，有些算法可以接受一个可调用对象，在算法执行中调用，被称作<strong>谓语</strong><br>谓语可以是任何可调用对象，但是传入参数的数量有限制，并且只能是容器的元素对应的类型，如果需要有额外的参数的话，就可以用到lambda表达式捕获父对象的变量</p>
+<p>lambda表达式还有一些其他的特性，比如返回值类型之类的，在此就不多记录了</p>
+<h2 id="参数绑定"><a href="#参数绑定" class="headerlink" title="参数绑定"></a>参数绑定</h2><p>由于和这部分内容放在一起，所以这里也记录一些关于参数绑定的内容</p>
+<p>参数绑定使用 <code>bind()</code>函数</p>
+<p>使用方式：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">print_th</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">,</span> <span class="token keyword">int</span> c<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    cout <span class="token operator">&lt;&lt;</span> a <span class="token operator">&lt;&lt;</span> b <span class="token operator">&lt;&lt;</span> c<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token double-colon punctuation">::</span>placeholders<span class="token punctuation">;</span>
+    <span class="token keyword">auto</span> print_tw <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span>print_th<span class="token punctuation">,</span> _2<span class="token punctuation">,</span> _1<span class="token punctuation">,</span> _3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">auto</span> print_nn <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span>print_th<span class="token punctuation">,</span> _2<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> _1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">print_tw</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">print_nn</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>带有下划线的数字会对应原函数的参数，下划线后面代表第几个参数（仅限于带下划线的参数的次序），新创建的可调用对象只用输入有下划线的参数即可，其余参数由对应的位置上的参数写入</p>
+<p>这样可以在使用算法库时加入更多的参数，但是个人认为lambda表达式的捕获功能更加有趣方便，<code>bind()</code>或许可以在已经写好的函数上使用减少代码量，毕竟每一个lambda表达式都需要建立一个新的函数体</p>
+<h2 id="ref-函数"><a href="#ref-函数" class="headerlink" title="ref()函数"></a>ref()函数</h2><p>其本质是在模拟引用的行为，实际上并不是真正的引用，由于 <code>bind()</code>函数传递的参数必须拷贝一份过去，本身不支持引用，所以使用 <code>ref()</code>函数创建一个包含了引用的对象拷贝过去</p>
+<p>这大概算是C++标准库设计的一个缺点</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

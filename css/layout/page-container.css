@@ -1,0 +1,21 @@
+.content {
+  display: flex;
+  width: 890px;
+  height: min-content;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.slidebar-warp {
+  width: 340px;
+  height: auto;
+}
+.slidebar {
+  position: sticky;
+  top: 0px;
+  display: flex;
+  height: 900px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  overflow: hidden;
+}

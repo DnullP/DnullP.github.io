@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>thrift实践 - golang实现 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>thrift实践 - golang实现</h1>
+  <p>这一部分记录了关于thrift的一些实践, 主要为使用golang完成官方的tutorial实践</p>
+<hr>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><ul>
+<li>windows 10</li>
+<li>golang 1.20.7</li>
+<li>thrift 1.18</li>
+</ul>
+<p>本来是打算用C++来做实验的, 但是在windows平台上使用C++的thrift库有些麻烦, 需要自行编译其依赖库, 并且依赖库的编译又依赖于第三方的C++库, 这些会在后面有机会再尝试, 这里采用开发较为简单的golang来尝试</p>
+<h1 id="thrift简介"><a href="#thrift简介" class="headerlink" title="thrift简介"></a>thrift简介</h1><p>thrift本身是一个用于定义RPC接口IDL框架, 分为两部分:</p>
+<ul>
+<li>thrift编译器: 用于将thrift定义的IDL文件编译成各种语言的RPC接口代码</li>
+<li>thrift依赖库: 各个语言有各自的thrift依赖, 用于上述编译结果的文件</li>
+</ul>
+<p>thrift编译器本身只要下载安装使用就行, 依赖库根据不同语言进行安装即可, 我们的工作主要是编写用于生成接口的thrift文件, 并在各自的语言中实现其接口</p>
+<h1 id="thrift语法"><a href="#thrift语法" class="headerlink" title="thrift语法"></a>thrift语法</h1><p>官方给出了标准语法的巴科斯范式以及tutorial以供参考, 我们结合两者来理解</p>
+<pre class="language-" data-language=""><code class="language-">bool        Boolean, one byte
+i8 (byte)   Signed 8-bit integer
+i16         Signed 16-bit integer
+i32         Signed 32-bit integer
+i64         Signed 64-bit integer
+double      64-bit floating point value
+string      String
+binary      Blob (byte array)
+map&lt;t1,t2&gt;  Map from one type to another
+list&lt;t1&gt;    Ordered list of one type
+set&lt;t1&gt;     Set of unique elements of one type</code></pre><p>这是thrift支持的数据类型, 不用过多解释</p>
+<pre class="language-" data-language=""><code class="language-">include &quot;shared.thrift&quot;</code></pre><p>使用include来包含其他thrift文件中的定义</p>
+<pre class="language-" data-language=""><code class="language-">namespace cl tutorial
+namespace cpp tutorial
+namespace d tutorial
+namespace dart tutorial
+namespace java tutorial
+namespace php tutorial
+namespace perl tutorial
+namespace haxe tutorial
+namespace netstd tutorial
+namespace go tutorial</code></pre><p>定义一个namespace, 通过文档中的说明: </p>
+<blockquote>
+<p>A namespace declares which namespaces&#x2F;package&#x2F;module&#x2F;etc. the type definitions in this file will be declared in for the target languages. The namespace scope indicates which language the namespace applies to; a scope of ‘*’ indicates that the namespace applies to all target languages.</p>
+</blockquote>
+<p>这规定了当前thrift文件编译目标语言时, 会被分配到哪一个模块中, 对于C++而言就是namespace, 对于golang而言就是package</p>
+<p>以上部分属于Header, 一个thrift文件由Header和Definition组成, Definition部分包括:</p>
+<pre class="language-" data-language=""><code class="language-">Definition      ::&#x3D;  Const | Typedef | Enum 
+                | Struct | Union | Exception | Service</code></pre><p>具体如下:</p>
+<pre class="language-" data-language=""><code class="language-">typedef i32 MyInteger</code></pre><p>这允许我们为类型取一个别名</p>
+<pre class="language-thrift" data-language="thrift"><code class="language-thrift">const i32 INT32CONSTANT &#x3D; 9853
+const map&lt;string,string&gt; MAPCONSTANT &#x3D; &#123;&#39;hello&#39;:&#39;world&#39;, &#39;goodnight&#39;:&#39;moon&#39;&#125;
+
+enum Operation &#123;
+  ADD &#x3D; 1,
+  SUBTRACT &#x3D; 2,
+  MULTIPLY &#x3D; 3,
+  DIVIDE &#x3D; 4
+&#125;</code></pre><p>定义常量和枚举</p>
+<pre class="language-" data-language=""><code class="language-">struct Work &#123;
+  1: i32 num1 &#x3D; 0,
+  2: i32 num2,
+  3: Operation op,
+  4: optional string comment,
+&#125;</code></pre><p>struct的语法如下:</p>
+<pre class="language-" data-language=""><code class="language-">Struct          ::&#x3D;  &#39;struct&#39; Identifier &#39;&#123;&#39; Field* &#39;&#125;&#39;</code></pre><p>其中的Field的语法如下:</p>
+<pre class="language-" data-language=""><code class="language-">Field           ::&#x3D;  FieldID? FieldReq? FieldType 
+                Identifier (&#39;&#x3D;&#39; ConstValue)? XsdFieldOptions ListSeparator?
+
+FieldID         ::&#x3D;  IntConstant &#39;:&#39;</code></pre><p>这要求我们以一个可选的数字ID来为struct的每个字段开头, 以及一个optional来表明字段的可选择性, 然后必要部分包括字段类型, 标识符, 以及可选的默认值. (最后两个我们忽视掉, 官方文档的说明不足)</p>
+<pre class="language-" data-language=""><code class="language-">exception InvalidOperation &#123;
+  1: i32 whatOp,
+  2: string why
+&#125;</code></pre><p>exception和struct类似, 但是用于生成target lan的异常类</p>
+<pre class="language-" data-language=""><code class="language-">service Calculator extends shared.SharedService &#123;
+
+   void ping(),
+
+   i32 add(1:i32 num1, 2:i32 num2),
+
+   i32 calculate(1:i32 logid, 2:Work w) throws (1:InvalidOperation ouch),
+
+   oneway void zip()
+&#125;</code></pre><p>service可以选择性地继承自另一个service, 并在其中声明定义一系列的方法</p>
+<p>方法定义解决C-style, 用返回值类型 + 标识符 + 符合字段格式的参数, 以及可选的抛出的错误类型</p>
+<p>文档中关于thrift的基本语法就到这里</p>
+<hr>
+<h1 id="在golang中实现接口"><a href="#在golang中实现接口" class="headerlink" title="在golang中实现接口"></a>在golang中实现接口</h1><p>我们通过<code>thrift -r --gen go tutorial</code>生成了目标代码的文件, 完成相关module的配置后, 我们可以实现定义的接口:</p>
+<pre class="language-go" data-language="go"><code class="language-go"><span class="token keyword">type</span> CalculatorHandler <span class="token keyword">struct</span> <span class="token punctuation">&#123;</span>
+    log <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token operator">*</span>tutorial<span class="token punctuation">.</span>SharedStruct
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">NewCalculatorHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>CalculatorHandler <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>CalculatorHandler<span class="token punctuation">&#123;</span>log<span class="token punctuation">:</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token operator">*</span>tutorial<span class="token punctuation">.</span>SharedStruct<span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><p><code>CalculatorHandler</code>就是我们的服务了, 我们在服务中定义一个<code>log</code>字段用于记录服务日志</p>
+<pre class="language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>CalculatorHandler<span class="token punctuation">)</span> <span class="token function">Ping</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">(</span>err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span><span class="token string">"ping()\n"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>CalculatorHandler<span class="token punctuation">)</span> <span class="token function">Add</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> num1 <span class="token builtin">int32</span><span class="token punctuation">,</span> num2 <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>retval17 <span class="token builtin">int32</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span><span class="token string">"add("</span><span class="token punctuation">,</span> num1<span class="token punctuation">,</span> <span class="token string">","</span><span class="token punctuation">,</span> num2<span class="token punctuation">,</span> <span class="token string">")\n"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> num1 <span class="token operator">+</span> num2<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>CalculatorHandler<span class="token punctuation">)</span> <span class="token function">Calculate</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> logid <span class="token builtin">int32</span><span class="token punctuation">,</span> w <span class="token operator">*</span>tutorial<span class="token punctuation">.</span>Work<span class="token punctuation">)</span> <span class="token punctuation">(</span>val <span class="token builtin">int32</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span><span class="token string">"calculate("</span><span class="token punctuation">,</span> logid<span class="token punctuation">,</span> <span class="token string">", &#123;"</span><span class="token punctuation">,</span> w<span class="token punctuation">.</span>Op<span class="token punctuation">,</span> <span class="token string">","</span><span class="token punctuation">,</span> w<span class="token punctuation">.</span>Num1<span class="token punctuation">,</span> <span class="token string">","</span><span class="token punctuation">,</span> w<span class="token punctuation">.</span>Num2<span class="token punctuation">,</span> <span class="token string">"&#125;)\n"</span><span class="token punctuation">)</span>
+    <span class="token keyword">switch</span> w<span class="token punctuation">.</span>Op <span class="token punctuation">&#123;</span>
+    <span class="token keyword">case</span> tutorial<span class="token punctuation">.</span>Operation_ADD<span class="token punctuation">:</span>
+        val <span class="token operator">=</span> w<span class="token punctuation">.</span>Num1 <span class="token operator">+</span> w<span class="token punctuation">.</span>Num2
+    <span class="token keyword">case</span> tutorial<span class="token punctuation">.</span>Operation_SUBTRACT<span class="token punctuation">:</span>
+        val <span class="token operator">=</span> w<span class="token punctuation">.</span>Num1 <span class="token operator">-</span> w<span class="token punctuation">.</span>Num2
+    <span class="token keyword">case</span> tutorial<span class="token punctuation">.</span>Operation_MULTIPLY<span class="token punctuation">:</span>
+        val <span class="token operator">=</span> w<span class="token punctuation">.</span>Num1 <span class="token operator">*</span> w<span class="token punctuation">.</span>Num2
+    <span class="token keyword">case</span> tutorial<span class="token punctuation">.</span>Operation_DIVIDE<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> w<span class="token punctuation">.</span>Num2 <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+            ouch <span class="token operator">:=</span> tutorial<span class="token punctuation">.</span><span class="token function">NewInvalidOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            ouch<span class="token punctuation">.</span>WhatOp <span class="token operator">=</span> <span class="token function">int32</span><span class="token punctuation">(</span>w<span class="token punctuation">.</span>Op<span class="token punctuation">)</span>
+            ouch<span class="token punctuation">.</span>Why <span class="token operator">=</span> <span class="token string">"Cannot divide by 0"</span>
+            err <span class="token operator">=</span> ouch
+            <span class="token keyword">return</span>
+        <span class="token punctuation">&#125;</span>
+        val <span class="token operator">=</span> w<span class="token punctuation">.</span>Num1 <span class="token operator">/</span> w<span class="token punctuation">.</span>Num2
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+        ouch <span class="token operator">:=</span> tutorial<span class="token punctuation">.</span><span class="token function">NewInvalidOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        ouch<span class="token punctuation">.</span>WhatOp <span class="token operator">=</span> <span class="token function">int32</span><span class="token punctuation">(</span>w<span class="token punctuation">.</span>Op<span class="token punctuation">)</span>
+        ouch<span class="token punctuation">.</span>Why <span class="token operator">=</span> <span class="token string">"Unknown operation"</span>
+        err <span class="token operator">=</span> ouch
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+    entry <span class="token operator">:=</span> tutorial<span class="token punctuation">.</span><span class="token function">NewSharedStruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    entry<span class="token punctuation">.</span>Key <span class="token operator">=</span> logid
+    entry<span class="token punctuation">.</span>Value <span class="token operator">=</span> strconv<span class="token punctuation">.</span><span class="token function">Itoa</span><span class="token punctuation">(</span><span class="token function">int</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    k <span class="token operator">:=</span> <span class="token function">int</span><span class="token punctuation">(</span>logid<span class="token punctuation">)</span>
+    <span class="token comment">/*
+       oldvalue, exists := p.log[k]
+       if exists &#123;
+         fmt.Print("Replacing ", oldvalue, " with ", entry, " for key ", k, "\n")
+       &#125; else &#123;
+         fmt.Print("Adding ", entry, " for key ", k, "\n")
+       &#125;
+    */</span>
+    p<span class="token punctuation">.</span>log<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> entry
+    <span class="token keyword">return</span> val<span class="token punctuation">,</span> err
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>CalculatorHandler<span class="token punctuation">)</span> <span class="token function">GetStruct</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> key <span class="token builtin">int32</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>tutorial<span class="token punctuation">.</span>SharedStruct<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span><span class="token string">"getStruct("</span><span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token string">")\n"</span><span class="token punctuation">)</span>
+    v <span class="token operator">:=</span> p<span class="token punctuation">.</span>log<span class="token punctuation">[</span><span class="token function">int</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> v<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>CalculatorHandler<span class="token punctuation">)</span> <span class="token function">Zip</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">(</span>err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span><span class="token string">"zip()\n"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">&#125;</span></code></pre><p>然后实现了接口中的全部方法 (在golang中, 只要实现了对应的方法就可视为实现接口)</p>
+<p>接下来我们看看如何启动一个服务:</p>
+<pre class="language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">runServer</span><span class="token punctuation">(</span>transportFactory thrift<span class="token punctuation">.</span>TTransportFactory<span class="token punctuation">,</span> protocolFactory thrift<span class="token punctuation">.</span>TProtocolFactory<span class="token punctuation">,</span> addr <span class="token builtin">string</span><span class="token punctuation">,</span> secure <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> transport thrift<span class="token punctuation">.</span>TServerTransport 
+
+    <span class="token keyword">var</span> err <span class="token builtin">error</span>
+    <span class="token keyword">if</span> secure <span class="token punctuation">&#123;</span>
+        cfg <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span>tls<span class="token punctuation">.</span>Config<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> cert<span class="token punctuation">,</span> err <span class="token operator">:=</span> tls<span class="token punctuation">.</span><span class="token function">LoadX509KeyPair</span><span class="token punctuation">(</span><span class="token string">"server.crt"</span><span class="token punctuation">,</span> <span class="token string">"server.key"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+            cfg<span class="token punctuation">.</span>Certificates <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>cfg<span class="token punctuation">.</span>Certificates<span class="token punctuation">,</span> cert<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> err
+        <span class="token punctuation">&#125;</span>
+        transport<span class="token punctuation">,</span> err <span class="token operator">=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTSSLServerSocket</span><span class="token punctuation">(</span>addr<span class="token punctuation">,</span> cfg<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        transport<span class="token punctuation">,</span> err <span class="token operator">=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTServerSocket</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">&#125;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%T\n"</span><span class="token punctuation">,</span> transport<span class="token punctuation">)</span>
+    handler <span class="token operator">:=</span> <span class="token function">NewCalculatorHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    processor <span class="token operator">:=</span> tutorial<span class="token punctuation">.</span><span class="token function">NewCalculatorProcessor</span><span class="token punctuation">(</span>handler<span class="token punctuation">)</span>
+    server <span class="token operator">:=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTSimpleServer4</span><span class="token punctuation">(</span>processor<span class="token punctuation">,</span> transport<span class="token punctuation">,</span> transportFactory<span class="token punctuation">,</span> protocolFactory<span class="token punctuation">)</span>
+
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Starting the simple server... on "</span><span class="token punctuation">,</span> addr<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> server<span class="token punctuation">.</span><span class="token function">Serve</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span></code></pre><p>首先我们看函数中的第一行:<br><code>thrift.TServerTransport</code></p>
+<p>这是一个接口, 定义如下:</p>
+<pre class="language-go" data-language="go"><code class="language-go"><span class="token comment">// Server transport. Object which provides client transports.</span>
+<span class="token keyword">type</span> TServerTransport <span class="token keyword">interface</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">Listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span>
+    <span class="token function">Accept</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>TTransport<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    <span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span>
+
+    <span class="token comment">// Optional method implementation. This signals to the server transport</span>
+    <span class="token comment">// that it should break out of any accept() or listen() that it is currently</span>
+    <span class="token comment">// blocked on. This method, if implemented, MUST be thread safe, as it may</span>
+    <span class="token comment">// be called from a different thread context than the other TServerTransport</span>
+    <span class="token comment">// methods.</span>
+    <span class="token function">Interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span>
+<span class="token punctuation">&#125;</span></code></pre><p>可以看出, 这是一个经典的Socket Server的接口</p>
+<p>然后是建立一个Socket接口, 这里的代码根据secure参数来决定是否使用TLS加密</p>
+<pre class="language-go" data-language="go"><code class="language-go"><span class="token keyword">if</span> secure <span class="token punctuation">&#123;</span>
+        cfg <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span>tls<span class="token punctuation">.</span>Config<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> cert<span class="token punctuation">,</span> err <span class="token operator">:=</span> tls<span class="token punctuation">.</span><span class="token function">LoadX509KeyPair</span><span class="token punctuation">(</span><span class="token string">"server.crt"</span><span class="token punctuation">,</span> <span class="token string">"server.key"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+            cfg<span class="token punctuation">.</span>Certificates <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>cfg<span class="token punctuation">.</span>Certificates<span class="token punctuation">,</span> cert<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> err
+        <span class="token punctuation">&#125;</span>
+        transport<span class="token punctuation">,</span> err <span class="token operator">=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTSSLServerSocket</span><span class="token punctuation">(</span>addr<span class="token punctuation">,</span> cfg<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        transport<span class="token punctuation">,</span> err <span class="token operator">=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTServerSocket</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span></code></pre><p>建立好了Socket链接后, 我们将实现了接口的<code>CalculatorHandler</code>传入<code>NewCalculatorProcessor</code>中, 生成一个<code>processor</code>, 然后将其传入<code>NewTSimpleServer4</code>中, 生成一个<code>server</code>, 最后调用<code>server.Serve()</code>来启动服务</p>
+<pre class="language-go" data-language="go"><code class="language-go">fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%T\n"</span><span class="token punctuation">,</span> transport<span class="token punctuation">)</span>
+handler <span class="token operator">:=</span> <span class="token function">NewCalculatorHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+processor <span class="token operator">:=</span> tutorial<span class="token punctuation">.</span><span class="token function">NewCalculatorProcessor</span><span class="token punctuation">(</span>handler<span class="token punctuation">)</span>
+server <span class="token operator">:=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTSimpleServer4</span><span class="token punctuation">(</span>processor<span class="token punctuation">,</span> transport<span class="token punctuation">,</span> transportFactory<span class="token punctuation">,</span> protocolFactory<span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Starting the simple server... on "</span><span class="token punctuation">,</span> addr<span class="token punctuation">)</span>
+<span class="token keyword">return</span> server<span class="token punctuation">.</span><span class="token function">Serve</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre><p>具体可以表示为下述的图:</p>
+<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
+CalculatorHandler --&gt;|implement| CalculatorHandler.Interface
+CalculatorHandler --&gt;|composition| Processor
+Processor --&gt;|composition| Server
+Transport --&gt;|composition| Server
+Server --&gt; Run</code></pre><p>接下来我们只要在main函数中调用<code>runServer</code>和<code>runClient</code>就可以启动并使用服务了<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"></p>
+
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

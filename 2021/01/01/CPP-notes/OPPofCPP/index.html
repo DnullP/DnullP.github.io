@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>C++中的类的一些碎片知识 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>C++中的类的一些碎片知识</h1>
+  <p>与OPP有关的碎片知识记录</p>
+<!-- more --->
+
+<h2 id="类内外定义函数"><a href="#类内外定义函数" class="headerlink" title="类内外定义函数"></a>类内外定义函数</h2><ul>
+<li>类的内部定义的函数隐式地定义为内联函数(inline)</li>
+<li>类地外部定义地函数没啥特别</li>
+</ul>
+<h2 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h2><ul>
+<li><p>可以给构造函数赋值为<code>default</code>，代表默认构造函数<br>顺带一提，默认构造函数的合成是编译器完成的工作，当不存在构造函数时，编译器会帮你生成默认构造函数<br><code>Person() = default;</code></p>
+</li>
+<li><p>存在任意一个构造函数后，则取消默认构造函数</p>
+</li>
+<li><p><font color = darkred>一旦成员对象没有默认构造函数，则该类也无法生成默认构造函数</font></p>
+</li>
+</ul>
+<h2 id="构造函数初始值列表"><a href="#构造函数初始值列表" class="headerlink" title="构造函数初始值列表"></a>构造函数初始值列表</h2><p>现在有必要搞清楚这个东西的专业名词了   </p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token function">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span><span class="token function">name</span><span class="token punctuation">(</span>istream <span class="token operator">&amp;</span>is<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">address</span><span class="token punctuation">(</span>istream <span class="token operator">&amp;</span>is<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span></code></pre><p>单冒号后面用逗号分隔的部分，叫做<strong>构造函数初始值列表</strong>，仅用于类的成员变量初始化   </p>
+<p>（其实只是记录一下这个写法，并没有需要特别注意的地方）</p>
+<h2 id="可变数据成员-mutable"><a href="#可变数据成员-mutable" class="headerlink" title="可变数据成员(mutable)"></a>可变数据成员(mutable)</h2><p>通过给成员变量添加<code>mutable</code>前缀，使得即使是常量对象，也能对该变量进行修改</p>
+<h2 id="常量this指针"><a href="#常量this指针" class="headerlink" title="常量this指针"></a>常量this指针</h2><p>关于常量的this指针特点，可以参照常量和指向常量的指针之间的关系：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token operator">*</span>p1 <span class="token operator">=</span> <span class="token operator">&amp;</span>a<span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token operator">*</span>p2 <span class="token operator">=</span> <span class="token operator">&amp;</span>b<span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> <span class="token operator">*</span>p3 <span class="token operator">=</span> <span class="token operator">&amp;</span>a<span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> <span class="token operator">*</span>p4 <span class="token operator">=</span> <span class="token operator">&amp;</span>b<span class="token punctuation">;</span></code></pre><p>以上代码中，只有第二种不合法</p>
+<ul>
+<li><p>可以知道，常量指针可以指向常量和非常量，普通指针只能指向常量   </p>
+</li>
+<li><p>类似的对于const的this指针</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">const</span> Screen <span class="token operator">&amp;</span><span class="token function">display</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token keyword">const</span><span class="token punctuation">;</span></code></pre><p>对于该函数，普通对象和常量类型的对象都可以使用该函数</p>
+</li>
+<li><p>而对于不含const的this指针</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">Screen <span class="token operator">&amp;</span><span class="token function">display</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>常量对象不能访问该函数</p>
+</li>
+<li><p>类似地，引用也有同样地性质<br>所以返回值为<code>const Screen&amp;</code>时，是不是常量都可以返回<br>而返回值为<code>Screen&amp;</code>时，只能返回非常量</p>
+</li>
+<li><p>因此，对于const和非const的对象，我们可以声明函数的两种重载</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">const</span> Screen <span class="token operator">&amp;</span><span class="token function">display</span><span class="token punctuation">(</span>ostream <span class="token operator">&amp;</span>os<span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">;</span>
+Screen <span class="token operator">&amp;</span><span class="token function">display</span><span class="token punctuation">(</span>ostream <span class="token operator">&amp;</span>os<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>同时，为了提高代码的复用性，我们编写一个新的函数，使得两种对象都能够调用</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">inline</span> <span class="token keyword">void</span> <span class="token function">do_display</span><span class="token punctuation">(</span>ostream <span class="token operator">&amp;</span>os<span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">;</span></code></pre><p>这样一来，<code>display()</code>作为函数接口可以满足不同的对象的需要，而内部实现只需要修改<code>do_display()</code>一个函数即可</p>
+</li>
+</ul>
+<h2 id="声明和定义"><a href="#声明和定义" class="headerlink" title="声明和定义"></a>声明和定义</h2><ul>
+<li>一个类型被声明后，就可以声明它对应的引用和指针</li>
+<li>一个类型被定义后，才可以创建它的实例</li>
+</ul>
+<h2 id="友元函数和友元类"><a href="#友元函数和友元类" class="headerlink" title="友元函数和友元类"></a>友元函数和友元类</h2><ul>
+<li>类也可以加上友元修饰，并在其他类中声明</li>
+<li>类的成员函数也可以作为友元成员</li>
+<li>友元声明只是声明友元关系，并没有对函数进行声明，所以函数需要在其他地方声明</li>
+</ul>
+<h2 id="类的作用域"><a href="#类的作用域" class="headerlink" title="类的作用域"></a>类的作用域</h2><ul>
+<li>编译器优先处理类中的声明，处理完声明后，才处理定义</li>
+<li>对于内部作用域的名字隐藏了外部作用域的名字，可以用域操作符访问外部作用域：<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> height<span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">A</span>
+<span class="token punctuation">&#123;</span>
+  privite<span class="token operator">:</span>
+    <span class="token keyword">int</span> height<span class="token punctuation">;</span>
+  pubilc<span class="token operator">:</span>
+    <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+      cout <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span><span class="token double-colon punctuation">::</span>height<span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span>endl<span class="token comment">//外部的height</span>
+           <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>height<span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span><span class="token comment">//内部的height</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre></li>
+</ul>
+<h2 id="委托函数"><a href="#委托函数" class="headerlink" title="委托函数"></a>委托函数</h2><h3 id="委托构造函数"><a href="#委托构造函数" class="headerlink" title="委托构造函数"></a>委托构造函数</h3><p>使用已有的构造函数进行扩展：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">A</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">;</span>
+    <span class="token function">A</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span><span class="token keyword">int</span> b<span class="token punctuation">,</span><span class="token keyword">int</span> c<span class="token punctuation">)</span><span class="token operator">:</span><span class="token function">x</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">y</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">z</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+      cout<span class="token operator">&lt;&lt;</span><span class="token string">"Three Get!"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">A</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span><span class="token keyword">int</span> b<span class="token punctuation">)</span><span class="token operator">:</span><span class="token function">A</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+      cout<span class="token operator">&lt;&lt;</span><span class="token string">"Two Get!"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>上面的代码中，A的构造函数有两种重载，其中第二种使用了第一种的委托，先执行1，再执行2</p>
+<h2 id="类的类型转换定义"><a href="#类的类型转换定义" class="headerlink" title="类的类型转换定义"></a>类的类型转换定义</h2><p>说是类型转换，其实本质是只接受一个参数的构造函数而已</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">A</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">public</span><span class="token operator">:</span>
+    string store<span class="token punctuation">;</span>
+    <span class="token function">A</span><span class="token punctuation">(</span>string a<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+      store <span class="token operator">=</span> a<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  string s <span class="token operator">=</span> <span class="token string">"123"</span><span class="token punctuation">;</span>
+  A b <span class="token operator">=</span> <span class="token function">A</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  A c <span class="token operator">=</span> <span class="token generic-function"><span class="token function">static_cast</span><span class="token generic class-name"><span class="token operator">&lt;</span>A<span class="token operator">></span></span></span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>这和强制转换是一样的语法格式</p>
+<p>隐式转换也同样存在：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">func</span><span class="token punctuation">(</span>A input<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  string s <span class="token operator">=</span> <span class="token string">"123"</span><span class="token punctuation">;</span>
+  <span class="token function">func</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  A b <span class="token operator">=</span> s<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>这样的隐式转换也是合法可用的   </p>
+<p>如果想要取消这样的隐式转换，给构造函数加上<code>explicit</code>的前缀</p>
+<h2 id="聚合类"><a href="#聚合类" class="headerlink" title="聚合类"></a>聚合类</h2><ul>
+<li>成员全部为<code>public</code></li>
+<li>没有类内构造函数</li>
+<li>没有初始值</li>
+<li>没有基类、虚函数这些东西</li>
+</ul>
+<h2 id="可以使用花括号进行初始化：cpp-class-A-public-int-a-double-b-string-c-int-main-A-s-1-2-3-string-123-A-c-1-2-3-123"><a href="#可以使用花括号进行初始化：cpp-class-A-public-int-a-double-b-string-c-int-main-A-s-1-2-3-string-123-A-c-1-2-3-123" class="headerlink" title="可以使用花括号进行初始化：cpp class A { public:   int a;   double b;   string c; }; int main() {   A s = {1, 2.3, (string)(&quot;123&quot;)};   A c{1,2.3,&quot;123&quot;}; } "></a>可以使用花括号进行初始化：<br><code>cpp class A &#123; public:   int a;   double b;   string c; &#125;; int main() &#123;   A s = &#123;1, 2.3, (string)(&quot;123&quot;)&#125;;   A c&#123;1,2.3,&quot;123&quot;&#125;; &#125; </code></h2><h2 id="字面值、常量表达式"><a href="#字面值、常量表达式" class="headerlink" title="字面值、常量表达式"></a>字面值、常量表达式</h2><p>在进行字面值常量类的记录时，我觉得有必要特别说明一下字面值的相关内容：</p>
+<p><strong>在进行一切的说明之前，先明确一下类型和值的区别</strong>：</p>
+<ul>
+<li><p>字面值类型是指全体字面值这一个整体，而字面值类型包括了<strong>算数类型</strong>，<strong>引用和指针</strong>，<strong>字面值常量类</strong>，<strong>枚举</strong></p>
+</li>
+<li><p>字面值指字面值类型中某一个特定的对象，换个说法，字面值类型是集合，字面值是元素，这是个简单好区分的概念，但是我确实因为没有特别去区分它们而产生了知识混淆</p>
+</li>
+<li><p><strong>常量类型</strong>指用<code>const</code>修饰的类型</p>
+</li>
+<li><p><strong>常量表达式</strong>指编译器在编译阶段就计算出结果的表达式</p>
+</li>
+<li><p>字面值不是变量，而是直接表达出来的具体值：<br><code>256</code>是字面值，而<code>int a = 256;</code>中的a不是字面值</p>
+</li>
+<li><p>很明显，字面值在编译阶段就可以得到结果，所以字面值属于常量表达式</p>
+</li>
+<li><p>除了字面值以外，使用<strong>常量表达式</strong>初始化的<strong>常量类型</strong>也是常量表达式</p>
+</li>
+<li><p><code>constexpr</code>修饰符规定变量的值一定是常量表达式，并且必须使用常量表达式初始化，也就是说编译器在编译时直接计算出变量的值，并且设定为<code>const</code>不允修改</p>
+</li>
+</ul>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">constexpr</span> <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+  <span class="token keyword">constexpr</span> <span class="token keyword">int</span> d <span class="token operator">=</span> b <span class="token operator">+</span> c<span class="token punctuation">;</span><span class="token comment">//报错，b+c不是常量类型</span>
+<span class="token punctuation">&#125;</span></code></pre><h2 id="字面值常量类"><a href="#字面值常量类" class="headerlink" title="字面值常量类"></a>字面值常量类</h2><p>符合可以添加<code>constsxpr</code>修饰的类，要求成员数据都是字面值，并且使用<code>constexpr</code>构造函数对全部成员数据进行初始化   </p>
+<p>讲实话，这个地方有些难以理解，现在我的大脑有些疲倦了，暂且略过</p>
+<h2 id="类的静态成员"><a href="#类的静态成员" class="headerlink" title="类的静态成员"></a>类的静态成员</h2><ul>
+<li><p>类的静态成员必须在类外进行初始化</p>
+</li>
+<li><p>静态常量表达式可以在类内初始化，但是如果在类外使用必须重新定义</p>
+</li>
+<li><p>静态成员可以是不完全类型，可以作为函数声明中的参数</p>
+</li>
+</ul>
+<h2 id="友元函数重载运算符"><a href="#友元函数重载运算符" class="headerlink" title="友元函数重载运算符"></a>友元函数重载运算符</h2><p>一开始我还没想到为何要使用友元重载</p>
+<p>然后看到了这种情况：</p>
+<p><code>C+5</code>、<code>5+C</code></p>
+<p>在类的内部无法定义第二种运算符的重载，需要在类外定义重载<br>在类内定义的重载默认存在的第一个参数为类本身，但是在类外可以自定义全部参数</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

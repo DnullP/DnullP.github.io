@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>C++的动态内存和智能指针 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>C++的动态内存和智能指针</h1>
+  <p>关于C++Primer的学习只是补充我所缺少的碎片化知识，而不是系统化的整理或者项目记录什么的</p>
+<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">auto</span> ptr_1 <span class="token operator">=</span> <span class="token generic-function"><span class="token function">make_shared</span><span class="token generic class-name"><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    shared_ptr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">ptr</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//use inner "new" to initial a ptr</span>
+
+    cout <span class="token operator">&lt;&lt;</span> <span class="token operator">*</span>ptr_1 <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>包含于<code>memory</code>头文件中，智能指针存在一个计数器，记录某个对象的引用次数，当没有指针引用该对象时，自动销毁该对象</p>
+<p>智能指针的使用与普通指针一样，创建方式参照代码</p>
+<p>智能指针分为两种：<code>shared</code>和<code>unique</code></p>
+<ul>
+<li><code>shared</code>允许多个共享指针引用同一个对象</li>
+<li><code>unique</code>只允许一个指针在同一时刻引用该对象</li>
+</ul>
+<h2 id="浅拷贝深拷贝"><a href="#浅拷贝深拷贝" class="headerlink" title="浅拷贝深拷贝"></a>浅拷贝深拷贝</h2><p>涉及指针管理内存的概念，一个对象的成员中可能有指针成员，进行拷贝后的对象中的指针只是和原对象指向同一个地址，而不是在一个新地址上拷贝对象，这样是浅拷贝，反之则为深拷贝</p>
+<h2 id="关于智能指针和内置new混用的一种问题"><a href="#关于智能指针和内置new混用的一种问题" class="headerlink" title="关于智能指针和内置new混用的一种问题"></a>关于智能指针和内置new混用的一种问题</h2><pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> <span class="token operator">*</span><span class="token function">ptr_1</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    shared_ptr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">ptr_2</span><span class="token punctuation">(</span>ptr_1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ptr_2 <span class="token operator">=</span> <span class="token generic-function"><span class="token function">make_shared</span><span class="token generic class-name"><span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//here ptr_1 has been dangling</span>
+<span class="token punctuation">&#125;</span></code></pre><p>这里智能指针不会统计指向内置new分配的动态内存的指针，所以在<code>ptr_2</code>重定向后，原本的地址被释放，<code>ptr_1</code>成为了悬挂指针</p>
+<h2 id="C-中的哑类"><a href="#C-中的哑类" class="headerlink" title="C++中的哑类"></a>C++中的哑类</h2><p>我对这方面知之甚少，有空闲的时间会去好好了解关于哑类的来源之类的</p>
+<p>C++中有些类没有良好的析构函数在对象销毁时正确释放资源，使用智能指针来管理这些对象可以减少在编写程序时由于哑类导致的内存泄漏</p>
+<p>我按照书上的代码来解释一下自己的理解：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">end_connection</span><span class="token punctuation">(</span>connection <span class="token operator">*</span>p<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">disconnection</span><span class="token punctuation">(</span><span class="token operator">*</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span>destinction <span class="token operator">&amp;</span>d<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    connection c <span class="token operator">=</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    shared_ptr<span class="token operator">&lt;</span>connection<span class="token operator">></span> <span class="token function">p</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c<span class="token punctuation">,</span> end_connection<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>按照书本思路，这是一个网络库中的连接函数，在断开连接时，使用<code>disconnection()</code>函数销毁对象，<code>connection</code>自身并没有析构函数释放类资源<br>为了让程序自行管理并释放<code>connection</code>对象，使用智能指针指向了一个局部变量，并且绑定了一个删除器函数，这个删除器使得指针在被销毁时不会调用<code>delete</code>，而是使用删除器，将自身保存的指针传递给删除器，从而调用<code>disconnection</code>释放资源</p>
+<h2 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h2><p><code>unique_ptr</code>不能使用拷贝初始化和赋值，只能采用直接初始化，只能接受通过<code>new</code>得到的指针</p>
+<h2 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h2><p>弱指针，指向一个由<code>shared_ptr</code>管理的地址，当<code>shared_ptr</code>管理的地址完全释放之后，弱指针仍然指向这个地方</p>
+<p>由于指向地址可能已经释放，所以弱指针不能直接解引用，而使用<code>lock()</code>函数得到一个<code>shared_ptr</code>，若指向地址为空，则返回空 <code>shared_ptr</code> 指针，否则返回一个指向该地址的<code>shared_ptr</code></p>
+<p>利用<code>weak_ptr</code>可以方便的检测一个位置上的值是否还存在</p>
+<h2 id="动态数组"><a href="#动态数组" class="headerlink" title="动态数组"></a>动态数组</h2><p>常规动态数组就不说了</p>
+<p>需要注意的是，动态数组不是数组，不包含长度信息，无法使用<code>begin()</code>、<code>end()</code>之类的函数获得头尾，动态数组本身只是分配的一片连续的元素，而内置数组包含了更多的信息和操作</p>
+<p><code>unique_ptr</code>支持分配动态数组：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">unique_ptr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token function">ptr_1</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ptr_1<span class="token punctuation">.</span><span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//delete this ptr</span></code></pre><p><code>shared_ptr</code>本身不支持动态数组，如果一次性分配多个对象的话，需要自行绑定删除器：</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+   shared_ptr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">ptr_1</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>p<span class="token punctuation">)</span>
+                         <span class="token punctuation">&#123;</span> <span class="token keyword">delete</span><span class="token punctuation">[</span><span class="token punctuation">]</span> p<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre><p>以上代码通过lambda表达式定义了一个删除器，模拟删除p指向的动态数组</p>
+<h2 id="allocator类"><a href="#allocator类" class="headerlink" title="allocator类"></a>allocator类</h2><p><code>allocator</code>涉及到一个很很重要的东西——内存池</p>
+<p>可能不涉及，但是它的存在确实会让人联想起内存池</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">allocator<span class="token operator">&lt;</span>string<span class="token operator">></span> alloc<span class="token punctuation">;</span>
+<span class="token keyword">auto</span> p <span class="token operator">=</span> alloc<span class="token punctuation">.</span><span class="token function">allocate</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">auto</span> q <span class="token operator">=</span> p<span class="token punctuation">;</span></code></pre><p>请求分配了一片用于储存<code>string</code>类型的内存</p>
+<p>分配的内存没有构造元素，是一片完全空的内存，用于随时动态储存<code>string</code>对象</p>
+<p>其分配的一大片内存可以看作一个内存池，所谓内存池，就是提前向系统申请的一片内存空间，固定用来管理一堆对象，从而避免每次都要重新分配内存而造成系统资源消耗</p>
+<p>同时，一片统一的内存方便对大量的对象进行管理，可以在不需要时清除区域中的全部对象</p>
+<p>现在谈及“池”的概念还为时尚早，包括了内存池、线程池、对象池等，在不同的场景都各有作用</p>
+<pre class="language-cpp" data-language="cpp"><code class="language-cpp">alloc<span class="token punctuation">.</span><span class="token function">construct</span><span class="token punctuation">(</span>q<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+alloc<span class="token punctuation">.</span><span class="token function">construct</span><span class="token punctuation">(</span>q<span class="token operator">++</span><span class="token punctuation">,</span><span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+alloc<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token operator">--</span>q<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>虽然分配了内存，但是还是要自己用指针管理</p>
+<ul>
+<li><p>初始化算法</p>
+</li>
+<li><p><code>uninitialized_copy(b,e,b2)</code></p>
+</li>
+<li><p><code>uninitialized_fill(b,e,t)</code></p>
+</li>
+</ul>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>

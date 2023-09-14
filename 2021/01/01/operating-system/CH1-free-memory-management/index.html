@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>空闲内存的管理 [ Dnull_P Welcome~ ]</title>
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/Genso.css">
+  
+  <link rel="stylesheet" href="/css/layout/layout.css">
+  
+  <link rel="stylesheet" href="/css/layout/navigator.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-container.css">
+  
+  <link rel="stylesheet" href="/css/layout/page-cover.css">
+  
+  <link rel="stylesheet" href="/css/layout/slidebar.css">
+  
+  <link rel="stylesheet" href="/css/index/index.css">
+  
+  <link rel="stylesheet" href="/css/index/recommend-card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card-container.css">
+  
+  <link rel="stylesheet" href="/css/index/card.css">
+  
+  <link rel="stylesheet" href="/css/post/post.css">
+  
+  <link rel="stylesheet" href="/css/post/idea.css">
+  
+  <link rel="stylesheet" href="/css/tool/color.css">
+  
+  
+  <script>
+    const urlList = ('https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg,https://s2.loli.net/2023/07/23/E3uyek7OVlJgtLT.jpg,https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png,https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg,https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png,https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png,https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg,https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg,https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg,https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg,https://s2.loli.net/2023/07/23/ipTsxHoDOawRrfM.png,https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png,https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg,https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg,https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png,https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png,https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg,https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png,https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg,https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg,https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg,https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg,https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png,https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png,https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg,https://s2.loli.net/2023/07/23/6ZNUeJAtDCRvWq8.jpg,https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg,https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg,https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg,https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg,https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg,https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg,https://s2.loli.net/2023/07/23/sqM2XznWeEol3f4.jpg,https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg,https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg,https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg,https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png').split(',');
+  </script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div class="background">
+  
+
+  <img src="https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg" alt="">
+
+  <div class="title-text animate__animated animate__bounce">
+    <h1>This is
+      <span class="name">
+        Dnull_P
+      </span>
+    </h1>
+    Welcome Hell !
+
+  </div>
+</div>
+
+<div class="background-coverage">
+  <!--Typed text-->
+  <div class="background-coverage-text">
+    <span id="background-coverage-text">
+    </span>
+  </div>
+</div>
+
+<div class="background-occupation">
+
+</div>
+
+  <div class="navigator">
+  <div class="navi-buttom-container">
+    
+    
+  <a href="/" class="navi-buttom">
+    <div>
+      Home
+    </div>
+  </a>
+  
+  
+    
+  <a href="/about" class="navi-buttom">
+    <div>
+      About
+    </div>
+  </a>
+  
+  
+    
+  <a href="/contact" class="navi-buttom">
+    <div>
+      Contact
+    </div>
+  </a>
+  
+  
+    
+    <div class="navi-dropdown">
+      <div class="dropbtn">
+        post
+      </div>
+      <div class="dropdown-content">
+        
+        <a href="/archives">
+          Aarchives
+        </a>
+        
+        <a href="/tags">
+          Tags
+        </a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+  <div class="page-container">
+    <div class="slidebar-warp">
+  <div class="slidebar">
+    <div class="panel">
+
+      <div class="avatar">
+        <img src="/pic/avatar.jpg" alt="">
+      </div>
+
+      <div class="info">
+        <div class="subinfo-1">
+          <div class="subinfo-1-left">
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Post
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  156
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Cate
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  37
+                </div>
+              </div>
+            </div>
+
+            <div class="subinfo-1-left-info">
+              <div class="subinfo-1-left-info-inner">
+                <div class="subinfo-1-left-info-front">
+                  Tag
+                </div>
+                <div class="subinfo-1-left-info-back random-color">
+                  191
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="subinfo-1-right">
+            <div class="subinfo-1-right-inner">
+              <div class="subinfo-1-right-front">
+                This Month
+              </div>
+              <div class="subinfo-1-right-back random-color">
+                2
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subinfo-2-wrap">
+          <div class="subinfo-2">
+
+            
+            <div class="sociallink">
+    <a href=https://github.com/DnullP>
+      <img src="/svg/github.svg" alt="">
+    </a>
+</div>
+            
+
+          </div>
+        </div>
+      </div>
+
+      <div class="more-opt">
+
+      </div>
+
+    </div>
+
+    <div class="icon-warp">
+
+
+      <button class="hide-slidebar-button">
+        <img src="/svg/arrow-right-line.svg" id="slideBarArrow">
+      </button>
+
+
+    </div>
+  </div>
+</div>
+
+    <div class="content">
+      <div class="post">
+  <h1>空闲内存的管理</h1>
+  <h1 id="空闲内存的管理"><a href="#空闲内存的管理" class="headerlink" title="空闲内存的管理"></a>空闲内存的管理</h1><p>关于这一段我还是相对熟悉的, 在做数据结构的大作业时选择了一个空闲链表的实现, 这一段的记录也会相对简洁</p>
+<h2 id="内存碎片"><a href="#内存碎片" class="headerlink" title="内存碎片"></a>内存碎片</h2><ul>
+<li>内部碎片(internal fragmentation): 内部碎片是由于最小分配的内存块大小大于实际分配大小所导致的内存碎片, 例如, 一个进程需要分配 10 个字节的内存, 但是内存管理器只能分配 16 个字节的内存块, 这样就会产生 6 个字节的内部碎片</li>
+<li>外部碎片(external fragmentation): 当我们分配的内存空间不是最小分配单元时, 我们可以通过分割一个内存块来分配需要的内存空间, 而剩下的部分会形成一个新的空闲空间, 被称为外部碎片</li>
+</ul>
+<p>空闲内存和碎片的合理分配可以让内存可以分配更大的内存块, 为此我们需要先在决定管理策略前, 实现基本的内存维护机制</p>
+<h2 id="空闲链表和已占用空间"><a href="#空闲链表和已占用空间" class="headerlink" title="空闲链表和已占用空间"></a>空闲链表和已占用空间</h2><p>对于一片内存中的空闲空间, 我们是通过空闲链表来管理的, 并且该链表是就在内存空间中<strong>集成(embedded)</strong> 的, 比如说我们有一片空闲的内存空间如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">size:1000</th>
+<th align="center">next:0x1000</th>
+<th align="center">data:…</th>
+<th align="center">size:1000</th>
+<th align="center">next:0x2000</th>
+<th align="center">data:…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">通过在空间头部加入两个字段, 来构成一个空闲链表</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">需要注意的是, 像这样连续的两空闲空间, 在产生时我们就应该将两块合并为一个, 以减少碎片的产生</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>同时, 对于一个已分配的空间也添加相应的字段来描述器大小和做验证:</p>
+<table>
+<thead>
+<tr>
+<th align="center">size:1000</th>
+<th align="center">magic:1234567</th>
+<th align="center">data:…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">我们可以向<code>free()</code>传递指向该占用块开头的指针, 知道该占用块的大小, 然后检测下一个字段的<code>magic</code>值是否为我们希望的值, 来判定这是一个完整的占用块(不能检测到一个大小就随意清楚后面的内存块)</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">需要注意的是, 我们在进程中调用<code>free()</code>传递的是虚拟内存的地址, 但是这个地址映射到物理内存上是不同的的地方</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h2 id="空闲链表的维护策略"><a href="#空闲链表的维护策略" class="headerlink" title="空闲链表的维护策略"></a>空闲链表的维护策略</h2><p>当我们分配申请内存时, 需要先找到物理内存中足够大的空闲空间, 然后再将新分配的内存映射到这个区域之上, 但是我们希望在分配完了这个空间后能够产生尽量少的内存碎片, 所以就有了空闲链表的维护(分配)策略</p>
+<p>需要注意的是, 我们所说的内存碎片也是物理内存中所产生的东西, 我们直接打交道的虚拟内存是不存在这种概念的, 这些策略都是OS来采用的方法, 只有OS才能和物理内存打交道</p>
+<ul>
+<li>首次适应(first-fit): 首次适应是最简单的一种策略, 也是最容易实现的一种策略, 它的思想是从空闲链表的头部开始遍历, 找到第一个满足要求的空闲空间, 然后将其分配出去</li>
+<li>最佳适应(best-fit): 最佳适应是从空闲链表中找到一个最小的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少内部碎片的产生</li>
+<li>最坏适应(worst-fit): 最坏适应是从空闲链表中找到一个最大的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少外部碎片的产生</li>
+<li>下一次适应(next-fit): 下一次适应是在首次适应的基础上进行的优化, 它的思想是从上一次分配的空闲空间的下一个空闲空间开始遍历, 这样能够使得内存的分配位置更加均匀</li>
+</ul>
+<p>以上是四种简单的分配策略, 但是还有一些更加优秀, 但是也更加复杂的分配方式</p>
+<p>在提及这些方式之前, 我们需要先明确, 我们上面讨论的情况是基于段式储存的, 一是段本身就已经是长度不固定的内存块了, 二是我们在段内部分配空间时也是按长度来取内存块的, 所以才会产生<strong>外部碎片</strong><br>但是当我们采用分页式储存时, 我们的内存块大小都为固定的页大小, 我们分配内存的最小单位从字节变成了页, 所以我们的占用内存块和空闲内存块大小都是页大小(一般为4kb)的整数倍, 这样就不会产生外部碎片了——我们总能找到一块刚刚好大小的页来分配<br>所以针对外部碎片的这些策略都是基于段式储存或者直接映射物理内存的, 广泛采用的分页式储存不会产生外部碎片, 只有内部碎片(页大小固定, 大多数情况使用不完)</p>
+<hr>
+<p>然后我们就能提及一个稍微复杂的针对非分页式的分配策略: <strong>Segregated Free List(分离空闲链表)</strong></p>
+<p>既然我们已经知道固定长度的分块不会产生外部碎片, 那么我们就尽量在不定长的分块中找到长度相同的区块, 然后把他们单独连成一个<strong>隔离开的</strong>链表, 这种部分的<strong>类分页</strong>方式就能一定程度上减少外部碎片的产生</p>
+<p>其中的slab allocator就是这种方式的一种实现, 这个内存分配器将OS常用的那些对象单独创建一个空闲链表, 比如锁, 信号量, int等等, 同时减少了内部和外部碎片的产生</p>
+<hr>
+<p>然后要介绍的是另一个强大的分配算法: <strong>伙伴系统(buddy system)</strong>:<br>我们对于一段大小为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>的空闲空间, 将其<strong>递归地</strong>二分出一个最小的满足我们分配需求的空间, 比如我们现在有一块大小为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>k</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">64kb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">64</span><span class="mord mathnormal">kb</span></span></span></span>的空间, 需要分配一个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn><mi>k</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">7kb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">7</span><span class="mord mathnormal">kb</span></span></span></span>的空间:</p>
+<ul>
+<li><p>我们可以通过二分分出一块<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mi>k</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">8kb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">8</span><span class="mord mathnormal">kb</span></span></span></span>的空间, 此时产生了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>k</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">1kb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">1</span><span class="mord mathnormal">kb</span></span></span></span>的内部碎片, 此时的内存我们可以表示如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">8kb</th>
+<th align="center">8kb</th>
+<th align="center">16kb</th>
+<th align="center">32kb</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">占用7kb</td>
+<td align="center">空闲8kb</td>
+<td align="center">空闲16kb</td>
+<td align="center">空闲32kb</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>这个算法在分配方面只能分配<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>的幂次方大小的内存, 产生的内部碎片不确定和分页相比谁更优, 但是该算法在合并空闲内存(碎片)时更有优势:</p>
+<ul>
+<li>我们释放了一个占用的空间后, 可以直接检测相邻的内存空间是否被占用, 然后可以直接将两个相同大小的内存空间合并</li>
+<li>树形数组的原理可以和伙伴算法做一个比较参考, 两者都是大小为二进制数来分割区间的</li>
+</ul>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+</div>
+
+<div id="paginator">
+  
+</div>
+
+
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/post/mermaid.js"></script>
+  
+  
+    </div>
+
+  </div>
+
+
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/layout/animation.js"></script>
+  
+  <script src="/js/layout/svg.js"></script>
+  
+  <script src="/js/csstool.js"></script>
+  
+  
+
+</body>
+
+</html>
