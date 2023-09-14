@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -720,210 +720,6 @@ int main()
         2021-01-01
       </div>
       <div class="card-info">
-        3.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfContainer/">
-      C++的容器的碎片知识
-    </a>
-    <span class="card-abstract">
-      
-容器的使用很频繁，只补充一些碎片化的知识
-
-&lt;!-- more ---&gt;
-
-容器分为顺序容器、关联容器、无序容器
-同一类型的容器具有一些相同的操作，这方便于我们进行记忆
-
-## 顺序容器
-
-- ```vector```
-- ```deque```
-- ```list```
-- ```forword_list```
-- ```array```
-- ```string```
-
-### 迭代器
-- 对于在连续内存上储存数据的容器，才可以使用迭代器（指针）进行相减运算、大小比较，比如```vector```、```deque```等   
-  但是```list```一类的离散储存的数据类型就不能这样操作。
-
-- 但是对于初始化的前后迭代器可以用于```list```类型
-
-- ```swap()```函数交换的是引用，真实的数据储存并不受影响，因为STL的容器都是引用类型
-
-### emplace函数
-```emplace()```函数接收容器元素的构造函数的参数，并直接在容器的内存中构造元素
-
-### sort函数
-- ```sort()```函数只能对支持随机访问的顺序容器进行排序
-
-### at()函数
-- 使用下标运算符不会检查是否越界的问题，但是可以是使用```at(0)```函数，在下标越界后抛出```out_of_range```异常
-
-### erace()函数
-- 使用```erace()```函数删除两个迭代器之间的元素时，结尾的指针是一个区间的尾后指针
-
-### reserve()和resize()函数
-
-- ```reserve()```和```resize()```函数都只能扩张容器的大小，```resize()```只是删除了多余的元素，不影响容器的大小
-
-- 容器的预留空间上不一定有元素，```resize()```会创造新的对象
-- 对应的，需要区别 ```size()```和 ```capacity()```函数
-
----
-其实啊，对于这些函数大概记住主要的集中使用方式就好了，具体有些什么复杂的功能可以在需要的时候再参阅资料，我不可能把一个语言的所有工具的每个细节都记得清清楚楚
-
----
-
-### 有意思的find函数
-
-不是指一般的```find()```函数，而是```find_first_of(arg)```
-
-其寻找字符串中，```arg```中任何一个字符第一次出现的位置
-
-有点正则表达式的味道了
-
-### 字符串的值转换
-
-- ```to_string()```
-- ```stod()```
--  ```stoi()```
-
-之类的
-
-这些都是```string```的外部函数
-
-### 容器的适配器
-这是一种面向对象的概念，应用于STL的容器中
-
-我以前一直以为 ```stack``` ```queue```之类的类也是一种容器，但是现在我明确看到了这种基于现有容器继承而来的类的标准命名——容器适配器
-
-通过现有的容器来限制组合其操作，从而获得的新类
-
-```stack&lt;int,vector&lt;&gt; &gt;```我们通过 ```vector```构造了一个栈，使得这个 ```vector```可以使用栈的操作
-
-而不设置指定实现容器的话，会使用一个默认的容器：
-
-- ```stack```—— ```deque```
-- ```queue```—— ```deque```
-- ```priority_queue```—— ```vector```
-
-## 泛型算法
-
-虽然但是，泛型算法不仅适用于STL容器，而且适用于内置数组
-一般包含于 ```algorithm```和 ```numeric```
-
-### 泛型算法库原则：
-算法不直接调用顺序容器操作，通过迭代器修改内存区间的元素顺序或数值
-
-### 插入迭代器
-
-```back_inserter``` 是一种插入迭代器，当解引用并给其赋值时，会自动调用容器的 ```push_back```操作
-
-此外还有```front_inserter()```、```inserter()```之类的插入迭代器
-
- ```cpp
-vector&lt;int&gt; a;
-
-auto it = back_inserter(a);//now &#34;a&#34; has been the back_inserter of a
-
-*it = 4;//this way, it creates a new element at the end of the vector
-
-fill_n(it,10,10);//this way, we can append 10 new &#34;10&#34; into the vector
- ```
-
-### IO流对象迭代器
-
-标准算法库搭配容器、迭代器玩出来的花样太多了，IO流对象的迭代器大概说明一下吧
-
- ```cpp
-int main()
-{
-    istream_iterator&lt;int&gt; int_in(cin);
-    istream_iterator&lt;int&gt; eof;
-
-    while (++int_in != eof)
-    {
-        cout &lt;&lt; *(int_in);
-    }
-}
-```
-以上这段代码中定义了从流中读取整数的迭代器， ```++```操作为从流中析取一个整数，```*```操作是返回析取的数
-
-需要注意的是，在定义```int_in```时，就已经执行过一次读取了，所以会有一次多出的输入
-
-```cpp
-istream_iterator&lt;int&gt; int_in(cin), eof;
-cout &lt;&lt; accumulate(int_in, eof, 0);
-```
-这是书上比较有趣的一个用法，通过连续的流输入得到一个整数和   
-通过这个例子稍微能理解流对象迭代器的设计思想了
-
-对于顺序容器而言，泛型算法可以在一段连续的元素上执行操作，而流输入的数据也是连续的一整段元素，所以通过流对象迭代器来让泛型算法对用户的输入执行某些操作
-
-基于这种思想，我们可以很容易的理解```ostream_iterator```的使用
-```cpp
-vector&lt;int&gt; a{1, 2, 3, 4};
-ostream_iterator&lt;int&gt; out_(cout);
-copy(a.begin(), a.end(), out_);
-fill_n(out_, 3, 123);
-```
-
-```ostream_iterator```通过赋值进行输出，所以所有在连续迭代器区间上赋值的泛型算法都可以使用它进行输出
-
-## 反向迭代器
-
-这种东西真的只需要略过就好，简单易懂还没什么重要作用（暂时没有）
-
-## 泛型算法的标准
-
-每个算法都接受至少一个迭代器的范围，而算法要求传递的迭代器具有指定的类型
-
-### 迭代器类型
-- 输入输出迭代器
-- 前向迭代器
-- 双向迭代器
-- 随机访问迭代器
-
-有些算法接受第二个迭代器范围，一般涉及两个序列一起进行的操作，比如合并之类的
-
-### 算法命名
-
-- ```_if```——接受一个元素值的算法往往会有一个_if后缀版本的函数，接受的不为元素值，而是一个谓词
-- ```_copy```——将修改的容器拷贝到目标位置
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         3.8k字
       </div>
       <div class="card-info">
@@ -935,12 +731,11 @@ fill_n(out_, 3, 123);
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfCPP/">
-        C++中的一些碎片知识
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        一些不便于归结到系统知识中的碎片知识。
+    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfCPP/">
+      C++中的一些碎片知识
+    </a>
+    <span class="card-abstract">
+      一些不便于归结到系统知识中的碎片知识。
 
 &lt;!-- more ---&gt;
 
@@ -1131,6 +926,211 @@ cout &lt;&lt; funcPtr(10,5) &lt;&lt; endl;
 
 
 
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfContainer/">
+        C++的容器的碎片知识
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+容器的使用很频繁，只补充一些碎片化的知识
+
+&lt;!-- more ---&gt;
+
+容器分为顺序容器、关联容器、无序容器
+同一类型的容器具有一些相同的操作，这方便于我们进行记忆
+
+## 顺序容器
+
+- ```vector```
+- ```deque```
+- ```list```
+- ```forword_list```
+- ```array```
+- ```string```
+
+### 迭代器
+- 对于在连续内存上储存数据的容器，才可以使用迭代器（指针）进行相减运算、大小比较，比如```vector```、```deque```等   
+  但是```list```一类的离散储存的数据类型就不能这样操作。
+
+- 但是对于初始化的前后迭代器可以用于```list```类型
+
+- ```swap()```函数交换的是引用，真实的数据储存并不受影响，因为STL的容器都是引用类型
+
+### emplace函数
+```emplace()```函数接收容器元素的构造函数的参数，并直接在容器的内存中构造元素
+
+### sort函数
+- ```sort()```函数只能对支持随机访问的顺序容器进行排序
+
+### at()函数
+- 使用下标运算符不会检查是否越界的问题，但是可以是使用```at(0)```函数，在下标越界后抛出```out_of_range```异常
+
+### erace()函数
+- 使用```erace()```函数删除两个迭代器之间的元素时，结尾的指针是一个区间的尾后指针
+
+### reserve()和resize()函数
+
+- ```reserve()```和```resize()```函数都只能扩张容器的大小，```resize()```只是删除了多余的元素，不影响容器的大小
+
+- 容器的预留空间上不一定有元素，```resize()```会创造新的对象
+- 对应的，需要区别 ```size()```和 ```capacity()```函数
+
+---
+其实啊，对于这些函数大概记住主要的集中使用方式就好了，具体有些什么复杂的功能可以在需要的时候再参阅资料，我不可能把一个语言的所有工具的每个细节都记得清清楚楚
+
+---
+
+### 有意思的find函数
+
+不是指一般的```find()```函数，而是```find_first_of(arg)```
+
+其寻找字符串中，```arg```中任何一个字符第一次出现的位置
+
+有点正则表达式的味道了
+
+### 字符串的值转换
+
+- ```to_string()```
+- ```stod()```
+-  ```stoi()```
+
+之类的
+
+这些都是```string```的外部函数
+
+### 容器的适配器
+这是一种面向对象的概念，应用于STL的容器中
+
+我以前一直以为 ```stack``` ```queue```之类的类也是一种容器，但是现在我明确看到了这种基于现有容器继承而来的类的标准命名——容器适配器
+
+通过现有的容器来限制组合其操作，从而获得的新类
+
+```stack&lt;int,vector&lt;&gt; &gt;```我们通过 ```vector```构造了一个栈，使得这个 ```vector```可以使用栈的操作
+
+而不设置指定实现容器的话，会使用一个默认的容器：
+
+- ```stack```—— ```deque```
+- ```queue```—— ```deque```
+- ```priority_queue```—— ```vector```
+
+## 泛型算法
+
+虽然但是，泛型算法不仅适用于STL容器，而且适用于内置数组
+一般包含于 ```algorithm```和 ```numeric```
+
+### 泛型算法库原则：
+算法不直接调用顺序容器操作，通过迭代器修改内存区间的元素顺序或数值
+
+### 插入迭代器
+
+```back_inserter``` 是一种插入迭代器，当解引用并给其赋值时，会自动调用容器的 ```push_back```操作
+
+此外还有```front_inserter()```、```inserter()```之类的插入迭代器
+
+ ```cpp
+vector&lt;int&gt; a;
+
+auto it = back_inserter(a);//now &#34;a&#34; has been the back_inserter of a
+
+*it = 4;//this way, it creates a new element at the end of the vector
+
+fill_n(it,10,10);//this way, we can append 10 new &#34;10&#34; into the vector
+ ```
+
+### IO流对象迭代器
+
+标准算法库搭配容器、迭代器玩出来的花样太多了，IO流对象的迭代器大概说明一下吧
+
+ ```cpp
+int main()
+{
+    istream_iterator&lt;int&gt; int_in(cin);
+    istream_iterator&lt;int&gt; eof;
+
+    while (++int_in != eof)
+    {
+        cout &lt;&lt; *(int_in);
+    }
+}
+```
+以上这段代码中定义了从流中读取整数的迭代器， ```++```操作为从流中析取一个整数，```*```操作是返回析取的数
+
+需要注意的是，在定义```int_in```时，就已经执行过一次读取了，所以会有一次多出的输入
+
+```cpp
+istream_iterator&lt;int&gt; int_in(cin), eof;
+cout &lt;&lt; accumulate(int_in, eof, 0);
+```
+这是书上比较有趣的一个用法，通过连续的流输入得到一个整数和   
+通过这个例子稍微能理解流对象迭代器的设计思想了
+
+对于顺序容器而言，泛型算法可以在一段连续的元素上执行操作，而流输入的数据也是连续的一整段元素，所以通过流对象迭代器来让泛型算法对用户的输入执行某些操作
+
+基于这种思想，我们可以很容易的理解```ostream_iterator```的使用
+```cpp
+vector&lt;int&gt; a{1, 2, 3, 4};
+ostream_iterator&lt;int&gt; out_(cout);
+copy(a.begin(), a.end(), out_);
+fill_n(out_, 3, 123);
+```
+
+```ostream_iterator```通过赋值进行输出，所以所有在连续迭代器区间上赋值的泛型算法都可以使用它进行输出
+
+## 反向迭代器
+
+这种东西真的只需要略过就好，简单易懂还没什么重要作用（暂时没有）
+
+## 泛型算法的标准
+
+每个算法都接受至少一个迭代器的范围，而算法要求传递的迭代器具有指定的类型
+
+### 迭代器类型
+- 输入输出迭代器
+- 前向迭代器
+- 双向迭代器
+- 随机访问迭代器
+
+有些算法接受第二个迭代器范围，一般涉及两个序列一起进行的操作，比如合并之类的
+
+### 算法命名
+
+- ```_if```——接受一个元素值的算法往往会有一个_if后缀版本的函数，接受的不为元素值，而是一个谓词
+- ```_copy```——将修改的容器拷贝到目标位置
+
+
+
       </span>
     </div>
   </div>
@@ -1158,6 +1158,124 @@ cout &lt;&lt; funcPtr(10,5) &lt;&lt; endl;
         2021-01-01
       </div>
       <div class="card-info">
+        1.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfoi/">
+      C++的OI对象的碎片知识
+    </a>
+    <span class="card-abstract">
+      关于标准库，大概远不止我们常用的那些容器，C++中还有很多的类值得深究   
+本文只是记录学习（复习）过程中的碎片化知识，不是系统性知识整理
+&lt;!-- more ---&gt;
+
+## wchar_t
+字符类型，一种扩展储存方式，一般用于储存Unicode字符
+
+## istream,ostream,iostream
+三种流的控制类，```cin```，```cout```，```cerr```等都是其对象
+
+## ifstream,ofstream,fstream
+文件的读写流
+
+## 宽字符流输入输出
+- wistream,wostream,wiostream
+- wifstream,wofstream,wfstream
+
+## 流对象的状态
+
+根据Primer和reference上的说明，返回值可以判定当前流对象是否有效，而通过```rdstate()```函数可以得到流对象更具体的状态情况，返回值是一个```ios::iostate```的类型，其储存了状态的位掩码信息
+
+我无需知道每种状态对应的位，在```ios```域中已经定义几种常量表达式：
+- eofbit——文件结束的状态（读到了文件结束符
+- badbit——流崩溃状态
+- goodbit——无错误状态
+- failbit——IO失败状态
+
+用当前状态与对应的状态位掩码做与运算即可得到是否处于某种状态
+
+- ```setstate()```：设置当前流的状态
+- ```clear()```：修复当前流的状态为有效状态
+
+## 输出缓冲
+C++的```cout```中有一个输出缓冲区，其中储存了插入的内容，并把这些内容整合成一个整体，再输出，以节省输出操作的成本   
+
+刷新缓冲区的原因很多，**但是程序崩溃时是不会刷新缓冲区的**
+
+- ```flush```函数可以手动刷新缓冲区
+- 通过查看endl的实现部分：
+```cpp
+basic_ostream&lt;_Elem, _Traits&gt;&amp; __CLRCALL_OR_CDECL endl(
+    basic_ostream&lt;_Elem, _Traits&gt;&amp; _Ostr) { // insert newline and flush stream
+    _Ostr.put(_Ostr.widen(&#39;\n&#39;));
+    _Ostr.flush();
+    return _Ostr;
+}
+```
+  可以发现，endl内部使用了```flush```函数，刷新了缓冲区
+
+### 关联输入和输出流
+
+输入流和输出流都可以和另一个输出流关联，一旦这个输入流（输出流）执行操作，在此之前都会先刷新一遍关联的输出流
+
+- ```tie()```函数返回该流对象的关联流
+- ```tie(ostream)```将流对象关联到一个输出流
+
+## 文件输入输出流
+
+文件操作流继承自输入输出流，所以可用于输入输出流的操作都可适用于文件流
+除此之外，可使用```open(string,mode)```函数把流对象和文件绑定在一起
+
+### 文件模式
+
+ - in——读模式
+ - out——写模式
+ - app——写操作前定位到文件末尾
+ - ate——打开文件定位到文件末尾
+ - trunc——截断模式
+ - binary——以二进制进行IO
+
+文件模式的使用有一套复杂的使用规则，暂且先不讨论每一种模式的使用和叠加   
+
+使用```out```模式时，文件的内容会被自动舍弃，加上```app```模式后可以自动定位到文件末尾追加内容
+
+## string流
+```stringstream```类包含在```sstream```头文件中   
+
+string流使用了一个字符串缓冲区，加入一个字符串在其中，进行析取操作   
+但是加入其缓冲区的字符串仅作为储存，不会像```iostream```一样打印内容
+
+```stringstream```类继承自```iostream```类，所以可以用于流对象的操作，都可用于字符串流对象
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         3.2k字
       </div>
       <div class="card-info">
@@ -1169,11 +1287,12 @@ cout &lt;&lt; funcPtr(10,5) &lt;&lt; endl;
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/heritedOfCpp/">
-      C++的继承
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/heritedOfCpp/">
+        C++的继承
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 碎片化记录依旧
 
 &lt;!-- more ---&gt;
@@ -1338,8 +1457,12 @@ public:
 
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1349,11 +1472,13 @@ public:
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1370,12 +1495,11 @@ public:
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/overloadAssignment/">
-        C++的重载运算符
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        关于一些重载运算符和类型转换的内容
+    <a class="card-title" href="/2021/01/01/CPP-notes/overloadAssignment/">
+      C++的重载运算符
+    </a>
+    <span class="card-abstract">
+      关于一些重载运算符和类型转换的内容
 &lt;!-- more ---&gt;
 
 - 重载运算符约定：重载运算符必须是类成员函数，或者参数列表至少含有一个类类型
@@ -1505,12 +1629,8 @@ int main()
 
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1520,13 +1640,11 @@ int main()
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1543,11 +1661,12 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/preCompleteCMD/">
-      C++中的预处理指令
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/preCompleteCMD/">
+        C++中的预处理指令
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 挺庞大的一节内容，所以整理为一篇博客   
 注意：记录的是笔者学习中产生的碎片化知识，而不是系统性的整理
 
@@ -1650,8 +1769,12 @@ int main()
 
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1661,11 +1784,13 @@ int main()
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1682,12 +1807,11 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/template/">
-        C++的模板
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/CPP-notes/template/">
+      C++的模板
+    </a>
+    <span class="card-abstract">
+      
 关于模板的相关内容，但事实上这部分的内容会比较简单
 
 &lt;!-- more ---&gt;
@@ -1850,116 +1974,6 @@ int main()
 这个机制导致代码的情况更加复杂，比如：
 ```
 
-```
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        881字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/Matlab/start/">
-      初识Matlab
-    </a>
-    <span class="card-abstract">
-      
-学校公选课选了个matlab，开个小专题记录一下
-
-&lt;!-- more ---&gt;
-
-首先Matlab有着和Python一样的交互窗口，然后试着建立变量、矩阵、四则运算。顺便一提，通过按 ```tab```键打开代码补全（我说怎么这么难受）
-
-几个生成特殊矩阵的函数：
-
-- ```zero(x,y)```
-- ```ones(x,y)```
-- ```rand(x,y)```
-
-matlab里面对单个变量进行计算的函数都可以直接用于矩阵，对矩阵中的全部元素进行某种计算
-
-```matlab
-A = sin(rand(3,3))
-```
-
-转置函数：
-```matlab
-A = rand(3,3)
-A = transpose(A)
-A = A&#39;          %这两种表达都用于转置矩阵
-```
-
-计算逆矩阵：
-```matlab
-A = inv(A)
-
-A = A * inv(A)  %A乘上它的逆矩阵得到单位矩阵
-```
-改变数据的显示格式：
-```matlab
-A = rand(3,3)
-format long   %显示很多位小数
-A
-format short  %显示很少位小数
-A
-```
-
-两个矩阵对应元素相乘：
-```matlab
-A = rand(3,3)
-A = A.*A
-```
-以上规则适用于其他计算：
-```matlab
-A = rand(3,3)
-A = A.^3
-A = A./3
-```
-
-#### Concatenation
-连接两个矩阵：
-```matlab
-A = rand(3,3)
-B = A&#39;
-C = [A, B]   %横向连接列
-D = [A; B]   %纵向连接行
-```
-
-#### Complex number
-复数：
-```matlab
-a = sqrt(-3)  %Just try it
 ```
 
     </span>

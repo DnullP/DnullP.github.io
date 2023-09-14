@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/u9dvATztknGecmI.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,10 +244,10 @@
         2021-01-01
       </div>
       <div class="card-info">
-        6.4k字
+        5k字
       </div>
       <div class="card-info">
-        阅读时间: 6 mins.
+        阅读时间: 5 mins.
       </div>
     </div>
     <div style="display: flex;">
@@ -256,345 +256,606 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/LCA/">
-        最近公共祖先
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Segment-Tree/">
+        线段树
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
-        图论基础算法之一，在此记录树上倍增法和Tarjan算法
+        综合了多种思想于一体的一种基础数据结构，适用于区间维护问题。
+&lt;!-- more ---&gt;
 
-### 树上倍增法
-在线算法，比较简单实用   
-
-具体实现过程依靠倍增思想，通过数组$f[p][k]$记录p节点的第$2^k$辈父节点，而数组$f$可以通过树上DP的方式求得
-
-- DP公式：
-  $$f[p][k]=f[f[p][k-1]][k-1]$$
-  正确性很容易验证
-
-在完成$f$数组的预处理后，对于一对点x，y我们先将x，y中较深的一个点移动到同一深度，具体方法依靠于之前求得的$f$数组，具体倍增的方式就不做叙述，细节可参考代码
+对于线段树而言，在实现的思想方面不必多谈，无非就是二分区间，再进行合并。以下仅针对代码的具体实现进行一定的记录。
 
 ```cpp
 #include &lt;cstdio&gt;
 #include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;queue&gt;
-#include &lt;cmath&gt;
 
 using namespace std;
 
-struct Edge
+struct Segment
 {
-    int from;
-    int to;
-    int val;
-    int next;
-};
+    int L;
+    int R;
+    long long data;
+    long long lazy_tag = 0;
+} node[400005];
 
-class Solver
+int origin[100005];
+
+int n, m;
+
+void build(int pos, int l, int r)
 {
-private:
-    int N;
-    int M;
-    int S;
-    Edge *edges = new Edge[1000005]{};
-    int *head = new int[500005]{};
-    int *deep = new int[500005]{};//记录每个节点的深度
-
-    //int (*f)[20] = new int[500005][20]{};
-    //这个地方由于评测机配置问题，发生段错误
-    int f[500005][20]{};
-    int num;
-
-public:
-    Solver(int n, int m, int s)
+    if (l == r)
     {
-        N = n;
-        M = m;
-        S = s;
-        deep[0] = -0x3f3f3f3f;
+        node[pos].data = origin[l];
+        node[pos].L = l;
+        node[pos].R = r;
+        return;
+    }
+    int mid = (l + r) &gt;&gt; 1;
+    build((pos &lt;&lt; 1), l, mid);
+    build((pos &lt;&lt; 1) + 1, mid + 1, r);
 
-        for (int i = 1; i &lt;= n - 1; i++)
-        {
-            int u, v;
-            cin &gt;&gt; u &gt;&gt; v;
-            add(u, v);
-            add(v, u);
-        }
-        dfs(S, 1);
+    node[pos].L = l;
+    node[pos].R = r;
+    node[pos].data = node[(pos &lt;&lt; 1)].data + node[(pos &lt;&lt; 1) + 1].data;
+}
 
-        for (int i = 1; i &lt;= m; i++)
-        {
-            int x, y;
-            cin &gt;&gt; x &gt;&gt; y;
+void spread(int p)
+{
+    node[(p &lt;&lt; 1)].data += node[p].lazy_tag * (node[(p &lt;&lt; 1)].R - node[(p &lt;&lt; 1)].L + 1);
+    node[(p &lt;&lt; 1) + 1].data += node[p].lazy_tag * (node[(p &lt;&lt; 1) + 1].R - node[(p &lt;&lt; 1) + 1].L + 1);
+    node[(p &lt;&lt; 1)].lazy_tag += node[p].lazy_tag;
+    node[(p &lt;&lt; 1) + 1].lazy_tag += node[p].lazy_tag;
+    node[p].lazy_tag = 0;
+}
 
-            cout &lt;&lt; LCA(x, y) &lt;&lt; endl;
-        }
+void change(int p, int l, int r, int val)
+{
+    if (l &lt;= node[p].L &amp;&amp; r &gt;= node[p].R)
+    {
+        node[p].data += (node[p].R - node[p].L + 1) * val;
+        node[p].lazy_tag += val;
+        return;
+    }
+    spread(p);
+    int mid = (node[p].L + node[p].R) &gt;&gt; 1;
+
+    if (l &lt;= mid)
+    {
+        change((p &lt;&lt; 1), l, r, val);
+    }
+    if (r &gt;= mid + 1)
+    {
+        change((p &lt;&lt; 1) + 1, l, r, val);
+    }
+    node[p].data = node[(p &lt;&lt; 1)].data + node[(p &lt;&lt; 1) + 1].data;
+}
+
+long long query(int p, int l, int r)
+{
+    if (l &lt;= node[p].L &amp;&amp; r &gt;= node[p].R)
+    {
+        return node[p].data;
     }
 
-    void add(int u, int v)
+    spread(p);
+
+    int mid = (node[p].L + node[p].R) &gt;&gt; 1;
+    long long sum = 0;
+    if (l &lt;= mid)
     {
-        edges[++num].from = u;
-        edges[num].to = v;
-        edges[num].next = head[u];
-        head[u] = num;
+        sum += query((p &lt;&lt; 1), l, r);
     }
-
-    void dfs(int pos, int depth)//预处理深度、f数组
+    if (r &gt;= mid + 1)
     {
-        deep[pos] = depth;
-
-        for (int k = 1; deep[pos] - (1 &lt;&lt; k) &gt;= 1; k++)
-        {
-            f[pos][k] = f[f[pos][k - 1]][k - 1];
-        }
-
-        for (int i = head[pos]; i; i = edges[i].next)
-        {
-            if (edges[i].to != f[pos][0])
-            {
-                f[edges[i].to][0] = pos;
-                dfs(edges[i].to, depth + 1);
-            }
-        }
+        sum += query((p &lt;&lt; 1) + 1, l, r);
     }
-    int LCA(int x, int y)
-    {
-        if (deep[x] &lt; deep[y])
-        {
-            swap(x, y);
-        }
-        for (int k = log(deep[x] - 1) / log(2); k &gt;= 0; k--)
-        {
-            if (deep[f[x][k]] &gt;= deep[y])
-            {
-                x = f[x][k];//调整为同一深度
-
-                if (deep[x] == deep[y])
-                {
-                    break;
-                }
-            }
-        }
-        if (x == y)
-        {
-            return x;
-        }
-        for (int k = log(deep[x] - 1) / log(2); k &gt;= 0; k--)
-        {
-            if (f[x][k] != f[y][k])
-            {
-                x = f[x][k];
-                y = f[y][k];//从到小同时往上跳
-            }
-        }
-        return f[x][0];
-    }
-};
+    return sum;
+}
 
 int main()
 {
-    int n, m, s;
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
-    Solver work(n, m, s);
+    cin &gt;&gt; n &gt;&gt; m;
+
+    for (int i = 1; i &lt;= n; i++)
+    {
+        cin &gt;&gt; origin[i];
+    }
+    build(1, 1, n);
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int op;
+        cin &gt;&gt; op;
+
+        if (op == 1)
+        {
+            int l, r, val;
+            cin &gt;&gt; l &gt;&gt; r &gt;&gt; val;
+            change(1, l, r, val);
+        }
+        if (op == 2)
+        {
+            int l, r;
+            cin &gt;&gt; l &gt;&gt; r;
+            cout &lt;&lt; query(1, l, r) &lt;&lt; endl;
+        }
+    }
+}
+```
+上面这段代码没有使用重定义的方式减少代码量，避免产生误解接。   
+接下来分别对各个操作的实现中，需要注意的细节进行记录。   
+
+### 建树操作
+```cpp
+void build(int pos, int l, int r)
+{
+    if (l == r)
+    {
+        node[pos].data = origin[l];
+        node[pos].L = l;
+        node[pos].R = r;
+        return;
+    }
+    int mid = (l + r) &gt;&gt; 1;
+    build((pos &lt;&lt; 1), l, mid);
+    build((pos &lt;&lt; 1) + 1, mid + 1, r);
+
+    node[pos].L = l;
+    node[pos].R = r;
+
+    node[pos].data = node[(pos &lt;&lt; 1)].data + node[(pos &lt;&lt; 1) + 1].data;
+}
+```
+- 需注意在每个区间的子区间完成建立后，更新当前区间的数据
+
+### 延迟标记操作
+```cpp
+void spread(int p)
+{
+    node[(p &lt;&lt; 1)].data += node[p].lazy_tag * (node[(p &lt;&lt; 1)].R - node[(p &lt;&lt; 1)].L + 1);
+    node[(p &lt;&lt; 1) + 1].data += node[p].lazy_tag * (node[(p &lt;&lt; 1) + 1].R - node[(p &lt;&lt; 1) + 1].L + 1);
+    node[(p &lt;&lt; 1)].lazy_tag += node[p].lazy_tag;
+    node[(p &lt;&lt; 1) + 1].lazy_tag += node[p].lazy_tag;
+    node[p].lazy_tag = 0;
+}
+```
+- 延迟标记是数据结构设计中一种重要的设计方式，在维护某个数据结构时，对于链锁式地对数据进行的修改更新可以在有需要时再进行，在此之前可以通过打标记的方式表示：这个数据需要被更新。   
+  
+- 上面的标记是记录该区间的加值，对于标记的传递，需要对其子区间加上对应长度的加和。
+
+### 区间修改操作
+```cpp
+void change(int p, int l, int r, int val)
+{
+    if (l &lt;= node[p].L &amp;&amp; r &gt;= node[p].R)
+    {
+        node[p].data += (node[p].R - node[p].L + 1) * val;
+        node[p].lazy_tag += val;
+        return;
+    }
+    spread(p);
+    int mid = (node[p].L + node[p].R) &gt;&gt; 1;
+
+    if (l &lt;= mid)
+    {
+        change((p &lt;&lt; 1), l, r, val);
+    }
+    if (r &gt;= mid + 1)
+    {
+        change((p &lt;&lt; 1) + 1, l, r, val);
+    }
+    node[p].data = node[(p &lt;&lt; 1)].data + node[(p &lt;&lt; 1) + 1].data;
+}
+```
+- 对于区间修改，需要着重理解找到需要修改区间的过程。首先我们引入一个根节点1，然后对于$l\leq mid$时，我们递归查询其左区间，对应的如果$r\geq mid+1$则递归查询右区间。   
+  
+  如此这样查询下去的话，总会查询到至少一个区间完全覆盖在修改区间中，此时再对整个区间进行修改   
+
+  注意修改后需要对父区间进行更新
+
+  而查询操作与之类似，就不再赘述
+
+### 关于区间乘的延迟标记写法
+没什么好说的其实，打两个标记，然后先乘再加就好了。   
+
+**标记传递**
+```cpp
+void spread(int p)
+{
+    node[(p &lt;&lt; 1)].data *= node[p].lazy_tag_mult;
+    node[(p &lt;&lt; 1) + 1].data *= node[p].lazy_tag_mult;
+
+    node[(p &lt;&lt; 1)].data += node[p].lazy_tag_plus * (node[(p &lt;&lt; 1)].R - node[(p &lt;&lt; 1)].L + 1);
+    node[(p &lt;&lt; 1) + 1].data += node[p].lazy_tag_plus * (node[(p &lt;&lt; 1) + 1].R - node[(p &lt;&lt; 1) + 1].L + 1);
+
+    node[(p &lt;&lt; 1)].lazy_tag_mult *= node[p].lazy_tag_mult;
+    node[(p &lt;&lt; 1) + 1].lazy_tag_mult *= node[p].lazy_tag_mult;
+
+    node[(p &lt;&lt; 1)].lazy_tag_plus *= node[p].lazy_tag_mult;
+    node[(p &lt;&lt; 1) + 1].lazy_tag_plus *= node[p].lazy_tag_mult;
+    node[(p &lt;&lt; 1)].lazy_tag_plus += node[p].lazy_tag_plus;
+    node[(p &lt;&lt; 1) + 1].lazy_tag_plus += node[p].lazy_tag_plus;
+    
+    node[p].lazy_tag_plus = 0;
+    node[p].lazy_tag_mult = 1;
 }
 ```
 
-### Tarjan算法
 
-Tarjan算法的基本原理和树上倍增法一样，都是基于向上标记法的思想   
 
-Tarjan算法主要可以分为以下几个步骤：
-- 提前统计好每个查询指令
-- 进行dfs，在dfs的过程中给每个点做上记号   
-  已经完成回溯的标记为2，未完成回溯的标记为1
-- 当dfs到存在查询指令的节点时，检查对应的查询节点的标记：
-  - 若为1，则LCA为查询的节点
-  - 若为2，则LCA为查询节点的最近的标记为1的父节点
-  - 若没有标记，则跳过该查询
-- 查询节点的最近父节点用并查集优化，具体方法见代码
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Tree-Array/">
+      树形数组
+    </a>
+    <span class="card-abstract">
+      
+最简单的一种用于区间维护的数据结构
+&lt;!-- more ---&gt;
+
+树状数组的原理过于简明直观，再此不对最基本的点修改和前缀和查询做赘述，主要说明一下$lowbit()$的实现逻辑。
+
+$lowbit(n)$表示的是，在二进制下，n的最低一位的1所表示的数字。我们可以知道$lowbit(n)$的计算公式为：   
+$$lowbit(n)=n\&amp;(n\ xor\ (n-1))$$   
+
+$n-1$之后得到的数字的最低位1变为0，其前面位上的0全部变为1，然后和本身异或得到第一位到最低位1的一串1，然后和本身做与运算，得到最低位的1   
+
+### Luogu的模板题目一
 ```cpp
 #include &lt;cstdio&gt;
 #include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;queue&gt;
-#include &lt;cmath&gt;
-#include &lt;utility&gt;
 
 using namespace std;
 
-struct Edge
+int tree_Array[500005];
+int n, m;
+int lowbit(int num)
 {
-    int from;
-    int to;
-    int val;
-    int next;
-};
-
-struct Query
+    return num &amp; (num ^ (num - 1));
+}
+void add(int pos, int val)
 {
-    int next;
-    int id;
-    int y;
-};
-
-class MF_Set//并查集
-{
-private:
-    int n;
-    int *father = new int[500005];
-
-public:
-    MF_Set(int input_1)
+    for (int x = pos; x &lt;= n; x += lowbit(x))
     {
-        n = input_1;
-        for (int i = 1; i &lt;= n; i++)
-        {
-            father[i] = i;
-        }
+        tree_Array[x] += val;
     }
-    int findFather(int a)
+}
+int query(int pos)
+{
+    int sum = 0;
+    for (int x = pos; x &gt; 0; x -= lowbit(x))
+        sum += tree_Array[x];
+
+    return sum;
+}
+int main()
+{
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 1; i &lt;= n; i++)
     {
-        if (father[a] != a)
+        int temp;
+        cin &gt;&gt; temp;
+        add(i, temp);
+    }
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int op;
+        int val_1;
+        int val_2;
+        cin &gt;&gt; op &gt;&gt; val_1 &gt;&gt; val_2;
+        if (op == 1)
         {
-            return father[a] = findFather(father[a]);
+            add(val_1, val_2);
         }
         else
         {
-            return a;
+            cout &lt;&lt; query(val_2) - query(val_1 - 1) &lt;&lt; endl;
         }
     }
-    void merge(int a, int father_)
-    {
-        int FatherA = findFather(a);
-        int FatherB = findFather(father_);
-        if (FatherA != FatherB)
-        {
-            father[FatherA] = FatherB;
-        }
-    }
-    bool inSameSet(int a, int b)
-    {
-        return findFather(a) == findFather(b);
-    }
-};
+}
 
-class Solver
+```
+除此之外还有关于树状数组用于统计逆序数的方法，用树状数组的中的下标对应了一个数，统计小于等于这个数的数字的数量，逆序扫描给出的序列，从树状数组中找小于当前扫描数的数字的数量，从而统计逆序，并将该数加入树状数组。   
+
+### 树状数组的一点扩展改进
+树状数组支持的操作是单点修改和区间查询，通过差分的方式修改前缀和的含义，可以改进为区间修改和单点查询。   
+
+- **差分**：   
+  如果修改序列中某一项的值，对后续的前缀和具有延长性的影响，所以我们可以用一个新的零序列，在一个区间的开始加上a，在其结尾减去a，这样，该数列的前缀和在该区间就全部加上了一个数，再将该数加到原数列上，就得到了单点的值。
+
+树状数组可以优化差分算法，避免每次都要更新前缀和。
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int tree_Array[500005];
+int Array[500005];
+int n, m;
+int lowbit(int num)
 {
-private:
-    int N;
-    int M;
-    int S;
-    Edge *edges = new Edge[1000005]{};
-    int *head = new int[500005]{};
-    int *fa = new int[500005]{};
-    int *tag = new int[500005]{};
-
-    Query *query = new Query[500005]{};
-    int *head_q = new int[500005]{};
-    int num_q = 0;//用前向星记录节点上的查询
-
-    int *ans = new int[1000005]{};
-    MF_Set *set = new MF_Set(500000);
-
-    int num;
-
-public:
-    Solver(int n, int m, int s)
+    return num &amp; (num ^ (num - 1));
+}
+void add(int pos, int val)
+{
+    for (int x = pos; x &lt;= n; x += lowbit(x))
     {
-        N = n;
-        M = m;
-        S = s;
-
-        for (int i = 1; i &lt;= n - 1; i++)
-        {
-            int u, v;
-            cin &gt;&gt; u &gt;&gt; v;
-            fa[u] = -1;
-            fa[v] = -1; //-1代表还没有父亲
-            add(u, v);
-            add(v, u);
-        }
-        Input();
-        tarjan(S);
-
-        for (int i = 1; i &lt;= M; i++)
-        {
-            cout &lt;&lt; ans[i] &lt;&lt; endl;
-        }
+        tree_Array[x] += val;
     }
+}
+int query(int pos)
+{
+    int sum = 0;
+    for (int x = pos; x &gt; 0; x -= lowbit(x))
+        sum += tree_Array[x];
 
-    void add(int u, int v)
-    {
-        edges[++num].from = u;
-        edges[num].to = v;
-        edges[num].next = head[u];
-        head[u] = num;
-    }
-
-    void Input()
-    {
-        int x, y;
-        for (int i = 1; i &lt;= M; ++i)
-        {
-            cin &gt;&gt; x &gt;&gt; y;
-            query[++num_q].id = i;
-            query[num_q].y = y;
-            query[num_q].next = head_q[x];
-            head_q[x] = num_q;
-
-            query[++num_q].id = i;
-            query[num_q].y = x;
-            query[num_q].next = head_q[y];
-            head_q[y] = num_q;
-        }
-    }
-
-    void tarjan(int pos)
-    {
-        tag[pos] = 1;
-
-        for (int i = head_q[pos]; i; i = query[i].next)
-        {
-            if (tag[query[i].y] == 1)
-            {
-                ans[query[i].id] = query[i].y;
-            }
-            else if (tag[query[i].y] == 0)
-            {
-                continue;
-            }
-            else if (tag[query[i].y] == 2)
-            {
-                ans[query[i].id] = set-&gt;findFather(query[i].y);
-            }
-        }
-
-        for (int i = head[pos]; i; i = edges[i].next)
-        {
-            if (fa[pos] == edges[i].to)
-            {
-                continue;
-            }
-            else
-            {
-                fa[edges[i].to] = pos;
-                tarjan(edges[i].to);
-                set-&gt;merge(edges[i].to, set-&gt;findFather(pos));
-            }//把子树节点的父节点都设为了当前未完成遍历的节点
-        }
-        tag[pos] = 2;
-    }
-};
+    return sum;
+}
 
 int main()
 {
-    int n, m, s;
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
-    Solver work(n, m, s);
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 1; i &lt;= n; i++)
+    {
+        int temp;
+        cin &gt;&gt; temp;
+        Array[i] = temp;
+    }
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int op;
+        cin &gt;&gt; op;
+
+        if (op == 1)
+        {
+            int l, r, k;
+            cin &gt;&gt; l &gt;&gt; r &gt;&gt; k;
+
+            add(l, k);
+            add(r + 1, -k);
+        }
+        if (op == 2)
+        {
+            int pos;
+            cin &gt;&gt; pos;
+            cout &lt;&lt; Array[pos] + query(pos) &lt;&lt; endl;
+        }
+    }
 }
+
 ```
-很不幸的是，我的内存使用在洛谷评测上会超空间限制
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/ST-about/">
+        ST表
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        由倍增算法和思想衍生出的一种适用于区间查询的基本数据类型
+
+&lt;!-- more ---&gt;
+
+在倍增的思想中，通过成倍的增长来加快某一种过程，而在st表中，通过成倍的增加长度来扩大一个区间的覆盖长度，获得一个更大区间的某一特征。   
+
+以区间最大值为例子   
+现在我用一个二维数组$f[i][j]$表示以数列的第i项开头的，长度为$2^j$的一个区间中的最大值，然后我们可以得到在$[l,r]$的范围内的最大的2的幂次方为$log_2(r-l+1)$，同时可以保证这个数字大于$\frac{l+r}{2}$。   
+所以我们可以用
+$$f[l][log_2(r-l+1)/2]$$
+和   
+$$f[r-2^{log_2(r-l+1)/2}][log_2(r-l+1)/2]$$
+
+来表示区间$[l,r]$，这两个区间的合集就是$[l,r]$，而两者中间的重叠部分并不影响总区间的最大值，所以可以用$O(1)$的时间复杂度对区间最值进行查询。   
+
+以下是洛谷ST表模板题的代码：
+```cpp
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int main()
+{
+    int f[100005][21];
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 1; i &lt;= n; i++)
+    {
+        cin &gt;&gt; f[i][0];
+    }
+    for (int i = 1; i &lt;= 21; i++)
+    {
+        for (int j = 1; j + (1 &lt;&lt; i) - 1 &lt;= n; j++)
+        {
+            f[j][i] = f[j][i - 1];
+            f[j][i] = max(f[j][i], f[j + (1 &lt;&lt; i) / 2][i - 1]);
+        }
+    }
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int l, r;
+        cin &gt;&gt; l &gt;&gt; r;
+        int t = log(r - l + 1) / log(2);
+        cout &lt;&lt; max(f[l][t], f[r - (1 &lt;&lt; t) + 1][t]) &lt;&lt; endl;
+    }
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       </span>
     </div>
@@ -961,229 +1222,6 @@ int main()
         2021-01-01
       </div>
       <div class="card-info">
-        2.6k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Tree-Array/">
-        树形数组
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-最简单的一种用于区间维护的数据结构
-&lt;!-- more ---&gt;
-
-树状数组的原理过于简明直观，再此不对最基本的点修改和前缀和查询做赘述，主要说明一下$lowbit()$的实现逻辑。
-
-$lowbit(n)$表示的是，在二进制下，n的最低一位的1所表示的数字。我们可以知道$lowbit(n)$的计算公式为：   
-$$lowbit(n)=n\&amp;(n\ xor\ (n-1))$$   
-
-$n-1$之后得到的数字的最低位1变为0，其前面位上的0全部变为1，然后和本身异或得到第一位到最低位1的一串1，然后和本身做与运算，得到最低位的1   
-
-### Luogu的模板题目一
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-
-using namespace std;
-
-int tree_Array[500005];
-int n, m;
-int lowbit(int num)
-{
-    return num &amp; (num ^ (num - 1));
-}
-void add(int pos, int val)
-{
-    for (int x = pos; x &lt;= n; x += lowbit(x))
-    {
-        tree_Array[x] += val;
-    }
-}
-int query(int pos)
-{
-    int sum = 0;
-    for (int x = pos; x &gt; 0; x -= lowbit(x))
-        sum += tree_Array[x];
-
-    return sum;
-}
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m;
-    for (int i = 1; i &lt;= n; i++)
-    {
-        int temp;
-        cin &gt;&gt; temp;
-        add(i, temp);
-    }
-    for (int i = 1; i &lt;= m; i++)
-    {
-        int op;
-        int val_1;
-        int val_2;
-        cin &gt;&gt; op &gt;&gt; val_1 &gt;&gt; val_2;
-        if (op == 1)
-        {
-            add(val_1, val_2);
-        }
-        else
-        {
-            cout &lt;&lt; query(val_2) - query(val_1 - 1) &lt;&lt; endl;
-        }
-    }
-}
-
-```
-除此之外还有关于树状数组用于统计逆序数的方法，用树状数组的中的下标对应了一个数，统计小于等于这个数的数字的数量，逆序扫描给出的序列，从树状数组中找小于当前扫描数的数字的数量，从而统计逆序，并将该数加入树状数组。   
-
-### 树状数组的一点扩展改进
-树状数组支持的操作是单点修改和区间查询，通过差分的方式修改前缀和的含义，可以改进为区间修改和单点查询。   
-
-- **差分**：   
-  如果修改序列中某一项的值，对后续的前缀和具有延长性的影响，所以我们可以用一个新的零序列，在一个区间的开始加上a，在其结尾减去a，这样，该数列的前缀和在该区间就全部加上了一个数，再将该数加到原数列上，就得到了单点的值。
-
-树状数组可以优化差分算法，避免每次都要更新前缀和。
-
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;map&gt;
-#include &lt;cstring&gt;
-#include &lt;cmath&gt;
-
-using namespace std;
-
-int tree_Array[500005];
-int Array[500005];
-int n, m;
-int lowbit(int num)
-{
-    return num &amp; (num ^ (num - 1));
-}
-void add(int pos, int val)
-{
-    for (int x = pos; x &lt;= n; x += lowbit(x))
-    {
-        tree_Array[x] += val;
-    }
-}
-int query(int pos)
-{
-    int sum = 0;
-    for (int x = pos; x &gt; 0; x -= lowbit(x))
-        sum += tree_Array[x];
-
-    return sum;
-}
-
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m;
-    for (int i = 1; i &lt;= n; i++)
-    {
-        int temp;
-        cin &gt;&gt; temp;
-        Array[i] = temp;
-    }
-    for (int i = 1; i &lt;= m; i++)
-    {
-        int op;
-        cin &gt;&gt; op;
-
-        if (op == 1)
-        {
-            int l, r, k;
-            cin &gt;&gt; l &gt;&gt; r &gt;&gt; k;
-
-            add(l, k);
-            add(r + 1, -k);
-        }
-        if (op == 2)
-        {
-            int pos;
-            cin &gt;&gt; pos;
-            cout &lt;&lt; Array[pos] + query(pos) &lt;&lt; endl;
-        }
-    }
-}
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         6.2k字
       </div>
       <div class="card-info">
@@ -1195,11 +1233,12 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/TreeToList/">
-      树链剖分
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/TreeToList/">
+        树链剖分
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 树链剖分，原理不算复杂，但是代码十分难打的一种偏暴力的算法
 
 &lt;!-- more ---&gt;
@@ -1535,6 +1574,259 @@ int main()
 
 将近300行代码，我觉得我不大会在考场上选择这种方法，太野蛮了
 
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/dataStruct-S/">
+      简单数据结构
+    </a>
+    <span class="card-abstract">
+      啊对了，这是我回高中给学弟讲图论时用的课件
+
+**信息学竞赛 = 算法 + 数据结构**
+
+### 什么是数据结构？
+
+数据结构是储存数据的方式
+
+### 数据结构和算法之间的关系
+
+按照某种方式储存的数据可以更加方便快速地执行某些算法
+
+### 数据结构的简单分类
+
+线性数据结构
+
+图
+
+树型结构
+
+### 一个简单的例子
+
+```cpp
+struct Student
+{
+    string name;
+    int age;
+    bool gender;
+};
+```
+这也可以算作一种数据结构，通过这种结构方式，我们可以很容易的通过排序算法来把一堆学生按照年龄或者姓名进行排序
+
+## 线性数据结构
+
+线性数据结构像是数组这样的，每个数据都有明确的“上一个数据”和“下一个数据”，这样的数据组成形式
+
+### 栈
+
+设定一个数组，所有的数据都只能从其中一个方向进入和移出，满足先进先出规则
+
+![](/image/oi/2_1.png)
+
+#### STL模板中的栈
+
+```cpp
+int main()
+{
+    stack&lt;int&gt; test;
+    test.push(5);
+    cout &lt;&lt; test.top();
+    test.pop();
+}
+```
+
+STL模板中的栈是**容器适配器**，不是容器
+
+#### 计算机中的栈
+
+栈空间：计算机在编译阶段就完成的空间分配，一般有大小限制
+
+**递归调用栈的原理**：
+
+C++程序在编译的过程中是先翻译成**汇编语言**，再编译成可直接执行的二进制程序（exe）
+
+汇编语言和C++一样**从上到下执行**指令，执行指令时会把整个程序拷贝到内存**栈空间**中，但是每个函数在栈空间中的**地址**不一样，所以在**调用函数**时需要从内存的一个位置跳转到另一个位置，并记录下原来的地址，在执行完调用的函数后跳回原本的函数
+
+这个记录下的**原地址**就储存在提前分配好大小的栈空间中，所以如果**递归函数**调用自身的次数过多，就会使数据超出规定的栈空间大小，造成**内存泄漏**
+
+此时如果你使用的是dev，那么程序就会**默不作声**地结束掉，就像是自己的程序没有输出结果一样
+
+#### 练习：
+不做具体题目了，用数组自行实现一个栈结构，要求功能：
+1. push()
+2. pop()
+3. top()
+4. 正确处理空栈时执行pop()的错误
+
+考虑一下栈和计算表达式中的括号匹配的关系
+
+### 队列
+
+队列和栈比较相似，其满足的性质是：**数据从一边进入，从另一边移出**
+
+相比栈在计算机中的基本应用，队列更多的是在算法层面提供帮助
+
+通过一边进一边出并且不改变数据的顺序，我们可以通过队列实现对某些非线性数据结构的线性处理
+
+比如之后要说的：BFS算法
+
+单独考队列也不太可能，所以如果没有特别需求同样可以使用STL模板中的queue满足基本使用
+
+```cpp
+int main()
+{
+    queue&lt;int&gt; test;
+    test.push(5);
+    cout &lt;&lt; test.front();
+    cout &lt;&lt; test.back();
+    test.pop();
+}
+```
+
+#### 练习：
+如果使用数组实现队列，在数组装满后，移出了一些数据，使得数组的前半部分有空余空间，此时再插入数据的话，数据将从数组的头部进入队列，实现一个**头尾相接**，这样的数组称为**循环队列**
+
+尝试使用数组实现循环队列，要求功能：
+1. push()
+2. pop()
+3. front()
+4. back()
+
+### 数组
+
+数组本质不是指针，而是包含了一段**连续内存空间**的**基址指针**，和数组大小的一种数据结构
+
+直接使用数组名，数组会返回该数组的**基址指针**
+
+```*(a+10) == a[10]```
+
+因为数组在内存空间中是连续的，所以可以使用下标进行**随机访问**
+
+**动态数组**：要学就连上STL中的基础容器一起学
+
+### 链表
+
+数组在内存中是连续的，所以可以通过$*(a+10)$这样的指针计算直接得到某个位置的数据，而链表在内存中是**碎片化**储存的，通过指针将其链接起来
+
+![](/image/oi/2_2.png)
+
+这种结构使得链表不能像数组一样通过计算定位某个元素的位置，所以要得到任何元素都必须通过**遍历**的方式
+
+相对应的，其优点是进行批量的**数据删除、添加**可以比数组更快、更方便，并且链表数据容量是不固定的，可以随时加入更多的元素，而数组在编译阶段就固定了数据容量
+
+#### 计算机中的链表
+
+我们知道（至少你现在知道了），数据在内存中是**碎片化储存**的，当我们需要分配一块新的内存时，需要从碎片化的**空闲内存**中找出一片合适的内存，并从中分割内存
+
+当一块占用内存使用完毕需要释放后，我们需要把他和相邻的空闲内存合并
+
+管理这样**分散**的内存块很明显使用链表会更加方便，这样在计算机系统中用于管理内存的链表我们称为**空闲链表**，是计算机内存管理的重要组成
+
+#### 链表的使用
+
+链表同样一般不会出单独的题目进行考察，如果没有特殊需要推荐使用STL中的**List**容器
+
+ ```cpp
+
+int main()
+{
+    list&lt;int&gt; test;
+    test.push_back(5);
+    test.push_front(6);
+    test.pop_back();
+    test.pop_front();
+    test.insert(test.begin(), 5);
+}
+```
+链表的实现可以使用**指针**和**类**，进行比较标准的实现，如果不熟悉面向对象编程和指针，也可以使用数组进行实现
+
+在oi竞赛里用数组模拟链表、树这类需要指针的情况非常常见，一般说法是：用数组模拟可以比用指针更快，空间占用更多，但是如果按照更规范的写法，仍然使用指针和类实现
+
+#### 练习
+按照你的习惯，编写一个链表的基本实现，功能要求：
+1. insert()//从中间插入数据
+2. remove()//从中间删除数据
+
+#### 线性结构相关题
+
+简单题：
+P1449 后缀表达式
+P1996 约瑟夫问题
+
+## 图
+
+### 什么是图？
+一种用节点和边链接而成的非线性结构
+
+![](/image/oi/2_3.png)
+
+**连通块**：节点之间满足两两联通的部分
+
+### 什么是树？
+
+满足**边的数量=节点数量 - 1**的联通图
+
+### 图的储存方式
+
+##### 邻接矩阵：
+
+![](/image/oi/2_4.png)
+
+实现方式：二位数组
+
+##### 邻接表：
+
+每个节点建立一个数组（链表），储存以该节点为起点，通往相邻节点的边
+
+### 树的储存方式
+
+和图一样
+
+#### 练习
+
+尝试上面的建图方法，并且输出每个节点所连接的边的数量
+
+## 二叉树
+
+每个节点都最多只有两个儿子的树
+
+二叉树可以用数组的方式储存
+
     </span>
 
   </div>
@@ -1863,550 +2155,6 @@ int main()
 
 
 
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 5 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Segment-Tree/">
-      线段树
-    </a>
-    <span class="card-abstract">
-      综合了多种思想于一体的一种基础数据结构，适用于区间维护问题。
-&lt;!-- more ---&gt;
-
-对于线段树而言，在实现的思想方面不必多谈，无非就是二分区间，再进行合并。以下仅针对代码的具体实现进行一定的记录。
-
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-
-using namespace std;
-
-struct Segment
-{
-    int L;
-    int R;
-    long long data;
-    long long lazy_tag = 0;
-} node[400005];
-
-int origin[100005];
-
-int n, m;
-
-void build(int pos, int l, int r)
-{
-    if (l == r)
-    {
-        node[pos].data = origin[l];
-        node[pos].L = l;
-        node[pos].R = r;
-        return;
-    }
-    int mid = (l + r) &gt;&gt; 1;
-    build((pos &lt;&lt; 1), l, mid);
-    build((pos &lt;&lt; 1) + 1, mid + 1, r);
-
-    node[pos].L = l;
-    node[pos].R = r;
-    node[pos].data = node[(pos &lt;&lt; 1)].data + node[(pos &lt;&lt; 1) + 1].data;
-}
-
-void spread(int p)
-{
-    node[(p &lt;&lt; 1)].data += node[p].lazy_tag * (node[(p &lt;&lt; 1)].R - node[(p &lt;&lt; 1)].L + 1);
-    node[(p &lt;&lt; 1) + 1].data += node[p].lazy_tag * (node[(p &lt;&lt; 1) + 1].R - node[(p &lt;&lt; 1) + 1].L + 1);
-    node[(p &lt;&lt; 1)].lazy_tag += node[p].lazy_tag;
-    node[(p &lt;&lt; 1) + 1].lazy_tag += node[p].lazy_tag;
-    node[p].lazy_tag = 0;
-}
-
-void change(int p, int l, int r, int val)
-{
-    if (l &lt;= node[p].L &amp;&amp; r &gt;= node[p].R)
-    {
-        node[p].data += (node[p].R - node[p].L + 1) * val;
-        node[p].lazy_tag += val;
-        return;
-    }
-    spread(p);
-    int mid = (node[p].L + node[p].R) &gt;&gt; 1;
-
-    if (l &lt;= mid)
-    {
-        change((p &lt;&lt; 1), l, r, val);
-    }
-    if (r &gt;= mid + 1)
-    {
-        change((p &lt;&lt; 1) + 1, l, r, val);
-    }
-    node[p].data = node[(p &lt;&lt; 1)].data + node[(p &lt;&lt; 1) + 1].data;
-}
-
-long long query(int p, int l, int r)
-{
-    if (l &lt;= node[p].L &amp;&amp; r &gt;= node[p].R)
-    {
-        return node[p].data;
-    }
-
-    spread(p);
-
-    int mid = (node[p].L + node[p].R) &gt;&gt; 1;
-    long long sum = 0;
-    if (l &lt;= mid)
-    {
-        sum += query((p &lt;&lt; 1), l, r);
-    }
-    if (r &gt;= mid + 1)
-    {
-        sum += query((p &lt;&lt; 1) + 1, l, r);
-    }
-    return sum;
-}
-
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m;
-
-    for (int i = 1; i &lt;= n; i++)
-    {
-        cin &gt;&gt; origin[i];
-    }
-    build(1, 1, n);
-    for (int i = 1; i &lt;= m; i++)
-    {
-        int op;
-        cin &gt;&gt; op;
-
-        if (op == 1)
-        {
-            int l, r, val;
-            cin &gt;&gt; l &gt;&gt; r &gt;&gt; val;
-            change(1, l, r, val);
-        }
-        if (op == 2)
-        {
-            int l, r;
-            cin &gt;&gt; l &gt;&gt; r;
-            cout &lt;&lt; query(1, l, r) &lt;&lt; endl;
-        }
-    }
-}
-```
-上面这段代码没有使用重定义的方式减少代码量，避免产生误解接。   
-接下来分别对各个操作的实现中，需要注意的细节进行记录。   
-
-### 建树操作
-```cpp
-void build(int pos, int l, int r)
-{
-    if (l == r)
-    {
-        node[pos].data = origin[l];
-        node[pos].L = l;
-        node[pos].R = r;
-        return;
-    }
-    int mid = (l + r) &gt;&gt; 1;
-    build((pos &lt;&lt; 1), l, mid);
-    build((pos &lt;&lt; 1) + 1, mid + 1, r);
-
-    node[pos].L = l;
-    node[pos].R = r;
-
-    node[pos].data = node[(pos &lt;&lt; 1)].data + node[(pos &lt;&lt; 1) + 1].data;
-}
-```
-- 需注意在每个区间的子区间完成建立后，更新当前区间的数据
-
-### 延迟标记操作
-```cpp
-void spread(int p)
-{
-    node[(p &lt;&lt; 1)].data += node[p].lazy_tag * (node[(p &lt;&lt; 1)].R - node[(p &lt;&lt; 1)].L + 1);
-    node[(p &lt;&lt; 1) + 1].data += node[p].lazy_tag * (node[(p &lt;&lt; 1) + 1].R - node[(p &lt;&lt; 1) + 1].L + 1);
-    node[(p &lt;&lt; 1)].lazy_tag += node[p].lazy_tag;
-    node[(p &lt;&lt; 1) + 1].lazy_tag += node[p].lazy_tag;
-    node[p].lazy_tag = 0;
-}
-```
-- 延迟标记是数据结构设计中一种重要的设计方式，在维护某个数据结构时，对于链锁式地对数据进行的修改更新可以在有需要时再进行，在此之前可以通过打标记的方式表示：这个数据需要被更新。   
-  
-- 上面的标记是记录该区间的加值，对于标记的传递，需要对其子区间加上对应长度的加和。
-
-### 区间修改操作
-```cpp
-void change(int p, int l, int r, int val)
-{
-    if (l &lt;= node[p].L &amp;&amp; r &gt;= node[p].R)
-    {
-        node[p].data += (node[p].R - node[p].L + 1) * val;
-        node[p].lazy_tag += val;
-        return;
-    }
-    spread(p);
-    int mid = (node[p].L + node[p].R) &gt;&gt; 1;
-
-    if (l &lt;= mid)
-    {
-        change((p &lt;&lt; 1), l, r, val);
-    }
-    if (r &gt;= mid + 1)
-    {
-        change((p &lt;&lt; 1) + 1, l, r, val);
-    }
-    node[p].data = node[(p &lt;&lt; 1)].data + node[(p &lt;&lt; 1) + 1].data;
-}
-```
-- 对于区间修改，需要着重理解找到需要修改区间的过程。首先我们引入一个根节点1，然后对于$l\leq mid$时，我们递归查询其左区间，对应的如果$r\geq mid+1$则递归查询右区间。   
-  
-  如此这样查询下去的话，总会查询到至少一个区间完全覆盖在修改区间中，此时再对整个区间进行修改   
-
-  注意修改后需要对父区间进行更新
-
-  而查询操作与之类似，就不再赘述
-
-### 关于区间乘的延迟标记写法
-没什么好说的其实，打两个标记，然后先乘再加就好了。   
-
-**标记传递**
-```cpp
-void spread(int p)
-{
-    node[(p &lt;&lt; 1)].data *= node[p].lazy_tag_mult;
-    node[(p &lt;&lt; 1) + 1].data *= node[p].lazy_tag_mult;
-
-    node[(p &lt;&lt; 1)].data += node[p].lazy_tag_plus * (node[(p &lt;&lt; 1)].R - node[(p &lt;&lt; 1)].L + 1);
-    node[(p &lt;&lt; 1) + 1].data += node[p].lazy_tag_plus * (node[(p &lt;&lt; 1) + 1].R - node[(p &lt;&lt; 1) + 1].L + 1);
-
-    node[(p &lt;&lt; 1)].lazy_tag_mult *= node[p].lazy_tag_mult;
-    node[(p &lt;&lt; 1) + 1].lazy_tag_mult *= node[p].lazy_tag_mult;
-
-    node[(p &lt;&lt; 1)].lazy_tag_plus *= node[p].lazy_tag_mult;
-    node[(p &lt;&lt; 1) + 1].lazy_tag_plus *= node[p].lazy_tag_mult;
-    node[(p &lt;&lt; 1)].lazy_tag_plus += node[p].lazy_tag_plus;
-    node[(p &lt;&lt; 1) + 1].lazy_tag_plus += node[p].lazy_tag_plus;
-    
-    node[p].lazy_tag_plus = 0;
-    node[p].lazy_tag_mult = 1;
-}
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/dataStruct-S/">
-        简单数据结构
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        啊对了，这是我回高中给学弟讲图论时用的课件
-
-**信息学竞赛 = 算法 + 数据结构**
-
-### 什么是数据结构？
-
-数据结构是储存数据的方式
-
-### 数据结构和算法之间的关系
-
-按照某种方式储存的数据可以更加方便快速地执行某些算法
-
-### 数据结构的简单分类
-
-线性数据结构
-
-图
-
-树型结构
-
-### 一个简单的例子
-
-```cpp
-struct Student
-{
-    string name;
-    int age;
-    bool gender;
-};
-```
-这也可以算作一种数据结构，通过这种结构方式，我们可以很容易的通过排序算法来把一堆学生按照年龄或者姓名进行排序
-
-## 线性数据结构
-
-线性数据结构像是数组这样的，每个数据都有明确的“上一个数据”和“下一个数据”，这样的数据组成形式
-
-### 栈
-
-设定一个数组，所有的数据都只能从其中一个方向进入和移出，满足先进先出规则
-
-![](/image/oi/2_1.png)
-
-#### STL模板中的栈
-
-```cpp
-int main()
-{
-    stack&lt;int&gt; test;
-    test.push(5);
-    cout &lt;&lt; test.top();
-    test.pop();
-}
-```
-
-STL模板中的栈是**容器适配器**，不是容器
-
-#### 计算机中的栈
-
-栈空间：计算机在编译阶段就完成的空间分配，一般有大小限制
-
-**递归调用栈的原理**：
-
-C++程序在编译的过程中是先翻译成**汇编语言**，再编译成可直接执行的二进制程序（exe）
-
-汇编语言和C++一样**从上到下执行**指令，执行指令时会把整个程序拷贝到内存**栈空间**中，但是每个函数在栈空间中的**地址**不一样，所以在**调用函数**时需要从内存的一个位置跳转到另一个位置，并记录下原来的地址，在执行完调用的函数后跳回原本的函数
-
-这个记录下的**原地址**就储存在提前分配好大小的栈空间中，所以如果**递归函数**调用自身的次数过多，就会使数据超出规定的栈空间大小，造成**内存泄漏**
-
-此时如果你使用的是dev，那么程序就会**默不作声**地结束掉，就像是自己的程序没有输出结果一样
-
-#### 练习：
-不做具体题目了，用数组自行实现一个栈结构，要求功能：
-1. push()
-2. pop()
-3. top()
-4. 正确处理空栈时执行pop()的错误
-
-考虑一下栈和计算表达式中的括号匹配的关系
-
-### 队列
-
-队列和栈比较相似，其满足的性质是：**数据从一边进入，从另一边移出**
-
-相比栈在计算机中的基本应用，队列更多的是在算法层面提供帮助
-
-通过一边进一边出并且不改变数据的顺序，我们可以通过队列实现对某些非线性数据结构的线性处理
-
-比如之后要说的：BFS算法
-
-单独考队列也不太可能，所以如果没有特别需求同样可以使用STL模板中的queue满足基本使用
-
-```cpp
-int main()
-{
-    queue&lt;int&gt; test;
-    test.push(5);
-    cout &lt;&lt; test.front();
-    cout &lt;&lt; test.back();
-    test.pop();
-}
-```
-
-#### 练习：
-如果使用数组实现队列，在数组装满后，移出了一些数据，使得数组的前半部分有空余空间，此时再插入数据的话，数据将从数组的头部进入队列，实现一个**头尾相接**，这样的数组称为**循环队列**
-
-尝试使用数组实现循环队列，要求功能：
-1. push()
-2. pop()
-3. front()
-4. back()
-
-### 数组
-
-数组本质不是指针，而是包含了一段**连续内存空间**的**基址指针**，和数组大小的一种数据结构
-
-直接使用数组名，数组会返回该数组的**基址指针**
-
-```*(a+10) == a[10]```
-
-因为数组在内存空间中是连续的，所以可以使用下标进行**随机访问**
-
-**动态数组**：要学就连上STL中的基础容器一起学
-
-### 链表
-
-数组在内存中是连续的，所以可以通过$*(a+10)$这样的指针计算直接得到某个位置的数据，而链表在内存中是**碎片化**储存的，通过指针将其链接起来
-
-![](/image/oi/2_2.png)
-
-这种结构使得链表不能像数组一样通过计算定位某个元素的位置，所以要得到任何元素都必须通过**遍历**的方式
-
-相对应的，其优点是进行批量的**数据删除、添加**可以比数组更快、更方便，并且链表数据容量是不固定的，可以随时加入更多的元素，而数组在编译阶段就固定了数据容量
-
-#### 计算机中的链表
-
-我们知道（至少你现在知道了），数据在内存中是**碎片化储存**的，当我们需要分配一块新的内存时，需要从碎片化的**空闲内存**中找出一片合适的内存，并从中分割内存
-
-当一块占用内存使用完毕需要释放后，我们需要把他和相邻的空闲内存合并
-
-管理这样**分散**的内存块很明显使用链表会更加方便，这样在计算机系统中用于管理内存的链表我们称为**空闲链表**，是计算机内存管理的重要组成
-
-#### 链表的使用
-
-链表同样一般不会出单独的题目进行考察，如果没有特殊需要推荐使用STL中的**List**容器
-
- ```cpp
-
-int main()
-{
-    list&lt;int&gt; test;
-    test.push_back(5);
-    test.push_front(6);
-    test.pop_back();
-    test.pop_front();
-    test.insert(test.begin(), 5);
-}
-```
-链表的实现可以使用**指针**和**类**，进行比较标准的实现，如果不熟悉面向对象编程和指针，也可以使用数组进行实现
-
-在oi竞赛里用数组模拟链表、树这类需要指针的情况非常常见，一般说法是：用数组模拟可以比用指针更快，空间占用更多，但是如果按照更规范的写法，仍然使用指针和类实现
-
-#### 练习
-按照你的习惯，编写一个链表的基本实现，功能要求：
-1. insert()//从中间插入数据
-2. remove()//从中间删除数据
-
-#### 线性结构相关题
-
-简单题：
-P1449 后缀表达式
-P1996 约瑟夫问题
-
-## 图
-
-### 什么是图？
-一种用节点和边链接而成的非线性结构
-
-![](/image/oi/2_3.png)
-
-**连通块**：节点之间满足两两联通的部分
-
-### 什么是树？
-
-满足**边的数量=节点数量 - 1**的联通图
-
-### 图的储存方式
-
-##### 邻接矩阵：
-
-![](/image/oi/2_4.png)
-
-实现方式：二位数组
-
-##### 邻接表：
-
-每个节点建立一个数组（链表），储存以该节点为起点，通往相邻节点的边
-
-### 树的储存方式
-
-和图一样
-
-#### 练习
-
-尝试上面的建图方法，并且输出每个节点所连接的边的数量
-
-## 二叉树
-
-每个节点都最多只有两个儿子的树
-
-二叉树可以用数组的方式储存
 
       </span>
     </div>

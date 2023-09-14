@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,6 +244,83 @@
         2021-01-01
       </div>
       <div class="card-info">
+        1.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/adapter/">
+        适配器模式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        到这里，五种基本的创造型模式就结束了
+创造型模式注重于创建对象的方式，通过工厂封装创建过程、通过单例只创建同一个对象、通过原型克隆对象等等
+
+接下来是结构型模式，结构将会
+
+### Adapter, also known as Wrapper
+
+适配器模式用于：当一个业务逻辑的接口和一个类不一致，但是又需要对这个类进行处理时，通过建立一个adapter的中间类来实现接口的对接，故称之为适配器
+
+以这幅图为例子解释
+![avator](https://refactoring.guru/images/patterns/diagrams/adapter/structure-object-adapter.png)
+Client希望通过接口与一个Service交互，但是两者接口不一致，所以我们实现一个Client Interface的适配器类，其中通过Composition的方式包括了一个Servive对象，然后再实现method来实现Service和Client的对接
+这幅图的业务逻辑应该是Client需要调用Service中的方法从而得到数据，但是没有接口可以直接接收一个Service，所以通过实现一个接口适配器，接收内部数据，并转换为Service方法参数，传参、返回结果
+
+---
+
+另一种是通过inheritance的方式实现：
+
+![](https://refactoring.guru/images/patterns/diagrams/adapter/structure-class-adapter.png)
+建立一个适配器，通过多继承，在其内部实现接口和类的交互，图中的Existing class可以是接口也可以是类，只要Adapter重写method方法，就可以在内部调用Service部分的内容
+
+Java不支持多继承
+
+书上再记几个要点：
+- 适配器的工作量取决于接口的相似程度
+- 为一个类建立内置的适配器以增加其可复用度
+- 使用双向适配器来使两个类相互透明
+
+如何建立合适的适配器？
+- 找到一个窄接口，也就是adaptee需要完成的操作，在客户端中对应需要的最少操作
+  这样说有点抽象，按照书上的例子，我们建立了一个树的接口，其中包括建造这棵树需要的方法，这些方法中，把节点连接起来的部分在抽象类中就能自己完成。但是树的节点是不确定类型的，可以替换成任何其他类，所以建立树的节点的方式是不同的，这方式的不同导致了树节点不符合树的接口，所以需要适配器来把树建造节点的方法适配给树类。
+  这个过程中，并不是所有的树中用到的方法都是委托给其他类的，在类中找到这么一个最小的需要委托的类，建立接口和适配器，这个接口我们称为窄接口
+  接口是为了确定需要委托的方法，而适配器是为了让其他的类符合接口，除非我在预先设计时就确定好所有的可以作为节点的类，并为其和树类设计共同的接口
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         3.1k字
       </div>
       <div class="card-info">
@@ -255,12 +332,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/bridge/">
-        Bridge
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        ### Bridge
+    <a class="card-title" href="/2021/01/01/design-pattern/bridge/">
+      Bridge
+    </a>
+    <span class="card-abstract">
+      ### Bridge
 
 First, let&#39;s have a look of the picture below: 
 
@@ -368,12 +444,8 @@ Now we can use the **Circle** to draw different kinds of circle with the differe
 
 原本的类的抽象和底层的接口之间建立的联系我们就称之为Bridge
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -383,13 +455,11 @@ Now we can use the **Circle** to draw different kinds of circle with the differe
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -406,11 +476,12 @@ Now we can use the **Circle** to draw different kinds of circle with the differe
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/builder/">
-      Builder
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/builder/">
+        Builder
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### 建造者模式
 在建造者模式中，有几个实体存在：director、builder、concreteBuilder
 
@@ -597,137 +668,6 @@ public class MealBuilder {
 }
 ```
 
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.9k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/State/">
-        State
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### State
-状态模式的思想可以参考状态机（有限状态机）
-
-一个类有一个状态机，并且该类处于不同的状态时的方法的行为也不同，我们可以考虑通过条件分支来实现状态机，但是这样的实现需要对每个类都实现状态机的条件分治，高重复度的部分难以得到复用，代码的维护也相当麻烦
-
-所以我们把每个状态写成一个类，然后只需要在不同的类中实现状态改变的方法，在需要的时候调用状态改变的方法即可
-
-下面我们通过UML图详细说明：
-
-![](https://refactoring.guru/images/patterns/diagrams/state/structure-en.png)
-
-这个图中包含了四个要素：
-
-- Context
-  这是需要变化状态的类，其中包含了```state```字段用于储存类当前状态，```changeState()```方法可用于改变状态
-- State
-  这是状态的接口，其中包含了在不同状态下表现不同的方法
-- ConcreteState
-  这里面实现了不同状态的方法，由于这些方法也有可能改变Context的状态，所以这些类也包含了context
-- Client
-
-下面是来自noob note的代码：
-
-```java
-public interface State {
-   public void doAction(Context context);
-}
-```
-这里定义了State的接口，需要包含状态不同时行为不同的方法
-```java
-public class StartState implements State {
- 
-   public void doAction(Context context) {
-      System.out.println(&#34;Player is in start state&#34;);
-      context.setState(this); 
-   }
- 
-   public String toString(){
-      return &#34;Start State&#34;;
-   }
-}
-```
-
-```java
-public class StopState implements State {
- 
-   public void doAction(Context context) {
-      System.out.println(&#34;Player is in stop state&#34;);
-      context.setState(this); 
-   }
- 
-   public String toString(){
-      return &#34;Stop State&#34;;
-   }
-}
-```
-这里是两个状态的具体实现
-```java
-public class Context {
-   private State state;
- 
-   public Context(){
-      state = null;
-   }
- 
-   public void setState(State state){
-      this.state = state;     
-   }
- 
-   public State getState(){
-      return state;
-   }
-}
-```
-这是存在多种状态的类，可通过```setState()```方法改变状态
-```java
-public class StatePatternDemo {
-   public static void main(String[] args) {
-      Context context = new Context();
- 
-      StartState startState = new StartState();
-      startState.doAction(context);
- 
-      System.out.println(context.getState().toString());
- 
-      StopState stopState = new StopState();
-      stopState.doAction(context);
- 
-      System.out.println(context.getState().toString());
-   }
-}
-```
 
       </span>
     </div>
@@ -1173,6 +1113,164 @@ public class DecoratorPatternDemo {
         2021-01-01
       </div>
       <div class="card-info">
+        2.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/factoryMethod/">
+        Abstract Factory
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        ### 工厂方法模式
+
+在工厂方法模式中，我们主要考虑的就是“方法”
+
+我们之前已经了解过了抽象工厂，通过实现工厂和产品的接口来将产品和client分割开来，而这里的工厂方法模式是从具体的视角来看待抽象工厂
+
+我们在抽象工厂中考虑的工厂的方法全部都是抽象的，产品对应的方法也全部都是抽象的，但是实际上工厂会有一些具体的方法不需要每个工厂单独实现
+
+我们的创造产品的代码就和其他的代码区别开来了，每个不同的工厂单独实现创造产品的模式就是工厂方法模式，这也正是对应其命名，工厂中分别定义的是方法
+
+工厂方法常常和抽象工厂结合使用，我认为他们都是工厂模式的一部分，只是考虑的方式和视角不一样，对此就不对工厂方法模式做更多的例子了
+
+---
+
+在Consquence部分，我看到了一个没有想过的作用：
+
+考虑这样一种情况：
+我们有一个抽象类，其有两个实现，现在我们需要一个控制器来控制这个类，然后我们在抽象类中写了一个Create函数来创建一个通用的控制器
+
+这样的话类图结构就是这样
+
+```plantuml
+@startuml
+hide fields
+Abstract Abstract{
+    +create()
+}
+class ClassA{
+    +create()
+    +...()
+}
+class ClassB{
+    +create()
+    +...()
+}
+Abstract &lt;|-- ClassA
+Abstract &lt;|-- ClassB
+
+hide client circle
+hide client method
+class client
+client -&gt; Abstract
+
+class Handler{
+    +operations()
+}
+
+Handler &lt;- client
+Handler &lt;. ClassA
+Handler &lt;. ClassB
+@enduml
+```
+这么一来Handler就和抽象类是一层的了，因为是抽象类来控制其生产，这样的话Handler就是为了抽象类以及其所有子类负责，如果有改动将会用于所有子类
+
+如果我们通过factory method的思想，make the Handler degrade to the concret class，也就是让每一个具体类实现各自的Handler
+
+```plantuml
+@startuml
+hide fields
+Abstract Abstract{
+    {Abstract}+create()
+}
+class ClassA{
+    +create()
+    +...()
+}
+class ClassB{
+    +create()
+    +...()
+}
+Abstract &lt;|-- ClassA
+Abstract &lt;|-- ClassB
+
+hide client circle
+hide client method
+class client
+client -&gt; Abstract
+
+Abstract AbstractHandler{
+    {Abstract}+operations()
+}
+
+class HandlerA{
+    +operations()
+}
+class HandlerB{
+    +operations()
+}
+AbstractHandler &lt;|-- HandlerA
+AbstractHandler &lt;|-- HandlerB
+
+AbstractHandler &lt;- client
+HandlerA &lt;. ClassA
+HandlerB &lt;. ClassB
+@enduml
+```
+然后我们就让Handler的maintaining降到了和各个具体类一个等级
+
+通过这里这种想法，我们再回过去看一下Builder中的类图：
+
+![avator](https://www.runoob.com/wp-content/uploads/2014/08/20210315-builder-pattern.svg)
+
+之前我就考虑过这里的Builder使用了层级结构，仍然有些不太明了，参考了上面使用Factor methode降层的思想后，我们给Builder一个明确的层级结构
+
+但是Builder不像上面的产品类一样有这么强的inheritance，Builder构造的产品层次结构是灵活多变的，这里的Builder包括了Item、Buger、ColdDrink、Packing，然后考虑到构造是一层层向上构造的，这里一共有两层，一层是Item，一层是Packing，这是Builder的部分，对于Builder的视角来说只有这两个构造的选项，但是我们引入factory method的思想，就会多出Item的subclass和Packing之间的关系了
+
+Burger、ColdDrink可以视作两个抽象工厂，子类为具体工厂，Item为“根工厂”，Packing视作一个抽象工厂，其子类由Burger和ColdDrink调用创建产品，所以Packing可以视作和Item同一层级，而Warpper和Bottle和Burger、ColdDrink一个层级
+
+再考虑把factory method和Builder结合起来看：
+从builder视角来看，只考虑Meal（产品）、mealBuilder（director）、所有的具体类（concrete builder0）、中间的抽象类构成的层级结构不在builder的考虑范围内
+
+从factory method的角度看，Item往上的东西都不考虑，只考虑Item以下以及Packing的关系，Item分三层，Packing分两层，Packing的第二层和Item的第二层之间存在关系
+
+最后做一个逆向解释，像之前factory method的例子一样，我们把创建Packing的位置放到Item上，Item就不再能区别Burger和ColdDrink的Packing，所以使用统一的Packing就行了，直接在Item中创建一个Packing，就像在Burger中创建一样
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         5.1k字
       </div>
       <div class="card-info">
@@ -1184,12 +1282,11 @@ public class DecoratorPatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/flyweight/">
-        flyweight pattern
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/design-pattern/flyweight/">
+      flyweight pattern
+    </a>
+    <span class="card-abstract">
+      
 ### flyweight
 
 享元模式的思想如下：
@@ -1375,12 +1472,8 @@ public class Demo {
 
 这一部分就是用户代码部分了
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1390,13 +1483,11 @@ public class Demo {
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1413,11 +1504,12 @@ public class Demo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/iterator/">
-      Iterator pattern
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/iterator/">
+        Iterator pattern
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### Iterator
 
 迭代器是相当熟悉的东西，在C++中，我们使用迭代器来遍历容器或者获得容器中的指定位置
@@ -1501,44 +1593,6 @@ public class IteratorPatternDemo {
 }
 ```
 
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        98字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/learnFromJAVA/">
-        从JAVA标准库中了解设计模式
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
       </span>
     </div>
   </div>
@@ -1566,10 +1620,10 @@ public class IteratorPatternDemo {
         2021-01-01
       </div>
       <div class="card-info">
-        2.6k字
+        98字
       </div>
       <div class="card-info">
-        阅读时间: 2 mins.
+        阅读时间: 1 mins.
       </div>
     </div>
     <div style="display: flex;">
@@ -1577,125 +1631,11 @@ public class IteratorPatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/factoryMethod/">
-      Abstract Factory
+    <a class="card-title" href="/2021/01/01/design-pattern/learnFromJAVA/">
+      从JAVA标准库中了解设计模式
     </a>
     <span class="card-abstract">
-      ### 工厂方法模式
-
-在工厂方法模式中，我们主要考虑的就是“方法”
-
-我们之前已经了解过了抽象工厂，通过实现工厂和产品的接口来将产品和client分割开来，而这里的工厂方法模式是从具体的视角来看待抽象工厂
-
-我们在抽象工厂中考虑的工厂的方法全部都是抽象的，产品对应的方法也全部都是抽象的，但是实际上工厂会有一些具体的方法不需要每个工厂单独实现
-
-我们的创造产品的代码就和其他的代码区别开来了，每个不同的工厂单独实现创造产品的模式就是工厂方法模式，这也正是对应其命名，工厂中分别定义的是方法
-
-工厂方法常常和抽象工厂结合使用，我认为他们都是工厂模式的一部分，只是考虑的方式和视角不一样，对此就不对工厂方法模式做更多的例子了
-
----
-
-在Consquence部分，我看到了一个没有想过的作用：
-
-考虑这样一种情况：
-我们有一个抽象类，其有两个实现，现在我们需要一个控制器来控制这个类，然后我们在抽象类中写了一个Create函数来创建一个通用的控制器
-
-这样的话类图结构就是这样
-
-```plantuml
-@startuml
-hide fields
-Abstract Abstract{
-    +create()
-}
-class ClassA{
-    +create()
-    +...()
-}
-class ClassB{
-    +create()
-    +...()
-}
-Abstract &lt;|-- ClassA
-Abstract &lt;|-- ClassB
-
-hide client circle
-hide client method
-class client
-client -&gt; Abstract
-
-class Handler{
-    +operations()
-}
-
-Handler &lt;- client
-Handler &lt;. ClassA
-Handler &lt;. ClassB
-@enduml
-```
-这么一来Handler就和抽象类是一层的了，因为是抽象类来控制其生产，这样的话Handler就是为了抽象类以及其所有子类负责，如果有改动将会用于所有子类
-
-如果我们通过factory method的思想，make the Handler degrade to the concret class，也就是让每一个具体类实现各自的Handler
-
-```plantuml
-@startuml
-hide fields
-Abstract Abstract{
-    {Abstract}+create()
-}
-class ClassA{
-    +create()
-    +...()
-}
-class ClassB{
-    +create()
-    +...()
-}
-Abstract &lt;|-- ClassA
-Abstract &lt;|-- ClassB
-
-hide client circle
-hide client method
-class client
-client -&gt; Abstract
-
-Abstract AbstractHandler{
-    {Abstract}+operations()
-}
-
-class HandlerA{
-    +operations()
-}
-class HandlerB{
-    +operations()
-}
-AbstractHandler &lt;|-- HandlerA
-AbstractHandler &lt;|-- HandlerB
-
-AbstractHandler &lt;- client
-HandlerA &lt;. ClassA
-HandlerB &lt;. ClassB
-@enduml
-```
-然后我们就让Handler的maintaining降到了和各个具体类一个等级
-
-通过这里这种想法，我们再回过去看一下Builder中的类图：
-
-![avator](https://www.runoob.com/wp-content/uploads/2014/08/20210315-builder-pattern.svg)
-
-之前我就考虑过这里的Builder使用了层级结构，仍然有些不太明了，参考了上面使用Factor methode降层的思想后，我们给Builder一个明确的层级结构
-
-但是Builder不像上面的产品类一样有这么强的inheritance，Builder构造的产品层次结构是灵活多变的，这里的Builder包括了Item、Buger、ColdDrink、Packing，然后考虑到构造是一层层向上构造的，这里一共有两层，一层是Item，一层是Packing，这是Builder的部分，对于Builder的视角来说只有这两个构造的选项，但是我们引入factory method的思想，就会多出Item的subclass和Packing之间的关系了
-
-Burger、ColdDrink可以视作两个抽象工厂，子类为具体工厂，Item为“根工厂”，Packing视作一个抽象工厂，其子类由Burger和ColdDrink调用创建产品，所以Packing可以视作和Item同一层级，而Warpper和Bottle和Burger、ColdDrink一个层级
-
-再考虑把factory method和Builder结合起来看：
-从builder视角来看，只考虑Meal（产品）、mealBuilder（director）、所有的具体类（concrete builder0）、中间的抽象类构成的层级结构不在builder的考虑范围内
-
-从factory method的角度看，Item往上的东西都不考虑，只考虑Item以下以及Packing的关系，Item分三层，Packing分两层，Packing的第二层和Item的第二层之间存在关系
-
-最后做一个逆向解释，像之前factory method的例子一样，我们把创建Packing的位置放到Item上，Item就不再能区别Burger和ColdDrink的Packing，所以使用统一的Packing就行了，直接在Item中创建一个Packing，就像在Burger中创建一样
-
+      
     </span>
 
   </div>

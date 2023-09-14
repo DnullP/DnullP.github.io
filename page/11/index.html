@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/7nGYxgcyoi8aSIR.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -444,6 +444,128 @@ MC作为一款开源模板式的游戏，它的源代码中有它完整的地形
         2021-01-01
       </div>
       <div class="card-info">
+        3.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/essay/2022-1-8/">
+        在ubuntu上安装SCIM智能拼音输入法
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+今日开始学习《深入理解计算机结构体系》这本书，打算把环境换到Linux下，也算是对这个必备系统的一个熟悉。但是在一段时间的使用后我发现，这个ubuntu系统没有自带的中文输入法，怎么办呢，自己装个呗
+
+但是并不熟悉Linux使用的情况下，我遇到了不少问题，解决后也对以后继续学习Linux系统的使用做下了一定的基础
+
+---
+
+## 安装SCIM
+
+这一步涉及到的指令包括 ```apt install```、```sudo```
+
+以后这些指令当然会常用
+
+- 首先卸载SCIM，保证系统上没有安装SCIM
+  ```sudo apt-get remove scim```
+- 然后安装SCIM
+  ```sudo apt-get install scim```
+
+这里的问题并不大，但是安装后并没有安装中文输入法，所以还需要额外安装：
+
+- ```sudo apt-get install scim-chinese```
+  但是系统说找不到这样的package，所以可以单独一个个的输入法安装
+  ```sudo apt-get install scim scim-pinyin scim-tables-zh im-switch scim-gtk-immodule```
+  包括了智能拼音、五笔，和后面两个我也不清楚的输入方式
+
+## 配置DNS
+完成上面操作后，重启系统并没有可以使用的中文输入法
+
+重新输入安装指令后发现，在安装中文输入方式时，出现了解析域名失败的错误
+
+在网上查询后了解到，新安装的ubuntu系统没有配置合适的DNS服务器，所以通过gedit打开 ```etc/resolv.conf```，然后添加几个合适的DNS服务器即可
+```
+nameserver 202.98.96.68
+nameserver 61.139.2.69
+nameserver 8.8.8.8
+```
+
+## 更换软件apt源
+在配置好DNS后，再次运行安装指令，出现了连接错误
+
+所以说这就是很明显的软件源有问题了，通过搜索引擎，找到配置源文件 ```/etc/apt/sources.list```，替换内容为阿里云的源
+
+```
+# deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted
+deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties
+deb http://archive.canonical.com/ubuntu xenial partner
+deb-src http://archive.canonical.com/ubuntu xenial partner
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse
+```
+
+清华大学国内源：
+
+```
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse
+deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse
+```
+
+配置好源后，再次运行安装指令，成功安装中文输入法
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         2.5k字
       </div>
       <div class="card-info">
@@ -455,12 +577,11 @@ MC作为一款开源模板式的游戏，它的源代码中有它完整的地形
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/essay/%7FAnime/">
-        关于看完一部动画后的想法
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/essay/%7FAnime/">
+      关于看完一部动画后的想法
+    </a>
+    <span class="card-abstract">
+      
 稍微记录点不这么技术性的问题
 
 或者说一个过程吧
@@ -546,127 +667,6 @@ scp可以说是这类型的作品中最具代表性的一个，由无数人的�
 
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/essay/2022-1-8/">
-      在ubuntu上安装SCIM智能拼音输入法
-    </a>
-    <span class="card-abstract">
-      
-今日开始学习《深入理解计算机结构体系》这本书，打算把环境换到Linux下，也算是对这个必备系统的一个熟悉。但是在一段时间的使用后我发现，这个ubuntu系统没有自带的中文输入法，怎么办呢，自己装个呗
-
-但是并不熟悉Linux使用的情况下，我遇到了不少问题，解决后也对以后继续学习Linux系统的使用做下了一定的基础
-
----
-
-## 安装SCIM
-
-这一步涉及到的指令包括 ```apt install```、```sudo```
-
-以后这些指令当然会常用
-
-- 首先卸载SCIM，保证系统上没有安装SCIM
-  ```sudo apt-get remove scim```
-- 然后安装SCIM
-  ```sudo apt-get install scim```
-
-这里的问题并不大，但是安装后并没有安装中文输入法，所以还需要额外安装：
-
-- ```sudo apt-get install scim-chinese```
-  但是系统说找不到这样的package，所以可以单独一个个的输入法安装
-  ```sudo apt-get install scim scim-pinyin scim-tables-zh im-switch scim-gtk-immodule```
-  包括了智能拼音、五笔，和后面两个我也不清楚的输入方式
-
-## 配置DNS
-完成上面操作后，重启系统并没有可以使用的中文输入法
-
-重新输入安装指令后发现，在安装中文输入方式时，出现了解析域名失败的错误
-
-在网上查询后了解到，新安装的ubuntu系统没有配置合适的DNS服务器，所以通过gedit打开 ```etc/resolv.conf```，然后添加几个合适的DNS服务器即可
-```
-nameserver 202.98.96.68
-nameserver 61.139.2.69
-nameserver 8.8.8.8
-```
-
-## 更换软件apt源
-在配置好DNS后，再次运行安装指令，出现了连接错误
-
-所以说这就是很明显的软件源有问题了，通过搜索引擎，找到配置源文件 ```/etc/apt/sources.list```，替换内容为阿里云的源
-
-```
-# deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted
-deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties
-deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties
-deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties
-deb http://mirrors.aliyun.com/ubuntu/ xenial universe
-deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
-deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse
-deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse
-deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties
-deb http://archive.canonical.com/ubuntu xenial partner
-deb-src http://archive.canonical.com/ubuntu xenial partner
-deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties
-deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
-deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse
-```
-
-清华大学国内源：
-
-```
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse
-deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse
-```
-
-配置好源后，再次运行安装指令，成功安装中文输入法
-
-
     </span>
 
   </div>
@@ -688,82 +688,6 @@ deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restri
         2021-01-01
       </div>
       <div class="card-info">
-        384字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/math-physics/descretMath/">
-        离散数学——逻辑运算
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-```plantuml
-@startmindmap
-
-* 命题
-
-**_ 真命题
-**_ 假命题
-
-** 简单命题
-***_ 命题常项
-***_ 命题变项
-
-** 复合命题
-
-***: 合式公式
-(命题公式、命题形式);
-
-****_ 原子合式公式
-****:元语言符号
-A、B这类可代表任何合式公式的符号;
-****:对象语言符号
-q、p这类有具体命题的符号;
-****:合式公式的层数
-单个命题变项为0层，一次逻辑连接加一层;
-****:赋值(解释)
-将公式中的命题变项全部指定一个真值;
-*****_ 成真赋值
-*****_ 成假赋值
-@endmindmap
-```
-打算
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         1.6k字
       </div>
       <div class="card-info">
@@ -775,11 +699,12 @@ q、p这类有具体命题的符号;
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/math/importance-of-probability-distibution/">
-      概率论期中论文
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/math/importance-of-probability-distibution/">
+        概率论期中论文
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### &lt;p style=&#34;text-align: center;&#34;&gt;概率密度为什么重要&lt;/p&gt;
 
 &lt;p style=&#34;text-align: center;&#34;&gt;DNULL_P&lt;/p&gt;
@@ -828,8 +753,12 @@ $$f_{A|B}(A|B) = \frac{f_{A,B}(AB)}{f_A(A)}$$
 
 设随机变量$X$服从正态分布$N(1,1)$，且$\Phi(z_\alpha) = 1-\alpha$，求$x$满足$P\{|X-1|&lt;x\} = \alpha$
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -839,11 +768,13 @@ $$f_{A|B}(A|B) = \frac{f_{A,B}(AB)}{f_A(A)}$$
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -860,12 +791,11 @@ $$f_{A|B}(A|B) = \frac{f_{A,B}(AB)}{f_A(A)}$$
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/math/probability-theory/">
-        概率论期末复习
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/math/probability-theory/">
+      概率论期末复习
+    </a>
+    <span class="card-abstract">
+      
 # 第一章 基本概念
 - 随机试验：可以在相同条件下重复进行，每次试验的可能结果不止一个，能明确所有可能的结果，不能确定每次的结果，记为 $E$
 
@@ -1498,136 +1428,6 @@ $$\chi^2_{1-\alpha/2}(n-1) \leq \frac{(n-1)S^2}{\sigma^2} \leq \chi^2_{\alpha/2}
   我们使用统计量：
   $$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/music/2022-1-8/">
-      乐理再学习（一）
-    </a>
-    <span class="card-abstract">
-      
-参考教材《音乐理论基础》
-
-## 第一章
-
-**乐音体系**：固定音高的一系列音的总和
-
-**音列**：乐音体系中的音按照上行或下行排成一列
-
-**基本音级**：七个基本音
-
-**变化音级**：以七个基本音升降变化得到
-
-中央C对应的分组为**小字一组**
-
-**题目**：
-
-![](/image/music/1_1.png)
-
-1. 振动
-2. 音高之间的差距是固定的，构成乐音体系
-3. 两种，乐音，噪音，由于声波的规律性而不同
-4. 人的听感不同，乐音用得多，噪音用得少，但是用处很多
-5. 由不同的正弦波叠加而成
-6. 音程固定的一系列音的总和；由乐音体系的音按上行下行排列而成；各个音
-7. 七个基本音，CDEFGAB
-8. 升降音
-9. 之间间隔八个基本音
-10. 中央C小字一组
-11. 音域是乐器能达到的音的部分，音区是音域的分区
-
-## 第二章
-
-先记一下升降符号，用作复制
-
-```
-1、升记号（♯）表示将基本音级升高半音。
-
-2、降记号（♭）表示将基本音级降低半音。
-
-3、重升记号（×）表示将基本音级升高两个半音（一个全音）。
-
-4、重降记号（♭♭）表示将基本音级降低两个半音（一个全音）。
-
-5、还原记号(♮)表示将已经升高或降低的音还原。
-```
-
-**自然全音和自然半音**：
-由相邻音级组成的全音或半音：C—D、♭E—F、E—F
-
-**变化全音和变化半音**：
-由同一个音级组成的全音或半音：C—♯C
-
-**等音**：
-音高和意义相同但是记法不同的音：C—♭♭D—♯B
-
-
-**题目**
-![](/image/music/2_1.png)
-
-1. 分解音高的方式
-2. 略
-3. 略
-4. 略
-5. 略
-6. 略
-7. 相邻音级组成
-8. 同一音级组成
-9. 记法不同的相同音
-10. 三个
-
-## 第三章
-
-本章为记谱法，略过
-
-## 第四章
-
-**调式**：按照一定关系连接在一起的一系列音（一般不超过七个），组成一个体系，并以一个音为**主音**，这个体系叫做调式
-
-**音阶**：调式中的音按照上行排列，叫做音阶
-
-音阶反应调式的特性，而音列是构成调式的材料
-
-**调**：调式和音高的组合，比如C大调，E小调
-
-
-
-
     </span>
 
   </div>
@@ -1649,7 +1449,7 @@ $$\chi^2_{1-\alpha/2}(n-1) \leq \frac{(n-1)S^2}{\sigma^2} \leq \chi^2_{\alpha/2}
         2021-01-01
       </div>
       <div class="card-info">
-        164字
+        384字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -1661,14 +1461,42 @@ $$\chi^2_{1-\alpha/2}(n-1) \leq \frac{(n-1)S^2}{\sigma^2} \leq \chi^2_{\alpha/2}
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/music/guitae-1/">
-        电吉他入门记录（一）
+      <a class="card-title" href="/2021/01/01/math-physics/descretMath/">
+        离散数学——逻辑运算
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
-电吉他可以说是我最喜欢的乐器之一，但是在不会弹电吉他的情况下，使用纯粹的手动编写模拟的电吉他是相对困难的，本文会记录我使用电吉他音源的过程中一步步的改善
+```plantuml
+@startmindmap
 
+* 命题
 
+**_ 真命题
+**_ 假命题
+
+** 简单命题
+***_ 命题常项
+***_ 命题变项
+
+** 复合命题
+
+***: 合式公式
+(命题公式、命题形式);
+
+****_ 原子合式公式
+****:元语言符号
+A、B这类可代表任何合式公式的符号;
+****:对象语言符号
+q、p这类有具体命题的符号;
+****:合式公式的层数
+单个命题变项为0层，一次逻辑连接加一层;
+****:赋值(解释)
+将公式中的命题变项全部指定一个真值;
+*****_ 成真赋值
+*****_ 成假赋值
+@endmindmap
+```
+打算
 
       </span>
     </div>
@@ -1788,6 +1616,178 @@ void processInput(GLFWwindow* window)
 }
 ```
 以上为完整的代码，下面将逐句进行记录
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/music/2022-1-8/">
+        乐理再学习（一）
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+参考教材《音乐理论基础》
+
+## 第一章
+
+**乐音体系**：固定音高的一系列音的总和
+
+**音列**：乐音体系中的音按照上行或下行排成一列
+
+**基本音级**：七个基本音
+
+**变化音级**：以七个基本音升降变化得到
+
+中央C对应的分组为**小字一组**
+
+**题目**：
+
+![](/image/music/1_1.png)
+
+1. 振动
+2. 音高之间的差距是固定的，构成乐音体系
+3. 两种，乐音，噪音，由于声波的规律性而不同
+4. 人的听感不同，乐音用得多，噪音用得少，但是用处很多
+5. 由不同的正弦波叠加而成
+6. 音程固定的一系列音的总和；由乐音体系的音按上行下行排列而成；各个音
+7. 七个基本音，CDEFGAB
+8. 升降音
+9. 之间间隔八个基本音
+10. 中央C小字一组
+11. 音域是乐器能达到的音的部分，音区是音域的分区
+
+## 第二章
+
+先记一下升降符号，用作复制
+
+```
+1、升记号（♯）表示将基本音级升高半音。
+
+2、降记号（♭）表示将基本音级降低半音。
+
+3、重升记号（×）表示将基本音级升高两个半音（一个全音）。
+
+4、重降记号（♭♭）表示将基本音级降低两个半音（一个全音）。
+
+5、还原记号(♮)表示将已经升高或降低的音还原。
+```
+
+**自然全音和自然半音**：
+由相邻音级组成的全音或半音：C—D、♭E—F、E—F
+
+**变化全音和变化半音**：
+由同一个音级组成的全音或半音：C—♯C
+
+**等音**：
+音高和意义相同但是记法不同的音：C—♭♭D—♯B
+
+
+**题目**
+![](/image/music/2_1.png)
+
+1. 分解音高的方式
+2. 略
+3. 略
+4. 略
+5. 略
+6. 略
+7. 相邻音级组成
+8. 同一音级组成
+9. 记法不同的相同音
+10. 三个
+
+## 第三章
+
+本章为记谱法，略过
+
+## 第四章
+
+**调式**：按照一定关系连接在一起的一系列音（一般不超过七个），组成一个体系，并以一个音为**主音**，这个体系叫做调式
+
+**音阶**：调式中的音按照上行排列，叫做音阶
+
+音阶反应调式的特性，而音列是构成调式的材料
+
+**调**：调式和音高的组合，比如C大调，E小调
+
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        164字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/music/guitae-1/">
+      电吉他入门记录（一）
+    </a>
+    <span class="card-abstract">
+      
+电吉他可以说是我最喜欢的乐器之一，但是在不会弹电吉他的情况下，使用纯粹的手动编写模拟的电吉他是相对困难的，本文会记录我使用电吉他音源的过程中一步步的改善
+
+
 
     </span>
 

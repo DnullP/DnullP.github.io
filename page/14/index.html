@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,10 +244,10 @@
         2021-01-01
       </div>
       <div class="card-info">
-        1.4k字
+        2.3k字
       </div>
       <div class="card-info">
-        阅读时间: 1 mins.
+        阅读时间: 2 mins.
       </div>
     </div>
     <div style="display: flex;">
@@ -256,46 +256,127 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-1-inro/">
-        wireshark practice 1
+      <a class="card-title" href="/2021/01/01/network/self-studying-notes/notes/">
+        计算机网络记录反思
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
-计网开课了, 复习一下遗忘的东西, 顺便做一下课本后的wireshark实验
+### 第一章思路整理
 
-# lab1: intro to wireshark
+第一次看这本书，刚开始有点没把握好节奏，在几个地方产生了一些误解，现在重新将本章的内容梳理一下，意在自我学习
 
-1. List 3 different protocols that appear in the protocol column in the unfiltered packet-listing window in step 7 above.  
+#### 什么是因特网？
+这一段列举了因特网的组成部分，包括：
+- 通信链路(communication link)
+  通信链路就是连接网络的线路，通过不同的**物理媒介**实现
+- 分组交换机(packet switch)
+  分组交换机包括**路由器**和**链路层交换机**
+- 路由器
+  负责forwarding的节点
+- 链路层交换机
+- ISP(因特网服务提供商)
+- 协议
+  协议是通信的一个双方使用的规则
+- 标准
+  标准是由机构(institution)制定的统一的标准
 
-- DNS
-- TCP
-- UDP
-- TLSv1.2
-- SSDP
-- ICMPv6
+在总述了以上内容后，书上简述了**套接字接口**的存在
 
----
+接着介绍**协议**：两个或多个通信实体间交换**报文**的格式和顺序，以及报文发送和接收后的一系列操作
 
-2. How long did it take from when the HTTP GET message was sent until the HTTP OK reply was received? (By default, the value of the Time column in the packet-listing window is the amount of time, in seconds, since Wireshark tracing began.  To display the Time field in time-of-day format, select the Wireshark View pull down menu, then select Time Display Format, then select Time-of-day.)
+#### 网络边缘
 
-|419|13:34:02.688933|10.122.242.69|128.119.245.12|
-|-|-|-|-|
-|447| 13:34:03.015422| 128.119.245.12| 10.122.242.69|
-以上为发送`GET`和接收数据帧的数据
-可计算出时间差为`0.326489`秒
+接下来两节，以**边缘**和**核心**来对互联网进行描述
 
----
+网络边缘就是我们平时使用的接入互联网的设备，包括个人电脑、手机到服务器都属于边缘网络的部分
 
-3. What is the Internet address of the gaia.cs.umass.edu (also known as www-net.cs.umass.edu)?  What is the Internet address of your computer?
+于是介绍的重点就放到了这些**主机**（端系统）如何连接到因特网中——**接入网**
 
-`10.122.242.69`这是我的IP地址(北京邮电大学的, 别查了)
-`128.119.245.12`这是服务器地址
+- 数字用户线（DSL）
+  DSL是家庭接入因特网的线路，主要是通过电话接入
 
----
-4. Print the two HTTP messages (GET and OK) referred to in question 2 above. To do so, select Print from the Wireshark File command menu, and select the “Selected Packet Only” and “Print as displayed” radial buttons, and then click OK.
+- 电话接入
+  调制解调器通过已有的电话线作为接入网，将数字信号转为模拟信号
 
-打印文件如下:
-[print_1](/pdf/wireshark1.pdf)
+- HFC(混合光纤同轴)
+  **电缆因特网接入**，利用有线电视的缆线接入，常常用到电缆和光纤
+  
+- FTTH(光纤到户)
+  新兴技术，从本地中心局拉一根光缆，单独连接每个家庭并接入因特网
+
+##### 物理媒体
+- 导引型媒体
+- 非导引型媒体
+
+#### 网络核心(network core)
+
+网络核心部分就是包括路由器和链路在内的构成互相连接的网络结构的部分
+
+##### 分组交换和电路交换
+
+- 分组交换
+  应用层的信息被break into pieces，这些片段称为message(报文)，在source和destination之间通过分组交换器（packet switch/主要包括router）
+  分组交换中使用的**储存转发传输**（switch在将分组向链路输出前，必须保证已经收到了完整的分组数据），所以router存在缓存来保存不完整的分组
+
+  tips：
+  由于分组交换的特点，会存在**排队时延**、**分组丢失**（丢包packet loss）的情况
+  此外，路由器上存在转发表，并通过**路由选择协议**来计算packet的转发目的地
+
+- 电路交换
+  相比于分组交换，电路交换显得更加久远，其原本是实现电话的信息传递方式
+  它通过end-to-end connection（端对端连接），建立一条专用的电路（电路不是链路）
+  通过**频分复用**和**时分复用**来实现多用户共享一条链路
+
+  其中的频分复用在面对网络拥挤时，损失的数据比时分复用多，且频分复用可能存在空闲的资源没被利用（没有传输数据的用户占用频段），而时分复用在这方面的优化更佳
+
+##### 网络的网络
+
+网络边缘通过接入网，和LSP连接，而现在的互联网有多级的LSP，并通过IXP（因特网交换点）连接在一起，上层的LSP向下层的LSP收费
+
+像谷歌这样的企业建立了自己的数据库，作为上层LSP，直接和下层接入LSP相连
+
+##### 分组交换的时延、packet loss和吞吐量（throughput）
+
+时延分为个部分：
+- 处理时延
+- 排队时延
+- 传输时延
+- 传播时延
+ 
+容易理解，不做解释
+
+packet loss：路由器缓存不足导致分组丢失
+
+- 流量强度（traffic intensity）：设a为单位时间内接收的分组数量，L为每个分组的大小，R是**传输**速率，则$\frac{La}{R}$为流量强度，是评判排队时延和丢包率的信息
+
+- **吞吐量**：
+  - 瞬时吞吐量
+  - 平均吞吐量
+
+#### 协议层次和服务模型
+
+- OSI七层模型
+  传统的网络协议模型
+- 五层因特网协议栈
+  - 应用层
+  - 运输层
+  - 网络层
+  - 链路层
+  - 物理层
+
+原本OSI七层模型还有两层：表示层和会话层，现在被并入了应用层，由程序员决定是否加入这两层，并在代码中实现
+
+层与层之间传输的数据通过**封装**后，在不同的服务层中完成操作，具体步骤如下：
+
+- 首先，应用程序的数据被break into pieces，不同端系统上的应用程序之间交换这些被切割的信息，这些信息分组被称为**报文**（message）
+
+- 然后，这些报文被send down到运输层，运输层通过TCP和UDP等协议和另一个端系统上的接口取得联系，构成一个“连接”，然后把数据封装成**报文段**，并send down到网络层
+
+- 网络层是主机和网络核心的管理主体，到达网络层的数据被封装成**数据报**，通过路由选择向目标主机传输转发，其中的重要协议为**IP协议**，用于标记网络中的所有设备的地址
+  
+- 直到网络层位置，前面三层都可以说是服务于主机之间的协议层，但是链路层是存在于两个路由器之间的协议层。它为数据在链路上的传输和接收、处理等制定了标准，这一层将数据封装为**帧**
+- 物理层，我讨厌大学物理
+
 
 
       </span>
@@ -1331,6 +1412,140 @@ int main()
         2021-01-01
       </div>
       <div class="card-info">
+        1.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Dichotomy-OR/">
+      二分相关算法题
+    </a>
+    <span class="card-abstract">
+      
+
+# 基础二分
+
+### 二分查找
+从有序序列中查找某个值的位置
+**STL**：lower_bound()、upper_bound
+
+----
+
+### 二分答案
+通过判断某个条件是否满足，对一个范围内的答案进行二分
+
+**最简单的实例**：
+给出一个1~100范围内的随机数，要求你用最少的次数猜中这个数字
+
+----
+
+![](/image/oi/1_1.png)
+
+---
+
+### 二分查找与二分答案的联系
+**二分答案**是某个连续区间内的**二分查找**
+
+---
+
+### 二分边界的判断
+
+
+```cpp
+while (L &lt; R)
+{
+    int mid = (L + R) &gt;&gt; 1;
+    if(check(mid)){
+        L = mid + 1;
+    }
+    else{
+        R = mid;
+    }
+}
+```
+
+### 实数范围内的二分
+
+```cpp
+while (L &lt; R)
+{
+    int mid = (L + R) &gt;&gt; 1;
+    if(check(mid)){
+        L = mid + 0.0001;
+    }
+    else{
+        R = mid - 0.0001;
+    }
+}
+```
+
+---
+
+![](/image/oi/1_2.png)
+
+# 二分题目的考法
+
+二分题目不会单独考二分，而是作为解题的一个关键思路：
+
+关键词：**最小值最大**和**最大值最小**
+
+
+![](/image/oi/1_3.png)
+
+**二分思路**：
+1. 首先确定二分区间，这里最保守的答案范围是最小边的长度和所有边的总长度
+2. 然后检测mid是否满足条件，当mid作为最小长度的最大值时，无法修建出这样的赛道，说明答案应该大于mid，取右区间，如果可以修建，说明答案应该小于等于mid，取左区间
+3. 当```L&gt;=R```时，得到确定的答案
+
+---
+
+![](/image/oi/1_5.png)
+
+**二分思路**：
+1. 首先确定二分范围是最小的岩石距离和所有岩石的距离和
+2. 然后检测mid是否满足条件，如果通过某种方案移走石头可以使mid满足条件，则说明答案大于mid，反之则小于mid
+3. 当```L&gt;R```时，得到答案
+
+### 上面的二分题目到底在求解什么？
+
+我们直观的看到，上面关于二分答案的题目都是在求**最大值**、**最小值**
+
+而最大值最小值都是一种**边界**
+
+### 二分算法的概念
+
+$对于一个命题p(x=k)，若存在k0使得当k&lt;k0时命题为真，当k&gt;k0时命题为假，当k=k0时命题为真或为假，则称命题p(x=k)满足二分单调性$
+
+$二分算法则是在对于任意x=k’都能判断p(x=k’)真假的情况下，快速找到分界线K0的算法$
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         2.3k字
       </div>
       <div class="card-info">
@@ -1342,11 +1557,12 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/GameTheory/">
-      博弈论
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/GameTheory/">
+        博弈论
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 基础博弈论只要记住几个结论公式就好，但是通用的博弈论解决方式还是要用SG函数
 
 
@@ -1484,8 +1700,12 @@ int main()
 }
 ```
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1495,11 +1715,13 @@ int main()
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1516,12 +1738,11 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/HandWrittenHeap/">
-        手写堆模板
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/HandWrittenHeap/">
+      手写堆模板
+    </a>
+    <span class="card-abstract">
+      
 手写了一个堆的类模板，以后遇到需要用堆的情况会直接使用
 &lt;!-- more --&gt;
 ```cpp
@@ -1812,6 +2033,379 @@ void heap&lt;T&gt;::print_all()
 int main(){}
 ```
 
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        6.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 6 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/LCA/">
+        最近公共祖先
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        图论基础算法之一，在此记录树上倍增法和Tarjan算法
+
+### 树上倍增法
+在线算法，比较简单实用   
+
+具体实现过程依靠倍增思想，通过数组$f[p][k]$记录p节点的第$2^k$辈父节点，而数组$f$可以通过树上DP的方式求得
+
+- DP公式：
+  $$f[p][k]=f[f[p][k-1]][k-1]$$
+  正确性很容易验证
+
+在完成$f$数组的预处理后，对于一对点x，y我们先将x，y中较深的一个点移动到同一深度，具体方法依靠于之前求得的$f$数组，具体倍增的方式就不做叙述，细节可参考代码
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+struct Edge
+{
+    int from;
+    int to;
+    int val;
+    int next;
+};
+
+class Solver
+{
+private:
+    int N;
+    int M;
+    int S;
+    Edge *edges = new Edge[1000005]{};
+    int *head = new int[500005]{};
+    int *deep = new int[500005]{};//记录每个节点的深度
+
+    //int (*f)[20] = new int[500005][20]{};
+    //这个地方由于评测机配置问题，发生段错误
+    int f[500005][20]{};
+    int num;
+
+public:
+    Solver(int n, int m, int s)
+    {
+        N = n;
+        M = m;
+        S = s;
+        deep[0] = -0x3f3f3f3f;
+
+        for (int i = 1; i &lt;= n - 1; i++)
+        {
+            int u, v;
+            cin &gt;&gt; u &gt;&gt; v;
+            add(u, v);
+            add(v, u);
+        }
+        dfs(S, 1);
+
+        for (int i = 1; i &lt;= m; i++)
+        {
+            int x, y;
+            cin &gt;&gt; x &gt;&gt; y;
+
+            cout &lt;&lt; LCA(x, y) &lt;&lt; endl;
+        }
+    }
+
+    void add(int u, int v)
+    {
+        edges[++num].from = u;
+        edges[num].to = v;
+        edges[num].next = head[u];
+        head[u] = num;
+    }
+
+    void dfs(int pos, int depth)//预处理深度、f数组
+    {
+        deep[pos] = depth;
+
+        for (int k = 1; deep[pos] - (1 &lt;&lt; k) &gt;= 1; k++)
+        {
+            f[pos][k] = f[f[pos][k - 1]][k - 1];
+        }
+
+        for (int i = head[pos]; i; i = edges[i].next)
+        {
+            if (edges[i].to != f[pos][0])
+            {
+                f[edges[i].to][0] = pos;
+                dfs(edges[i].to, depth + 1);
+            }
+        }
+    }
+    int LCA(int x, int y)
+    {
+        if (deep[x] &lt; deep[y])
+        {
+            swap(x, y);
+        }
+        for (int k = log(deep[x] - 1) / log(2); k &gt;= 0; k--)
+        {
+            if (deep[f[x][k]] &gt;= deep[y])
+            {
+                x = f[x][k];//调整为同一深度
+
+                if (deep[x] == deep[y])
+                {
+                    break;
+                }
+            }
+        }
+        if (x == y)
+        {
+            return x;
+        }
+        for (int k = log(deep[x] - 1) / log(2); k &gt;= 0; k--)
+        {
+            if (f[x][k] != f[y][k])
+            {
+                x = f[x][k];
+                y = f[y][k];//从到小同时往上跳
+            }
+        }
+        return f[x][0];
+    }
+};
+
+int main()
+{
+    int n, m, s;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
+    Solver work(n, m, s);
+}
+```
+
+### Tarjan算法
+
+Tarjan算法的基本原理和树上倍增法一样，都是基于向上标记法的思想   
+
+Tarjan算法主要可以分为以下几个步骤：
+- 提前统计好每个查询指令
+- 进行dfs，在dfs的过程中给每个点做上记号   
+  已经完成回溯的标记为2，未完成回溯的标记为1
+- 当dfs到存在查询指令的节点时，检查对应的查询节点的标记：
+  - 若为1，则LCA为查询的节点
+  - 若为2，则LCA为查询节点的最近的标记为1的父节点
+  - 若没有标记，则跳过该查询
+- 查询节点的最近父节点用并查集优化，具体方法见代码
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+#include &lt;utility&gt;
+
+using namespace std;
+
+struct Edge
+{
+    int from;
+    int to;
+    int val;
+    int next;
+};
+
+struct Query
+{
+    int next;
+    int id;
+    int y;
+};
+
+class MF_Set//并查集
+{
+private:
+    int n;
+    int *father = new int[500005];
+
+public:
+    MF_Set(int input_1)
+    {
+        n = input_1;
+        for (int i = 1; i &lt;= n; i++)
+        {
+            father[i] = i;
+        }
+    }
+    int findFather(int a)
+    {
+        if (father[a] != a)
+        {
+            return father[a] = findFather(father[a]);
+        }
+        else
+        {
+            return a;
+        }
+    }
+    void merge(int a, int father_)
+    {
+        int FatherA = findFather(a);
+        int FatherB = findFather(father_);
+        if (FatherA != FatherB)
+        {
+            father[FatherA] = FatherB;
+        }
+    }
+    bool inSameSet(int a, int b)
+    {
+        return findFather(a) == findFather(b);
+    }
+};
+
+class Solver
+{
+private:
+    int N;
+    int M;
+    int S;
+    Edge *edges = new Edge[1000005]{};
+    int *head = new int[500005]{};
+    int *fa = new int[500005]{};
+    int *tag = new int[500005]{};
+
+    Query *query = new Query[500005]{};
+    int *head_q = new int[500005]{};
+    int num_q = 0;//用前向星记录节点上的查询
+
+    int *ans = new int[1000005]{};
+    MF_Set *set = new MF_Set(500000);
+
+    int num;
+
+public:
+    Solver(int n, int m, int s)
+    {
+        N = n;
+        M = m;
+        S = s;
+
+        for (int i = 1; i &lt;= n - 1; i++)
+        {
+            int u, v;
+            cin &gt;&gt; u &gt;&gt; v;
+            fa[u] = -1;
+            fa[v] = -1; //-1代表还没有父亲
+            add(u, v);
+            add(v, u);
+        }
+        Input();
+        tarjan(S);
+
+        for (int i = 1; i &lt;= M; i++)
+        {
+            cout &lt;&lt; ans[i] &lt;&lt; endl;
+        }
+    }
+
+    void add(int u, int v)
+    {
+        edges[++num].from = u;
+        edges[num].to = v;
+        edges[num].next = head[u];
+        head[u] = num;
+    }
+
+    void Input()
+    {
+        int x, y;
+        for (int i = 1; i &lt;= M; ++i)
+        {
+            cin &gt;&gt; x &gt;&gt; y;
+            query[++num_q].id = i;
+            query[num_q].y = y;
+            query[num_q].next = head_q[x];
+            head_q[x] = num_q;
+
+            query[++num_q].id = i;
+            query[num_q].y = x;
+            query[num_q].next = head_q[y];
+            head_q[y] = num_q;
+        }
+    }
+
+    void tarjan(int pos)
+    {
+        tag[pos] = 1;
+
+        for (int i = head_q[pos]; i; i = query[i].next)
+        {
+            if (tag[query[i].y] == 1)
+            {
+                ans[query[i].id] = query[i].y;
+            }
+            else if (tag[query[i].y] == 0)
+            {
+                continue;
+            }
+            else if (tag[query[i].y] == 2)
+            {
+                ans[query[i].id] = set-&gt;findFather(query[i].y);
+            }
+        }
+
+        for (int i = head[pos]; i; i = edges[i].next)
+        {
+            if (fa[pos] == edges[i].to)
+            {
+                continue;
+            }
+            else
+            {
+                fa[edges[i].to] = pos;
+                tarjan(edges[i].to);
+                set-&gt;merge(edges[i].to, set-&gt;findFather(pos));
+            }//把子树节点的父节点都设为了当前未完成遍历的节点
+        }
+        tag[pos] = 2;
+    }
+};
+
+int main()
+{
+    int n, m, s;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
+    Solver work(n, m, s);
+}
+```
+很不幸的是，我的内存使用在洛谷评测上会超空间限制
+
       </span>
     </div>
   </div>
@@ -1839,140 +2433,6 @@ int main(){}
         2021-01-01
       </div>
       <div class="card-info">
-        1.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Dichotomy-OR/">
-      二分相关算法题
-    </a>
-    <span class="card-abstract">
-      
-
-# 基础二分
-
-### 二分查找
-从有序序列中查找某个值的位置
-**STL**：lower_bound()、upper_bound
-
-----
-
-### 二分答案
-通过判断某个条件是否满足，对一个范围内的答案进行二分
-
-**最简单的实例**：
-给出一个1~100范围内的随机数，要求你用最少的次数猜中这个数字
-
-----
-
-![](/image/oi/1_1.png)
-
----
-
-### 二分查找与二分答案的联系
-**二分答案**是某个连续区间内的**二分查找**
-
----
-
-### 二分边界的判断
-
-
-```cpp
-while (L &lt; R)
-{
-    int mid = (L + R) &gt;&gt; 1;
-    if(check(mid)){
-        L = mid + 1;
-    }
-    else{
-        R = mid;
-    }
-}
-```
-
-### 实数范围内的二分
-
-```cpp
-while (L &lt; R)
-{
-    int mid = (L + R) &gt;&gt; 1;
-    if(check(mid)){
-        L = mid + 0.0001;
-    }
-    else{
-        R = mid - 0.0001;
-    }
-}
-```
-
----
-
-![](/image/oi/1_2.png)
-
-# 二分题目的考法
-
-二分题目不会单独考二分，而是作为解题的一个关键思路：
-
-关键词：**最小值最大**和**最大值最小**
-
-
-![](/image/oi/1_3.png)
-
-**二分思路**：
-1. 首先确定二分区间，这里最保守的答案范围是最小边的长度和所有边的总长度
-2. 然后检测mid是否满足条件，当mid作为最小长度的最大值时，无法修建出这样的赛道，说明答案应该大于mid，取右区间，如果可以修建，说明答案应该小于等于mid，取左区间
-3. 当```L&gt;=R```时，得到确定的答案
-
----
-
-![](/image/oi/1_5.png)
-
-**二分思路**：
-1. 首先确定二分范围是最小的岩石距离和所有岩石的距离和
-2. 然后检测mid是否满足条件，如果通过某种方案移走石头可以使mid满足条件，则说明答案大于mid，反之则小于mid
-3. 当```L&gt;R```时，得到答案
-
-### 上面的二分题目到底在求解什么？
-
-我们直观的看到，上面关于二分答案的题目都是在求**最大值**、**最小值**
-
-而最大值最小值都是一种**边界**
-
-### 二分算法的概念
-
-$对于一个命题p(x=k)，若存在k0使得当k&lt;k0时命题为真，当k&gt;k0时命题为假，当k=k0时命题为真或为假，则称命题p(x=k)满足二分单调性$
-
-$二分算法则是在对于任意x=k’都能判断p(x=k’)真假的情况下，快速找到分界线K0的算法$
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         4.8k字
       </div>
       <div class="card-info">
@@ -1984,12 +2444,11 @@ $二分算法则是在对于任意x=k’都能判断p(x=k’)真假的情况下�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/MSSet/">
-        并查集
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/MSSet/">
+      并查集
+    </a>
+    <span class="card-abstract">
+      
 算是比较基础的数据结构，把模板放在这里，并讨论一点扩展
 
 &lt;!-- more ---&gt;
@@ -2247,132 +2706,6 @@ int main()
 }
 ```
 在以上的代码中，用了几个map数组，用来帮助构造权值改变的规则，由于说明起来过于复杂，如果无法理解建议自行思考构造方式。
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/ST-about/">
-      ST表
-    </a>
-    <span class="card-abstract">
-      由倍增算法和思想衍生出的一种适用于区间查询的基本数据类型
-
-&lt;!-- more ---&gt;
-
-在倍增的思想中，通过成倍的增长来加快某一种过程，而在st表中，通过成倍的增加长度来扩大一个区间的覆盖长度，获得一个更大区间的某一特征。   
-
-以区间最大值为例子   
-现在我用一个二维数组$f[i][j]$表示以数列的第i项开头的，长度为$2^j$的一个区间中的最大值，然后我们可以得到在$[l,r]$的范围内的最大的2的幂次方为$log_2(r-l+1)$，同时可以保证这个数字大于$\frac{l+r}{2}$。   
-所以我们可以用
-$$f[l][log_2(r-l+1)/2]$$
-和   
-$$f[r-2^{log_2(r-l+1)/2}][log_2(r-l+1)/2]$$
-
-来表示区间$[l,r]$，这两个区间的合集就是$[l,r]$，而两者中间的重叠部分并不影响总区间的最大值，所以可以用$O(1)$的时间复杂度对区间最值进行查询。   
-
-以下是洛谷ST表模板题的代码：
-```cpp
-#include &lt;iostream&gt;
-#include &lt;cmath&gt;
-
-using namespace std;
-
-int main()
-{
-    int f[100005][21];
-    int n, m;
-    cin &gt;&gt; n &gt;&gt; m;
-    for (int i = 1; i &lt;= n; i++)
-    {
-        cin &gt;&gt; f[i][0];
-    }
-    for (int i = 1; i &lt;= 21; i++)
-    {
-        for (int j = 1; j + (1 &lt;&lt; i) - 1 &lt;= n; j++)
-        {
-            f[j][i] = f[j][i - 1];
-            f[j][i] = max(f[j][i], f[j + (1 &lt;&lt; i) / 2][i - 1]);
-        }
-    }
-    for (int i = 1; i &lt;= m; i++)
-    {
-        int l, r;
-        cin &gt;&gt; l &gt;&gt; r;
-        int t = log(r - l + 1) / log(2);
-        cout &lt;&lt; max(f[l][t], f[r - (1 &lt;&lt; t) + 1][t]) &lt;&lt; endl;
-    }
-}
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </span>
 

@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/8urpklSmq6xR5LF.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -2510,10 +2510,10 @@ int negete(int x)
         2021-01-01
       </div>
       <div class="card-info">
-        1.8k字
+        399字
       </div>
       <div class="card-info">
-        阅读时间: 2 mins.
+        阅读时间: 1 mins.
       </div>
     </div>
     <div style="display: flex;">
@@ -2521,91 +2521,32 @@ int negete(int x)
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfoi/">
-      C++的OI对象的碎片知识
+    <a class="card-title" href="/2021/01/01/Csharp/Array/">
+      c#中的数组
     </a>
     <span class="card-abstract">
-      关于标准库，大概远不止我们常用的那些容器，C++中还有很多的类值得深究   
-本文只是记录学习（复习）过程中的碎片化知识，不是系统性知识整理
-&lt;!-- more ---&gt;
+      
+# 多维数组
+C#的多维数组不同于C++
 
-## wchar_t
-字符类型，一种扩展储存方式，一般用于储存Unicode字符
+- C#的多维数组可以看作一个矩阵，是一个数集
 
-## istream,ostream,iostream
-三种流的控制类，```cin```，```cout```，```cerr```等都是其对象
-
-## ifstream,ofstream,fstream
-文件的读写流
-
-## 宽字符流输入输出
-- wistream,wostream,wiostream
-- wifstream,wofstream,wfstream
-
-## 流对象的状态
-
-根据Primer和reference上的说明，返回值可以判定当前流对象是否有效，而通过```rdstate()```函数可以得到流对象更具体的状态情况，返回值是一个```ios::iostate```的类型，其储存了状态的位掩码信息
-
-我无需知道每种状态对应的位，在```ios```域中已经定义几种常量表达式：
-- eofbit——文件结束的状态（读到了文件结束符
-- badbit——流崩溃状态
-- goodbit——无错误状态
-- failbit——IO失败状态
-
-用当前状态与对应的状态位掩码做与运算即可得到是否处于某种状态
-
-- ```setstate()```：设置当前流的状态
-- ```clear()```：修复当前流的状态为有效状态
-
-## 输出缓冲
-C++的```cout```中有一个输出缓冲区，其中储存了插入的内容，并把这些内容整合成一个整体，再输出，以节省输出操作的成本   
-
-刷新缓冲区的原因很多，**但是程序崩溃时是不会刷新缓冲区的**
-
-- ```flush```函数可以手动刷新缓冲区
-- 通过查看endl的实现部分：
-```cpp
-basic_ostream&lt;_Elem, _Traits&gt;&amp; __CLRCALL_OR_CDECL endl(
-    basic_ostream&lt;_Elem, _Traits&gt;&amp; _Ostr) { // insert newline and flush stream
-    _Ostr.put(_Ostr.widen(&#39;\n&#39;));
-    _Ostr.flush();
-    return _Ostr;
-}
+```csharp
+int[,,] a = {{1,2,3},
+                {1,2,3},
+                {1,2,3}};//此时的a的行列在定义时就决定了
 ```
-  可以发现，endl内部使用了```flush```函数，刷新了缓冲区
 
-### 关联输入和输出流
+# 交错数组
+- C#的多维数组可以参考C++的多维数组，是一种数组的数组
 
-输入流和输出流都可以和另一个输出流关联，一旦这个输入流（输出流）执行操作，在此之前都会先刷新一遍关联的输出流
+```csharp
+int[][] a = new int[3][];//定义数组的数组
 
-- ```tie()```函数返回该流对象的关联流
-- ```tie(ostream)```将流对象关联到一个输出流
-
-## 文件输入输出流
-
-文件操作流继承自输入输出流，所以可用于输入输出流的操作都可适用于文件流
-除此之外，可使用```open(string,mode)```函数把流对象和文件绑定在一起
-
-### 文件模式
-
- - in——读模式
- - out——写模式
- - app——写操作前定位到文件末尾
- - ate——打开文件定位到文件末尾
- - trunc——截断模式
- - binary——以二进制进行IO
-
-文件模式的使用有一套复杂的使用规则，暂且先不讨论每一种模式的使用和叠加   
-
-使用```out```模式时，文件的内容会被自动舍弃，加上```app```模式后可以自动定位到文件末尾追加内容
-
-## string流
-```stringstream```类包含在```sstream```头文件中   
-
-string流使用了一个字符串缓冲区，加入一个字符串在其中，进行析取操作   
-但是加入其缓冲区的字符串仅作为储存，不会像```iostream```一样打印内容
-
-```stringstream```类继承自```iostream```类，所以可以用于流对象的操作，都可用于字符串流对象
+a[0] = new int[10];
+a[1] = new int[20];
+a[2] = new int[30];//每个数组可以不同
+```
 
     </span>
 
@@ -2628,7 +2569,7 @@ string流使用了一个字符串缓冲区，加入一个字符串在其中，�
         2021-01-01
       </div>
       <div class="card-info">
-        399字
+        481字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -2640,31 +2581,36 @@ string流使用了一个字符串缓冲区，加入一个字符串在其中，�
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/Csharp/Array/">
-        c#中的数组
+      <a class="card-title" href="/2021/01/01/Csharp/NullableTypeModifier/">
+        C#中的可空类型修饰符
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
-# 多维数组
-C#的多维数组不同于C++
 
-- C#的多维数组可以看作一个矩阵，是一个数集
 
+在我有限的代码经验里还没有见识过**可空类型修饰符**   
+但是直觉告诉我：它一定很重要
+&lt;!-- more --&gt;
+## ？
+
+- 在c#中，可空类型修饰符就是一个问号
+- **用法一**
 ```csharp
-int[,,] a = {{1,2,3},
-                {1,2,3},
-                {1,2,3}};//此时的a的行列在定义时就决定了
+int? a;//若a为空，则返回NULL
 ```
 
-# 交错数组
-- C#的多维数组可以参考C++的多维数组，是一种数组的数组
-
+- **用法二**
 ```csharp
-int[][] a = new int[3][];//定义数组的数组
+a??b//若a为空则返回b，优先返回a
 
-a[0] = new int[10];
-a[1] = new int[20];
-a[2] = new int[30];//每个数组可以不同
+a??b??c = a??(b??c);
+```
+- **用法三**
+```csharp
+Point p = new Point(3, 2); 
+   
+Console.WriteLine(p?.X.GetType() == typeof(int?));//若p为空则返回NULL
+                                                  //不进行后续函数调用
 ```
 
       </span>
@@ -2694,7 +2640,7 @@ a[2] = new int[30];//每个数组可以不同
         2021-01-01
       </div>
       <div class="card-info">
-        481字
+        1.3k字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -2705,37 +2651,129 @@ a[2] = new int[30];//每个数组可以不同
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/Csharp/NullableTypeModifier/">
-      C#中的可空类型修饰符
+    <a class="card-title" href="/2021/01/01/Csharp/SomeofCsharp/">
+      c#的一些碎片
     </a>
     <span class="card-abstract">
       
-
-
-在我有限的代码经验里还没有见识过**可空类型修饰符**   
-但是直觉告诉我：它一定很重要
+# foreach
+```csharp
+int[] a = new int[10];
+for(int i=0;i&lt;10;i++){
+    a[i] = i;
+}
+forezch(int element in a){
+    Console.Writeline(element);
+}
+```
 &lt;!-- more --&gt;
-## ？
+诸如此般的用法
 
-- 在c#中，可空类型修饰符就是一个问号
-- **用法一**
+# internal修饰符
+
+internal修饰的成员可以被**其所在程序**的所有函数、类调用
+
+# ref
+- 与c++不同，c#中向函数传址时，使用ref
+
 ```csharp
-int? a;//若a为空，则返回NULL
+int a = 1,b = 100;
+int func(ref int a,ref int b){
+    return a&gt;b?a-b:b-a;//a,b的值发生改变
+}
+func(ref a,ref b);
 ```
 
-- **用法二**
+# out
+- 用法与**ref**相同，但是ref不可传入未赋值的变量，**out**可以
 ```csharp
-a??b//若a为空则返回b，优先返回a
+int a,b;
+int func(out int a,out int b){
+    return a&gt;b?a-b:b-a;//a,b的值发生改变
+}
+func(out a,out b);
+```
 
-a??b??c = a??(b??c);
-```
-- **用法三**
+# c#的扩展方法
+- 每次看到这种东西总是会很兴奋
+
 ```csharp
-Point p = new Point(3, 2); 
-   
-Console.WriteLine(p?.X.GetType() == typeof(int?));//若p为空则返回NULL
-                                                  //不进行后续函数调用
+static public class StringOut
+{
+    static public void StringOut_(this string text)
+    {
+        Console.WriteLine(text);
+    }
+}
 ```
+像是这样，在一个静态类中定义的静态类，其第一个参数加上this之后   
+可以产生这种用法：
+
+```csharp
+static public void Main(string[] args)
+    {
+        Console.WriteLine(123);
+        &#34;33223&#34;.StringOut_();//像这样更加明确的使用方式
+    } 
+```
+
+# params
+
+- params   
+  - 传递数目可变的参数
+
+```csharp
+public static void UserParame(params int[] list){
+   for (int i = 0; i &lt; list.Length; i++)
+        {
+            Console.Write(list[i] + &#34; &#34;);
+        }
+        Console.WriteLine();
+   }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </span>
 

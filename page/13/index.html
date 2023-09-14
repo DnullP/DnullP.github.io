@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -494,6 +494,87 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
         2021-01-01
       </div>
       <div class="card-info">
+        1.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-1-inro/">
+        wireshark practice 1
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+计网开课了, 复习一下遗忘的东西, 顺便做一下课本后的wireshark实验
+
+# lab1: intro to wireshark
+
+1. List 3 different protocols that appear in the protocol column in the unfiltered packet-listing window in step 7 above.  
+
+- DNS
+- TCP
+- UDP
+- TLSv1.2
+- SSDP
+- ICMPv6
+
+---
+
+2. How long did it take from when the HTTP GET message was sent until the HTTP OK reply was received? (By default, the value of the Time column in the packet-listing window is the amount of time, in seconds, since Wireshark tracing began.  To display the Time field in time-of-day format, select the Wireshark View pull down menu, then select Time Display Format, then select Time-of-day.)
+
+|419|13:34:02.688933|10.122.242.69|128.119.245.12|
+|-|-|-|-|
+|447| 13:34:03.015422| 128.119.245.12| 10.122.242.69|
+以上为发送`GET`和接收数据帧的数据
+可计算出时间差为`0.326489`秒
+
+---
+
+3. What is the Internet address of the gaia.cs.umass.edu (also known as www-net.cs.umass.edu)?  What is the Internet address of your computer?
+
+`10.122.242.69`这是我的IP地址(北京邮电大学的, 别查了)
+`128.119.245.12`这是服务器地址
+
+---
+4. Print the two HTTP messages (GET and OK) referred to in question 2 above. To do so, select Print from the Wireshark File command menu, and select the “Selected Packet Only” and “Print as displayed” radial buttons, and then click OK.
+
+打印文件如下:
+[print_1](/pdf/wireshark1.pdf)
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         2.5k字
       </div>
       <div class="card-info">
@@ -505,12 +586,11 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/discrete-mathematic/master-theorem/">
-        分治算法和主定理
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/algorithm/discrete-mathematic/master-theorem/">
+      分治算法和主定理
+    </a>
+    <span class="card-abstract">
+      
 #### 首先我们来看一道算法题
 
 ---
@@ -648,6 +728,154 @@ $$O(nlogn)$$
 
 以上
 
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        4.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-2/">
+        wireshark practice 2
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+the data is as follows:
+[print_data_2_1](/pdf/wireshark_2_1.pdf)
+
+1. Is your browser running HTTP version 1.0 or 1.1?  What version of HTTP is the server running?
+
+    两者都是`HTTP/1.1`
+
+2. What languages (if any) does your browser indicate that it can accept to the server?
+    `ccept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,en-GB; q=0.6\r\n`
+    由上可知优先的语言包括: 中文, 英文
+    其中zh-CN是中文普通话, 包括繁体和简体, 而zh包括了方言在内的所有中   文
+
+3. What is the IP address of your computer?  Of the gaia.cs.umass.edu server?
+
+    Mine is `10.122.242.69`
+    gaia.cs.umass.edu is `128.119.245.12`
+
+4. What is the status code returned from the server to your browser?
+
+    `200 OK`
+
+5. When was the HTML file that you are retrieving last modified at the server?
+
+    `Fri, 24 Feb 2023 06:08:02 GMT`
+
+6. How many bytes of content are being returned to your browser?
+
+    `Content-Length 128`
+
+7. By inspecting the raw data in the packet content window, do you see any headers within the data that are not displayed in the packet-listing window?  If so, name one.
+
+我没看出来, 网上答案也说没有
+
+---
+
+第二部分是关于缓存和检测文件是否修改的测试:
+
+[print_data_2_2](/pdf/wireshark_2_2.pdf)
+
+8. Inspect the contents of the first HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE” line in the HTTP GET?
+
+    No, I don&#39;t see it.
+
+9. Inspect the contents of the server response. Did the server explicitly return the contents of the file?   How can you tell?
+
+    Yes, the server explicitly return the contents of the file. I can see the content of the file in the packet content window.
+
+10. Now inspect the contents of the second HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE:” line in the HTTP GET? If so, what information follows the “IF-MODIFIED-SINCE:” header?
+
+    yes, I see it.
+    The information is `If-Modified-Since: Thu, 02 Mar 2023 06:59:01 GMT`
+
+11. What is the HTTP status code and phrase returned from the server in response to this second HTTP GET?  Did the server explicitly return the contents of the file?   Explain.
+
+    The status code is `304 Not Modified`, and the server didn&#39;t explicitly return the contents of the file.
+    Because the file has cached in the browser, so the server have no need to return the contents of the file.
+
+---
+
+第三部分是关于大文件的分段传输:
+
+[print_data_2_3](/pdf/wireshark_2_3.pdf)
+
+12. How many HTTP GET request messages did your browser send?  Which packet number in the trace contains the GET message for the Bill or Rights?
+    Only 1 send. And the packet number contains 300, 301, 302, 303.
+
+13. Which packet number in the trace contains the status code and phrase associated with the response to the HTTP GET request?
+
+    there is the relative print:
+    [print_data_2_3_1](/pdf/wireshark_2_3_1.pdf)
+    From the print we can leran that all the mentioned information is contained in the **packet 300**.
+
+14. What is the status code and phrase in the response?
+
+    `200 OK`
+
+15. How many data-containing TCP segments were needed to carry the single HTTP response and the text of the Bill of Rights?
+
+    `4`, for each the maximum payload of HTTP is 1380 bytes, and 1436 bytes is the total length of the packet.
+
+---
+
+第四部分是关于包含内部object资源的html的 ( 比如含有图片的网络)
+
+[print_data_4](/pdf/wireshark_2_4.pdf)
+
+16.	How many HTTP GET request messages did your browser send?  To which Internet addresses were these GET requests sent?
+
+    `5`GETs were sent, and the addresses are:
+    - `Destination Address: 128.119.245.12`-request the HTML, ico and pearson.png
+    - `Destination Address: 178.79.137.164`-request the image
+
+17.	Can you tell whether your browser downloaded the two images serially, or whether they were downloaded from the two web sites in parallel?  Explain.
+
+    They are downloaded serially from two different web sites(2 IP addresses)
+
+---
+
+下一部分是关于认证的内容:
+
+18.	What is the server’s response (status code and phrase) in response to the initial HTTP GET message from your browser?
+
+    `401 Unauthorized`
+
+19.	When your browser’s sends the HTTP GET message for the second time, what new field is included in the HTTP GET message?
+
+    `Authorization: Basic ZG51bGxfUFBQUFA6MTMxMzExMzQ1YXNk\r\n`
+    anyone can decode it by base64, and the result is 
+    `Credentials: dnull_PPPPP:131311345asd`
+
       </span>
     </div>
   </div>
@@ -675,145 +903,6 @@ $$O(nlogn)$$
         2021-01-01
       </div>
       <div class="card-info">
-        2.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-9/">
-      计算机网络第三章的一点思路整理
-    </a>
-    <span class="card-abstract">
-      
-## 可靠数据传输
-
-运输层在不可靠的网络层IP协议的基础上搭建了一个可靠的传输协议，但是其中的实现原理有些许复杂，在此做一下记录
-
-### 流水线
-流水线是后续的多种重传机制的基础，假如每个报文段在被接收方收到之后，返回一个ACK响应，再传输下一个报文段，在两次传输报文段之间的等待时间是不可忽视的长
-参考cpu的指令处理流水线，网络数据分组的传输也使用了流水线机制，一次性传输多个分组，并且根据后续的响应做出重传
-
-### 流水线的基本重传方式
-
-首先，流水线的实现中有一个“滑动窗口”，没错，就和单调队列例题中的滑动窗口是同一个东西，窗口在分成报文段的报文上滑动，每个段就是一个分组，窗口的长度就是当前可以容纳的已经发送但是未接收到确认响应的分组数量，我们用**base**标记窗口的起始位置，表示未接受到的编号最小的分组的序号，用**nextseqnum**标记可用的“流水线空位”的起始位置
-
-#### 累计确认
-base标记的位置之前的全部分组，我们认为它们已经全部被接收并确认，这样的确认方式称为**累计确认**
-
-#### 回退N步
-在回退N步中采用了累计确认的方式，接收方会丢弃全部的**失序**的分组，并发送最近的成功接收的分组的ACK
-对于发送方来说，则一直等待base标记处的ACK，如果发生超时事件，则从base处重新发送所有的未确认分组
-
-#### 选择重传
-选择重传往往是我们最常见的重传方式
-对于接收方和发送方都需要维护一个窗口
-对于接收方来说，窗口内的报文段就是等待接收的分组，在窗口范围之内的编号的分组被接收到时，则返回一个对于编号的ACK，如果是Base_recv标记的位置的分组，则窗口滑动，否则将分组进行缓存，在前面的分组到达后再一并上交给上层
-特别的，对于base_recv以前的分组被接收到时，也需要发送ACK信号回去，这里涉及到一种特殊情况，一会儿讨论
-
-对于发送方来说，窗口内的每个分组都有一个单独的逻辑计时器，用来控制超时事件，窗口的滑动位置由最早的未发送分组控制
-
-##### 选择重传的bug
-窗口长度比序号空间小得不够多时无法正常工作，因为在ACK丢失的情况下，发送方重传了一个分组，但是接收方接收了正确的分组后窗口向下滑动了，那么相同序号的分组可能进入窗口等待，那么此时接收方就会把一个重传的分组当作新的分组接收
-
-解决这种问题，一般需要吧窗口长度设为小于或等于序号空间大小的一半
-
-### TCP协议中的更多的细节实现
-
-TCP协议的实现在可靠数据传输的基础上进行了更多的细节实现
-
-#### TCP连接
-首先TCP是面向连接的协议，在正式开始通话前会交换信息，建立一条逻辑连接，以确保可靠信息传输的进行，这个过程就是考试常考的“三次握手四次挥手”
-
-##### TCP报文结构
-这篇思考主要是理清可靠数据传输的逻辑，所以会跳过一些无关知识点
-
-TCP的报文结构如下：
-
-![](/image/network/1_1.png)
-
-与可靠性有关的部分包括
-- 数据序号：报文段的首**字节**在字节流中的序号
-- 确认序号：即之前说过的ACK响应，表示希望接收的序号(NAK已经被优化掉了)
-- ACK标志：表示确认序号是有效的
-- 包校验和：检测报文段的完整性
-
-#### TCP使用的可靠性措施
-- 累计确认
-- ACK响应都是被**捎带**在一个数据报文段中的
-
-##### 发送方的策略
-
-- 传输层从上层获得报文，生成具有Nextseqnum序号的TCP报文段，并启动计时器
-- 定时器超时，重传序号最小的未传输报文段。重启定时器
-- 收到ACK，如果ACK字段的值大于SendBase，则滑动窗口
-
-因为TCP采用的累计确认，所以返回的ACK响应必然会标记出接收方以全部接收的最小编号
-书上讨论了三种特殊情况，到目前为止，我们可以认为运输层的数据传输已经保证可靠
-
-### 总结TCP所使用的可靠数据传输机制
-TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一点和GBN协议类似，但是接收方会选择性地缓存失序的分组，这一点和SR协议类似，TCP使用的这种可靠数据传输协议我们称为**选择确认**
-
-#### 流量控制
-
-数据到达接收方后，并不是立即上传给上层的，而是会停留在一个“缓存区”中，等待上层读取，这样的缓存区通过一个窗口实现，称为**接收窗口**，接收方将接收窗口的大小写在接收窗口字段中，告诉发送方如何控制**发送但未确认的报文段**
-
-### 拥塞原因和代价中的数值计算思路
-
-首先主机A、B向路由器提供流量的速率是$\lambda_{in}$
-接受方的接收速率（吞吐量）为$\lambda_{out}$
-初始数据+重传数据为$\lambda_{in}^{&#39;}$
-
-分为下面三种情况讨论：
-- 情况1：
-  有一台无限缓存的路由器
-  这时，两台机器同时向目标传输数据，在速率接近最大吞吐量时，链路的利用率达到理想状态，但是此时的排队时延也会达到最高
-
-- 情况2：
-  有一台缓存有限的路由器
-  有限的缓存容量会导致丢包重传的问题， 我们假设发送方在路由器缓存容量满时不再发送分组，则链路吞吐量理想最大为$R/2$，由于拥塞控制一定小于这个值
-  如果考虑确定丢失了一个包后进行重传，吞吐量一般为$R/3$，所以一般有$0.333R$是初始数据，$0.166R$是重传数据
-  tips:由于链路上的缓存空间有限，在$\lambda_{in}$过高时，会发生下面的情况：
-  数量为a的数据到达路由器，其中有b数量的数据丢失，剩下的部分被发送到接收方，然后b数量的数据才重传，这样，接收方接收数据的时间就加上了重传b部分的时间
-
-  考虑到并不是所有数据都会丢失，而只是传输时间过长，所以还会产生不必要的重传
-
-- 情况3
-  采用多台路由器和多跳路径时，两条连接会在使用同一个路由器时产生竞争，当一个$\lambda_{in}^{&#39;}$接近无限大时，其他的连接的吞吐量将接近于0
-
-#### 最后一部分是对一些术语的记录
-- 快重传
-  快重传指的是在发送方收到三个连续的**冗余ACK**后，确认这个分组已经丢失，所以不等待超时事件直接进行重传
-
-- 快速恢复
-  快重传不需要等待慢启动，而是直接快速将速率调整到阈值
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         1.2k字
       </div>
       <div class="card-info">
@@ -825,12 +914,11 @@ TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-25/">
-        关于IP任播、BGP选择以及应用
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-25/">
+      关于IP任播、BGP选择以及应用
+    </a>
+    <span class="card-abstract">
+      
 ### IP任播
 首先**任播**的寻址策略为，在一群的接收节点中，只有一个可以得到接收
 
@@ -865,12 +953,8 @@ BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进�
 #### BGP是从接收端向网络中发送路由信息的
 并将自己的路由信息通知到整个网络
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -880,13 +964,11 @@ BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进�
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -903,11 +985,12 @@ BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-30/">
-      SNMP与网络管理
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-30/">
+        SNMP与网络管理
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 关于SNMP这一节的内容在第七版上的内容已经过时了，第八版采用的英文版原书，所以在此对原文进行中文的思路整理
 
 ### 5.7.1 network management framework
@@ -1072,6 +1155,151 @@ NETCONF操作表：
 ---
 
 以上我们讨论的SNMP/MIB和NETCONF/YANG都是应用层协议，是SDN软件
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-9/">
+      计算机网络第三章的一点思路整理
+    </a>
+    <span class="card-abstract">
+      
+## 可靠数据传输
+
+运输层在不可靠的网络层IP协议的基础上搭建了一个可靠的传输协议，但是其中的实现原理有些许复杂，在此做一下记录
+
+### 流水线
+流水线是后续的多种重传机制的基础，假如每个报文段在被接收方收到之后，返回一个ACK响应，再传输下一个报文段，在两次传输报文段之间的等待时间是不可忽视的长
+参考cpu的指令处理流水线，网络数据分组的传输也使用了流水线机制，一次性传输多个分组，并且根据后续的响应做出重传
+
+### 流水线的基本重传方式
+
+首先，流水线的实现中有一个“滑动窗口”，没错，就和单调队列例题中的滑动窗口是同一个东西，窗口在分成报文段的报文上滑动，每个段就是一个分组，窗口的长度就是当前可以容纳的已经发送但是未接收到确认响应的分组数量，我们用**base**标记窗口的起始位置，表示未接受到的编号最小的分组的序号，用**nextseqnum**标记可用的“流水线空位”的起始位置
+
+#### 累计确认
+base标记的位置之前的全部分组，我们认为它们已经全部被接收并确认，这样的确认方式称为**累计确认**
+
+#### 回退N步
+在回退N步中采用了累计确认的方式，接收方会丢弃全部的**失序**的分组，并发送最近的成功接收的分组的ACK
+对于发送方来说，则一直等待base标记处的ACK，如果发生超时事件，则从base处重新发送所有的未确认分组
+
+#### 选择重传
+选择重传往往是我们最常见的重传方式
+对于接收方和发送方都需要维护一个窗口
+对于接收方来说，窗口内的报文段就是等待接收的分组，在窗口范围之内的编号的分组被接收到时，则返回一个对于编号的ACK，如果是Base_recv标记的位置的分组，则窗口滑动，否则将分组进行缓存，在前面的分组到达后再一并上交给上层
+特别的，对于base_recv以前的分组被接收到时，也需要发送ACK信号回去，这里涉及到一种特殊情况，一会儿讨论
+
+对于发送方来说，窗口内的每个分组都有一个单独的逻辑计时器，用来控制超时事件，窗口的滑动位置由最早的未发送分组控制
+
+##### 选择重传的bug
+窗口长度比序号空间小得不够多时无法正常工作，因为在ACK丢失的情况下，发送方重传了一个分组，但是接收方接收了正确的分组后窗口向下滑动了，那么相同序号的分组可能进入窗口等待，那么此时接收方就会把一个重传的分组当作新的分组接收
+
+解决这种问题，一般需要吧窗口长度设为小于或等于序号空间大小的一半
+
+### TCP协议中的更多的细节实现
+
+TCP协议的实现在可靠数据传输的基础上进行了更多的细节实现
+
+#### TCP连接
+首先TCP是面向连接的协议，在正式开始通话前会交换信息，建立一条逻辑连接，以确保可靠信息传输的进行，这个过程就是考试常考的“三次握手四次挥手”
+
+##### TCP报文结构
+这篇思考主要是理清可靠数据传输的逻辑，所以会跳过一些无关知识点
+
+TCP的报文结构如下：
+
+![](/image/network/1_1.png)
+
+与可靠性有关的部分包括
+- 数据序号：报文段的首**字节**在字节流中的序号
+- 确认序号：即之前说过的ACK响应，表示希望接收的序号(NAK已经被优化掉了)
+- ACK标志：表示确认序号是有效的
+- 包校验和：检测报文段的完整性
+
+#### TCP使用的可靠性措施
+- 累计确认
+- ACK响应都是被**捎带**在一个数据报文段中的
+
+##### 发送方的策略
+
+- 传输层从上层获得报文，生成具有Nextseqnum序号的TCP报文段，并启动计时器
+- 定时器超时，重传序号最小的未传输报文段。重启定时器
+- 收到ACK，如果ACK字段的值大于SendBase，则滑动窗口
+
+因为TCP采用的累计确认，所以返回的ACK响应必然会标记出接收方以全部接收的最小编号
+书上讨论了三种特殊情况，到目前为止，我们可以认为运输层的数据传输已经保证可靠
+
+### 总结TCP所使用的可靠数据传输机制
+TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一点和GBN协议类似，但是接收方会选择性地缓存失序的分组，这一点和SR协议类似，TCP使用的这种可靠数据传输协议我们称为**选择确认**
+
+#### 流量控制
+
+数据到达接收方后，并不是立即上传给上层的，而是会停留在一个“缓存区”中，等待上层读取，这样的缓存区通过一个窗口实现，称为**接收窗口**，接收方将接收窗口的大小写在接收窗口字段中，告诉发送方如何控制**发送但未确认的报文段**
+
+### 拥塞原因和代价中的数值计算思路
+
+首先主机A、B向路由器提供流量的速率是$\lambda_{in}$
+接受方的接收速率（吞吐量）为$\lambda_{out}$
+初始数据+重传数据为$\lambda_{in}^{&#39;}$
+
+分为下面三种情况讨论：
+- 情况1：
+  有一台无限缓存的路由器
+  这时，两台机器同时向目标传输数据，在速率接近最大吞吐量时，链路的利用率达到理想状态，但是此时的排队时延也会达到最高
+
+- 情况2：
+  有一台缓存有限的路由器
+  有限的缓存容量会导致丢包重传的问题， 我们假设发送方在路由器缓存容量满时不再发送分组，则链路吞吐量理想最大为$R/2$，由于拥塞控制一定小于这个值
+  如果考虑确定丢失了一个包后进行重传，吞吐量一般为$R/3$，所以一般有$0.333R$是初始数据，$0.166R$是重传数据
+  tips:由于链路上的缓存空间有限，在$\lambda_{in}$过高时，会发生下面的情况：
+  数量为a的数据到达路由器，其中有b数量的数据丢失，剩下的部分被发送到接收方，然后b数量的数据才重传，这样，接收方接收数据的时间就加上了重传b部分的时间
+
+  考虑到并不是所有数据都会丢失，而只是传输时间过长，所以还会产生不必要的重传
+
+- 情况3
+  采用多台路由器和多跳路径时，两条连接会在使用同一个路由器时产生竞争，当一个$\lambda_{in}^{&#39;}$接近无限大时，其他的连接的吞吐量将接近于0
+
+#### 最后一部分是对一些术语的记录
+- 快重传
+  快重传指的是在发送方收到三个连续的**冗余ACK**后，确认这个分组已经丢失，所以不等待超时事件直接进行重传
+
+- 快速恢复
+  快重传不需要等待慢启动，而是直接快速将速率调整到阈值
 
     </span>
 
@@ -1270,315 +1498,6 @@ HTTP服务器收到了请求后，创建回应信息，把对应的网页置入�
 最后浏览器接收到网页信息，解析并在浏览器中显示出来
 
 
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/notes/">
-      计算机网络记录反思
-    </a>
-    <span class="card-abstract">
-      
-### 第一章思路整理
-
-第一次看这本书，刚开始有点没把握好节奏，在几个地方产生了一些误解，现在重新将本章的内容梳理一下，意在自我学习
-
-#### 什么是因特网？
-这一段列举了因特网的组成部分，包括：
-- 通信链路(communication link)
-  通信链路就是连接网络的线路，通过不同的**物理媒介**实现
-- 分组交换机(packet switch)
-  分组交换机包括**路由器**和**链路层交换机**
-- 路由器
-  负责forwarding的节点
-- 链路层交换机
-- ISP(因特网服务提供商)
-- 协议
-  协议是通信的一个双方使用的规则
-- 标准
-  标准是由机构(institution)制定的统一的标准
-
-在总述了以上内容后，书上简述了**套接字接口**的存在
-
-接着介绍**协议**：两个或多个通信实体间交换**报文**的格式和顺序，以及报文发送和接收后的一系列操作
-
-#### 网络边缘
-
-接下来两节，以**边缘**和**核心**来对互联网进行描述
-
-网络边缘就是我们平时使用的接入互联网的设备，包括个人电脑、手机到服务器都属于边缘网络的部分
-
-于是介绍的重点就放到了这些**主机**（端系统）如何连接到因特网中——**接入网**
-
-- 数字用户线（DSL）
-  DSL是家庭接入因特网的线路，主要是通过电话接入
-
-- 电话接入
-  调制解调器通过已有的电话线作为接入网，将数字信号转为模拟信号
-
-- HFC(混合光纤同轴)
-  **电缆因特网接入**，利用有线电视的缆线接入，常常用到电缆和光纤
-  
-- FTTH(光纤到户)
-  新兴技术，从本地中心局拉一根光缆，单独连接每个家庭并接入因特网
-
-##### 物理媒体
-- 导引型媒体
-- 非导引型媒体
-
-#### 网络核心(network core)
-
-网络核心部分就是包括路由器和链路在内的构成互相连接的网络结构的部分
-
-##### 分组交换和电路交换
-
-- 分组交换
-  应用层的信息被break into pieces，这些片段称为message(报文)，在source和destination之间通过分组交换器（packet switch/主要包括router）
-  分组交换中使用的**储存转发传输**（switch在将分组向链路输出前，必须保证已经收到了完整的分组数据），所以router存在缓存来保存不完整的分组
-
-  tips：
-  由于分组交换的特点，会存在**排队时延**、**分组丢失**（丢包packet loss）的情况
-  此外，路由器上存在转发表，并通过**路由选择协议**来计算packet的转发目的地
-
-- 电路交换
-  相比于分组交换，电路交换显得更加久远，其原本是实现电话的信息传递方式
-  它通过end-to-end connection（端对端连接），建立一条专用的电路（电路不是链路）
-  通过**频分复用**和**时分复用**来实现多用户共享一条链路
-
-  其中的频分复用在面对网络拥挤时，损失的数据比时分复用多，且频分复用可能存在空闲的资源没被利用（没有传输数据的用户占用频段），而时分复用在这方面的优化更佳
-
-##### 网络的网络
-
-网络边缘通过接入网，和LSP连接，而现在的互联网有多级的LSP，并通过IXP（因特网交换点）连接在一起，上层的LSP向下层的LSP收费
-
-像谷歌这样的企业建立了自己的数据库，作为上层LSP，直接和下层接入LSP相连
-
-##### 分组交换的时延、packet loss和吞吐量（throughput）
-
-时延分为个部分：
-- 处理时延
-- 排队时延
-- 传输时延
-- 传播时延
- 
-容易理解，不做解释
-
-packet loss：路由器缓存不足导致分组丢失
-
-- 流量强度（traffic intensity）：设a为单位时间内接收的分组数量，L为每个分组的大小，R是**传输**速率，则$\frac{La}{R}$为流量强度，是评判排队时延和丢包率的信息
-
-- **吞吐量**：
-  - 瞬时吞吐量
-  - 平均吞吐量
-
-#### 协议层次和服务模型
-
-- OSI七层模型
-  传统的网络协议模型
-- 五层因特网协议栈
-  - 应用层
-  - 运输层
-  - 网络层
-  - 链路层
-  - 物理层
-
-原本OSI七层模型还有两层：表示层和会话层，现在被并入了应用层，由程序员决定是否加入这两层，并在代码中实现
-
-层与层之间传输的数据通过**封装**后，在不同的服务层中完成操作，具体步骤如下：
-
-- 首先，应用程序的数据被break into pieces，不同端系统上的应用程序之间交换这些被切割的信息，这些信息分组被称为**报文**（message）
-
-- 然后，这些报文被send down到运输层，运输层通过TCP和UDP等协议和另一个端系统上的接口取得联系，构成一个“连接”，然后把数据封装成**报文段**，并send down到网络层
-
-- 网络层是主机和网络核心的管理主体，到达网络层的数据被封装成**数据报**，通过路由选择向目标主机传输转发，其中的重要协议为**IP协议**，用于标记网络中的所有设备的地址
-  
-- 直到网络层位置，前面三层都可以说是服务于主机之间的协议层，但是链路层是存在于两个路由器之间的协议层。它为数据在链路上的传输和接收、处理等制定了标准，这一层将数据封装为**帧**
-- 物理层，我讨厌大学物理
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        4.4k字
-      </div>
-      <div class="card-info">
-        阅读时间: 4 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-2/">
-        wireshark practice 2
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-the data is as follows:
-[print_data_2_1](/pdf/wireshark_2_1.pdf)
-
-1. Is your browser running HTTP version 1.0 or 1.1?  What version of HTTP is the server running?
-
-    两者都是`HTTP/1.1`
-
-2. What languages (if any) does your browser indicate that it can accept to the server?
-    `ccept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,en-GB; q=0.6\r\n`
-    由上可知优先的语言包括: 中文, 英文
-    其中zh-CN是中文普通话, 包括繁体和简体, 而zh包括了方言在内的所有中   文
-
-3. What is the IP address of your computer?  Of the gaia.cs.umass.edu server?
-
-    Mine is `10.122.242.69`
-    gaia.cs.umass.edu is `128.119.245.12`
-
-4. What is the status code returned from the server to your browser?
-
-    `200 OK`
-
-5. When was the HTML file that you are retrieving last modified at the server?
-
-    `Fri, 24 Feb 2023 06:08:02 GMT`
-
-6. How many bytes of content are being returned to your browser?
-
-    `Content-Length 128`
-
-7. By inspecting the raw data in the packet content window, do you see any headers within the data that are not displayed in the packet-listing window?  If so, name one.
-
-我没看出来, 网上答案也说没有
-
----
-
-第二部分是关于缓存和检测文件是否修改的测试:
-
-[print_data_2_2](/pdf/wireshark_2_2.pdf)
-
-8. Inspect the contents of the first HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE” line in the HTTP GET?
-
-    No, I don&#39;t see it.
-
-9. Inspect the contents of the server response. Did the server explicitly return the contents of the file?   How can you tell?
-
-    Yes, the server explicitly return the contents of the file. I can see the content of the file in the packet content window.
-
-10. Now inspect the contents of the second HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE:” line in the HTTP GET? If so, what information follows the “IF-MODIFIED-SINCE:” header?
-
-    yes, I see it.
-    The information is `If-Modified-Since: Thu, 02 Mar 2023 06:59:01 GMT`
-
-11. What is the HTTP status code and phrase returned from the server in response to this second HTTP GET?  Did the server explicitly return the contents of the file?   Explain.
-
-    The status code is `304 Not Modified`, and the server didn&#39;t explicitly return the contents of the file.
-    Because the file has cached in the browser, so the server have no need to return the contents of the file.
-
----
-
-第三部分是关于大文件的分段传输:
-
-[print_data_2_3](/pdf/wireshark_2_3.pdf)
-
-12. How many HTTP GET request messages did your browser send?  Which packet number in the trace contains the GET message for the Bill or Rights?
-    Only 1 send. And the packet number contains 300, 301, 302, 303.
-
-13. Which packet number in the trace contains the status code and phrase associated with the response to the HTTP GET request?
-
-    there is the relative print:
-    [print_data_2_3_1](/pdf/wireshark_2_3_1.pdf)
-    From the print we can leran that all the mentioned information is contained in the **packet 300**.
-
-14. What is the status code and phrase in the response?
-
-    `200 OK`
-
-15. How many data-containing TCP segments were needed to carry the single HTTP response and the text of the Bill of Rights?
-
-    `4`, for each the maximum payload of HTTP is 1380 bytes, and 1436 bytes is the total length of the packet.
-
----
-
-第四部分是关于包含内部object资源的html的 ( 比如含有图片的网络)
-
-[print_data_4](/pdf/wireshark_2_4.pdf)
-
-16.	How many HTTP GET request messages did your browser send?  To which Internet addresses were these GET requests sent?
-
-    `5`GETs were sent, and the addresses are:
-    - `Destination Address: 128.119.245.12`-request the HTML, ico and pearson.png
-    - `Destination Address: 178.79.137.164`-request the image
-
-17.	Can you tell whether your browser downloaded the two images serially, or whether they were downloaded from the two web sites in parallel?  Explain.
-
-    They are downloaded serially from two different web sites(2 IP addresses)
-
----
-
-下一部分是关于认证的内容:
-
-18.	What is the server’s response (status code and phrase) in response to the initial HTTP GET message from your browser?
-
-    `401 Unauthorized`
-
-19.	When your browser’s sends the HTTP GET message for the second time, what new field is included in the HTTP GET message?
-
-    `Authorization: Basic ZG51bGxfUFBQUFA6MTMxMzExMzQ1YXNk\r\n`
-    anyone can decode it by base64, and the result is 
-    `Credentials: dnull_PPPPP:131311345asd`
 
       </span>
     </div>

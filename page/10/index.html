@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/onE5MQBPGdzDROh.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -699,248 +699,6 @@ public class ObserverPatternDemo {
         2021-01-01
       </div>
       <div class="card-info">
-        828字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/prototype/">
-      原型模式
-    </a>
-    <span class="card-abstract">
-      
-### 原型模式
-
-我们先来看一看之前的abstract factory和factory method
-
-![avator](https://www.tutorialspoint.com/design_pattern/images/abstractfactory_pattern_uml_diagram.jpg)
-
-在这个抽象工厂中，为了得到一个Shape或者RoundedShape，需要两种不同的工厂
-如果我们现在拥有四个具体产品的每一个object，那么我们就可以舍弃工厂，而定义一个Prototype的接口，通过把这四个具体产品实现Prototype的接口，来给与他们自拷贝的能力
-这样一来，我们可以通过一个拷贝来获得Object，而不是工厂，而我们的类的数量就减少了（工厂类全部舍弃了）
-
-通过这种用原型拷贝的方式得到Object的模式，我们可以实现以下应用：
-- 减少框架中的类种类
-- 避免“需要建立平行的hierarchy”的情况，就像工厂方法中那样
-- 需要保存一个object的状态作为标准时，这种情况尤其在运行时发生
-
-![avator](https://www.tutorialspoint.com/design_pattern/images/prototype_pattern_uml_diagram.jpg)
-
-总结下来，原型模式的要点就是实现原型接口，提供clone方法
-
-Some of the tips：
-- 对于原型，需要一个Manage类，因为用户不会亲自去管理这些Prototype，而只是负责储存和retrieve
-- 此外可以给原型类添加初始化，以满足一些需求
-
-- JAVA的Prototype可通过继承Cloneable接口来实现
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        257字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/singleton/">
-        单例模式
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### 单例模式
-
-单例模式没什么值得多说的，记住几个原则和使用方法
-
-- 保证object只有一个
-- 我们可以定义一个单例接口，然后实现一堆单例类，在不同的环境使用不同的单例类，但是必须保证每个环境只有一个这样的单例类，我们通过构建一个registry来管理注册这些不同的单例类
-
-- 单例类可以用来优化全局变量，减少命名空间的使用
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/proxy/">
-      Proxy pattern
-    </a>
-    <span class="card-abstract">
-      
-### 代理模式
-
-说起代理就容易让人想起网络上的代理，简单来说，就是在一个数据接收方之前加入一个第三方服务器先接收数据，然后转发给原本的接收方
-
-设计模式上的代理模式也是一样的思想：在某个类提供的服务前加入一个类，这个类有着和原本的类相同的接口，但是实际上是原本类的聚合（aggregate），代理类可以在访问原本类的服务之前或之后进行某些处理
-
-来自refactoring.guru的类图：
-
-![](https://refactoring.guru/images/patterns/diagrams/proxy/structure.png)
-
-以上包含四个要素：
-- Client
-- ServiceInterface
-  这是服务的接口，代理类和原本的服务类都是实现自该接口
-- Service
-  这是服务类，包含一系列的方法(operation)
-- Proxy
-  这是代理类，包含了Service类和代理类的方式
-
-以下是来自noob note的代码：
-
-```java
-public interface Image {
-   void display();
-}
-```
-这是服务接口
-```java
-public class RealImage implements Image {
- 
-   private String fileName;
- 
-   public RealImage(String fileName){
-      this.fileName = fileName;
-      loadFromDisk(fileName);
-   }
- 
-   @Override
-   public void display() {
-      System.out.println(&#34;Displaying &#34; + fileName);
-   }
- 
-   private void loadFromDisk(String fileName){
-      System.out.println(&#34;Loading &#34; + fileName);
-   }
-}
-```
-这是原本提供服务的类
-
-
-```java
-public class ProxyImage implements Image{
- 
-   private RealImage realImage;
-   private String fileName;
- 
-   public ProxyImage(String fileName){
-      this.fileName = fileName;
-   }
- 
-   @Override
-   public void display() {
-      if(realImage == null){
-         realImage = new RealImage(fileName);
-      }
-      realImage.display();
-   }
-}
-```
-这是代理类
-
-
-```java
-public class ProxyPatternDemo {
-   
-   public static void main(String[] args) {
-      Image image = new ProxyImage(&#34;test_10mb.jpg&#34;);
- 
-      // 图像将从磁盘加载
-      image.display(); 
-      System.out.println(&#34;&#34;);
-      // 图像不需要从磁盘加载
-      image.display();  
-   }
-}
-```
-这是用户代码
-
-代理模式的逻辑思想相对简单
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         4.6k字
       </div>
       <div class="card-info">
@@ -952,12 +710,11 @@ public class ProxyPatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/principle/">
-        设计模式
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/design-pattern/principle/">
+      设计模式
+    </a>
+    <span class="card-abstract">
+      
 #### 1.6 How design pattern solve design problems
 
 there are some tips taken down:
@@ -1125,6 +882,249 @@ different patterns make the system more rebust in a particular kind of change
 - a pattern is less specialized than framework
 
 
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        828字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/prototype/">
+        原型模式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### 原型模式
+
+我们先来看一看之前的abstract factory和factory method
+
+![avator](https://www.tutorialspoint.com/design_pattern/images/abstractfactory_pattern_uml_diagram.jpg)
+
+在这个抽象工厂中，为了得到一个Shape或者RoundedShape，需要两种不同的工厂
+如果我们现在拥有四个具体产品的每一个object，那么我们就可以舍弃工厂，而定义一个Prototype的接口，通过把这四个具体产品实现Prototype的接口，来给与他们自拷贝的能力
+这样一来，我们可以通过一个拷贝来获得Object，而不是工厂，而我们的类的数量就减少了（工厂类全部舍弃了）
+
+通过这种用原型拷贝的方式得到Object的模式，我们可以实现以下应用：
+- 减少框架中的类种类
+- 避免“需要建立平行的hierarchy”的情况，就像工厂方法中那样
+- 需要保存一个object的状态作为标准时，这种情况尤其在运行时发生
+
+![avator](https://www.tutorialspoint.com/design_pattern/images/prototype_pattern_uml_diagram.jpg)
+
+总结下来，原型模式的要点就是实现原型接口，提供clone方法
+
+Some of the tips：
+- 对于原型，需要一个Manage类，因为用户不会亲自去管理这些Prototype，而只是负责储存和retrieve
+- 此外可以给原型类添加初始化，以满足一些需求
+
+- JAVA的Prototype可通过继承Cloneable接口来实现
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/proxy/">
+      Proxy pattern
+    </a>
+    <span class="card-abstract">
+      
+### 代理模式
+
+说起代理就容易让人想起网络上的代理，简单来说，就是在一个数据接收方之前加入一个第三方服务器先接收数据，然后转发给原本的接收方
+
+设计模式上的代理模式也是一样的思想：在某个类提供的服务前加入一个类，这个类有着和原本的类相同的接口，但是实际上是原本类的聚合（aggregate），代理类可以在访问原本类的服务之前或之后进行某些处理
+
+来自refactoring.guru的类图：
+
+![](https://refactoring.guru/images/patterns/diagrams/proxy/structure.png)
+
+以上包含四个要素：
+- Client
+- ServiceInterface
+  这是服务的接口，代理类和原本的服务类都是实现自该接口
+- Service
+  这是服务类，包含一系列的方法(operation)
+- Proxy
+  这是代理类，包含了Service类和代理类的方式
+
+以下是来自noob note的代码：
+
+```java
+public interface Image {
+   void display();
+}
+```
+这是服务接口
+```java
+public class RealImage implements Image {
+ 
+   private String fileName;
+ 
+   public RealImage(String fileName){
+      this.fileName = fileName;
+      loadFromDisk(fileName);
+   }
+ 
+   @Override
+   public void display() {
+      System.out.println(&#34;Displaying &#34; + fileName);
+   }
+ 
+   private void loadFromDisk(String fileName){
+      System.out.println(&#34;Loading &#34; + fileName);
+   }
+}
+```
+这是原本提供服务的类
+
+
+```java
+public class ProxyImage implements Image{
+ 
+   private RealImage realImage;
+   private String fileName;
+ 
+   public ProxyImage(String fileName){
+      this.fileName = fileName;
+   }
+ 
+   @Override
+   public void display() {
+      if(realImage == null){
+         realImage = new RealImage(fileName);
+      }
+      realImage.display();
+   }
+}
+```
+这是代理类
+
+
+```java
+public class ProxyPatternDemo {
+   
+   public static void main(String[] args) {
+      Image image = new ProxyImage(&#34;test_10mb.jpg&#34;);
+ 
+      // 图像将从磁盘加载
+      image.display(); 
+      System.out.println(&#34;&#34;);
+      // 图像不需要从磁盘加载
+      image.display();  
+   }
+}
+```
+这是用户代码
+
+代理模式的逻辑思想相对简单
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        257字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/singleton/">
+        单例模式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### 单例模式
+
+单例模式没什么值得多说的，记住几个原则和使用方法
+
+- 保证object只有一个
+- 我们可以定义一个单例接口，然后实现一堆单例类，在不同的环境使用不同的单例类，但是必须保证每个环境只有一个这样的单例类，我们通过构建一个registry来管理注册这些不同的单例类
+
+- 单例类可以用来优化全局变量，减少命名空间的使用
 
       </span>
     </div>
