@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,6 +244,192 @@
         2021-01-01
       </div>
       <div class="card-info">
+        11k字
+      </div>
+      <div class="card-info">
+        阅读时间: 10 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-2-Memoryspace/">
+        内存空间
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 内存空间
+
+- 早期计算机的内存空间
+早期计算机只需要运行一个程序，所以内存结构为：
+  - 头部为操作系统所用的内存
+  - 后半部分为单个程序所用的部分
+
+- 多程序计算机的内存空间
+  此时的内存空间如下：
+  - 操作系统依然占据头部
+  - 多个进程占用剩下的部分，并且每个进程有一个区域的划分
+  - 会有多出来的区域未被进程使用
+
+- 内存地址
+  为了方便程序员访问内存中指定的地址，我们使用内存地址对内存进行访问，但是值得注意的是，内存地址分为逻辑地址和物理地址，逻辑地址是程序员访问内存的地址，而物理地址是内存中实际的地址，两个地址之间是映射关系，需要通过地址转换来实现，具体的实现细节分页等原理在CSAPP中内存部分提及
+
+- 进程的内存
+  书上构建了一个简单的模型：
+  - 进程的内存头部为Progarm code
+  - 然后紧跟着是堆（Heap）部分，其大小向下增加（地址变大）
+  - 内存底部是栈（Stack）部分，其大小向上增加（地址变小）
+
+- 内存虚拟化
+  为了能让不同的进程拥有独立安全的内存空间，并且能够方便的连续访问，我们对物理内存进行了虚拟化，交由OS进行控制管理
+  内存虚拟化需要考虑以下的问题：
+  - 透明性
+    透明性的意思是指，进程并不知道自己所用的内存空间是虚拟化的，只需要单独考虑自己空间的使用即可，而操作系统负责将进程认为的“物理地址”转化为真正的物理内存的地址
+
+  - 高效性
+    为了让OS能够在管理查询内存时的高效性，我们会用到一些需要硬件支持的技术，比如TLB等
+  
+  - 保护性
+    为了保证进程的安全性，我们需要对进程的内存空间进行保护，比如只读，只写等，以及如何让进程访问内存的权限进行控制
+
+- 进程的内存分类
+  - 堆（Heap）
+    堆是进程中动态分配的内存空间
+  - 栈（Stack）
+    栈在程序的编译阶段就已经完成了分配，由编译器来处理分配的大小顺序等
+    具体的栈的原理在CSAPP中已经详细学过，如果有更多的内容再单独记录
+---
+
+## Homework
+作业部分没有什么值得注意的，只简要记录一下 `pmap`的使用方法：
+
+当我们输入`pmap -X`指令获取一个进程的内存后，终端显示如下:
+
+```bash
+dnull@DESKTOP-0ACA874:/mnt/d/this/linuxtemp$ pmap -X 9
+9:   -bash
+     Address Perm   Offset Device Inode Size  Rss  Pss Referenced Anonymous LazyFree ShmemPmdMapped FilePmdMapped Shared_Hugetlb Private_Hugetlb Swap SwapPss Locked THPeligible Mapping
+560749578000 r--p 00000000  08:20  1241  188  188  188        188         0        0              0             0              0               0    0       0      0           0 bash
+5607495a7000 r-xp 0002f000  08:20  1241  892  884  884        884         0        0              0             0              0               0    0       0      0           0 bash
+560749686000 r--p 0010e000  08:20  1241  232  104  104        104         0        0              0             0              0               0    0       0      0           0 bash
+5607496c1000 r--p 00148000  08:20  1241   16   16   16         16        16        0              0             0              0               0    0       0      0           0 bash
+5607496c5000 rw-p 0014c000  08:20  1241   36   36   36         36        36        0              0             0              0               0    0       0      0           0 bash
+5607496ce000 rw-p 00000000  00:00     0   44   28   28         28        28        0              0             0              0               0    0       0      0           0
+56074a1df000 rw-p 00000000  00:00     0 1560 1432 1432       1432      1432        0              0             0              0               0    0       0      0           0 [heap]
+7f45f6ae2000 r--p 00000000  08:20  2331  348  128   66        128         0        0              0             0              0               0    0       0      0           0 LC_CTYPE
+7f45f6b39000 r--p 00000000  08:20  2338    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_NUMERIC
+7f45f6b3a000 r--p 00000000  08:20  2341    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_TIME
+7f45f6b3b000 r--p 00000000  08:20  2330    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_COLLATE
+7f45f6b3c000 r--p 00000000  08:20  2336    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_MONETARY
+7f45f6b3d000 r--p 00000000  08:20  2335    4    4    2          4         0        0              0             0              0               0    0       0      0           0 SYS_LC_MESSAGES
+7f45f6b3e000 r--s 00000000  08:20  6259   28   28   14         28         0        0              0             0              0               0    0       0      0           0 gconv-modules.cache
+7f45f6b45000 rw-p 00000000  00:00     0   12    8    8          8         8        0              0             0              0               0    0       0      0           0
+7f45f6b48000 r--p 00000000  08:20  6488  160  160   80        160         0        0              0             0              0               0    0       0      0           0 libc.so.6
+7f45f6b70000 r-xp 00028000  08:20  6488 1620 1220  712       1220         0        0              0             0              0               0    0       0      0           0 libc.so.6
+7f45f6d05000 r--p 001bd000  08:20  6488  352  152   82        152         0        0              0             0              0               0    0       0      0           0 libc.so.6
+7f45f6d5d000 r--p 00214000  08:20  6488   16   16   16         16        16        0              0             0              0               0    0       0      0           0 libc.so.6
+7f45f6d61000 rw-p 00218000  08:20  6488    8    8    8          8         8        0              0             0              0               0    0       0      0           0 libc.so.6
+7f45f6d63000 rw-p 00000000  00:00     0   52   24   24         24        24        0              0             0              0               0    0       0      0           0
+7f45f6d70000 r--p 00000000  08:20  6805   56   56   56         56         0        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3
+7f45f6d7e000 r-xp 0000e000  08:20  6805   68   64   64         64         0        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3
+7f45f6d8f000 r--p 0001f000  08:20  6805   56   52   52         52         0        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3
+7f45f6d9d000 r--p 0002c000  08:20  6805   16   16   16         16        16        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3
+7f45f6da1000 rw-p 00030000  08:20  6805    4    4    4          4         4        0              0             0              0               0    0       0      0           0 libtinfo.so.6.3
+7f45f6da2000 r--p 00000000  08:20  2339    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_PAPER
+7f45f6da3000 r--p 00000000  08:20  2337    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_NAME
+7f45f6da4000 r--p 00000000  08:20  2329    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_ADDRESS
+7f45f6da5000 r--p 00000000  08:20  2340    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_TELEPHONE
+7f45f6da6000 r--p 00000000  08:20  2333    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_MEASUREMENT
+7f45f6da7000 rw-p 00000000  00:00     0    8    8    8          8         8        0              0             0              0               0    0       0      0           0
+7f45f6da9000 r--p 00000000  08:20  6292    8    8    4          8         0        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2
+7f45f6dab000 r-xp 00002000  08:20  6292  168  168   84        168         0        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2
+7f45f6dd5000 r--p 0002c000  08:20  6292   44   40   20         40         0        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2
+7f45f6de0000 r--p 00000000  08:20  2332    4    4    2          4         0        0              0             0              0               0    0       0      0           0 LC_IDENTIFICATION
+7f45f6de1000 r--p 00037000  08:20  6292    8    8    8          8         8        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2
+7f45f6de3000 rw-p 00039000  08:20  6292    8    8    8          8         8        0              0             0              0               0    0       0      0           0 ld-linux-x86-64.so.2
+7ffc82ecf000 rw-p 00000000  00:00     0  132  112  112        112       112        0              0             0              0               0    0       0      0           0 [stack]
+7ffc82eff000 r--p 00000000  00:00     0   16    0    0          0         0        0              0             0              0               0    0       0      0           0 [vvar]
+7ffc82f03000 r-xp 00000000  00:00     0    4    4    0          4         0        0              0             0              0               0    0       0      0           0 [vdso]
+                                        ==== ==== ==== ========== ========= ======== ============== ============= ============== =============== ==== ======= ====== ===========
+                                        6204 5024 4156       5024      1724        0              0             0              0               0    0       0      0           0 KB
+```
+我们发现进程运行的地址为`0x7f45f6d7e000`这样的地址，但是我们在CSAPP中学习时的汇编程序的入口点都是 `0x400000`这样的地址，这是因为我们编译时生成的是位置无关代码，的实际地址是OS的大内存空间中选一个基址，然后通过偏移计算出来的
+
+我们可以在编译时加上`-no-pie`参数，这样就会生成位置相关代码了，代码就会被强制加载到`0x400000`这样的地址，但是这样做很有可能导致程序无法运行，原因如下：
+- 位置相关代码的入口点是固定的，如果这个入口点被其他程序占用，可能导致程序的运行错误，具体的表现和操作系统的类型有关
+
+---
+
+由于第一章内容太少，就和第二章一起说了
+
+# 第二章 内存的API
+
+这一章主要介绍了内存管理的两个主要API，`malloc`和`free`，以及一些内存管理的相关知识
+
+- `malloc(size_t size)`：分配一块大小为`size`的内存空间，返回指向这块内存空间的指针，如果分配失败，返回`NULL`
+- `free(void *ptr)`：释放`ptr`指向的内存空间，如果`ptr`为`NULL`，则不做任何操作
+
+通过`malloc`和`free`，我们可以对堆内存部分进行分配和释放
+
+这部分作为程序基础已经在很多地方都已经学习过了，所以我们记录一下书上提到的关于内存的一些常见错误：
+- forget to allocate memory
+  没有给一个指针分配内存就使用，如果该指针为局部变量，由于储存在栈中，其具体值并不确定，如果储存在BSS（Block Started by Symbol）中，其指针为0
+- not allocating enough memory
+  没有给一个数组之类的对象分配足够的内存导致越界
+- forgetting to initialize memory
+  给指针分配内存后没有初始化导致数据错误，我们的指针分配的内存位于堆内存，可能有之前的数据残留，所以不初始化可能得到一个未知的数值
+
+- forgetting to free memory
+  不释放内存将导致内存泄漏，使得可用内存空间不足
+
+- free memory before you are done with it
+  释放一个还在使用中的内存，在之后将无法再访问这个内存空间，造成段错误
+- free memory twice
+  释放一个已经释放的内存，这样会导致程序崩溃
+
+## OS对内存操作的支持
+我们提到的`malloc()`和`free()`都是C语言的标准库函数，而不是系统调用，这些库函数的实现中用到了包括`brk()`和`sbrk()`在内的系统调用，这些系统调用并不推荐被使用，因为容易导致错误
+
+此外还有一个方法`mmap()`，它可以将文件映射到内存中，这样就可以直接对文件进行读写操作，而不需要通过系统调用`read()`和`write()`。通过`mmap()`，可以实现外部排序等问题（在内存空间外对大数据文件进行操作排序等）
+
+- 一些其他的方法
+  - `calloc()`：这种申请内存的方法会把申请的空间初始化为0
+  - `ralloc()`：这个申请方式则会拷贝一个已经分配的内存空间中的值，然后申请一个更大的空间，并将值拷贝其中
+
+- 关于linux上检测内存泄漏的工具：**valgrind**
+  使用指令为：`valgrind --leak-check=full ./a.out`
+  后面的启动程序要要使用`./`启动
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         2.2k字
       </div>
       <div class="card-info">
@@ -255,12 +441,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/CH1-CPUSchedualing/">
-        CPU进程调度
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-CPUSchedualing/">
+      CPU进程调度
+    </a>
+    <span class="card-abstract">
+      
 # CPU进程调度
 在多线程程序广泛使用之前，cpu的调度主要是针对进程间的调度，我们这里讨论的cpu调度方法也主要是针对进程的，关于进程调度和线程调度的区别我们在最后再讨论
 
@@ -320,12 +505,8 @@ time quantum的大小是RR调度法的关键，当time quantum很大时，respon
 
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -335,13 +516,11 @@ time quantum的大小是RR调度法的关键，当time quantum很大时，respon
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -358,11 +537,12 @@ time quantum的大小是RR调度法的关键，当time quantum很大时，respon
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/operating-system/CH1-MLFQ/">
-      多级反馈队列
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-MLFQ/">
+        多级反馈队列
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 # 多级反馈队列
 多级反馈队列正如之前说的一样，有多个队列，不同队列有不同优先级，相应的进程被分配到不同的队列中，高优先级的队列中的进程优先执行，并且一个队列中的进程之间采用之前介绍过的调度算法进行调度
 
@@ -407,175 +587,6 @@ Boost的做法是，每隔一定的时间，就将所有的进程提高到最高
 - freeBSD使用数学公式动态改变各个队列的优先级
 - 还有些OS的最高优先级是为OS保留的，不会被分配给用户进程
 
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/CH1-directExecution/">
-        直接运行程序
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-这一部分主要分为两个主题：
-- 如何限制进程对设备的访问更改，又能让进程一定程度上调用设备
-- 如何在多个进程之间切换
-
-### Restricted Operations
-
-#### 引入权限分层
-为了限制进程对内存或者其他设备的访问、更改等，OS引入了两个不同的模式：
-- user mode
-- kernel mode
-
-在user mode中，程序只能执行有限的指令、访问有限的空间，如果程序试图访问一个非法的内存位置，那么OS将会中断程序
-
-在kernel mode中，程序能够访问任何地方，执行任何指令
-
-通过引入一个权限的分层，使得进程无法随意访问其他位置，那么现在的问题是如何让进程执行一些允许的内存访问与操作，比如我们的程序需要从硬盘读取数据，或者需要知道现在的内存剩余量为多少等等
-
-#### 设置API
-为了让用户模式的进程能够在OS的管理下访问内存和设备，OS为kernel mode制定了一系列的操作和面向user mode开放的API
-
-比如我们之前就提到过的```exec```、```kill```等都属于系统调用（API of system）
-
-用户模式下，通过把指定的参数写入规定的寄存器（register）中，然后使用 ```int```指令（一条汇编指令），搭配中断码```0x80```表示系统调用，OS会转入内核态，设备控制由进程交给OS，OS从寄存器中读取响应的参数，包括对应系统调用的代码，然后执行相应的系统调用，完成之后将返回值写入对应的寄存器，然后将context从栈中重新读取出
-
-切换到内核态时，进程的context会被存入kernel stack中，类似于用户调用函数的原理一样，但是kernel stack相比user space stack需要在内核态才能使用
-
-#### trap机制
-系统的中断是通过trap机制实现的
-来自硬件的错误、异常，来自进程的系统调用，来自用户输入的指令，都会向OS发送trap信号，接收到信号后如果没有特别设定中断处理程序，trap机制会根据信号的类型，依据trap table找到默认的中断处理程序的位置，并进行调用
-
-trap table在OS启动时就已经读取完毕，一般在OS的源码内部就以及编写好了
-
-### Switching Between Processes
-上下文切换已经相对熟悉，不用做太多介绍，但是有一个问题是：
-如果在一次中断中，正在进行上下文切换，此时另一个中断发生了，那么OS会如何操作呢？
-这一部分将在并发（concurrency）中讲述，将关系到锁的一系列问题
-
-此外，CPU在同一时间只能运行一个程序，当一般进程占用了CPU时，OS无法直接获得设备的操作权，所以OS一般有两种途径获得一个正在运行其他进程的CPU的操作权：
-- 当进程触发了中断或者系统调用时，OS可以获得CPU操作权，并判断是否继续运行该进程
-- 系统启动时会启动一个timer interrupter，每隔一定的时间就触发一次中断，强制将操作递给OS，并进行相应的管理
-
-### summary
-
-重点关键词：
-
-- kernel mode和user mode
-- system call和trap机制
-- context Switching
-
-### homework
-
-课后要求估计上下文切换的时间和系统调用的时间
-
-系统调用的时间比较好测量，在一次系统调用前后加上一个时间获取函数，然后相减即可，为提高精度还需要再减去两次连续使用的时间函数（去掉时间函数调用本身花耗的时间），并且提高测量次数
-
-上线文切换相对比较麻烦，为了完成上下文切换的性能评估需要关注几点：
-
-- 保证两个进程在同一个CPU上运行
-- 排除时间函数本身的函数调用时间
-
-为此我们需要写两个进程，一个运行无限循环，并在每次循环中放弃进程（通过`sched_yield()`方法），然后再写一个进程进行有限次数的循环，在每次循环中放弃进程，这样有限次循环花费的时间就大约是进程间上下文切换的总和，除以进程次数就是一轮切换的平均时间
-
-代码如下：
-固定次数部分：
-```c
-#define _GNU_SOURCE
-#include &lt;assert.h&gt;
-#include &lt;sched.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;sys/time.h&gt;
-#include &lt;unistd.h&gt;
-
-int main() {
-    int pid = getpid();
-    printf(&#34;%d\n&#34;, pid);
-    struct timeval tv;
-    struct timeval tv_2;
-    struct timezone tz;
-    cpu_set_t cst;
-    CPU_SET(0, &amp;cst);
-
-    int t_0 = sched_setaffinity(getpid(), sizeof(cst), &amp;cst);
-
-    double t_1 = gettimeofday(&amp;tv, &amp;tz);
-
-    printf(&#34;%ld.%ld\n&#34;, tv.tv_sec, tv.tv_usec);
-
-    int times = 0;
-
-    t_1 = gettimeofday(&amp;tv, &amp;tz);
-
-    for (int j = 1; j &lt;= 2000000; j++) {
-        sched_yield();
-    }
-    t_1 = gettimeofday(&amp;tv_2, &amp;tz);
-    printf(&#34;%ld.%ld\n&#34;, tv_2.tv_sec - tv.tv_sec, tv_2.tv_usec - tv.tv_usec);
-}
-```
-首先`sched_setaffinity()`设置了一个进程只能运行的cpu集合，把该进程固定在一个CPU上
-然后 ```gettimeofday()```获得当前的时间，固定循环记录上下文切换的总时间，但是上面的代码并没有考虑 ```gettimeofday()```本身函数调用花耗的时间
-
-无限循环部分：
-```c
-#define _GNU_SOURCE
-#include &lt;sched.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;sys/time.h&gt;
-#include &lt;unistd.h&gt;
-
-int main() {
-    int pid = getpid();
-    printf(&#34;%d\n&#34;, pid);
-
-    cpu_set_t cst;
-    CPU_SET(0, &amp;cst);
-    sched_setaffinity(getpid(), sizeof(cst), &amp;cst);
-
-    while (1) {
-        sched_yield();
-    }
-}
-```
-和上面类似，但是是无限循环，所以需要先启动这个进程
-
-最后计算结果一轮上下文切换为1600ns左右，一次则为800ns左右，由于我使用的是虚拟机，所以和实际机器的上下文切换可能有所不同，另外，由于OS的进程调度机制，所以上下文切换的次数可能会比循环次数多许多，难以验证这样的计算结果
-
-
-
-
       </span>
     </div>
   </div>
@@ -598,255 +609,6 @@ int main() {
   </div>
 
   <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        729字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/operating-system/CH1-Segmentation/">
-      段式内存管理
-    </a>
-    <span class="card-abstract">
-      
-# 段式内存管理
-
-## 段
-
-进程的虚拟内存空间是这样的(简化版):
-| 代码段 | 堆 |空闲内存| 栈 |
-| :---: | :---: | :---: |:---:|
-
-其中的空闲内存不能占用物理内存空间, 所以我们考虑把进程的内存分成**段**(segment), 进程的内存将在物理内存中以段为单位分布
-
-为了在段式分布的内存管理下完成内存翻译, 我们需要以下的信息:
-
-- 段表: 参考之前说过的页表, 也是储存在内存中, 一个进程拥有一个的地址查找表, 但是记录的是进程分段的地址
-- 段号: 说明段是哪一个段, 从而在段表中查询到该段的基地址
-- 偏移量: 地址的段内偏移
-
-整个过程也和分页查询很相似:
-
-- 首先段式内存管理的内存地址如下:
-
-  | 段号 | 偏移量 |
-  | :---: | :---: |
-- 然后CPU也有一个对应基址寄存器, 用来指向当前进程的段表, 我们用段号查询段表中的基址, 然后返回MMU
-- 使用的得到的基址, 加上偏移量即可得到物理地址
-
----
-段式内存管理系统已经被淘汰了, 在linux系统中的段基址都被设置为了0, 所以段只被用于进程的保护和权限控制, 而不再用于内存管理
-
-为此, 段地址的会加上权限位, 搭配硬件的支持可以对不同的段进行不同的权限控制
-
-段式内存也引发了**内存碎片**问题, 相关的说明和解决不在本章的讨论范围之内
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.6k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/CH1-free-memory-management/">
-        空闲内存的管理
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        # 空闲内存的管理
-
-关于这一段我还是相对熟悉的, 在做数据结构的大作业时选择了一个空闲链表的实现, 这一段的记录也会相对简洁
-
-## 内存碎片
-
-- 内部碎片(internal fragmentation): 内部碎片是由于最小分配的内存块大小大于实际分配大小所导致的内存碎片, 例如, 一个进程需要分配 10 个字节的内存, 但是内存管理器只能分配 16 个字节的内存块, 这样就会产生 6 个字节的内部碎片
-- 外部碎片(external fragmentation): 当我们分配的内存空间不是最小分配单元时, 我们可以通过分割一个内存块来分配需要的内存空间, 而剩下的部分会形成一个新的空闲空间, 被称为外部碎片
-
-空闲内存和碎片的合理分配可以让内存可以分配更大的内存块, 为此我们需要先在决定管理策略前, 实现基本的内存维护机制
-
-## 空闲链表和已占用空间
-
-对于一片内存中的空闲空间, 我们是通过空闲链表来管理的, 并且该链表是就在内存空间中**集成(embedded)** 的, 比如说我们有一片空闲的内存空间如下:
-|size:1000|next:0x1000|data:...|size:1000|next:0x2000|data:...|
-|:-:|:-:|:-:|:-:|:-:|:-:|
-通过在空间头部加入两个字段, 来构成一个空闲链表
-需要注意的是, 像这样连续的两空闲空间, 在产生时我们就应该将两块合并为一个, 以减少碎片的产生
-
-同时, 对于一个已分配的空间也添加相应的字段来描述器大小和做验证:
-|size:1000|magic:1234567|data:...|
-|:-:|:-:|:-:|
-我们可以向`free()`传递指向该占用块开头的指针, 知道该占用块的大小, 然后检测下一个字段的`magic`值是否为我们希望的值, 来判定这是一个完整的占用块(不能检测到一个大小就随意清楚后面的内存块)
-需要注意的是, 我们在进程中调用`free()`传递的是虚拟内存的地址, 但是这个地址映射到物理内存上是不同的的地方
-
-## 空闲链表的维护策略
-
-当我们分配申请内存时, 需要先找到物理内存中足够大的空闲空间, 然后再将新分配的内存映射到这个区域之上, 但是我们希望在分配完了这个空间后能够产生尽量少的内存碎片, 所以就有了空闲链表的维护(分配)策略
-
-需要注意的是, 我们所说的内存碎片也是物理内存中所产生的东西, 我们直接打交道的虚拟内存是不存在这种概念的, 这些策略都是OS来采用的方法, 只有OS才能和物理内存打交道
-
-- 首次适应(first-fit): 首次适应是最简单的一种策略, 也是最容易实现的一种策略, 它的思想是从空闲链表的头部开始遍历, 找到第一个满足要求的空闲空间, 然后将其分配出去
-- 最佳适应(best-fit): 最佳适应是从空闲链表中找到一个最小的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少内部碎片的产生
-- 最坏适应(worst-fit): 最坏适应是从空闲链表中找到一个最大的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少外部碎片的产生
-- 下一次适应(next-fit): 下一次适应是在首次适应的基础上进行的优化, 它的思想是从上一次分配的空闲空间的下一个空闲空间开始遍历, 这样能够使得内存的分配位置更加均匀
-
-以上是四种简单的分配策略, 但是还有一些更加优秀, 但是也更加复杂的分配方式
-
-在提及这些方式之前, 我们需要先明确, 我们上面讨论的情况是基于段式储存的, 一是段本身就已经是长度不固定的内存块了, 二是我们在段内部分配空间时也是按长度来取内存块的, 所以才会产生**外部碎片**
-但是当我们采用分页式储存时, 我们的内存块大小都为固定的页大小, 我们分配内存的最小单位从字节变成了页, 所以我们的占用内存块和空闲内存块大小都是页大小(一般为4kb)的整数倍, 这样就不会产生外部碎片了——我们总能找到一块刚刚好大小的页来分配
-所以针对外部碎片的这些策略都是基于段式储存或者直接映射物理内存的, 广泛采用的分页式储存不会产生外部碎片, 只有内部碎片(页大小固定, 大多数情况使用不完)
-
----
-
-然后我们就能提及一个稍微复杂的针对非分页式的分配策略: **Segregated Free List(分离空闲链表)**
-
-既然我们已经知道固定长度的分块不会产生外部碎片, 那么我们就尽量在不定长的分块中找到长度相同的区块, 然后把他们单独连成一个**隔离开的**链表, 这种部分的**类分页**方式就能一定程度上减少外部碎片的产生
-
-其中的slab allocator就是这种方式的一种实现, 这个内存分配器将OS常用的那些对象单独创建一个空闲链表, 比如锁, 信号量, int等等, 同时减少了内部和外部碎片的产生
-
----
-然后要介绍的是另一个强大的分配算法: **伙伴系统(buddy system)**:
-我们对于一段大小为$2^n$的空闲空间, 将其**递归地**二分出一个最小的满足我们分配需求的空间, 比如我们现在有一块大小为$64kb$的空间, 需要分配一个$7kb$的空间:
-
-- 我们可以通过二分分出一块$8kb$的空间, 此时产生了$1kb$的内部碎片, 此时的内存我们可以表示如下:
-
-  |8kb|8kb|16kb|32kb|
-  |:-:|:-:|:-:|:-:|
-  |占用7kb|空闲8kb|空闲16kb|空闲32kb|
-
-这个算法在分配方面只能分配$2$的幂次方大小的内存, 产生的内部碎片不确定和分页相比谁更优, 但是该算法在合并空闲内存(碎片)时更有优势:
-- 我们释放了一个占用的空间后, 可以直接检测相邻的内存空间是否被占用, 然后可以直接将两个相同大小的内存空间合并
-- 树形数组的原理可以和伙伴算法做一个比较参考, 两者都是大小为二进制数来分割区间的
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        858字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/operating-system/CH1-memoryTransflate/">
-      地址翻译
-    </a>
-    <span class="card-abstract">
-      这一章讲的比较浅显，我会结合CSAPP更详细地记录相关的过程原理
-
-### 地址翻译是什么
-
-地址翻译就是将我们已知的虚拟地址，通过MMU（Memory Management Unit）和CPU的协助转换为物理地址的过程
-
-### 需要的专业名词
-
-- 页（page）：内存中的一个连续的区域，是OS进行内存管理的最小单位
-- 虚拟页（VP）：虚拟内存的一个连续的区域，对应于页
-- 物理页（PP）：类比虚拟页
-- 页表（page table）：一个表，储存在物理内存中，记录了虚拟页到物理页的映射关系
-- 页表条目（PTE）：页表中的一项，记录了虚拟页到物理页的映射关系
-- 基址寄存器（base register）：存储的进程起始地址
-
-内存可以看作磁盘的一级缓存，我们用缓存机制来看待查询内存的过程：
-
-- 查询内存中是否存在一个值，如果存在则直接读取，如果不存在则从磁盘读入
-
-而我们通过虚拟地址查询内存的过程如下：
-
-- 首先我们有一个虚拟地址, 这个地址属于一个进程, 而这个进程有自己基址寄存器对应的值, 而虚拟地址的字段如下:
-
-| 页号 | 页内偏移 |
-| --- | --- |
-
-- 每一个进程都有自己对应的页表, 而基址寄存器指向了这个页表, 我们使用虚拟地址页号在页表中查询到对应的表项, 这个表项包含了虚拟页号对应的物理页号, 然后利用对应的物理页号和页内偏移就可以找到对应的物理地址
-
-- 这个过程需要先访问一次内存查询一次PT, 再通过结果查询PP
-
----
-
-书上将这一段内容时还没有引入内存分页, 所以只讲了简单的映射关系, 并没有涉及到页号和偏移这些, 但是也算是把分页系统下的地址翻译理了一下, 没有提到的细节可能会在之后的分页部分再说
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -863,12 +625,11 @@ int main() {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/CH1-paging/">
-        分页
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-paging/">
+      分页
+    </a>
+    <span class="card-abstract">
+      
 # 分页
 
 之前我们已经对分页有了一个大概的概念, 现在我们详细描述一下分页过程以及中间产生的一些问题:
@@ -990,12 +751,8 @@ Linux中解决这种问题的一个方案是直接杀死部分进程, 防止thra
 由于程序具有局部性, 我们可以一次性读入多个连续的页面, 可以减少IO的读取操作
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1005,13 +762,11 @@ Linux中解决这种问题的一个方案是直接杀死部分进程, 防止thra
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1028,11 +783,12 @@ Linux中解决这种问题的一个方案是直接杀死部分进程, 防止thra
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/operating-system/CH1-processAPI/">
-      进程的API
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-processAPI/">
+        进程的API
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 这一段被作为间章，介绍了几种UNIX系统使用的进程相关的系统调用
 
 ---
@@ -1254,6 +1010,81 @@ int main(int argc, char *argv[])
 
 
 
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        729字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-Segmentation/">
+      段式内存管理
+    </a>
+    <span class="card-abstract">
+      
+# 段式内存管理
+
+## 段
+
+进程的虚拟内存空间是这样的(简化版):
+| 代码段 | 堆 |空闲内存| 栈 |
+| :---: | :---: | :---: |:---:|
+
+其中的空闲内存不能占用物理内存空间, 所以我们考虑把进程的内存分成**段**(segment), 进程的内存将在物理内存中以段为单位分布
+
+为了在段式分布的内存管理下完成内存翻译, 我们需要以下的信息:
+
+- 段表: 参考之前说过的页表, 也是储存在内存中, 一个进程拥有一个的地址查找表, 但是记录的是进程分段的地址
+- 段号: 说明段是哪一个段, 从而在段表中查询到该段的基地址
+- 偏移量: 地址的段内偏移
+
+整个过程也和分页查询很相似:
+
+- 首先段式内存管理的内存地址如下:
+
+  | 段号 | 偏移量 |
+  | :---: | :---: |
+- 然后CPU也有一个对应基址寄存器, 用来指向当前进程的段表, 我们用段号查询段表中的基址, 然后返回MMU
+- 使用的得到的基址, 加上偏移量即可得到物理地址
+
+---
+段式内存管理系统已经被淘汰了, 在linux系统中的段基址都被设置为了0, 所以段只被用于进程的保护和权限控制, 而不再用于内存管理
+
+为此, 段地址的会加上权限位, 搭配硬件的支持可以对不同的段进行不同的权限控制
+
+段式内存也引发了**内存碎片**问题, 相关的说明和解决不在本章的讨论范围之内
+
     </span>
 
   </div>
@@ -1275,6 +1106,115 @@ int main(int argc, char *argv[])
         2021-01-01
       </div>
       <div class="card-info">
+        2.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-free-memory-management/">
+        空闲内存的管理
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        # 空闲内存的管理
+
+关于这一段我还是相对熟悉的, 在做数据结构的大作业时选择了一个空闲链表的实现, 这一段的记录也会相对简洁
+
+## 内存碎片
+
+- 内部碎片(internal fragmentation): 内部碎片是由于最小分配的内存块大小大于实际分配大小所导致的内存碎片, 例如, 一个进程需要分配 10 个字节的内存, 但是内存管理器只能分配 16 个字节的内存块, 这样就会产生 6 个字节的内部碎片
+- 外部碎片(external fragmentation): 当我们分配的内存空间不是最小分配单元时, 我们可以通过分割一个内存块来分配需要的内存空间, 而剩下的部分会形成一个新的空闲空间, 被称为外部碎片
+
+空闲内存和碎片的合理分配可以让内存可以分配更大的内存块, 为此我们需要先在决定管理策略前, 实现基本的内存维护机制
+
+## 空闲链表和已占用空间
+
+对于一片内存中的空闲空间, 我们是通过空闲链表来管理的, 并且该链表是就在内存空间中**集成(embedded)** 的, 比如说我们有一片空闲的内存空间如下:
+|size:1000|next:0x1000|data:...|size:1000|next:0x2000|data:...|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+通过在空间头部加入两个字段, 来构成一个空闲链表
+需要注意的是, 像这样连续的两空闲空间, 在产生时我们就应该将两块合并为一个, 以减少碎片的产生
+
+同时, 对于一个已分配的空间也添加相应的字段来描述器大小和做验证:
+|size:1000|magic:1234567|data:...|
+|:-:|:-:|:-:|
+我们可以向`free()`传递指向该占用块开头的指针, 知道该占用块的大小, 然后检测下一个字段的`magic`值是否为我们希望的值, 来判定这是一个完整的占用块(不能检测到一个大小就随意清楚后面的内存块)
+需要注意的是, 我们在进程中调用`free()`传递的是虚拟内存的地址, 但是这个地址映射到物理内存上是不同的的地方
+
+## 空闲链表的维护策略
+
+当我们分配申请内存时, 需要先找到物理内存中足够大的空闲空间, 然后再将新分配的内存映射到这个区域之上, 但是我们希望在分配完了这个空间后能够产生尽量少的内存碎片, 所以就有了空闲链表的维护(分配)策略
+
+需要注意的是, 我们所说的内存碎片也是物理内存中所产生的东西, 我们直接打交道的虚拟内存是不存在这种概念的, 这些策略都是OS来采用的方法, 只有OS才能和物理内存打交道
+
+- 首次适应(first-fit): 首次适应是最简单的一种策略, 也是最容易实现的一种策略, 它的思想是从空闲链表的头部开始遍历, 找到第一个满足要求的空闲空间, 然后将其分配出去
+- 最佳适应(best-fit): 最佳适应是从空闲链表中找到一个最小的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少内部碎片的产生
+- 最坏适应(worst-fit): 最坏适应是从空闲链表中找到一个最大的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少外部碎片的产生
+- 下一次适应(next-fit): 下一次适应是在首次适应的基础上进行的优化, 它的思想是从上一次分配的空闲空间的下一个空闲空间开始遍历, 这样能够使得内存的分配位置更加均匀
+
+以上是四种简单的分配策略, 但是还有一些更加优秀, 但是也更加复杂的分配方式
+
+在提及这些方式之前, 我们需要先明确, 我们上面讨论的情况是基于段式储存的, 一是段本身就已经是长度不固定的内存块了, 二是我们在段内部分配空间时也是按长度来取内存块的, 所以才会产生**外部碎片**
+但是当我们采用分页式储存时, 我们的内存块大小都为固定的页大小, 我们分配内存的最小单位从字节变成了页, 所以我们的占用内存块和空闲内存块大小都是页大小(一般为4kb)的整数倍, 这样就不会产生外部碎片了——我们总能找到一块刚刚好大小的页来分配
+所以针对外部碎片的这些策略都是基于段式储存或者直接映射物理内存的, 广泛采用的分页式储存不会产生外部碎片, 只有内部碎片(页大小固定, 大多数情况使用不完)
+
+---
+
+然后我们就能提及一个稍微复杂的针对非分页式的分配策略: **Segregated Free List(分离空闲链表)**
+
+既然我们已经知道固定长度的分块不会产生外部碎片, 那么我们就尽量在不定长的分块中找到长度相同的区块, 然后把他们单独连成一个**隔离开的**链表, 这种部分的**类分页**方式就能一定程度上减少外部碎片的产生
+
+其中的slab allocator就是这种方式的一种实现, 这个内存分配器将OS常用的那些对象单独创建一个空闲链表, 比如锁, 信号量, int等等, 同时减少了内部和外部碎片的产生
+
+---
+然后要介绍的是另一个强大的分配算法: **伙伴系统(buddy system)**:
+我们对于一段大小为$2^n$的空闲空间, 将其**递归地**二分出一个最小的满足我们分配需求的空间, 比如我们现在有一块大小为$64kb$的空间, 需要分配一个$7kb$的空间:
+
+- 我们可以通过二分分出一块$8kb$的空间, 此时产生了$1kb$的内部碎片, 此时的内存我们可以表示如下:
+
+  |8kb|8kb|16kb|32kb|
+  |:-:|:-:|:-:|:-:|
+  |占用7kb|空闲8kb|空闲16kb|空闲32kb|
+
+这个算法在分配方面只能分配$2$的幂次方大小的内存, 产生的内部碎片不确定和分页相比谁更优, 但是该算法在合并空闲内存(碎片)时更有优势:
+- 我们释放了一个占用的空间后, 可以直接检测相邻的内存空间是否被占用, 然后可以直接将两个相同大小的内存空间合并
+- 树形数组的原理可以和伙伴算法做一个比较参考, 两者都是大小为二进制数来分割区间的
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         3.1k字
       </div>
       <div class="card-info">
@@ -1286,12 +1226,11 @@ int main(int argc, char *argv[])
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/CH1-processes/">
-        进程
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-processes/">
+      进程
+    </a>
+    <span class="card-abstract">
+      
 第一章第一节是进程相关内容，我们在CSAPP中已有过些许了解
 另外本文是我学习的记录，具有局部性，其中的描述并不一定正确完整，只是跟随书的思路把关键点记录下来
 
@@ -1416,6 +1355,78 @@ struct trapframe *tf; // Trap frame for the
 
 通过对比和查找资料我们可以得知，现在的CPU计算速度越来越快，进程更加趋向于I/O密集型进程，也就是说进程运行中的绝大部分时间是消耗在I/O运作上，所以我们应该偏向于在一个进程完成I/O操作后立刻切换到其进行CPU计算，这样能有更大的概率让进程都处于I/O处理的阻塞状态，提高I/O设备利用率
 
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        858字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-memoryTransflate/">
+        地址翻译
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        这一章讲的比较浅显，我会结合CSAPP更详细地记录相关的过程原理
+
+### 地址翻译是什么
+
+地址翻译就是将我们已知的虚拟地址，通过MMU（Memory Management Unit）和CPU的协助转换为物理地址的过程
+
+### 需要的专业名词
+
+- 页（page）：内存中的一个连续的区域，是OS进行内存管理的最小单位
+- 虚拟页（VP）：虚拟内存的一个连续的区域，对应于页
+- 物理页（PP）：类比虚拟页
+- 页表（page table）：一个表，储存在物理内存中，记录了虚拟页到物理页的映射关系
+- 页表条目（PTE）：页表中的一项，记录了虚拟页到物理页的映射关系
+- 基址寄存器（base register）：存储的进程起始地址
+
+内存可以看作磁盘的一级缓存，我们用缓存机制来看待查询内存的过程：
+
+- 查询内存中是否存在一个值，如果存在则直接读取，如果不存在则从磁盘读入
+
+而我们通过虚拟地址查询内存的过程如下：
+
+- 首先我们有一个虚拟地址, 这个地址属于一个进程, 而这个进程有自己基址寄存器对应的值, 而虚拟地址的字段如下:
+
+| 页号 | 页内偏移 |
+| --- | --- |
+
+- 每一个进程都有自己对应的页表, 而基址寄存器指向了这个页表, 我们使用虚拟地址页号在页表中查询到对应的表项, 这个表项包含了虚拟页号对应的物理页号, 然后利用对应的物理页号和页内偏移就可以找到对应的物理地址
+
+- 这个过程需要先访问一次内存查询一次PT, 再通过结果查询PP
+
+---
+
+书上将这一段内容时还没有引入内存分页, 所以只讲了简单的映射关系, 并没有涉及到页号和偏移这些, 但是也算是把分页系统下的地址翻译理了一下, 没有提到的细节可能会在之后的分页部分再说
+
+
       </span>
     </div>
   </div>
@@ -1443,7 +1454,7 @@ struct trapframe *tf; // Trap frame for the
         2021-01-01
       </div>
       <div class="card-info">
-        3.4k字
+        3.2k字
       </div>
       <div class="card-info">
         阅读时间: 3 mins.
@@ -1454,101 +1465,139 @@ struct trapframe *tf; // Trap frame for the
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/operating-system/CH1-proportionalShare/">
-      分比例调度
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-directExecution/">
+      直接运行程序
     </a>
     <span class="card-abstract">
       
-# 分比例调度
-分比例调度就是每个进程都获得一个比例，所占比例越大的进程越容易被调度运行
+这一部分主要分为两个主题：
+- 如何限制进程对设备的访问更改，又能让进程一定程度上调用设备
+- 如何在多个进程之间切换
 
-## Lottery Scheduling（彩票调度）
-Lottery调度的关键在于票据（tickets）,每个进程被分配了一定数量的票据，然后我们利用随机数，随机抽取一张票，拥有这个ticket的进程就能被调度运行，按照概率论（probability theory）的理论，当随机次数足够多时，每个进程被调度的概率接近于其tickets数量所占的比例
+### Restricted Operations
 
-具体实现方式如下：
-- 首先我们用一个链表，每个节点上储存的是每个进程的进程信息，其中包括了进程的tickets数量
-- 然后我们利用生成器随机生成一个票数以内的数字
-- 接着我们遍历链表，将每个进程的tickets数量加起来，当加起来的数量大于随机生成的数字时，就确定了这个进程被调度运行
+#### 引入权限分层
+为了限制进程对内存或者其他设备的访问、更改等，OS引入了两个不同的模式：
+- user mode
+- kernel mode
 
-一般tickets数量比较大的进程被排在链表前面，这样可以减少遍历链表的次数，提高效率
+在user mode中，程序只能执行有限的指令、访问有限的空间，如果程序试图访问一个非法的内存位置，那么OS将会中断程序
 
-至于如何分配tickets，这是一个开放问题，用户可以根据需求自定义每个进程的tickets数量
-在进程间友好的环境下可以让进程自己产生更多的tickets，但是如果进程间存在竞争的话，进程就会不断产生新的tickets，从而导致诸多问题
-此外用户也可以根据需求给指定的进程更多票据，来优先完成某些任务之类的
-系统自行分配tickets可以参照之前的OS调度的思路，执行时间越久的进程分配的票据越少，每进行一段时间就从其tickets中拿走一些
+在kernel mode中，程序能够访问任何地方，执行任何指令
 
-## Stride Scheduling
-使用Lottery Scheduling的问题在于，当某个进程分配的tickets很少时，有可能会导致其一直都无法被调度执行，使得这个进程进入饥饿状态
+通过引入一个权限的分层，使得进程无法随意访问其他位置，那么现在的问题是如何让进程执行一些允许的内存访问与操作，比如我们的程序需要从硬盘读取数据，或者需要知道现在的内存剩余量为多少等等
 
-所以这里书上再介绍了一种方式：Stride Scheduling（步幅调度）
+#### 设置API
+为了让用户模式的进程能够在OS的管理下访问内存和设备，OS为kernel mode制定了一系列的操作和面向user mode开放的API
 
-我们用与Lottery Scheduling相似的方式给每个进程分配一个stride（步幅）和一个pass（经过长度），其中stride和其tickets数量成反比
+比如我们之前就提到过的```exec```、```kill```等都属于系统调用（API of system）
 
-然后初始状态所有进程的pass都为0，我们随机从中选择进程调度执行一个time quantum，然后将其pass值加上stride，然后再从pass值最小的进程中选择一个调度运行，以此类推
+用户模式下，通过把指定的参数写入规定的寄存器（register）中，然后使用 ```int```指令（一条汇编指令），搭配中断码```0x80```表示系统调用，OS会转入内核态，设备控制由进程交给OS，OS从寄存器中读取响应的参数，包括对应系统调用的代码，然后执行相应的系统调用，完成之后将返回值写入对应的寄存器，然后将context从栈中重新读取出
 
-这样我们就能保证每个步幅的进程都能得到相应概率的调度运行
+切换到内核态时，进程的context会被存入kernel stack中，类似于用户调用函数的原理一样，但是kernel stack相比user space stack需要在内核态才能使用
 
-但是Stride Scheduling并不支持global state（全局状态），也就是说，我们只能对几个固定的进程进行Stride Scheduling，而不能对全部进程进行，如果此时有一个新的进程需要加入调度列表，其他的进程的pass值已经很大，新进程的pass值如果只是0的话，那么新进程就会占据CPU的使用，这样就会导致其他进程饥饿
+#### trap机制
+系统的中断是通过trap机制实现的
+来自硬件的错误、异常，来自进程的系统调用，来自用户输入的指令，都会向OS发送trap信号，接收到信号后如果没有特别设定中断处理程序，trap机制会根据信号的类型，依据trap table找到默认的中断处理程序的位置，并进行调用
 
-虽然书上没有进一步说明，但是我认为pass值是可以根据现有的进程的pass值预估出一个合理的值的
+trap table在OS启动时就已经读取完毕，一般在OS的源码内部就以及编写好了
 
-## CFS（Completely Fair Scheduler）
+### Switching Between Processes
+上下文切换已经相对熟悉，不用做太多介绍，但是有一个问题是：
+如果在一次中断中，正在进行上下文切换，此时另一个中断发生了，那么OS会如何操作呢？
+这一部分将在并发（concurrency）中讲述，将关系到锁的一系列问题
 
-CFS是Linux使用的进程调度方式，这个调度法的主要参数有两个：
-- vruntime（虚拟运行时间）
-- sched_latency（调度延迟）
+此外，CPU在同一时间只能运行一个程序，当一般进程占用了CPU时，OS无法直接获得设备的操作权，所以OS一般有两种途径获得一个正在运行其他进程的CPU的操作权：
+- 当进程触发了中断或者系统调用时，OS可以获得CPU操作权，并判断是否继续运行该进程
+- 系统启动时会启动一个timer interrupter，每隔一定的时间就触发一次中断，强制将操作递给OS，并进行相应的管理
 
-vruntime并不是进程实际运行的时间，而是CFS评估进程是否调度的一个标准，是基于优先级和实际运行时间计算出的一个数值
+### summary
 
-sched_latency作为调度延迟，实际意义指一个进程在运行完自己的min_time后，再次被调度执行之前，需要等待的时间
-用另一种方式来思考的话，我们可以先假设进程运行的时间被sched_latency所分，也就是说每个区间的长度为sched_latency，然后在这个区间中每个进程需要平分这段时间，也就是说每个进程的time slice为sched_latency / 进程数(n)
+重点关键词：
 
-这样的话就能保证每个进程被调用的平均延迟（latency）为sched_latency，同时为了防止同时进行的进程过多，导致每个进程的min_time过短，导致context switching产生overhead，所以对于sched_latency划分的值会设定一个min_granluarity（最小粒度），这也就导致当进程数过多时，进程之间必然不能完全公平，有些进程将得不到调度运行
+- kernel mode和user mode
+- system call和trap机制
+- context Switching
 
-大概对这两个参数有个了解之后我们通过一个例子来说明CFS的运作方式：
+### homework
 
-现在假设有4个进程A、B、C、D，他们的初始vruntime都为0，sched_latency为1000，min_granularity为100，那么我们可以得到每个进程的min_time为1000 / 4 = 250，也就是说每个进程在一个sched_latency的时间内至少要运行250的时间才能被中断
+课后要求估计上下文切换的时间和系统调用的时间
 
-- tips：min_time并不一定是time quantum的倍数，我们以time quantum进行累加，超过了min_time就认定为完成了应该运行的时间
+系统调用的时间比较好测量，在一次系统调用前后加上一个时间获取函数，然后相减即可，为提高精度还需要再减去两次连续使用的时间函数（去掉时间函数调用本身花耗的时间），并且提高测量次数
 
-一个进程运行会累加他的vruntime，当vruntime大于250时CFS就会去寻找一个vruntime小于250的进程来运行
+上线文切换相对比较麻烦，为了完成上下文切换的性能评估需要关注几点：
 
-这样相同优先级的进程就能平分cpu的占用时间
+- 保证两个进程在同一个CPU上运行
+- 排除时间函数本身的函数调用时间
 
-但是我们之前说了**vruntime**是通过公式计算出来的一个虚拟的运行时间，对于一个优先级高的进程，它运行的实际时间应该要更多一些，但是我们不能去修改由sched_latency均分而来的time slice（这样就破坏了CFS公平的部分），所以我们的vruntime的累加是由公式来计算的，公式如下：
-$$vruntime_i = vruntime_i + \frac{weight_0}{weight_i}\times runtime_i$$
+为此我们需要写两个进程，一个运行无限循环，并在每次循环中放弃进程（通过`sched_yield()`方法），然后再写一个进程进行有限次数的循环，在每次循环中放弃进程，这样有限次循环花费的时间就大约是进程间上下文切换的总和，除以进程次数就是一轮切换的平均时间
 
-这里的$weight$指的是优先级的权重，$weight_0$是标准优先级的权重，不同优先级的权重由下所示：
-
+代码如下：
+固定次数部分：
 ```c
-static const int prio_to_weight[40] = {
-/* -20 */ 88761, 71755, 56483, 46273, 36291,
-/* -15 */ 29154, 23254, 18705, 14949, 11916,
-/* -10 */ 9548, 7620, 6100, 4904, 3906,
-/* -5 */ 3121, 2501, 1991, 1586, 1277,
-/* 0 */ 1024, 820, 655, 526, 423,
-/* 5 */ 335, 272, 215, 172, 137,
-/* 10 */ 110, 87, 70, 56, 45,
-/* 15 */ 36, 29, 23, 18, 15,
-};
+#define _GNU_SOURCE
+#include &lt;assert.h&gt;
+#include &lt;sched.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    int pid = getpid();
+    printf(&#34;%d\n&#34;, pid);
+    struct timeval tv;
+    struct timeval tv_2;
+    struct timezone tz;
+    cpu_set_t cst;
+    CPU_SET(0, &amp;cst);
+
+    int t_0 = sched_setaffinity(getpid(), sizeof(cst), &amp;cst);
+
+    double t_1 = gettimeofday(&amp;tv, &amp;tz);
+
+    printf(&#34;%ld.%ld\n&#34;, tv.tv_sec, tv.tv_usec);
+
+    int times = 0;
+
+    t_1 = gettimeofday(&amp;tv, &amp;tz);
+
+    for (int j = 1; j &lt;= 2000000; j++) {
+        sched_yield();
+    }
+    t_1 = gettimeofday(&amp;tv_2, &amp;tz);
+    printf(&#34;%ld.%ld\n&#34;, tv_2.tv_sec - tv.tv_sec, tv_2.tv_usec - tv.tv_usec);
+}
 ```
-这是书上所示的优先级及其对应的权重，负数的优先级代表高优先，正数代表低优先
+首先`sched_setaffinity()`设置了一个进程只能运行的cpu集合，把该进程固定在一个CPU上
+然后 ```gettimeofday()```获得当前的时间，固定循环记录上下文切换的总时间，但是上面的代码并没有考虑 ```gettimeofday()```本身函数调用花耗的时间
 
-通过以上的优先级权重表就可以计算对应的vruntime的累加了
-相应的，也可以通过其权重和sched_latency计算出每个进程的实际运行的时间
+无限循环部分：
+```c
+#define _GNU_SOURCE
+#include &lt;sched.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;unistd.h&gt;
 
-## 使用红黑树
+int main() {
+    int pid = getpid();
+    printf(&#34;%d\n&#34;, pid);
 
-为了能够快速找到正在运行的进程中的vruntime最小的进程，我们需要使用适合的数据结构来储存这些进程的信息
+    cpu_set_t cst;
+    CPU_SET(0, &amp;cst);
+    sched_setaffinity(getpid(), sizeof(cst), &amp;cst);
 
-Linux使用了红黑树来完成这个工作，并且带有对最小值的缓存，所以有相当概率可以在O(1)的时间内找到最小值，即便缓存不命中，也只需要O(logn)的时间
-而完成运行后的进程需要重新加入红黑树中，仍然只需要O(logn)的时间即可
+    while (1) {
+        sched_yield();
+    }
+}
+```
+和上面类似，但是是无限循环，所以需要先启动这个进程
 
-关于红黑树的文章如下：
-https://dnullp.github.io/2023/01/25/data_struct/RBTree/
+最后计算结果一轮上下文切换为1600ns左右，一次则为800ns左右，由于我使用的是虚拟机，所以和实际机器的上下文切换可能有所不同，另外，由于OS的进程调度机制，所以上下文切换的次数可能会比循环次数多许多，难以验证这样的计算结果
 
-## 关于长时间休眠的进程
-长时间休眠的进程重新开始运行后，其vruntime会远小于其他进程，从而导致其独占CPU的使用，所以我们要对其vruntime进行调整，Linux会选择红黑树中最小的进程，设置为其新的vruntime，这样能够避免进程的饥饿状态，但是一定程度上破坏了公平性
 
 
 

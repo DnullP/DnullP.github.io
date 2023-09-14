@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/IqutSTML7EXRza3.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -386,42 +386,42 @@ targetClass.deleteStudent(targetStudent);</code></pre><p>这样的代码即便�
 <p>具体来说, 我们可以使用<code>x, y</code>表示笛卡尔坐标系的一个点, 但是我们获取数据时完全可以使用polar coordinates的方式获得坐标点, 尽管底层实际是<code>x, y</code></p>
 <h3 id="反对称性"><a href="#反对称性" class="headerlink" title="反对称性"></a>反对称性</h3><p>尽管我们一般使用将数据抽象出来的方式, 以OPP的思想来实现数据的获取, 但是实际上将数据暴露出来, 通过一个过程来获得其数据也不是没有不可取之处.</p>
 <p>考虑如下的情况:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">classDiagram
-  class Shape&#123;
+<div class="mermaid">classDiagram
+  class Shape{
     +auto somedata
     +getArea()
     +getPerimeter()
-  &#125;
-  class Rectangle&#123;
+  }
+  class Rectangle{
     +auto somedata
-  &#125;
-  class Circle&#123;
+  }
+  class Circle{
     +auto somedata
     +getRadius()
-  &#125;
-  Shape &lt;|-- Rectangle
-  Shape &lt;|-- Circle</code></pre><p>此时如果我们需要给Shape添加新的功能, 比如获取图形的<code>metadata</code>, 那么新的函数需要所有的class都做出修改才能实现</p>
+  }
+  Shape <|-- Rectangle
+  Shape <|-- Circle</div><p>此时如果我们需要给Shape添加新的功能, 比如获取图形的<code>metadata</code>, 那么新的函数需要所有的class都做出修改才能实现</p>
 <p>如果是将数据暴露出来, 使用一个公共过程的话, 我们就可以不对储存数据的结构做出任何修改, 只用修改管理函数的一个类即可:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">classDiagram
-  class Shape&#123;
+<div class="mermaid">classDiagram
+  class Shape{
     +auto somedata
-  &#125;
-  class Rectangle&#123;
+  }
+  class Rectangle{
     +auto somedata
-  &#125;
-  class Circle&#123;
+  }
+  class Circle{
     +auto somedata
-  &#125;
-  Shape &lt;|-- Rectangle
-  Shape &lt;|-- Circle
+  }
+  Shape <|-- Rectangle
+  Shape <|-- Circle
 
-  class Method&#123;
+  class Method{
     +getArea(Shape)
     +getPerimeter(Shape)
     +getRadius(Shape)
-  &#125;
+  }
 
-  Shape --&gt; Method</code></pre><h3 id="迪米特原则"><a href="#迪米特原则" class="headerlink" title="迪米特原则"></a>迪米特原则</h3><blockquote>
+  Shape --> Method</div><h3 id="迪米特原则"><a href="#迪米特原则" class="headerlink" title="迪米特原则"></a>迪米特原则</h3><blockquote>
 <p>只与你的直接朋友交谈, 不要和陌生人说话</p>
 </blockquote>
 <p>也就是说一个类<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>中的函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>只应该调用以下的其他函数或变量:</p>
@@ -520,12 +520,20 @@ targetClass.deleteStudent(targetStudent);</code></pre><p>这样的代码即便�
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

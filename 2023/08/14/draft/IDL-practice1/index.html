@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/xGAflC5roSOsJRz.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/mKzLHqPkUWTivAu.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -426,12 +426,12 @@ processor <span class="token operator">:=</span> tutorial<span class="token punc
 server <span class="token operator">:=</span> thrift<span class="token punctuation">.</span><span class="token function">NewTSimpleServer4</span><span class="token punctuation">(</span>processor<span class="token punctuation">,</span> transport<span class="token punctuation">,</span> transportFactory<span class="token punctuation">,</span> protocolFactory<span class="token punctuation">)</span>
 fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Starting the simple server... on "</span><span class="token punctuation">,</span> addr<span class="token punctuation">)</span>
 <span class="token keyword">return</span> server<span class="token punctuation">.</span><span class="token function">Serve</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre><p>具体可以表示为下述的图:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-CalculatorHandler --&gt;|implement| CalculatorHandler.Interface
-CalculatorHandler --&gt;|composition| Processor
-Processor --&gt;|composition| Server
-Transport --&gt;|composition| Server
-Server --&gt; Run</code></pre><p>接下来我们只要在main函数中调用<code>runServer</code>和<code>runClient</code>就可以启动并使用服务了<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"></p>
+<div class="mermaid">graph TD
+CalculatorHandler -->|implement| CalculatorHandler.Interface
+CalculatorHandler -->|composition| Processor
+Processor -->|composition| Server
+Transport -->|composition| Server
+Server --> Run</div><p>接下来我们只要在main函数中调用<code>runServer</code>和<code>runClient</code>就可以启动并使用服务了<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"></p>
 
 </div>
 
@@ -439,12 +439,20 @@ Server --&gt; Run</code></pre><p>接下来我们只要在main函数中调用<cod
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

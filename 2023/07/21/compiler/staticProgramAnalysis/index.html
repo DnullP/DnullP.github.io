@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -252,23 +252,23 @@
 <p>对于一个全格我们可以得到最大下界<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">⊥</mi></mrow><annotation encoding="application/x-tex">\bot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">⊥</span></span></span></span>和最小上界<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">⊤</mi></mrow><annotation encoding="application/x-tex">\top</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">⊤</span></span></span></span></p>
 <p>如果我们对这个值进行迭代, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>k</mi></msup><mo stretchy="false">(</mo><mi mathvariant="normal">⊥</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f^k(\bot)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">⊥</span><span class="mclose">)</span></span></span></span>终能找到一个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>满足<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mi>k</mi></msup><mo stretchy="false">(</mo><mi mathvariant="normal">⊥</mi><mo stretchy="false">)</mo><mo>&#x3D;</mo><msup><mi>f</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup><mo stretchy="false">(</mo><mi mathvariant="normal">⊥</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f^k(\bot) &#x3D; f^{k+1}(\bot)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">⊥</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x3D;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">⊥</span><span class="mclose">)</span></span></span></span>, 我们称这个值为不动点</p>
 <h2 id="程序状态可以看作半格"><a href="#程序状态可以看作半格" class="headerlink" title="程序状态可以看作半格"></a>程序状态可以看作半格</h2><p>首先我们以到达定值为例子, 到达定值的程序状态是集合, 集合间存在偏序关系, 我们可以将其进一步抽象为半格:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-    A[1,2,3] --&gt; B[1,2]
-    A[1,2,3] --&gt; C[1,3]
-    A[1,2,3] --&gt; D[2,3]
-    B[1,2] --&gt; E[1]
-    B[1,2] --&gt; F[2]
-    C[1,3] --&gt; G[1]
-    C[1,3] --&gt; H[3]
-    D[2,3] --&gt; I[2]
-    D[2,3] --&gt; J[3]
-    E --&gt; K[ ]
-    F --&gt; K[ ]
-    G --&gt; K[ ]
-    H --&gt; K[ ]
-    I --&gt; K[ ]
-    J --&gt; K[ ]
-</code></pre><p>按照上面的图例, 我们对于一个函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>满足单调性, 则对于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mo stretchy="false">{</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">}</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f({1,2,3})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">({</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">})</span></span></span></span>总能找到一个不动点</p>
+<div class="mermaid">graph TD
+    A[1,2,3] --> B[1,2]
+    A[1,2,3] --> C[1,3]
+    A[1,2,3] --> D[2,3]
+    B[1,2] --> E[1]
+    B[1,2] --> F[2]
+    C[1,3] --> G[1]
+    C[1,3] --> H[3]
+    D[2,3] --> I[2]
+    D[2,3] --> J[3]
+    E --> K[ ]
+    F --> K[ ]
+    G --> K[ ]
+    H --> K[ ]
+    I --> K[ ]
+    J --> K[ ]
+</div><p>按照上面的图例, 我们对于一个函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>满足单调性, 则对于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mo stretchy="false">{</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">}</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f({1,2,3})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">({</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">})</span></span></span></span>总能找到一个不动点</p>
 <p>所以迭代算法终会收敛</p>
 <h2 id="MOP-Meet-Over-All-Paths-solution"><a href="#MOP-Meet-Over-All-Paths-solution" class="headerlink" title="MOP(Meet-Over-All-Paths solution)"></a>MOP(Meet-Over-All-Paths solution)</h2><p>这种算法和迭代算法不太一样</p>
 <p>迭代算法每次迭代对全部节点进行更新, 直到没有节点改变为止, 但是MOP算法每次迭代只对一个节点进行更新, 直到所有节点都更新完毕</p>
@@ -289,12 +289,20 @@
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

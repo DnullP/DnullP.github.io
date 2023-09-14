@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -220,13 +220,13 @@
 <p>  <code>All DHCP messages are sent over UDP.</code></p>
 </li>
 <li><p>   Draw a timing datagram illustrating the sequence of the first four-packet Discover&#x2F;Offer&#x2F;Request&#x2F;ACK DHCP  exchange between the client and server. For each packet, indicated the source and destination port numbers. Are the port numbers the same as in the example given in this lab assignment? </p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">sequenceDiagram
+<div class="mermaid">sequenceDiagram
     participant Client
     participant Server
-    Client-&gt;&gt;Server: DHCP Discover(67)
-    Server-&gt;&gt;Client: DHCP Offer(68)
-    Client-&gt;&gt;Server: DHCP Request(67)
-    Server-&gt;&gt;Client: DHCP ACK(68)</code></pre></li>
+    Client->>Server: DHCP Discover(67)
+    Server->>Client: DHCP Offer(68)
+    Client->>Server: DHCP Request(67)
+    Server->>Client: DHCP ACK(68)</div></li>
 <li><p>   What is the link-layer (e.g., Ethernet) address of your host?</p>
 </li>
 <li><p>   What values in the DHCP discover message differentiate this message from the DHCP request message?</p>
@@ -259,12 +259,20 @@
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

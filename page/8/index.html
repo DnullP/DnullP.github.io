@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -256,6 +256,246 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/Csharp/SomeofCsharp/">
+        c#的一些碎片
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# foreach
+```csharp
+int[] a = new int[10];
+for(int i=0;i&lt;10;i++){
+    a[i] = i;
+}
+forezch(int element in a){
+    Console.Writeline(element);
+}
+```
+&lt;!-- more --&gt;
+诸如此般的用法
+
+# internal修饰符
+
+internal修饰的成员可以被**其所在程序**的所有函数、类调用
+
+# ref
+- 与c++不同，c#中向函数传址时，使用ref
+
+```csharp
+int a = 1,b = 100;
+int func(ref int a,ref int b){
+    return a&gt;b?a-b:b-a;//a,b的值发生改变
+}
+func(ref a,ref b);
+```
+
+# out
+- 用法与**ref**相同，但是ref不可传入未赋值的变量，**out**可以
+```csharp
+int a,b;
+int func(out int a,out int b){
+    return a&gt;b?a-b:b-a;//a,b的值发生改变
+}
+func(out a,out b);
+```
+
+# c#的扩展方法
+- 每次看到这种东西总是会很兴奋
+
+```csharp
+static public class StringOut
+{
+    static public void StringOut_(this string text)
+    {
+        Console.WriteLine(text);
+    }
+}
+```
+像是这样，在一个静态类中定义的静态类，其第一个参数加上this之后   
+可以产生这种用法：
+
+```csharp
+static public void Main(string[] args)
+    {
+        Console.WriteLine(123);
+        &#34;33223&#34;.StringOut_();//像这样更加明确的使用方式
+    } 
+```
+
+# params
+
+- params   
+  - 传递数目可变的参数
+
+```csharp
+public static void UserParame(params int[] list){
+   for (int i = 0; i &lt; list.Length; i++)
+        {
+            Console.Write(list[i] + &#34; &#34;);
+        }
+        Console.WriteLine();
+   }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        484字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/Csharp/%7FTwoKingofConversion/">
+      C#的显性和隐性转换
+    </a>
+    <span class="card-abstract">
+      
+
+# 显性转换或隐性转换
+
+## 隐性转换
+
+- c#中的隐性转换自动为安全转换，即小容量转化为大容量，子类转化为父类
+&lt;!-- more --&gt;
+```csharp
+int a;
+long b;
+b = a;//long 类型自动转化成int
+
+class A{
+
+}
+
+class B:A{
+
+}
+A a_1 = new B;//B子类自动转化成A父类
+
+```
+
+## 显性转换
+
+- 显性转换即为强制转换
+
+类的强制转换：
+```csharp
+Class1 c11 = new Class1();
+Class2 c22 = c11 as Class2; //使用as进行显式转换
+```
+
+几种强制转换方式：
+```csharp
+int a = int.Parse(b);
+int a = Convert.ToInt32(b);
+int a = (int)b;
+```
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
       <a class="card-title" href="/2021/01/01/QT/FirstApplication/">
         第一个Qt程序——文本查询
       </a>
@@ -346,65 +586,6 @@ cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
         2021-01-01
       </div>
       <div class="card-info">
-        399字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/Csharp/Array/">
-      c#中的数组
-    </a>
-    <span class="card-abstract">
-      
-# 多维数组
-C#的多维数组不同于C++
-
-- C#的多维数组可以看作一个矩阵，是一个数集
-
-```csharp
-int[,,] a = {{1,2,3},
-                {1,2,3},
-                {1,2,3}};//此时的a的行列在定义时就决定了
-```
-
-# 交错数组
-- C#的多维数组可以参考C++的多维数组，是一种数组的数组
-
-```csharp
-int[][] a = new int[3][];//定义数组的数组
-
-a[0] = new int[10];
-a[1] = new int[20];
-a[2] = new int[30];//每个数组可以不同
-```
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         2.4k字
       </div>
       <div class="card-info">
@@ -416,12 +597,11 @@ a[2] = new int[30];//每个数组可以不同
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/Leetcode/2/">
-        LeetCode——c#——2
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        # LeetCode——2.两数相加
+    <a class="card-title" href="/2021/01/01/Leetcode/2/">
+      LeetCode——c#——2
+    </a>
+    <span class="card-abstract">
+      # LeetCode——2.两数相加
 评注：类似高精度加法的一道题，通过链表结构实现
 
 &lt;!-- more --&gt;
@@ -507,12 +687,8 @@ public class Solution
         }
 ```
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -522,13 +698,11 @@ public class Solution
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -545,11 +719,12 @@ public class Solution
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/Wechat-P/first--time-trying/">
-      第一个微信小程序——创建与总览
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/Wechat-P/first--time-trying/">
+        第一个微信小程序——创建与总览
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### 初见
 
 首先建立本地项目，版本控制不存在的
@@ -587,111 +762,6 @@ log文件夹大概保存日志，但是不确定日志也有必要做成网页�
 
 ### 接下来
 大概的基本框架了解了，但是咱看不懂js代码和css的一堆配置，接下来先学习一下js的基本语法，然后再考虑下一步
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        881字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/Matlab/start/">
-        初识Matlab
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-学校公选课选了个matlab，开个小专题记录一下
-
-&lt;!-- more ---&gt;
-
-首先Matlab有着和Python一样的交互窗口，然后试着建立变量、矩阵、四则运算。顺便一提，通过按 ```tab```键打开代码补全（我说怎么这么难受）
-
-几个生成特殊矩阵的函数：
-
-- ```zero(x,y)```
-- ```ones(x,y)```
-- ```rand(x,y)```
-
-matlab里面对单个变量进行计算的函数都可以直接用于矩阵，对矩阵中的全部元素进行某种计算
-
-```matlab
-A = sin(rand(3,3))
-```
-
-转置函数：
-```matlab
-A = rand(3,3)
-A = transpose(A)
-A = A&#39;          %这两种表达都用于转置矩阵
-```
-
-计算逆矩阵：
-```matlab
-A = inv(A)
-
-A = A * inv(A)  %A乘上它的逆矩阵得到单位矩阵
-```
-改变数据的显示格式：
-```matlab
-A = rand(3,3)
-format long   %显示很多位小数
-A
-format short  %显示很少位小数
-A
-```
-
-两个矩阵对应元素相乘：
-```matlab
-A = rand(3,3)
-A = A.*A
-```
-以上规则适用于其他计算：
-```matlab
-A = rand(3,3)
-A = A.^3
-A = A./3
-```
-
-#### Concatenation
-连接两个矩阵：
-```matlab
-A = rand(3,3)
-B = A&#39;
-C = [A, B]   %横向连接列
-D = [A; B]   %纵向连接行
-```
-
-#### Complex number
-复数：
-```matlab
-a = sqrt(-3)  %Just try it
-```
 
       </span>
     </div>
@@ -1114,143 +1184,6 @@ public class FacadePatternDemo {
         2021-01-01
       </div>
       <div class="card-info">
-        1.9k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/State/">
-        State
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### State
-状态模式的思想可以参考状态机（有限状态机）
-
-一个类有一个状态机，并且该类处于不同的状态时的方法的行为也不同，我们可以考虑通过条件分支来实现状态机，但是这样的实现需要对每个类都实现状态机的条件分治，高重复度的部分难以得到复用，代码的维护也相当麻烦
-
-所以我们把每个状态写成一个类，然后只需要在不同的类中实现状态改变的方法，在需要的时候调用状态改变的方法即可
-
-下面我们通过UML图详细说明：
-
-![](https://refactoring.guru/images/patterns/diagrams/state/structure-en.png)
-
-这个图中包含了四个要素：
-
-- Context
-  这是需要变化状态的类，其中包含了```state```字段用于储存类当前状态，```changeState()```方法可用于改变状态
-- State
-  这是状态的接口，其中包含了在不同状态下表现不同的方法
-- ConcreteState
-  这里面实现了不同状态的方法，由于这些方法也有可能改变Context的状态，所以这些类也包含了context
-- Client
-
-下面是来自noob note的代码：
-
-```java
-public interface State {
-   public void doAction(Context context);
-}
-```
-这里定义了State的接口，需要包含状态不同时行为不同的方法
-```java
-public class StartState implements State {
- 
-   public void doAction(Context context) {
-      System.out.println(&#34;Player is in start state&#34;);
-      context.setState(this); 
-   }
- 
-   public String toString(){
-      return &#34;Start State&#34;;
-   }
-}
-```
-
-```java
-public class StopState implements State {
- 
-   public void doAction(Context context) {
-      System.out.println(&#34;Player is in stop state&#34;);
-      context.setState(this); 
-   }
- 
-   public String toString(){
-      return &#34;Stop State&#34;;
-   }
-}
-```
-这里是两个状态的具体实现
-```java
-public class Context {
-   private State state;
- 
-   public Context(){
-      state = null;
-   }
- 
-   public void setState(State state){
-      this.state = state;     
-   }
- 
-   public State getState(){
-      return state;
-   }
-}
-```
-这是存在多种状态的类，可通过```setState()```方法改变状态
-```java
-public class StatePatternDemo {
-   public static void main(String[] args) {
-      Context context = new Context();
- 
-      StartState startState = new StartState();
-      startState.doAction(context);
- 
-      System.out.println(context.getState().toString());
- 
-      StopState stopState = new StopState();
-      stopState.doAction(context);
- 
-      System.out.println(context.getState().toString());
-   }
-}
-```
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         3k字
       </div>
       <div class="card-info">
@@ -1262,11 +1195,12 @@ public class StatePatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/abstract-factory/">
-      Abstract Factory
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/abstract-factory/">
+        Abstract Factory
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ## 抽象工厂
 
 在抽象工厂模式中，给工厂定义了统一接口，不同的工厂提供不同的产品族，同一类、不同族的产品也定义统一的接口
@@ -1403,6 +1337,82 @@ public class FactoryProducer {
 这是工厂的管理类
 
 用户通过FactoryProducer获得具体工厂，然后通过具体工厂获得对应产品
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/adapter/">
+      适配器模式
+    </a>
+    <span class="card-abstract">
+      到这里，五种基本的创造型模式就结束了
+创造型模式注重于创建对象的方式，通过工厂封装创建过程、通过单例只创建同一个对象、通过原型克隆对象等等
+
+接下来是结构型模式，结构将会
+
+### Adapter, also known as Wrapper
+
+适配器模式用于：当一个业务逻辑的接口和一个类不一致，但是又需要对这个类进行处理时，通过建立一个adapter的中间类来实现接口的对接，故称之为适配器
+
+以这幅图为例子解释
+![avator](https://refactoring.guru/images/patterns/diagrams/adapter/structure-object-adapter.png)
+Client希望通过接口与一个Service交互，但是两者接口不一致，所以我们实现一个Client Interface的适配器类，其中通过Composition的方式包括了一个Servive对象，然后再实现method来实现Service和Client的对接
+这幅图的业务逻辑应该是Client需要调用Service中的方法从而得到数据，但是没有接口可以直接接收一个Service，所以通过实现一个接口适配器，接收内部数据，并转换为Service方法参数，传参、返回结果
+
+---
+
+另一种是通过inheritance的方式实现：
+
+![](https://refactoring.guru/images/patterns/diagrams/adapter/structure-class-adapter.png)
+建立一个适配器，通过多继承，在其内部实现接口和类的交互，图中的Existing class可以是接口也可以是类，只要Adapter重写method方法，就可以在内部调用Service部分的内容
+
+Java不支持多继承
+
+书上再记几个要点：
+- 适配器的工作量取决于接口的相似程度
+- 为一个类建立内置的适配器以增加其可复用度
+- 使用双向适配器来使两个类相互透明
+
+如何建立合适的适配器？
+- 找到一个窄接口，也就是adaptee需要完成的操作，在客户端中对应需要的最少操作
+  这样说有点抽象，按照书上的例子，我们建立了一个树的接口，其中包括建造这棵树需要的方法，这些方法中，把节点连接起来的部分在抽象类中就能自己完成。但是树的节点是不确定类型的，可以替换成任何其他类，所以建立树的节点的方式是不同的，这方式的不同导致了树节点不符合树的接口，所以需要适配器来把树建造节点的方法适配给树类。
+  这个过程中，并不是所有的树中用到的方法都是委托给其他类的，在类中找到这么一个最小的需要委托的类，建立接口和适配器，这个接口我们称为窄接口
+  接口是为了确定需要委托的方法，而适配器是为了让其他的类符合接口，除非我在预先设计时就确定好所有的可以作为节点的类，并为其和树类设计共同的接口
 
     </span>
 

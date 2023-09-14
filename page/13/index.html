@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,6 +244,143 @@
         2021-01-01
       </div>
       <div class="card-info">
+        3.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-proportionalShare/">
+        分比例调度
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 分比例调度
+分比例调度就是每个进程都获得一个比例，所占比例越大的进程越容易被调度运行
+
+## Lottery Scheduling（彩票调度）
+Lottery调度的关键在于票据（tickets）,每个进程被分配了一定数量的票据，然后我们利用随机数，随机抽取一张票，拥有这个ticket的进程就能被调度运行，按照概率论（probability theory）的理论，当随机次数足够多时，每个进程被调度的概率接近于其tickets数量所占的比例
+
+具体实现方式如下：
+- 首先我们用一个链表，每个节点上储存的是每个进程的进程信息，其中包括了进程的tickets数量
+- 然后我们利用生成器随机生成一个票数以内的数字
+- 接着我们遍历链表，将每个进程的tickets数量加起来，当加起来的数量大于随机生成的数字时，就确定了这个进程被调度运行
+
+一般tickets数量比较大的进程被排在链表前面，这样可以减少遍历链表的次数，提高效率
+
+至于如何分配tickets，这是一个开放问题，用户可以根据需求自定义每个进程的tickets数量
+在进程间友好的环境下可以让进程自己产生更多的tickets，但是如果进程间存在竞争的话，进程就会不断产生新的tickets，从而导致诸多问题
+此外用户也可以根据需求给指定的进程更多票据，来优先完成某些任务之类的
+系统自行分配tickets可以参照之前的OS调度的思路，执行时间越久的进程分配的票据越少，每进行一段时间就从其tickets中拿走一些
+
+## Stride Scheduling
+使用Lottery Scheduling的问题在于，当某个进程分配的tickets很少时，有可能会导致其一直都无法被调度执行，使得这个进程进入饥饿状态
+
+所以这里书上再介绍了一种方式：Stride Scheduling（步幅调度）
+
+我们用与Lottery Scheduling相似的方式给每个进程分配一个stride（步幅）和一个pass（经过长度），其中stride和其tickets数量成反比
+
+然后初始状态所有进程的pass都为0，我们随机从中选择进程调度执行一个time quantum，然后将其pass值加上stride，然后再从pass值最小的进程中选择一个调度运行，以此类推
+
+这样我们就能保证每个步幅的进程都能得到相应概率的调度运行
+
+但是Stride Scheduling并不支持global state（全局状态），也就是说，我们只能对几个固定的进程进行Stride Scheduling，而不能对全部进程进行，如果此时有一个新的进程需要加入调度列表，其他的进程的pass值已经很大，新进程的pass值如果只是0的话，那么新进程就会占据CPU的使用，这样就会导致其他进程饥饿
+
+虽然书上没有进一步说明，但是我认为pass值是可以根据现有的进程的pass值预估出一个合理的值的
+
+## CFS（Completely Fair Scheduler）
+
+CFS是Linux使用的进程调度方式，这个调度法的主要参数有两个：
+- vruntime（虚拟运行时间）
+- sched_latency（调度延迟）
+
+vruntime并不是进程实际运行的时间，而是CFS评估进程是否调度的一个标准，是基于优先级和实际运行时间计算出的一个数值
+
+sched_latency作为调度延迟，实际意义指一个进程在运行完自己的min_time后，再次被调度执行之前，需要等待的时间
+用另一种方式来思考的话，我们可以先假设进程运行的时间被sched_latency所分，也就是说每个区间的长度为sched_latency，然后在这个区间中每个进程需要平分这段时间，也就是说每个进程的time slice为sched_latency / 进程数(n)
+
+这样的话就能保证每个进程被调用的平均延迟（latency）为sched_latency，同时为了防止同时进行的进程过多，导致每个进程的min_time过短，导致context switching产生overhead，所以对于sched_latency划分的值会设定一个min_granluarity（最小粒度），这也就导致当进程数过多时，进程之间必然不能完全公平，有些进程将得不到调度运行
+
+大概对这两个参数有个了解之后我们通过一个例子来说明CFS的运作方式：
+
+现在假设有4个进程A、B、C、D，他们的初始vruntime都为0，sched_latency为1000，min_granularity为100，那么我们可以得到每个进程的min_time为1000 / 4 = 250，也就是说每个进程在一个sched_latency的时间内至少要运行250的时间才能被中断
+
+- tips：min_time并不一定是time quantum的倍数，我们以time quantum进行累加，超过了min_time就认定为完成了应该运行的时间
+
+一个进程运行会累加他的vruntime，当vruntime大于250时CFS就会去寻找一个vruntime小于250的进程来运行
+
+这样相同优先级的进程就能平分cpu的占用时间
+
+但是我们之前说了**vruntime**是通过公式计算出来的一个虚拟的运行时间，对于一个优先级高的进程，它运行的实际时间应该要更多一些，但是我们不能去修改由sched_latency均分而来的time slice（这样就破坏了CFS公平的部分），所以我们的vruntime的累加是由公式来计算的，公式如下：
+$$vruntime_i = vruntime_i + \frac{weight_0}{weight_i}\times runtime_i$$
+
+这里的$weight$指的是优先级的权重，$weight_0$是标准优先级的权重，不同优先级的权重由下所示：
+
+```c
+static const int prio_to_weight[40] = {
+/* -20 */ 88761, 71755, 56483, 46273, 36291,
+/* -15 */ 29154, 23254, 18705, 14949, 11916,
+/* -10 */ 9548, 7620, 6100, 4904, 3906,
+/* -5 */ 3121, 2501, 1991, 1586, 1277,
+/* 0 */ 1024, 820, 655, 526, 423,
+/* 5 */ 335, 272, 215, 172, 137,
+/* 10 */ 110, 87, 70, 56, 45,
+/* 15 */ 36, 29, 23, 18, 15,
+};
+```
+这是书上所示的优先级及其对应的权重，负数的优先级代表高优先，正数代表低优先
+
+通过以上的优先级权重表就可以计算对应的vruntime的累加了
+相应的，也可以通过其权重和sched_latency计算出每个进程的实际运行的时间
+
+## 使用红黑树
+
+为了能够快速找到正在运行的进程中的vruntime最小的进程，我们需要使用适合的数据结构来储存这些进程的信息
+
+Linux使用了红黑树来完成这个工作，并且带有对最小值的缓存，所以有相当概率可以在O(1)的时间内找到最小值，即便缓存不命中，也只需要O(logn)的时间
+而完成运行后的进程需要重新加入红黑树中，仍然只需要O(logn)的时间即可
+
+关于红黑树的文章如下：
+https://dnullp.github.io/2023/01/25/data_struct/RBTree/
+
+## 关于长时间休眠的进程
+长时间休眠的进程重新开始运行后，其vruntime会远小于其他进程，从而导致其独占CPU的使用，所以我们要对其vruntime进行调整，Linux会选择红黑树中最小的进程，设置为其新的vruntime，这样能够避免进程的饥饿状态，但是一定程度上破坏了公平性
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         2.7k字
       </div>
       <div class="card-info">
@@ -255,12 +392,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/leading-chapter/">
-        Operating System Chapter 1
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/operating-system/leading-chapter/">
+      Operating System Chapter 1
+    </a>
+    <span class="card-abstract">
+      
 The document I am learning is *Operating Systems: Three Easy Pieces*, and there is the address https://pages.cs.wisc.edu/~remzi/OSTEP/.
 
 This is a online free ebook, and someone recommended it to me.
@@ -336,117 +472,6 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
 这些工作后来由UNIX系统完成并沿用至今日
 
 之后就是现代操作系统的诞生，不再多讲述
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/eng/GrammarClub/">
-      《语法俱乐部整理》
-    </a>
-    <span class="card-abstract">
-      
-## 第一章 基本句型和补语
-
-S：主语
-V：动词
-O：宾语
-C：补语
-
-**五种基本句型**：
-1. SV
-2. SVO
-3. SVC
-4. SVOO
-5. SVOC
-
-补语和宾语的区别在于宾语和主语不一定是同一个事物，而补语和主语是同一个事物，补语是对主语的描述、补充
-
-动词中可以解释为“是”的词没有具体的含义，称之为连结动词，又叫**系动词**，这样的词即使去掉也不影响句子含义（中文上），宾补则是用来形容，或者和宾语是同一个体的补语
-
-区别双宾语和宾补的区别，可以通过简单的在后两者之间加上“是”来鉴定
-
-## 第二章 名词短语和冠词
-
-#### 什么时候不需要加限定词？
-后面的名词不适合用a、one来描述时，不需要限定词
-
-专有名词也不适合加限定词
-
-#### 表示所属关系时，无生命物体用of，有生命个体才使用s
-legs of the table
-the man&#39;s legs
-
-**错题记录**
-The prime minister is the real ruler and the prince is merely a **nobody**.
-nobody指的是无名小卒，需要冠词a
-
-Writing is one thing and talking is quite **another**.
-the other表示两者中的一者，但是此处没有限定范围，所以用another
-
-## 第三章 动词时态
-
-动词需要考虑时态和状态，对于状态处理，可以当作补语来看待，状态分为进行状态、被动状态、一般状态，当动词具有这些特殊状态时，我们只需把前面的be动词当作动词主体，后面部分当作补语即可
-
-The man was being questioned in the room.
-首先这是个被动与进行状态同时存在的句子，questioned做being的补语，being做was的补语，表示时态的词实际上的是was
-
-上面的这些时态都称为**简单式**，此外的时态称为**完成式**
-
-简单式表示的是某一个时间点上发生的事，而完成式表示的是**某个时间点为止，前面一段时间的总和**内发生的事
-
-eg.1:
-I am sure I have seen this face somewhere.
-我很确定我见过这个脸
-表示的是从过去无限久到现在的时间内发生的事情
-
-eg.2:
-We hace been working overtime for a week to fill your order.
-加班是从过去一周到现在这段时间一直发生的
-
-eg.3:
-The house has been redecorated twice since they moved in.
-从搬进房子到现在发生过两次的事件
-
-在完成式中时态的变化反应在have上，而不是动词了
-
-
-
-
 
     </span>
 
@@ -650,6 +675,145 @@ $$O(nlogn)$$
         2021-01-01
       </div>
       <div class="card-info">
+        2.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-9/">
+      计算机网络第三章的一点思路整理
+    </a>
+    <span class="card-abstract">
+      
+## 可靠数据传输
+
+运输层在不可靠的网络层IP协议的基础上搭建了一个可靠的传输协议，但是其中的实现原理有些许复杂，在此做一下记录
+
+### 流水线
+流水线是后续的多种重传机制的基础，假如每个报文段在被接收方收到之后，返回一个ACK响应，再传输下一个报文段，在两次传输报文段之间的等待时间是不可忽视的长
+参考cpu的指令处理流水线，网络数据分组的传输也使用了流水线机制，一次性传输多个分组，并且根据后续的响应做出重传
+
+### 流水线的基本重传方式
+
+首先，流水线的实现中有一个“滑动窗口”，没错，就和单调队列例题中的滑动窗口是同一个东西，窗口在分成报文段的报文上滑动，每个段就是一个分组，窗口的长度就是当前可以容纳的已经发送但是未接收到确认响应的分组数量，我们用**base**标记窗口的起始位置，表示未接受到的编号最小的分组的序号，用**nextseqnum**标记可用的“流水线空位”的起始位置
+
+#### 累计确认
+base标记的位置之前的全部分组，我们认为它们已经全部被接收并确认，这样的确认方式称为**累计确认**
+
+#### 回退N步
+在回退N步中采用了累计确认的方式，接收方会丢弃全部的**失序**的分组，并发送最近的成功接收的分组的ACK
+对于发送方来说，则一直等待base标记处的ACK，如果发生超时事件，则从base处重新发送所有的未确认分组
+
+#### 选择重传
+选择重传往往是我们最常见的重传方式
+对于接收方和发送方都需要维护一个窗口
+对于接收方来说，窗口内的报文段就是等待接收的分组，在窗口范围之内的编号的分组被接收到时，则返回一个对于编号的ACK，如果是Base_recv标记的位置的分组，则窗口滑动，否则将分组进行缓存，在前面的分组到达后再一并上交给上层
+特别的，对于base_recv以前的分组被接收到时，也需要发送ACK信号回去，这里涉及到一种特殊情况，一会儿讨论
+
+对于发送方来说，窗口内的每个分组都有一个单独的逻辑计时器，用来控制超时事件，窗口的滑动位置由最早的未发送分组控制
+
+##### 选择重传的bug
+窗口长度比序号空间小得不够多时无法正常工作，因为在ACK丢失的情况下，发送方重传了一个分组，但是接收方接收了正确的分组后窗口向下滑动了，那么相同序号的分组可能进入窗口等待，那么此时接收方就会把一个重传的分组当作新的分组接收
+
+解决这种问题，一般需要吧窗口长度设为小于或等于序号空间大小的一半
+
+### TCP协议中的更多的细节实现
+
+TCP协议的实现在可靠数据传输的基础上进行了更多的细节实现
+
+#### TCP连接
+首先TCP是面向连接的协议，在正式开始通话前会交换信息，建立一条逻辑连接，以确保可靠信息传输的进行，这个过程就是考试常考的“三次握手四次挥手”
+
+##### TCP报文结构
+这篇思考主要是理清可靠数据传输的逻辑，所以会跳过一些无关知识点
+
+TCP的报文结构如下：
+
+![](/image/network/1_1.png)
+
+与可靠性有关的部分包括
+- 数据序号：报文段的首**字节**在字节流中的序号
+- 确认序号：即之前说过的ACK响应，表示希望接收的序号(NAK已经被优化掉了)
+- ACK标志：表示确认序号是有效的
+- 包校验和：检测报文段的完整性
+
+#### TCP使用的可靠性措施
+- 累计确认
+- ACK响应都是被**捎带**在一个数据报文段中的
+
+##### 发送方的策略
+
+- 传输层从上层获得报文，生成具有Nextseqnum序号的TCP报文段，并启动计时器
+- 定时器超时，重传序号最小的未传输报文段。重启定时器
+- 收到ACK，如果ACK字段的值大于SendBase，则滑动窗口
+
+因为TCP采用的累计确认，所以返回的ACK响应必然会标记出接收方以全部接收的最小编号
+书上讨论了三种特殊情况，到目前为止，我们可以认为运输层的数据传输已经保证可靠
+
+### 总结TCP所使用的可靠数据传输机制
+TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一点和GBN协议类似，但是接收方会选择性地缓存失序的分组，这一点和SR协议类似，TCP使用的这种可靠数据传输协议我们称为**选择确认**
+
+#### 流量控制
+
+数据到达接收方后，并不是立即上传给上层的，而是会停留在一个“缓存区”中，等待上层读取，这样的缓存区通过一个窗口实现，称为**接收窗口**，接收方将接收窗口的大小写在接收窗口字段中，告诉发送方如何控制**发送但未确认的报文段**
+
+### 拥塞原因和代价中的数值计算思路
+
+首先主机A、B向路由器提供流量的速率是$\lambda_{in}$
+接受方的接收速率（吞吐量）为$\lambda_{out}$
+初始数据+重传数据为$\lambda_{in}^{&#39;}$
+
+分为下面三种情况讨论：
+- 情况1：
+  有一台无限缓存的路由器
+  这时，两台机器同时向目标传输数据，在速率接近最大吞吐量时，链路的利用率达到理想状态，但是此时的排队时延也会达到最高
+
+- 情况2：
+  有一台缓存有限的路由器
+  有限的缓存容量会导致丢包重传的问题， 我们假设发送方在路由器缓存容量满时不再发送分组，则链路吞吐量理想最大为$R/2$，由于拥塞控制一定小于这个值
+  如果考虑确定丢失了一个包后进行重传，吞吐量一般为$R/3$，所以一般有$0.333R$是初始数据，$0.166R$是重传数据
+  tips:由于链路上的缓存空间有限，在$\lambda_{in}$过高时，会发生下面的情况：
+  数量为a的数据到达路由器，其中有b数量的数据丢失，剩下的部分被发送到接收方，然后b数量的数据才重传，这样，接收方接收数据的时间就加上了重传b部分的时间
+
+  考虑到并不是所有数据都会丢失，而只是传输时间过长，所以还会产生不必要的重传
+
+- 情况3
+  采用多台路由器和多跳路径时，两条连接会在使用同一个路由器时产生竞争，当一个$\lambda_{in}^{&#39;}$接近无限大时，其他的连接的吞吐量将接近于0
+
+#### 最后一部分是对一些术语的记录
+- 快重传
+  快重传指的是在发送方收到三个连续的**冗余ACK**后，确认这个分组已经丢失，所以不等待超时事件直接进行重传
+
+- 快速恢复
+  快重传不需要等待慢启动，而是直接快速将速率调整到阈值
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         1.2k字
       </div>
       <div class="card-info">
@@ -661,11 +825,12 @@ $$O(nlogn)$$
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-25/">
-      关于IP任播、BGP选择以及应用
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-25/">
+        关于IP任播、BGP选择以及应用
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### IP任播
 首先**任播**的寻址策略为，在一群的接收节点中，只有一个可以得到接收
 
@@ -700,8 +865,12 @@ BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进�
 #### BGP是从接收端向网络中发送路由信息的
 并将自己的路由信息通知到整个网络
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -711,11 +880,13 @@ BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进�
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -732,12 +903,11 @@ BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-30/">
-        SNMP与网络管理
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-30/">
+      SNMP与网络管理
+    </a>
+    <span class="card-abstract">
+      
 关于SNMP这一节的内容在第七版上的内容已经过时了，第八版采用的英文版原书，所以在此对原文进行中文的思路整理
 
 ### 5.7.1 network management framework
@@ -903,151 +1073,6 @@ NETCONF操作表：
 
 以上我们讨论的SNMP/MIB和NETCONF/YANG都是应用层协议，是SDN软件
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-9/">
-      计算机网络第三章的一点思路整理
-    </a>
-    <span class="card-abstract">
-      
-## 可靠数据传输
-
-运输层在不可靠的网络层IP协议的基础上搭建了一个可靠的传输协议，但是其中的实现原理有些许复杂，在此做一下记录
-
-### 流水线
-流水线是后续的多种重传机制的基础，假如每个报文段在被接收方收到之后，返回一个ACK响应，再传输下一个报文段，在两次传输报文段之间的等待时间是不可忽视的长
-参考cpu的指令处理流水线，网络数据分组的传输也使用了流水线机制，一次性传输多个分组，并且根据后续的响应做出重传
-
-### 流水线的基本重传方式
-
-首先，流水线的实现中有一个“滑动窗口”，没错，就和单调队列例题中的滑动窗口是同一个东西，窗口在分成报文段的报文上滑动，每个段就是一个分组，窗口的长度就是当前可以容纳的已经发送但是未接收到确认响应的分组数量，我们用**base**标记窗口的起始位置，表示未接受到的编号最小的分组的序号，用**nextseqnum**标记可用的“流水线空位”的起始位置
-
-#### 累计确认
-base标记的位置之前的全部分组，我们认为它们已经全部被接收并确认，这样的确认方式称为**累计确认**
-
-#### 回退N步
-在回退N步中采用了累计确认的方式，接收方会丢弃全部的**失序**的分组，并发送最近的成功接收的分组的ACK
-对于发送方来说，则一直等待base标记处的ACK，如果发生超时事件，则从base处重新发送所有的未确认分组
-
-#### 选择重传
-选择重传往往是我们最常见的重传方式
-对于接收方和发送方都需要维护一个窗口
-对于接收方来说，窗口内的报文段就是等待接收的分组，在窗口范围之内的编号的分组被接收到时，则返回一个对于编号的ACK，如果是Base_recv标记的位置的分组，则窗口滑动，否则将分组进行缓存，在前面的分组到达后再一并上交给上层
-特别的，对于base_recv以前的分组被接收到时，也需要发送ACK信号回去，这里涉及到一种特殊情况，一会儿讨论
-
-对于发送方来说，窗口内的每个分组都有一个单独的逻辑计时器，用来控制超时事件，窗口的滑动位置由最早的未发送分组控制
-
-##### 选择重传的bug
-窗口长度比序号空间小得不够多时无法正常工作，因为在ACK丢失的情况下，发送方重传了一个分组，但是接收方接收了正确的分组后窗口向下滑动了，那么相同序号的分组可能进入窗口等待，那么此时接收方就会把一个重传的分组当作新的分组接收
-
-解决这种问题，一般需要吧窗口长度设为小于或等于序号空间大小的一半
-
-### TCP协议中的更多的细节实现
-
-TCP协议的实现在可靠数据传输的基础上进行了更多的细节实现
-
-#### TCP连接
-首先TCP是面向连接的协议，在正式开始通话前会交换信息，建立一条逻辑连接，以确保可靠信息传输的进行，这个过程就是考试常考的“三次握手四次挥手”
-
-##### TCP报文结构
-这篇思考主要是理清可靠数据传输的逻辑，所以会跳过一些无关知识点
-
-TCP的报文结构如下：
-
-![](/image/network/1_1.png)
-
-与可靠性有关的部分包括
-- 数据序号：报文段的首**字节**在字节流中的序号
-- 确认序号：即之前说过的ACK响应，表示希望接收的序号(NAK已经被优化掉了)
-- ACK标志：表示确认序号是有效的
-- 包校验和：检测报文段的完整性
-
-#### TCP使用的可靠性措施
-- 累计确认
-- ACK响应都是被**捎带**在一个数据报文段中的
-
-##### 发送方的策略
-
-- 传输层从上层获得报文，生成具有Nextseqnum序号的TCP报文段，并启动计时器
-- 定时器超时，重传序号最小的未传输报文段。重启定时器
-- 收到ACK，如果ACK字段的值大于SendBase，则滑动窗口
-
-因为TCP采用的累计确认，所以返回的ACK响应必然会标记出接收方以全部接收的最小编号
-书上讨论了三种特殊情况，到目前为止，我们可以认为运输层的数据传输已经保证可靠
-
-### 总结TCP所使用的可靠数据传输机制
-TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一点和GBN协议类似，但是接收方会选择性地缓存失序的分组，这一点和SR协议类似，TCP使用的这种可靠数据传输协议我们称为**选择确认**
-
-#### 流量控制
-
-数据到达接收方后，并不是立即上传给上层的，而是会停留在一个“缓存区”中，等待上层读取，这样的缓存区通过一个窗口实现，称为**接收窗口**，接收方将接收窗口的大小写在接收窗口字段中，告诉发送方如何控制**发送但未确认的报文段**
-
-### 拥塞原因和代价中的数值计算思路
-
-首先主机A、B向路由器提供流量的速率是$\lambda_{in}$
-接受方的接收速率（吞吐量）为$\lambda_{out}$
-初始数据+重传数据为$\lambda_{in}^{&#39;}$
-
-分为下面三种情况讨论：
-- 情况1：
-  有一台无限缓存的路由器
-  这时，两台机器同时向目标传输数据，在速率接近最大吞吐量时，链路的利用率达到理想状态，但是此时的排队时延也会达到最高
-
-- 情况2：
-  有一台缓存有限的路由器
-  有限的缓存容量会导致丢包重传的问题， 我们假设发送方在路由器缓存容量满时不再发送分组，则链路吞吐量理想最大为$R/2$，由于拥塞控制一定小于这个值
-  如果考虑确定丢失了一个包后进行重传，吞吐量一般为$R/3$，所以一般有$0.333R$是初始数据，$0.166R$是重传数据
-  tips:由于链路上的缓存空间有限，在$\lambda_{in}$过高时，会发生下面的情况：
-  数量为a的数据到达路由器，其中有b数量的数据丢失，剩下的部分被发送到接收方，然后b数量的数据才重传，这样，接收方接收数据的时间就加上了重传b部分的时间
-
-  考虑到并不是所有数据都会丢失，而只是传输时间过长，所以还会产生不必要的重传
-
-- 情况3
-  采用多台路由器和多跳路径时，两条连接会在使用同一个路由器时产生竞争，当一个$\lambda_{in}^{&#39;}$接近无限大时，其他的连接的吞吐量将接近于0
-
-#### 最后一部分是对一些术语的记录
-- 快重传
-  快重传指的是在发送方收到三个连续的**冗余ACK**后，确认这个分组已经丢失，所以不等待超时事件直接进行重传
-
-- 快速恢复
-  快重传不需要等待慢启动，而是直接快速将速率调整到阈值
-
     </span>
 
   </div>
@@ -1069,85 +1094,6 @@ TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一�
         2021-01-01
       </div>
       <div class="card-info">
-        839字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2023-4-21/">
-        重温TCP细节
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        半年过去了, 学校开始了计算机网络课程, 在重温并完成实验的过程中, 对一些细节和原理有了一些新的理解, 在此记录一下
-## TCP的全双工传输
-
----
-
-首先, TCP协议是双全工传输, 也就是说, 数据可以在两个方向上进行传输
-
-然后在抓包时, 对这种传输方式有了直观的反应:
-
-![](/image/network/wireshark-4.png)
-
-这是一段服务器接收文件的抓包, 服务器接收到报文返回ACK的编号增长是可以理解的, 但是传输文件的报文也有ACK的编号, 并且一直为1, 这是才反应过来, 在TCP中的ACK是传输文件捎带的, 只是为了让接收的一方知道自己发送的报文被接收到哪个序号了
-
-在这里的服务器并没有向我发送过报文, 所以我发送捎带的ACK一直为1
-
---- 
-
-## TCP的窗口大小
-![](/image/network/wireshark-4-2.png)
-我们知道接收方会告诉发送方自己的窗口剩余大小, 表示自己还能接收多少数据, 并且窗口的起点固定为最早的还未被接收的数据, 后面的数据可以被暂时缓存在窗口之中
-起点的数据包收到后开始向后滑动
-
-发送方会根据剩余的窗口大小来决定是否继续发送新的数据
-
-按照传统的TCP报文格式, window字段有16位, 最大值为65535, 但是现在的网速一般很快, 这么小的窗口很快就会被塞满
-
-所以我们在TCP的optional field中加入了一个新的字段, 叫做window scale, 按照倍数来扩展窗口大小
-
----
-## PSH位的作用
-![](/image/network/wireshark-4-3.png)
-
-按照文档说明, PSH位说明该报文需要立刻传递给上层协议, 而不是留在缓存窗口中等待处理
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         17k字
       </div>
       <div class="card-info">
@@ -1159,11 +1105,12 @@ TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-11-5/">
-      6.7节阅读与翻译
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-11-5/">
+        6.7节阅读与翻译
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 只是阅读时用于辅助记忆的笔记翻译，所以很多地方略过未翻译，请勿当作翻译参考
 
 ## Retrospective: A Day in the Life of a Web Page Request
@@ -1324,8 +1271,12 @@ HTTP服务器收到了请求后，创建回应信息，把对应的网页置入�
 
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1335,11 +1286,13 @@ HTTP服务器收到了请求后，创建回应信息，把对应的网页置入�
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1356,12 +1309,11 @@ HTTP服务器收到了请求后，创建回应信息，把对应的网页置入�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/self-studying-notes/notes/">
-        计算机网络记录反思
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/network/self-studying-notes/notes/">
+      计算机网络记录反思
+    </a>
+    <span class="card-abstract">
+      
 ### 第一章思路整理
 
 第一次看这本书，刚开始有点没把握好节奏，在几个地方产生了一些误解，现在重新将本章的内容梳理一下，意在自我学习
@@ -1480,6 +1432,154 @@ packet loss：路由器缓存不足导致分组丢失
 
 
 
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        4.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-2/">
+        wireshark practice 2
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+the data is as follows:
+[print_data_2_1](/pdf/wireshark_2_1.pdf)
+
+1. Is your browser running HTTP version 1.0 or 1.1?  What version of HTTP is the server running?
+
+    两者都是`HTTP/1.1`
+
+2. What languages (if any) does your browser indicate that it can accept to the server?
+    `ccept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,en-GB; q=0.6\r\n`
+    由上可知优先的语言包括: 中文, 英文
+    其中zh-CN是中文普通话, 包括繁体和简体, 而zh包括了方言在内的所有中   文
+
+3. What is the IP address of your computer?  Of the gaia.cs.umass.edu server?
+
+    Mine is `10.122.242.69`
+    gaia.cs.umass.edu is `128.119.245.12`
+
+4. What is the status code returned from the server to your browser?
+
+    `200 OK`
+
+5. When was the HTML file that you are retrieving last modified at the server?
+
+    `Fri, 24 Feb 2023 06:08:02 GMT`
+
+6. How many bytes of content are being returned to your browser?
+
+    `Content-Length 128`
+
+7. By inspecting the raw data in the packet content window, do you see any headers within the data that are not displayed in the packet-listing window?  If so, name one.
+
+我没看出来, 网上答案也说没有
+
+---
+
+第二部分是关于缓存和检测文件是否修改的测试:
+
+[print_data_2_2](/pdf/wireshark_2_2.pdf)
+
+8. Inspect the contents of the first HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE” line in the HTTP GET?
+
+    No, I don&#39;t see it.
+
+9. Inspect the contents of the server response. Did the server explicitly return the contents of the file?   How can you tell?
+
+    Yes, the server explicitly return the contents of the file. I can see the content of the file in the packet content window.
+
+10. Now inspect the contents of the second HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE:” line in the HTTP GET? If so, what information follows the “IF-MODIFIED-SINCE:” header?
+
+    yes, I see it.
+    The information is `If-Modified-Since: Thu, 02 Mar 2023 06:59:01 GMT`
+
+11. What is the HTTP status code and phrase returned from the server in response to this second HTTP GET?  Did the server explicitly return the contents of the file?   Explain.
+
+    The status code is `304 Not Modified`, and the server didn&#39;t explicitly return the contents of the file.
+    Because the file has cached in the browser, so the server have no need to return the contents of the file.
+
+---
+
+第三部分是关于大文件的分段传输:
+
+[print_data_2_3](/pdf/wireshark_2_3.pdf)
+
+12. How many HTTP GET request messages did your browser send?  Which packet number in the trace contains the GET message for the Bill or Rights?
+    Only 1 send. And the packet number contains 300, 301, 302, 303.
+
+13. Which packet number in the trace contains the status code and phrase associated with the response to the HTTP GET request?
+
+    there is the relative print:
+    [print_data_2_3_1](/pdf/wireshark_2_3_1.pdf)
+    From the print we can leran that all the mentioned information is contained in the **packet 300**.
+
+14. What is the status code and phrase in the response?
+
+    `200 OK`
+
+15. How many data-containing TCP segments were needed to carry the single HTTP response and the text of the Bill of Rights?
+
+    `4`, for each the maximum payload of HTTP is 1380 bytes, and 1436 bytes is the total length of the packet.
+
+---
+
+第四部分是关于包含内部object资源的html的 ( 比如含有图片的网络)
+
+[print_data_4](/pdf/wireshark_2_4.pdf)
+
+16.	How many HTTP GET request messages did your browser send?  To which Internet addresses were these GET requests sent?
+
+    `5`GETs were sent, and the addresses are:
+    - `Destination Address: 128.119.245.12`-request the HTML, ico and pearson.png
+    - `Destination Address: 178.79.137.164`-request the image
+
+17.	Can you tell whether your browser downloaded the two images serially, or whether they were downloaded from the two web sites in parallel?  Explain.
+
+    They are downloaded serially from two different web sites(2 IP addresses)
+
+---
+
+下一部分是关于认证的内容:
+
+18.	What is the server’s response (status code and phrase) in response to the initial HTTP GET message from your browser?
+
+    `401 Unauthorized`
+
+19.	When your browser’s sends the HTTP GET message for the second time, what new field is included in the HTTP GET message?
+
+    `Authorization: Basic ZG51bGxfUFBQUFA6MTMxMzExMzQ1YXNk\r\n`
+    anyone can decode it by base64, and the result is 
+    `Credentials: dnull_PPPPP:131311345asd`
+
       </span>
     </div>
   </div>
@@ -1507,7 +1607,7 @@ packet loss：路由器缓存不足导致分组丢失
         2021-01-01
       </div>
       <div class="card-info">
-        1.4k字
+        839字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -1518,46 +1618,44 @@ packet loss：路由器缓存不足导致分组丢失
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-1-inro/">
-      wireshark practice 1
+    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2023-4-21/">
+      重温TCP细节
     </a>
     <span class="card-abstract">
-      
-计网开课了, 复习一下遗忘的东西, 顺便做一下课本后的wireshark实验
-
-# lab1: intro to wireshark
-
-1. List 3 different protocols that appear in the protocol column in the unfiltered packet-listing window in step 7 above.  
-
-- DNS
-- TCP
-- UDP
-- TLSv1.2
-- SSDP
-- ICMPv6
+      半年过去了, 学校开始了计算机网络课程, 在重温并完成实验的过程中, 对一些细节和原理有了一些新的理解, 在此记录一下
+## TCP的全双工传输
 
 ---
 
-2. How long did it take from when the HTTP GET message was sent until the HTTP OK reply was received? (By default, the value of the Time column in the packet-listing window is the amount of time, in seconds, since Wireshark tracing began.  To display the Time field in time-of-day format, select the Wireshark View pull down menu, then select Time Display Format, then select Time-of-day.)
+首先, TCP协议是双全工传输, 也就是说, 数据可以在两个方向上进行传输
 
-|419|13:34:02.688933|10.122.242.69|128.119.245.12|
-|-|-|-|-|
-|447| 13:34:03.015422| 128.119.245.12| 10.122.242.69|
-以上为发送`GET`和接收数据帧的数据
-可计算出时间差为`0.326489`秒
+然后在抓包时, 对这种传输方式有了直观的反应:
+
+![](/image/network/wireshark-4.png)
+
+这是一段服务器接收文件的抓包, 服务器接收到报文返回ACK的编号增长是可以理解的, 但是传输文件的报文也有ACK的编号, 并且一直为1, 这是才反应过来, 在TCP中的ACK是传输文件捎带的, 只是为了让接收的一方知道自己发送的报文被接收到哪个序号了
+
+在这里的服务器并没有向我发送过报文, 所以我发送捎带的ACK一直为1
+
+--- 
+
+## TCP的窗口大小
+![](/image/network/wireshark-4-2.png)
+我们知道接收方会告诉发送方自己的窗口剩余大小, 表示自己还能接收多少数据, 并且窗口的起点固定为最早的还未被接收的数据, 后面的数据可以被暂时缓存在窗口之中
+起点的数据包收到后开始向后滑动
+
+发送方会根据剩余的窗口大小来决定是否继续发送新的数据
+
+按照传统的TCP报文格式, window字段有16位, 最大值为65535, 但是现在的网速一般很快, 这么小的窗口很快就会被塞满
+
+所以我们在TCP的optional field中加入了一个新的字段, 叫做window scale, 按照倍数来扩展窗口大小
 
 ---
+## PSH位的作用
+![](/image/network/wireshark-4-3.png)
 
-3. What is the Internet address of the gaia.cs.umass.edu (also known as www-net.cs.umass.edu)?  What is the Internet address of your computer?
+按照文档说明, PSH位说明该报文需要立刻传递给上层协议, 而不是留在缓存窗口中等待处理
 
-`10.122.242.69`这是我的IP地址(北京邮电大学的, 别查了)
-`128.119.245.12`这是服务器地址
-
----
-4. Print the two HTTP messages (GET and OK) referred to in question 2 above. To do so, select Print from the Wireshark File command menu, and select the “Selected Packet Only” and “Print as displayed” radial buttons, and then click OK.
-
-打印文件如下:
-[print_1](/pdf/wireshark1.pdf)
 
 
     </span>

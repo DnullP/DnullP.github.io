@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/MZEW5UCFSBPiNvH.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,145 +244,6 @@
         2021-01-01
       </div>
       <div class="card-info">
-        2.5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/memento/">
-        memento
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### memento
-
-备忘录模式是用于储存类状态的设计模式
-
-现在假设我们需要实现程序中“撤回”的操作，也就是说我们需要对程序的历史状态做一个记录，然后在用户做出“undo”指令的时候回溯到某个历史状态
-
-我们如果直接用一个外部类来储存这些状态的话，对于```private```级别的状态是无法访问的，所以我们需要让类的内部自行储存他的状态
-
-下面我们来看来自refactoring.guru的类结构图：
-![](https://refactoring.guru/images/patterns/diagrams/memento/structure1.png?id=4b4a42363a005b617d4df06689787385)
-
-这里面有三个要素：
-- Originator
-  这是需要储存状态的类，其中包含了状态和 ```save()```和 ```restore()```方法，分别用于储存一个新状态和读取一个状态，在这个类内部实现的函数可以访问私有级别的状态并存到一个Memento之中
-- Memento
-  这是用于储存状态的类，本身只是一个储存用的类，扮演一个中介的角色
-- Caretaker
-  这是外部负责管理Memento的类，原本的类只负责产生和读取Memento，而管理则是由Caretaker来负责，其中包含了一个Memento数组，用于记录历史，当用户产生某些操作后，```doSomething()```方法读取Originator状态并记录，当用户撤销时，从数组中弹出一个状态并让Originator读取
-
-下面是来自noob note的代码：
-
-```java
-public class Memento {
-   private String state;
- 
-   public Memento(String state){
-      this.state = state;
-   }
- 
-   public String getState(){
-      return state;
-   }  
-}
-```
-Memento类没有很多方法
-```java
-public class Originator {
-   private String state;
- 
-   public void setState(String state){
-      this.state = state;
-   }
- 
-   public String getState(){
-      return state;
-   }
- 
-   public Memento saveStateToMemento(){
-      return new Memento(state);
-   }
- 
-   public void getStateFromMemento(Memento Memento){
-      state = Memento.getState();
-   }
-}
-```
-Originator类主要是要把自己的state保存成一个Memento，以及从Memento中读取状态
-```java
-import java.util.ArrayList;
-import java.util.List;
- 
-public class CareTaker {
-   private List&lt;Memento&gt; mementoList = new ArrayList&lt;Memento&gt;();
- 
-   public void add(Memento state){
-      mementoList.add(state);
-   }
- 
-   public Memento get(int index){
-      return mementoList.get(index);
-   }
-}
-```
-Caretaker负责和用户方面交互，从而管理已经产生了的Memento
-```java
-public class MementoPatternDemo {
-   public static void main(String[] args) {
-      Originator originator = new Originator();
-      CareTaker careTaker = new CareTaker();
-      originator.setState(&#34;State #1&#34;);
-      originator.setState(&#34;State #2&#34;);
-      careTaker.add(originator.saveStateToMemento());
-      originator.setState(&#34;State #3&#34;);
-      careTaker.add(originator.saveStateToMemento());
-      originator.setState(&#34;State #4&#34;);
- 
-      System.out.println(&#34;Current State: &#34; + originator.getState());    
-      originator.getStateFromMemento(careTaker.get(0));
-      System.out.println(&#34;First saved State: &#34; + originator.getState());
-      originator.getStateFromMemento(careTaker.get(1));
-      System.out.println(&#34;Second saved State: &#34; + originator.getState());
-   }
-}
-```
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
         3.6k字
       </div>
       <div class="card-info">
@@ -394,11 +255,12 @@ public class MementoPatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/mediator/">
-      mediator
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/mediator/">
+        mediator
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### mediator
 
 中介者模式简单来说就是在各个交互的类之间加上一个中间件，使得各个组件之间的交流通过中间件来控制，各个组件只能和中间件通信，对于每个组件来说其他组件都是未知的，这样使得组件之间实现了解耦，组件的代码得以在其他地方得到复用
@@ -505,6 +367,144 @@ class Checkbox extends Component is
 上面的伪代码中，Mediator和Component互相包含
 Mediator通过```notify()```方法被其他组件调用，并传递信息，从而执行规定的行为
 而其他组件又包含在Mediator之中，可以被Mediator调用以完成各类功能响应
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.5k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/memento/">
+      memento
+    </a>
+    <span class="card-abstract">
+      
+### memento
+
+备忘录模式是用于储存类状态的设计模式
+
+现在假设我们需要实现程序中“撤回”的操作，也就是说我们需要对程序的历史状态做一个记录，然后在用户做出“undo”指令的时候回溯到某个历史状态
+
+我们如果直接用一个外部类来储存这些状态的话，对于```private```级别的状态是无法访问的，所以我们需要让类的内部自行储存他的状态
+
+下面我们来看来自refactoring.guru的类结构图：
+![](https://refactoring.guru/images/patterns/diagrams/memento/structure1.png?id=4b4a42363a005b617d4df06689787385)
+
+这里面有三个要素：
+- Originator
+  这是需要储存状态的类，其中包含了状态和 ```save()```和 ```restore()```方法，分别用于储存一个新状态和读取一个状态，在这个类内部实现的函数可以访问私有级别的状态并存到一个Memento之中
+- Memento
+  这是用于储存状态的类，本身只是一个储存用的类，扮演一个中介的角色
+- Caretaker
+  这是外部负责管理Memento的类，原本的类只负责产生和读取Memento，而管理则是由Caretaker来负责，其中包含了一个Memento数组，用于记录历史，当用户产生某些操作后，```doSomething()```方法读取Originator状态并记录，当用户撤销时，从数组中弹出一个状态并让Originator读取
+
+下面是来自noob note的代码：
+
+```java
+public class Memento {
+   private String state;
+ 
+   public Memento(String state){
+      this.state = state;
+   }
+ 
+   public String getState(){
+      return state;
+   }  
+}
+```
+Memento类没有很多方法
+```java
+public class Originator {
+   private String state;
+ 
+   public void setState(String state){
+      this.state = state;
+   }
+ 
+   public String getState(){
+      return state;
+   }
+ 
+   public Memento saveStateToMemento(){
+      return new Memento(state);
+   }
+ 
+   public void getStateFromMemento(Memento Memento){
+      state = Memento.getState();
+   }
+}
+```
+Originator类主要是要把自己的state保存成一个Memento，以及从Memento中读取状态
+```java
+import java.util.ArrayList;
+import java.util.List;
+ 
+public class CareTaker {
+   private List&lt;Memento&gt; mementoList = new ArrayList&lt;Memento&gt;();
+ 
+   public void add(Memento state){
+      mementoList.add(state);
+   }
+ 
+   public Memento get(int index){
+      return mementoList.get(index);
+   }
+}
+```
+Caretaker负责和用户方面交互，从而管理已经产生了的Memento
+```java
+public class MementoPatternDemo {
+   public static void main(String[] args) {
+      Originator originator = new Originator();
+      CareTaker careTaker = new CareTaker();
+      originator.setState(&#34;State #1&#34;);
+      originator.setState(&#34;State #2&#34;);
+      careTaker.add(originator.saveStateToMemento());
+      originator.setState(&#34;State #3&#34;);
+      careTaker.add(originator.saveStateToMemento());
+      originator.setState(&#34;State #4&#34;);
+ 
+      System.out.println(&#34;Current State: &#34; + originator.getState());    
+      originator.getStateFromMemento(careTaker.get(0));
+      System.out.println(&#34;First saved State: &#34; + originator.getState());
+      originator.getStateFromMemento(careTaker.get(1));
+      System.out.println(&#34;Second saved State: &#34; + originator.getState());
+   }
+}
+```
 
     </span>
 
@@ -699,6 +699,68 @@ public class ObserverPatternDemo {
         2021-01-01
       </div>
       <div class="card-info">
+        828字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/prototype/">
+      原型模式
+    </a>
+    <span class="card-abstract">
+      
+### 原型模式
+
+我们先来看一看之前的abstract factory和factory method
+
+![avator](https://www.tutorialspoint.com/design_pattern/images/abstractfactory_pattern_uml_diagram.jpg)
+
+在这个抽象工厂中，为了得到一个Shape或者RoundedShape，需要两种不同的工厂
+如果我们现在拥有四个具体产品的每一个object，那么我们就可以舍弃工厂，而定义一个Prototype的接口，通过把这四个具体产品实现Prototype的接口，来给与他们自拷贝的能力
+这样一来，我们可以通过一个拷贝来获得Object，而不是工厂，而我们的类的数量就减少了（工厂类全部舍弃了）
+
+通过这种用原型拷贝的方式得到Object的模式，我们可以实现以下应用：
+- 减少框架中的类种类
+- 避免“需要建立平行的hierarchy”的情况，就像工厂方法中那样
+- 需要保存一个object的状态作为标准时，这种情况尤其在运行时发生
+
+![avator](https://www.tutorialspoint.com/design_pattern/images/prototype_pattern_uml_diagram.jpg)
+
+总结下来，原型模式的要点就是实现原型接口，提供clone方法
+
+Some of the tips：
+- 对于原型，需要一个Manage类，因为用户不会亲自去管理这些Prototype，而只是负责储存和retrieve
+- 此外可以给原型类添加初始化，以满足一些需求
+
+- JAVA的Prototype可通过继承Cloneable接口来实现
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         257字
       </div>
       <div class="card-info">
@@ -710,11 +772,12 @@ public class ObserverPatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/singleton/">
-      单例模式
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/singleton/">
+        单例模式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### 单例模式
 
 单例模式没什么值得多说的，记住几个原则和使用方法
@@ -723,6 +786,139 @@ public class ObserverPatternDemo {
 - 我们可以定义一个单例接口，然后实现一堆单例类，在不同的环境使用不同的单例类，但是必须保证每个环境只有一个这样的单例类，我们通过构建一个registry来管理注册这些不同的单例类
 
 - 单例类可以用来优化全局变量，减少命名空间的使用
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/proxy/">
+      Proxy pattern
+    </a>
+    <span class="card-abstract">
+      
+### 代理模式
+
+说起代理就容易让人想起网络上的代理，简单来说，就是在一个数据接收方之前加入一个第三方服务器先接收数据，然后转发给原本的接收方
+
+设计模式上的代理模式也是一样的思想：在某个类提供的服务前加入一个类，这个类有着和原本的类相同的接口，但是实际上是原本类的聚合（aggregate），代理类可以在访问原本类的服务之前或之后进行某些处理
+
+来自refactoring.guru的类图：
+
+![](https://refactoring.guru/images/patterns/diagrams/proxy/structure.png)
+
+以上包含四个要素：
+- Client
+- ServiceInterface
+  这是服务的接口，代理类和原本的服务类都是实现自该接口
+- Service
+  这是服务类，包含一系列的方法(operation)
+- Proxy
+  这是代理类，包含了Service类和代理类的方式
+
+以下是来自noob note的代码：
+
+```java
+public interface Image {
+   void display();
+}
+```
+这是服务接口
+```java
+public class RealImage implements Image {
+ 
+   private String fileName;
+ 
+   public RealImage(String fileName){
+      this.fileName = fileName;
+      loadFromDisk(fileName);
+   }
+ 
+   @Override
+   public void display() {
+      System.out.println(&#34;Displaying &#34; + fileName);
+   }
+ 
+   private void loadFromDisk(String fileName){
+      System.out.println(&#34;Loading &#34; + fileName);
+   }
+}
+```
+这是原本提供服务的类
+
+
+```java
+public class ProxyImage implements Image{
+ 
+   private RealImage realImage;
+   private String fileName;
+ 
+   public ProxyImage(String fileName){
+      this.fileName = fileName;
+   }
+ 
+   @Override
+   public void display() {
+      if(realImage == null){
+         realImage = new RealImage(fileName);
+      }
+      realImage.display();
+   }
+}
+```
+这是代理类
+
+
+```java
+public class ProxyPatternDemo {
+   
+   public static void main(String[] args) {
+      Image image = new ProxyImage(&#34;test_10mb.jpg&#34;);
+ 
+      // 图像将从磁盘加载
+      image.display(); 
+      System.out.println(&#34;&#34;);
+      // 图像不需要从磁盘加载
+      image.display();  
+   }
+}
+```
+这是用户代码
+
+代理模式的逻辑思想相对简单
 
     </span>
 
@@ -929,202 +1125,6 @@ different patterns make the system more rebust in a particular kind of change
 - a pattern is less specialized than framework
 
 
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        828字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/prototype/">
-      原型模式
-    </a>
-    <span class="card-abstract">
-      
-### 原型模式
-
-我们先来看一看之前的abstract factory和factory method
-
-![avator](https://www.tutorialspoint.com/design_pattern/images/abstractfactory_pattern_uml_diagram.jpg)
-
-在这个抽象工厂中，为了得到一个Shape或者RoundedShape，需要两种不同的工厂
-如果我们现在拥有四个具体产品的每一个object，那么我们就可以舍弃工厂，而定义一个Prototype的接口，通过把这四个具体产品实现Prototype的接口，来给与他们自拷贝的能力
-这样一来，我们可以通过一个拷贝来获得Object，而不是工厂，而我们的类的数量就减少了（工厂类全部舍弃了）
-
-通过这种用原型拷贝的方式得到Object的模式，我们可以实现以下应用：
-- 减少框架中的类种类
-- 避免“需要建立平行的hierarchy”的情况，就像工厂方法中那样
-- 需要保存一个object的状态作为标准时，这种情况尤其在运行时发生
-
-![avator](https://www.tutorialspoint.com/design_pattern/images/prototype_pattern_uml_diagram.jpg)
-
-总结下来，原型模式的要点就是实现原型接口，提供clone方法
-
-Some of the tips：
-- 对于原型，需要一个Manage类，因为用户不会亲自去管理这些Prototype，而只是负责储存和retrieve
-- 此外可以给原型类添加初始化，以满足一些需求
-
-- JAVA的Prototype可通过继承Cloneable接口来实现
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/proxy/">
-        Proxy pattern
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### 代理模式
-
-说起代理就容易让人想起网络上的代理，简单来说，就是在一个数据接收方之前加入一个第三方服务器先接收数据，然后转发给原本的接收方
-
-设计模式上的代理模式也是一样的思想：在某个类提供的服务前加入一个类，这个类有着和原本的类相同的接口，但是实际上是原本类的聚合（aggregate），代理类可以在访问原本类的服务之前或之后进行某些处理
-
-来自refactoring.guru的类图：
-
-![](https://refactoring.guru/images/patterns/diagrams/proxy/structure.png)
-
-以上包含四个要素：
-- Client
-- ServiceInterface
-  这是服务的接口，代理类和原本的服务类都是实现自该接口
-- Service
-  这是服务类，包含一系列的方法(operation)
-- Proxy
-  这是代理类，包含了Service类和代理类的方式
-
-以下是来自noob note的代码：
-
-```java
-public interface Image {
-   void display();
-}
-```
-这是服务接口
-```java
-public class RealImage implements Image {
- 
-   private String fileName;
- 
-   public RealImage(String fileName){
-      this.fileName = fileName;
-      loadFromDisk(fileName);
-   }
- 
-   @Override
-   public void display() {
-      System.out.println(&#34;Displaying &#34; + fileName);
-   }
- 
-   private void loadFromDisk(String fileName){
-      System.out.println(&#34;Loading &#34; + fileName);
-   }
-}
-```
-这是原本提供服务的类
-
-
-```java
-public class ProxyImage implements Image{
- 
-   private RealImage realImage;
-   private String fileName;
- 
-   public ProxyImage(String fileName){
-      this.fileName = fileName;
-   }
- 
-   @Override
-   public void display() {
-      if(realImage == null){
-         realImage = new RealImage(fileName);
-      }
-      realImage.display();
-   }
-}
-```
-这是代理类
-
-
-```java
-public class ProxyPatternDemo {
-   
-   public static void main(String[] args) {
-      Image image = new ProxyImage(&#34;test_10mb.jpg&#34;);
- 
-      // 图像将从磁盘加载
-      image.display(); 
-      System.out.println(&#34;&#34;);
-      // 图像不需要从磁盘加载
-      image.display();  
-   }
-}
-```
-这是用户代码
-
-代理模式的逻辑思想相对简单
 
       </span>
     </div>

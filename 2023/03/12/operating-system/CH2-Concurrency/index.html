@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -222,12 +222,12 @@
 <p>对于一个单CPU的系统, 一个时刻只能进行一个任务, 所以多线程实际上是多个线程轮流执行, 中间伴随着线程的<strong>上线文切换</strong>, 为一个进程安排多个子任务的想方法我们可以称为<strong>并发(concurrency)</strong></p>
 <p>而对于一个多CPU的系统, 一个时刻可以有多个线程 (进程)同时运行, 此时同时运行的线程之间互相影响, 这个情况我们称它们为<strong>并行(parallelism)</strong> 的.</p>
 <h2 id="多处理器的进程-线程-调度"><a href="#多处理器的进程-线程-调度" class="headerlink" title="多处理器的进程(线程)调度"></a>多处理器的进程(线程)调度</h2><h3 id="缓存一致性"><a href="#缓存一致性" class="headerlink" title="缓存一致性"></a>缓存一致性</h3><p>我们知道, 在内存之上还有一级缓存. 二级缓存, 三级缓存等位于CPU之中的缓存, 用于加速CPU的访问数据的速度<br>其结构如下:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph
-    CPU_1 --&gt; L1_1
-    CPU_2 --&gt; L1_2
-    L1_2 --&gt; L2
-    L1_1 --&gt; L2
-    L2 --&gt; L3</code></pre><p>多处理器在进程(线程)调度时存在以下问题:<br>如果一个数据从内存读入了CPU_1的一级缓存, 然后进行了运算, 但是还没有写回到内存中, 只是储存在了缓存中, 而此时CPU_2也读取了这个数据, 那么CPU_1的修改就没有落实到CPU_2所读取的数据上</p>
+<div class="mermaid">graph
+    CPU_1 --> L1_1
+    CPU_2 --> L1_2
+    L1_2 --> L2
+    L1_1 --> L2
+    L2 --> L3</div><p>多处理器在进程(线程)调度时存在以下问题:<br>如果一个数据从内存读入了CPU_1的一级缓存, 然后进行了运算, 但是还没有写回到内存中, 只是储存在了缓存中, 而此时CPU_2也读取了这个数据, 那么CPU_1的修改就没有落实到CPU_2所读取的数据上</p>
 <p>我们可以使用锁机制来解决这个问题, 也可以用总线监测来维护缓存的准确性:<br>大致原理是让修改了某个数据的缓存监测总线上的数据流, 如果检测到其他缓存需要读取自己缓存了的数据, 则将自己的缓存数据输出, 不过关于这方面还有很多细节需要考虑, 计算机组成原理也提要提上日程</p>
 <h3 id="缓存亲和性-Cache-Affinity"><a href="#缓存亲和性-Cache-Affinity" class="headerlink" title="缓存亲和性(Cache Affinity)"></a>缓存亲和性(Cache Affinity)</h3><p>如果我们有多个处理器, 每个处理器有自己的缓存, 一个进程如果一直在一个处理器上运行, 那么它的缓存就会一直被使用, 从而在这个特定的CPU上运行较快, 如果此时将其调度到另一个处理器上, 那么它需要重新读取缓存, 产生性能浪费</p>
 <h3 id="多处理器的进程调度方式"><a href="#多处理器的进程调度方式" class="headerlink" title="多处理器的进程调度方式"></a>多处理器的进程调度方式</h3><p>基于以上的两个问题, 书中中提出了以下多处理器的进程调度算法:</p>
@@ -317,12 +317,12 @@ lock &#x3D; 0;</code></pre><p>  两个线程经过了while循环后一起设置<
 </ul>
 <p>所以我们需要使用具有<strong>原子性</strong>的锁</p>
 <h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>原子性就是不可再分性, 表示一条指令不能在同级别上再分, 我们的程序从高级语言开始, 一直都是可再分为更低级别的:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph LR
-A[高级语言] --&gt; B[汇编]
-B --&gt; C[指令的五个阶段]
-C --&gt; D[微指令]
-D --&gt; E[微操作]
-E --&gt; F[电路]</code></pre><p>系统的中断可以在指令的五个阶段中的任何一个阶段发生, 也就是说直到微指令级别的指令才对于OS来说是原子的<br>我们完全有可能在一个指令进行到某个阶段时发生中断, 然后将上下文(包括此时的所有寄存器)存入栈中, 然后切换到一个trap handler, 从而发生数据不一致问题</p>
+<div class="mermaid">graph LR
+A[高级语言] --> B[汇编]
+B --> C[指令的五个阶段]
+C --> D[微指令]
+D --> E[微操作]
+E --> F[电路]</div><p>系统的中断可以在指令的五个阶段中的任何一个阶段发生, 也就是说直到微指令级别的指令才对于OS来说是原子的<br>我们完全有可能在一个指令进行到某个阶段时发生中断, 然后将上下文(包括此时的所有寄存器)存入栈中, 然后切换到一个trap handler, 从而发生数据不一致问题</p>
 <p>所以我们需要通过一些刻意的手段来实现某些指令的原子性, 比如汇编级别的<code>cmpxchg</code>实现<strong>比较并交换</strong>的操作, 并且在汇编级别具有原子性</p>
 <p>而为了解决自旋锁的并发问题, 我们可以把</p>
 <pre class="language-C" data-language="C"><code class="language-C">while(lock &#x3D;&#x3D; 1)&#123;&#125;
@@ -396,12 +396,20 @@ void lock_release(lock_t *lock) &#123;
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/mivfcl7wqgVsYdP.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -227,22 +227,22 @@
 &lt;<span class="token rule">term</span>> ::<span class="token operator">=</span> &lt;<span class="token rule">term</span>> <span class="token operator">*</span> &lt;<span class="token rule">factor</span>> <span class="token operator">|</span> &lt;<span class="token rule">term</span>> <span class="token operator">/</span> &lt;<span class="token rule">factor</span>> <span class="token operator">|</span> &lt;<span class="token rule">factor</span>>
 &lt;<span class="token rule">factor</span>> ::<span class="token operator">=</span> <span class="token punctuation">(</span> &lt;<span class="token rule">expr</span>> <span class="token punctuation">)</span> <span class="token operator">|</span> &lt;<span class="token rule">number</span>>
 &lt;<span class="token rule">number</span>> ::<span class="token operator">=</span> 0 <span class="token operator">|</span> 1 <span class="token operator">|</span> 2 <span class="token operator">|</span> 3 <span class="token operator">|</span> 4 <span class="token operator">|</span> 5 <span class="token operator">|</span> 6 <span class="token operator">|</span> 7 <span class="token operator">|</span> 8 <span class="token operator">|</span> 9</code></pre><h3 id="abstract-syntax-tree-concrete-syntax-tree"><a href="#abstract-syntax-tree-concrete-syntax-tree" class="headerlink" title="abstract syntax tree, concrete syntax tree"></a>abstract syntax tree, concrete syntax tree</h3><ul>
-<li>abstract syntax tree<br>语法树, 用来表示语法结构, 一般用来表示语法分析的结果<br>使用程序中的结构来作为节点, 比如<code>a + b + c</code>的语法树如下:<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-p1[+] --&gt; a
-p1 --&gt; p2[+]
-p2 --&gt; b
-p2 --&gt; c</code></pre></li>
-<li>concrete syntax tree<br>解析树(parse tree), 用非终结符作为节点, 用来表示语法结构<br>使用文法中的符号来作为节点, 比如<code>a + b + c</code>的解析树如下:<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-p1[expr] --&gt; p2[expr]
-p1 --&gt; p3[+]
-p1 --&gt; p4[term]
-p2 --&gt; p5[expr]
-p2 --&gt; p6[+]
-p2 --&gt; p7[term]
-p5 --&gt; p8[term]
-p4 --&gt; p9[c]
-p7 --&gt; p10[b]
-p8 --&gt; p11[a]</code></pre></li>
+<li>abstract syntax tree<br>语法树, 用来表示语法结构, 一般用来表示语法分析的结果<br>使用程序中的结构来作为节点, 比如<code>a + b + c</code>的语法树如下:<div class="mermaid">graph TD
+p1[+] --> a
+p1 --> p2[+]
+p2 --> b
+p2 --> c</div></li>
+<li>concrete syntax tree<br>解析树(parse tree), 用非终结符作为节点, 用来表示语法结构<br>使用文法中的符号来作为节点, 比如<code>a + b + c</code>的解析树如下:<div class="mermaid">graph TD
+p1[expr] --> p2[expr]
+p1 --> p3[+]
+p1 --> p4[term]
+p2 --> p5[expr]
+p2 --> p6[+]
+p2 --> p7[term]
+p5 --> p8[term]
+p4 --> p9[c]
+p7 --> p10[b]
+p8 --> p11[a]</div></li>
 </ul>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
 </div>
@@ -251,12 +251,20 @@ p8 --&gt; p11[a]</code></pre></li>
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

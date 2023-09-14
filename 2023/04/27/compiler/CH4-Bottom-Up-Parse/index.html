@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/calWvPZEbI9tG4o.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -219,18 +219,18 @@
 <h3 id="Handle"><a href="#Handle" class="headerlink" title="Handle"></a>Handle</h3><p>句柄, 是解析树中最左父子关系的全部叶节点</p>
 <p>为了描述清楚这个概念, 我们先解释<strong>短语(Phrase)<strong>和</strong>直接短语(Direct Phrase)</strong></p>
 <p>这是一棵解析树:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-    S --&gt; E
-    E --&gt; T
-    E --&gt; E&#39;&#39;
-    E --&gt; E&#39;
-    E&#39; --&gt; id3
-    E&#39;&#39; --&gt; +
-    T --&gt; id1
-    T --&gt; T&#39;
-    T&#39; --&gt; *
-    T&#39; --&gt; id2
-    </code></pre><ul>
+<div class="mermaid">graph TD
+    S --> E
+    E --> T
+    E --> E''
+    E --> E'
+    E' --> id3
+    E'' --> +
+    T --> id1
+    T --> T'
+    T' --> *
+    T' --> id2
+    </div><ul>
 <li><p>在这个这个解析树表示的句子是<code>id3 + id1 * id2</code>, 其中的任意从左到右的叶子都是一个<strong>短语</strong>, 比如<code>id3 + id1 * id2</code>本身或者<code>id1 * id2</code><br>我们也可以用<strong>树结构</strong>来解释: 所有叶节点都是non-terminal的树, 我们称之为一个<strong>短语</strong></p>
 </li>
 <li><p>其中, 只拥有<strong>父子节点关系</strong>的短语我们称为直接短语, 比如<code>* id2</code>是一个直接短语, <code>id3</code>是一个直接短语, <code>id1</code>所在的子树由于和<code>* id2</code>之间有<code>T</code>节点, 产生了gap, 所以不是直接短语</p>
@@ -278,12 +278,20 @@
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -228,29 +228,37 @@
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span>表示结束状态的集合</li>
 </ul>
 <p>除了用符号语言表达外我们还可以用图形(状态转移图)来表示:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">stateDiagram
+<div class="mermaid">stateDiagram
     direction LR
-    [*] --&gt; q0                                                              
-    q0 --&gt; q1 : 1
-    q0 --&gt;q0 : 0
-    q0 --&gt;q2 : 2
-    q1 --&gt; q3:ε
-    q3 --&gt; q2: 1
-    q2 --&gt; q1: 0
-    q2 --&gt; [*]: 1
-&#96;&#96;&#96;&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;katex@0.16.8&#x2F;dist&#x2F;katex.min.css&quot;&gt;</code></pre>
+    [*] --> q0                                                              
+    q0 --> q1 : 1
+    q0 -->q0 : 0
+    q0 -->q2 : 2
+    q1 --> q3:ε
+    q3 --> q2: 1
+    q2 --> q1: 0
+    q2 --> [*]: 1
+```<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"></div>
 </div>
 
 <div id="paginator">
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

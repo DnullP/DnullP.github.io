@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/sAhIbjyLeMBgfuw.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -258,12 +258,12 @@
     b <span class="token operator">=</span> a <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
     \\ block3
 <span class="token punctuation">&#125;</span></code></pre><p>我们可以将其分割为以下几个基本块:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph LR
-    A[entry] --&gt; B[block1]
-    B --&gt; C[block2]
-    B --&gt; D[block3]
-    C --&gt; E[exit]
-    D --&gt; E</code></pre><p>然后我们在基本块的出口和入口处按照以下规则标记变量:</p>
+<div class="mermaid">graph LR
+    A[entry] --> B[block1]
+    B --> C[block2]
+    B --> D[block3]
+    C --> E[exit]
+    D --> E</div><p>然后我们在基本块的出口和入口处按照以下规则标记变量:</p>
 <ul>
 <li>如果一个变量在基本块中没有被改变(赋值)就被使用了, 那么我们认为这个变量在这个基本块中活跃, 我们将其标记在基本块入口</li>
 <li>在出口处连接的所有入口处标记的变量的并集, 我们认为这些变量在出口处活跃, 我们将其标记在基本块出口</li>
@@ -287,38 +287,38 @@
 b <span class="token operator">=</span> b <span class="token operator">-</span> d<span class="token punctuation">;</span>
 c <span class="token operator">=</span> c <span class="token operator">+</span> d<span class="token punctuation">;</span>
 e <span class="token operator">=</span> b <span class="token operator">+</span> c<span class="token punctuation">;</span></code></pre><p>我们将其表示为DAG图:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-    +:e --&gt; -:b
-    +:e --&gt; +:c
-    +:a --&gt; b0
-    +:a --&gt; c0
-    -:b --&gt; b0
-    -:b --&gt; d0
-    +:c --&gt; c0
-    +:c --&gt; d0</code></pre><p>其中的<code>d0, b0, c0</code>表示在被赋值前的变量</p>
+<div class="mermaid">graph TD
+    +:e --> -:b
+    +:e --> +:c
+    +:a --> b0
+    +:a --> c0
+    -:b --> b0
+    -:b --> d0
+    +:c --> c0
+    +:c --> d0</div><p>其中的<code>d0, b0, c0</code>表示在被赋值前的变量</p>
 <p>从上到下, 如果某个根节点在后续并没有被用到, 我们就将其视为<strong>死代码(dead code)</strong>, 可以将其删除</p>
 <p>如果两个变量的计算表达式相同, 可以使用同一个节点表示, 从而化简代码, 比如:</p>
 <pre class="language-c" data-language="c"><code class="language-c">a <span class="token operator">=</span> b <span class="token operator">+</span> c<span class="token punctuation">;</span>
 b <span class="token operator">=</span> a <span class="token operator">-</span> d<span class="token punctuation">;</span>
 c <span class="token operator">=</span> b <span class="token operator">+</span> c<span class="token punctuation">;</span>
 d <span class="token operator">=</span> a <span class="token operator">-</span> d<span class="token punctuation">;</span></code></pre><p>化为DAG:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-    +:a --&gt; b0
-    +:a --&gt; c0
-    -:b --&gt; +:a
-    -:b --&gt; d0
-    +:c --&gt; -:b
-    +:c --&gt; c0
-    -:d --&gt; +:a
-    -:d --&gt; d0</code></pre><p>其中的<code>-:b</code>和<code>-:d</code>可以合并为一个节点, 从而化简代码:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TD
-    +:a --&gt; b0
-    +:a --&gt; c0
-    -:bd --&gt; +:a
-    -:bd --&gt; d0
-    +:c --&gt; -:bd
-    +:c --&gt; c0
-</code></pre><h3 id="Peephole优化"><a href="#Peephole优化" class="headerlink" title="Peephole优化"></a>Peephole优化</h3><p>窥孔优化</p>
+<div class="mermaid">graph TD
+    +:a --> b0
+    +:a --> c0
+    -:b --> +:a
+    -:b --> d0
+    +:c --> -:b
+    +:c --> c0
+    -:d --> +:a
+    -:d --> d0</div><p>其中的<code>-:b</code>和<code>-:d</code>可以合并为一个节点, 从而化简代码:</p>
+<div class="mermaid">graph TD
+    +:a --> b0
+    +:a --> c0
+    -:bd --> +:a
+    -:bd --> d0
+    +:c --> -:bd
+    +:c --> c0
+</div><h3 id="Peephole优化"><a href="#Peephole优化" class="headerlink" title="Peephole优化"></a>Peephole优化</h3><p>窥孔优化</p>
 <p>我们使用一个窗口, 从上至下扫描代码, 对于代码中出现的特定结构进行优化, 就称为窥孔优化, 这种优化可以优化表达式以外的更多代码语句</p>
 <p>其中的优化包括了:</p>
 <ul>
@@ -353,12 +353,20 @@ d <span class="token operator">=</span> a <span class="token operator">-</span> 
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

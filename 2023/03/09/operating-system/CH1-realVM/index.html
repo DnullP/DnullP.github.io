@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/316kgDancGthANM.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -219,7 +219,7 @@
 <h1 id="VAX-VMS"><a href="#VAX-VMS" class="headerlink" title="VAX&#x2F;VMS"></a>VAX&#x2F;VMS</h1><p>由于VAX&#x2F;VMS系统的页大小过小, 导致page table过大, 所以为了减小PT的大小, VAX&#x2F;VMS采用了以下的机制:</p>
 <h2 id="使用段机制"><a href="#使用段机制" class="headerlink" title="使用段机制"></a>使用段机制</h2><p>段机制在之前说过了, 为了减少页表大小, 通过段页式内存管理来实现</p>
 <h2 id="系统区域"><a href="#系统区域" class="headerlink" title="系统区域"></a>系统区域</h2><p>每个进程有三个区域(段), 分别是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">P_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">P_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">S_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, 前两个区域分别是代码段+栈和堆, PT映射到进程对应的物理内存区域, 而<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">S_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>区域是系统区域, 存放了OS的代码和数据, 包括Trap Table等内核态需要的数据, 这个区域是所有进程共享的, 映射到同一片物理内存之中</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph TB
+<div class="mermaid">graph TB
 subgraph 进程A
     A[P_0]
     B[P_1]
@@ -236,12 +236,12 @@ subgraph 系统代码
     I[kernal code]
     J[kernal heap]
 end
-A --&gt; 段页表1
-B --&gt; 段页表2
-C --&gt; 系统代码
-D --&gt; 段页表3
-E --&gt; 段页表4
-F --&gt; 系统代码</code></pre><p>我们之前如果需要系统调用, 需要调用事先编写好的库, 然后传入参数, 这些参数和syscall的代码被放到指定的寄存器中, 然后通过<code>int</code>指令触发中断, 进入内核态, 进程阻塞, 然后OS查找并执行相应的系统调用, 如果传递的参数是个指针还需要找到对应的物理地址再传递给系统调用, 完成后返回结果, 并回到用户态, 进程恢复<br>但是如果将OS虚拟化并跟到进程后面, 系统调用的所有参数都可以只传递一个指针, 因为所有的进程数据对于OS都是可见的<br>不过相对的, 进程也有可能去读写OS的数据, 所以<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">S_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>区域需要设置特别的保护等级</p>
+A --> 段页表1
+B --> 段页表2
+C --> 系统代码
+D --> 段页表3
+E --> 段页表4
+F --> 系统代码</div><p>我们之前如果需要系统调用, 需要调用事先编写好的库, 然后传入参数, 这些参数和syscall的代码被放到指定的寄存器中, 然后通过<code>int</code>指令触发中断, 进入内核态, 进程阻塞, 然后OS查找并执行相应的系统调用, 如果传递的参数是个指针还需要找到对应的物理地址再传递给系统调用, 完成后返回结果, 并回到用户态, 进程恢复<br>但是如果将OS虚拟化并跟到进程后面, 系统调用的所有参数都可以只传递一个指针, 因为所有的进程数据对于OS都是可见的<br>不过相对的, 进程也有可能去读写OS的数据, 所以<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">S_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>区域需要设置特别的保护等级</p>
 <h2 id="页表查询"><a href="#页表查询" class="headerlink" title="页表查询"></a>页表查询</h2><p>VAX&#x2F;VMS系统将进程的页表储存在虚拟化的OS区域中, 也就是进程对应的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">S_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>区域, 如果页表过大时, 我们可以采用虚拟内存的方式, 将一部分页表存入磁盘, 使用类似的方式实现驱逐和置换, 提供更大的页表空间<br>正常情况下的地址翻译, OS可以直接查找到物理内存中的页表, 并查询返回, 但是这里的页表中间隔了一层虚拟化, 所以需要先查询虚拟内存中页表的物理地址(这也就产生了新的一部分页表, 这一部分必须储存在物理内存中), 然后再在物理内存中找到对应的页表, 完成查询</p>
 <p>这是一个时间换空间的策略</p>
 <h2 id="页置换策略"><a href="#页置换策略" class="headerlink" title="页置换策略"></a>页置换策略</h2><p>VAX&#x2F;VMS系统使用了<strong>FIFO置换策略</strong>, 为了缓解<strong>memory hog</strong>的问题(使得进程的内存使用更公平)</p>
@@ -285,12 +285,20 @@ F --&gt; 系统代码</code></pre><p>我们之前如果需要系统调用, 需�
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

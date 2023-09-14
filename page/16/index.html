@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,7 +244,7 @@
         2021-01-01
       </div>
       <div class="card-info">
-        2.5k字
+        1.7k字
       </div>
       <div class="card-info">
         阅读时间: 2 mins.
@@ -256,11 +256,145 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/quiz/1006-hdu/">
-        hdu1006
+      <a class="card-title" href="/2021/01/01/algorithm/oi/quiz/ccpc2016-B/">
+        CCPC2016.B
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
+训练时遇到的题目，思路完全想错了，看过别人思路后再打一遍
+&lt;!-- more --&gt;
+# 题目大意：
+
+- **有L件衣服，每件衣服完全相同**
+- **每件衣服需要通过水洗和烘干两个步骤**
+- **一共有N台洗衣机和M台烘干机**
+- **每台洗衣机清洗一件衣服的时间为$\mathbf W_i$**
+- **每台烘干机烘干一件衣服的时间为$\mathbf D_i$**
+- **先水洗再烘干**
+- **一台机器同一时间只能处理一件衣服**
+
+- **问最少需要多长时间才能洗完所有衣服**
+
+# 解题思路：
+
+- （一）   
+    在第一步水洗中，优先将衣服排在花费时间最少的洗衣机$j$上   
+    花费时间第二小的洗衣机为第$k$台洗衣机   
+    当$j$号洗衣机总时间大于$k$号洗衣机时，将下一件衣服排到$j$号洗衣机上
+
+    由此可以得到用时最少的情况下，如何安排每台洗衣机衣服的数量
+
+- （二）  
+    通过第一步，知道了如何安排衣服的数量之后，可以得知每件衣服水洗完毕的时间点,
+    然后用相似的原理，将每件衣服放入烘干机   
+
+    不同的是，水洗完时间点最晚的衣服放入时间最短的烘干机，这样使得最后洗完的衣服花的时间最少
+
+# AC代码：
+
+```c++
+#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;queue&gt;
+#include&lt;utility&gt;
+#define p pair&lt;long long,long long&gt;
+
+using namespace std;
+
+long long times[1000005];//记录每件衣服洗完的时间点
+int T,T_1;
+int L , N , M;
+
+int main() {
+	
+	
+	scanf(&#34;%d&#34;, &amp;T);
+	T_1 = T;
+
+	while (T--) {
+		priority_queue&lt;p, vector&lt;p&gt;, greater&lt;p&gt;&gt;w,d;//优先队列维护最小时间的
+		scanf(&#34;%d%d%d&#34;, &amp;L,&amp;N,&amp;M);                  //洗衣机
+
+		long long t = 0;
+		for (long long i = 1; i &lt;= N; i++) {
+			scanf(&#34;%lld&#34;, &amp;t);
+			w.push(p(t, t));
+		}
+		for (long long i = 1; i &lt;= M; i++) {
+			scanf(&#34;%lld&#34;, &amp;t);
+			d.push(p(t, t));
+		}
+		for (long long i = 1; i &lt;= L; i++) {
+			p temp = w.top();
+
+			w.pop();
+			times[i] = temp.first;
+			
+			temp.first += temp.second;//将衣服加入总耗时最短的洗衣机中
+                                      //从而增加该洗衣机的总耗时
+
+			w.push(temp);
+		}
+		long long ans = 0;
+		for (long long i = L; i &gt;= 1; i--) {//这个地方从最晚洗完的衣服开始
+
+			p temp = d.top();
+			d.pop();
+
+			ans = max(ans, times[i] + temp.first);
+
+			temp.first += temp.second;
+			
+			d.push(temp);
+		}
+		printf(&#34;Case #%d: %lld\n&#34;,(T_1-T),ans);
+	}
+}
+```
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.5k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/quiz/1006-hdu/">
+      hdu1006
+    </a>
+    <span class="card-abstract">
+      
 这是一道有些技巧难度的数学题
 
 &lt;!-- more --&gt;
@@ -371,140 +505,6 @@ int main()
         }
         cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; GetTime(D) / (12.0 * 6.0 * 6.0) &lt;&lt; endl;
     }
-}
-```
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/quiz/ccpc2016-B/">
-      CCPC2016.B
-    </a>
-    <span class="card-abstract">
-      
-训练时遇到的题目，思路完全想错了，看过别人思路后再打一遍
-&lt;!-- more --&gt;
-# 题目大意：
-
-- **有L件衣服，每件衣服完全相同**
-- **每件衣服需要通过水洗和烘干两个步骤**
-- **一共有N台洗衣机和M台烘干机**
-- **每台洗衣机清洗一件衣服的时间为$\mathbf W_i$**
-- **每台烘干机烘干一件衣服的时间为$\mathbf D_i$**
-- **先水洗再烘干**
-- **一台机器同一时间只能处理一件衣服**
-
-- **问最少需要多长时间才能洗完所有衣服**
-
-# 解题思路：
-
-- （一）   
-    在第一步水洗中，优先将衣服排在花费时间最少的洗衣机$j$上   
-    花费时间第二小的洗衣机为第$k$台洗衣机   
-    当$j$号洗衣机总时间大于$k$号洗衣机时，将下一件衣服排到$j$号洗衣机上
-
-    由此可以得到用时最少的情况下，如何安排每台洗衣机衣服的数量
-
-- （二）  
-    通过第一步，知道了如何安排衣服的数量之后，可以得知每件衣服水洗完毕的时间点,
-    然后用相似的原理，将每件衣服放入烘干机   
-
-    不同的是，水洗完时间点最晚的衣服放入时间最短的烘干机，这样使得最后洗完的衣服花的时间最少
-
-# AC代码：
-
-```c++
-#include&lt;iostream&gt;
-#include&lt;cstdio&gt;
-#include&lt;queue&gt;
-#include&lt;utility&gt;
-#define p pair&lt;long long,long long&gt;
-
-using namespace std;
-
-long long times[1000005];//记录每件衣服洗完的时间点
-int T,T_1;
-int L , N , M;
-
-int main() {
-	
-	
-	scanf(&#34;%d&#34;, &amp;T);
-	T_1 = T;
-
-	while (T--) {
-		priority_queue&lt;p, vector&lt;p&gt;, greater&lt;p&gt;&gt;w,d;//优先队列维护最小时间的
-		scanf(&#34;%d%d%d&#34;, &amp;L,&amp;N,&amp;M);                  //洗衣机
-
-		long long t = 0;
-		for (long long i = 1; i &lt;= N; i++) {
-			scanf(&#34;%lld&#34;, &amp;t);
-			w.push(p(t, t));
-		}
-		for (long long i = 1; i &lt;= M; i++) {
-			scanf(&#34;%lld&#34;, &amp;t);
-			d.push(p(t, t));
-		}
-		for (long long i = 1; i &lt;= L; i++) {
-			p temp = w.top();
-
-			w.pop();
-			times[i] = temp.first;
-			
-			temp.first += temp.second;//将衣服加入总耗时最短的洗衣机中
-                                      //从而增加该洗衣机的总耗时
-
-			w.push(temp);
-		}
-		long long ans = 0;
-		for (long long i = L; i &gt;= 1; i--) {//这个地方从最晚洗完的衣服开始
-
-			p temp = d.top();
-			d.pop();
-
-			ans = max(ans, times[i] + temp.first);
-
-			temp.first += temp.second;
-			
-			d.push(temp);
-		}
-		printf(&#34;Case #%d: %lld\n&#34;,(T_1-T),ans);
-	}
 }
 ```
 

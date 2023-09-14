@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/E6Os9tkrRP4FZ7f.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/uWQXFEBh5iCcNJV.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -218,9 +218,9 @@
   <p>由于是理解和心得是会随着时间的变化而改变的, 本文只是初学时的想法整理</p>
 <h2 id="About-program-state"><a href="#About-program-state" class="headerlink" title="About program state"></a>About program state</h2><p>程序状态包括了运行时栈和堆, 寄存器等储存设备, 所有的数据信息的总和构成了程序某一时刻的状态</p>
 <p>每一段的intermediate-code statement都会对程序状态产生影响, 我们可以看作一个将状态输入, 输出为新状态的函数:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">graph LR
-A((state 1)) --&gt; B[code]
-B --&gt; C((state 2))</code></pre><p>其中的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><msub><mi>e</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">state_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><msub><mi>e</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">state_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的位置我们都可以看作一个program point</p>
+<div class="mermaid">graph LR
+A((state 1)) --> B[code]
+B --> C((state 2))</div><p>其中的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><msub><mi>e</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">state_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><msub><mi>e</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">state_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的位置我们都可以看作一个program point</p>
 <p>我们只从状态的众多要素中提取其中我们关注的那一部分, 来作为我们的数据流分析的对象</p>
 <p>我们将这些状态抽象为data-flow value:<br><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>O</mi><mi>U</mi><mi>T</mi><mo stretchy="false">[</mo><mi>s</mi><mo stretchy="false">]</mo><mspace linebreak="newline"></mspace><mi>I</mi><mi>N</mi><mo stretchy="false">[</mo><mi>s</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">OUT[s]<br>\<br>IN[s]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">[</span><span class="mord mathnormal">s</span><span class="mclose">]</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mopen">[</span><span class="mord mathnormal">s</span><span class="mclose">]</span></span></span></span></span></p>
 <p>对于每个statement, 我们为其抽象出一个transfer function(转移函数)来表达状态的改变:</p>
@@ -237,12 +237,20 @@ B --&gt; C((state 2))</code></pre><p>其中的<span class="katex"><span class="k
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

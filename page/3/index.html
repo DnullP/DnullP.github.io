@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/zYNG9XHIEfg4quh.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -244,7 +244,7 @@
         2023-05-18
       </div>
       <div class="card-info">
-        992字
+        867字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -256,53 +256,45 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/05/18/operating-system/CH2-Samephore/">
-        信号量
+      <a class="card-title" href="/2023/05/18/operating-system/CH2-some-error/">
+        一些常见的多线程错误
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
-信号量是我最喜欢的计算机科学家之一: Edsger Dijkstra 发明的一种同步机制, 用于解决多线程的同步问题
+OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是非死锁错误
 
----
+## 死锁错误
+死锁错误在多线程错误中占据了大多数
 
-信号量可以看作互斥锁的超集, 互斥锁只有两种状态: 锁住和未锁住, 而信号量可以有多种状态, 用于解决更复杂的同步问题
+引发死锁需要同时满足以下四个条件:
 
-## 信号量的定义
-我们实现互斥锁时, 用一个变量储存0或1来表示锁的状态, 当锁为0时则说明锁住了
+- 线程之间互斥访问资源
+- 线程在访问资源时, 自己拥有其他资源
+- 线程拥有的资源不能被强制剥夺
+- 线程需要的资源是满足以上三个条件的线程已经拥有的资源
 
-而信号量在此基础上, 可以有0, 1, 2, 3, ...等多种状态, 每当一个线程获取锁时, 信号量的值减一, 当信号量的值为0 (或小于0) 时, 说明锁住了, 此时其他线程获取锁时, 会阻塞
+也就是说, 只要解决以上四个条件之一都无法发生死锁错误
 
-当一个线程完成了critical section中的操作后, 会将信号量的值加一, 并向所有阻塞的线程发出信号, 通知它们可以继续执行了
+一般而言, 线程之间互斥是必须的, 我们可以从其他三个条件入手
 
-当然, 我们将阻塞的线程加入一个等待队列中, 直接从中选取一个线程来继续执行, 而不用让这些线程来&#34;争抢&#34;信号量的资源
+1. 对于条件3, 2
+   - 我们可以给线程设置一个最大等待时间, 如果超过这个时间还没有获取到资源, 则放弃这个资源, 释放已经获取的资源, 重新开始
 
-这个队列中的线程我们就可以按照之前的进程调度中介绍过的方法来安排调度了: 包括了**优先级调度**, **FIFO**等
+2. 对于条件2, 4
+   - 我们需要设置一个资源的固定申请顺序, 避免两个线程之间的申请顺序形成一个交叉, 从而导致死锁
 
-## 信号量的使用
-下面是C语言中的信号量使用:
-声明与初始化:
-```c
-sem_t s;
-sem_init(&amp;s, 0, 1);
-```
-- `int sem_init(sem_t *sem, int pshared, unsigned int value);`
-  - 第一个参数是信号量变量
-  - 第二个参数是进程间的共享标志, 如果为0则在当前线程中使用, 如果为其他参数则可以在不同进程中按照参数值进行共享
-  - 第三个参数是信号量的初始值
+## 非死锁错误
 
-所以信号量也可以用于进程之间的通信
+非死锁错误包括:
+- 原子性错误
+  举个简单的例子: 
+  假设现在我们有一个基于条件变量的阻塞线程, 有且只有另一个唯一的线程能够将条件状态更改到可以让它继续执行的状态, 但是该线程有可能被假唤醒
+  如果条件状态的修改和信号发出不是原子性的话, 那么可能出现以下问题:
+  线程被假唤醒后, 检查了条件没有满足, 即将释放锁进入阻塞, 而在此时, 条件状态被修改, 信号发出, 但是此时目标线程还没有进入阻塞, 导致信号丢失, 从而导致目标线程永远无法被唤醒
+  这也是我们的条件变量需要搭配一个互斥锁使用的原因, 这个互斥锁就是在维护这一部分的原子性
 
-P操作:
-```c
-sem_wait(&amp;s);
-```
-- 这个操作使信号量的值减一, 如果信号量的值小于0, 则阻塞当前线程
-
-V操作:
-```c
-sem_post(&amp;s);
-```
-- 这个操作使信号量的值加一, 并向所有阻塞的线程发出信号, 通知它们可以继续执行了
+- 顺序执行错误
+  这里的顺序并不是指申请资源的顺序导致的死锁, 而是如果没有使用条件变量, 可能导致的顺序执行错误
       </span>
     </div>
   </div>
@@ -1194,7 +1186,7 @@ Note: Wireshark has a nice feature that allows you to plot the RTT for each of t
         2023-04-10
       </div>
       <div class="card-info">
-        1.2k字
+        947字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -1206,11 +1198,94 @@ Note: Wireshark has a nice feature that allows you to plot the RTT for each of t
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/04/10/compiler/CH2-note/">
-        编译原理-A-Simple-directed-translator
+      <a class="card-title" href="/2023/04/10/compiler/CH1-note/">
+        编译原理-引言
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
+## 一些关键词的记录
+
+### name, identifier, variable
+- name
+  名字关联的是一个实体, 例如变量, 函数, 类型, 常量等, 并且会根据环境(environment)的不同而有不同的内存位置
+- identifier
+  标识符, 是名字的一个子集
+  相对于标识符, 名字还包括了表达式, 比如成员变量的表示`a.b`
+- variable
+  变量表示内存中的一个位置, 一个变量可以有多个名字
+
+### environment, state
+- environment
+  环境是一个映射, 用来表示名字和变量(内存位置)之间的关系
+- state
+    状态是一个映射, 用来表示变量和值之间的关系
+
+### phase, pass
+- phase
+  编译器的阶段, 包括lexcial analysis, syntax analysis, semantic analysis, intermediate code generation, code optimization, code generation等
+- pass
+  对程序的一次扫描称为一次pass
+
+### compiler, interpreter, assembler
+- compiler
+  编译器, 将源程序翻译成目标程序代码
+- interpreter
+  解释器, 直接读取源程序运行
+- assembler
+  汇编器, 将汇编语言翻译成机器码, 可直接被内存加载运行
+
+### scope, block
+- scope
+  作用域, 一个声明的作用范围
+- block
+  代码块, 其中的声明作为一个作用域
+- static scope
+  静态作用域, 作用域是在编译时确定的, 向上寻找包含声明的作用域
+- dynamic scope
+    动态作用域, 作用域是在运行时确定的, 从运行堆栈中寻找包含声明的作用域
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-04-10
+      </div>
+      <div class="card-info">
+        1.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/04/10/compiler/CH2-note/">
+      编译原理-A-Simple-directed-translator
+    </a>
+    <span class="card-abstract">
+      
 ## 一些关键词及含义的记录
 
 ### left-associative, right-associative
@@ -1263,89 +1338,6 @@ Note: Wireshark has a nice feature that allows you to plot the RTT for each of t
   ```
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-10
-      </div>
-      <div class="card-info">
-        947字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/04/10/compiler/CH1-note/">
-      编译原理-引言
-    </a>
-    <span class="card-abstract">
-      
-## 一些关键词的记录
-
-### name, identifier, variable
-- name
-  名字关联的是一个实体, 例如变量, 函数, 类型, 常量等, 并且会根据环境(environment)的不同而有不同的内存位置
-- identifier
-  标识符, 是名字的一个子集
-  相对于标识符, 名字还包括了表达式, 比如成员变量的表示`a.b`
-- variable
-  变量表示内存中的一个位置, 一个变量可以有多个名字
-
-### environment, state
-- environment
-  环境是一个映射, 用来表示名字和变量(内存位置)之间的关系
-- state
-    状态是一个映射, 用来表示变量和值之间的关系
-
-### phase, pass
-- phase
-  编译器的阶段, 包括lexcial analysis, syntax analysis, semantic analysis, intermediate code generation, code optimization, code generation等
-- pass
-  对程序的一次扫描称为一次pass
-
-### compiler, interpreter, assembler
-- compiler
-  编译器, 将源程序翻译成目标程序代码
-- interpreter
-  解释器, 直接读取源程序运行
-- assembler
-  汇编器, 将汇编语言翻译成机器码, 可直接被内存加载运行
-
-### scope, block
-- scope
-  作用域, 一个声明的作用范围
-- block
-  代码块, 其中的声明作为一个作用域
-- static scope
-  静态作用域, 作用域是在编译时确定的, 向上寻找包含声明的作用域
-- dynamic scope
-    动态作用域, 作用域是在运行时确定的, 从运行堆栈中寻找包含声明的作用域
     </span>
 
   </div>

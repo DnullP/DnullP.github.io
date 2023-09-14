@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/oeRXvLm5byqgazF.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/cF2oWANXImMREKx.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -238,7 +238,7 @@
 <p><code>Green&#39;s theorem relates a line integral around a simple closed curve C to a double integral over the plane region D bounded by C. It is the two-dimensional special case of Stokes&#39; theorem. </code></p>
 <p>我们知道了, 格林公式作为一个中间节点, 连接了闭曲线积分和二重面积分, 并且属于斯托克斯定理的特殊情况.</p>
 <p>可以画出其的模块图大概如下:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">flowchart LR
+<div class="mermaid">flowchart LR
     subgraph A[斯托克斯定理]
         B[格林公式]
     end
@@ -246,7 +246,7 @@
     subgraph E[各种积分方式]
         C[闭曲线积分] ---|转换| B
         D[二重积分] ---|转换| B
-    end</code></pre><p>这只是一个部分而已, 实际上这个知识和所有其他知识的联系我们都可以归结为知识本身的属性, 包括了知识的实际应用, 来源等等.</p>
+    end</div><p>这只是一个部分而已, 实际上这个知识和所有其他知识的联系我们都可以归结为知识本身的属性, 包括了知识的实际应用, 来源等等.</p>
 <p>这应该是学习初期应该了解的, 如果能够做出相对完善的模块图, 自然是更好, 理工科相关的知识都是基于一定的框架构成的, 而不同于文史类.</p>
 <h2 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h2><p>我认为学习一个具体的东西之前, 要先理解它的存在意义和作用, 我们在第一步中已经给出了格林公式在上层知识体系统中的地位, 现在我们可以由此得到格林公式的作用和意义: 转换两种不同的积分方式</p>
 <h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>完成了对一个知识的宏观认识后, 我们才具体的去看格林公式的具体内容, 此时我们进入了更深一层的知识, 我们可以在格林公式中建立一个更密集复杂的知识网络:</p>
@@ -258,13 +258,13 @@
 H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
 c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.3859em;"><span></span></span></span></span></span></span></span><span class="tag"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.8859em;"><span style="top:-4.8859em;"><span class="pstrut" style="height:3.45em;"></span><span class="eqn-num"></span></span><span style="top:-2.2758em;"><span class="pstrut" style="height:3.45em;"></span><span class="eqn-num"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.3859em;"><span></span></span></span></span></span></span></span></span></p>
 <p>以上的格林公式定义我们可以构建其组成:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">flowchart TD
+<div class="mermaid">flowchart TD
 
     subgraph A[格林公式]
         subgraph B[条件]
             C[闭区域D]
-            subgraph D[&quot;函数P(x,y)及Q(x,y)在D上有一阶连续偏导数&quot;]
-                E[&quot;P(x,y)&quot;]
+            subgraph D["函数P(x,y)及Q(x,y)在D上有一阶连续偏导数"]
+                E["P(x,y)"]
                 F[偏导数]
                 G[连续性]
             end
@@ -272,8 +272,8 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
         subgraph H[结论]
             I[闭曲线积分]
             J[二重积分]
-            I --&gt; J
-            J --&gt; I
+            I --> J
+            J --> I
         end
     end
     
@@ -286,15 +286,15 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
     subgraph L[函数相关知识]
         L1[定义域]
         L2[连续性]
-        L3[&quot;...&quot;]
+        L3["..."]
     end
     subgraph K[偏导数相关知识]
-        K1[&quot;...&quot;]
+        K1["..."]
     end
     K1 --- F
     L3 --- E
     L2 --- G
-    L1 --- C</code></pre><p>所以<strong>怎么做</strong>的本质其实是从上层知识到下层知识的建立过程, 格林公式中的每一个描述都需要其他层或者其他模块中的知识做支撑, 为此我们就为格林公式建立起了其对应的<strong>依赖图</strong>: 想要理解格林公式, 首先要对偏导数, 函数, 定义域, 线积分, 二重积分等相关依赖建立起认知.</p>
+    L1 --- C</div><p>所以<strong>怎么做</strong>的本质其实是从上层知识到下层知识的建立过程, 格林公式中的每一个描述都需要其他层或者其他模块中的知识做支撑, 为此我们就为格林公式建立起了其对应的<strong>依赖图</strong>: 想要理解格林公式, 首先要对偏导数, 函数, 定义域, 线积分, 二重积分等相关依赖建立起认知.</p>
 <hr>
 <h1 id="找到学习路线"><a href="#找到学习路线" class="headerlink" title="找到学习路线"></a>找到学习路线</h1><p>上述过程还是过于死板, 其只是注重于对已有知识体系的建立和学习方式, 但是实际上我们很多时候并不知道自己需要学习什么, 自己不需要学习什么. 具体来说, 对于一名工科生, 我们只需要应用好微积分, 以及一部分的原理理解就可以了, 我们不用像数学系学生一样深入讨论微积分体系中的每一个细节</p>
 <p>如果只是为了提高自己的内蕴知识, 其实不用太关注学习的内容, 因为知识最终都能提高人的内涵, 但是学习有时候要服务于某个目的, 或许是爱好, 或许是为了通过考试.</p>
@@ -311,7 +311,7 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
 <p>但是对于一些社会相关的问题, 往往不会存在一个确定的分析映射, 使用不同的知识模块来得到的结果也不一定相同. 在这样的问题中, 使用前人验证过的相对更优的模块来解决, 这往往是我们解决工程问题时需要的分析方式.</p>
 <p>我们需要理解每个知识模块的作用, 地位, 对结果的影响, 然后根据你想要达成的目的来选择合适的前人的解决方案. 如果这样的方案不存在, 就需要架构者能够对各个模块产生的影响具有高度的认识, 来把握对结果的影响, 然后找出相对更优方案.</p>
 <p>于是我们可以将知识网络和目标抽象为一下模型:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">flowchart LR
+<div class="mermaid">flowchart LR
     subgraph A[知识网络]
         B[知识模块1]
         C[知识模块2]
@@ -322,17 +322,17 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
     end
     subgraph F2[实际问题]
         E[目标问题]
-        B --&gt;|问题转化| E
+        B -->|问题转化| E
         F[目标问题2]
-        E --&gt; F
+        E --> F
         G[目标问题3]
         H[目标问题4]
-        F --&gt; G
-        F --&gt; H
-        C --&gt;|问题拆分| F
-        D --&gt;|解决| G
-        D --&gt;|解决| H
-    end</code></pre><p>所谓分析, 就是对问题内容, 问题结构敏感, 然后通过知识模块来转化, 拆分, 解决问题. </p>
+        F --> G
+        F --> H
+        C -->|问题拆分| F
+        D -->|解决| G
+        D -->|解决| H
+    end</div><p>所谓分析, 就是对问题内容, 问题结构敏感, 然后通过知识模块来转化, 拆分, 解决问题. </p>
 <h1 id="认知能力"><a href="#认知能力" class="headerlink" title="认知能力"></a>认知能力</h1><p>认知是高于具体的学习和分析的, 认知最主要的作用应该是发现问题.</p>
 <p>我们的模型中已经有的实际问题和知识网络, 并通过<strong>分析</strong>建立两者间的联系, 但是问题的来源还没确定, 我认为问题是否存在来源于人的认知能力.</p>
 <p>认知能力应该是知识网络中的一部分, 并且应该是最重要的一部分, 他是我们从现象推理内涵, 从数据推导结论, 从条件推导结果的必要能力.</p>
@@ -368,30 +368,30 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
 <p>学习应该是怎样的? 认知能力将我们看到的转化为特定的问题, 然后分析模块对问题进行处理, 最后得到结论&#x2F;方案&#x2F;答案. 得到了结论之后会对我们的知识网络产生实际影响, 或是修改结构, 或是修改某些数值, 或者建立更深一层的知识网络</p>
 <hr>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我将学习, 分析, 认知三个过程抽象为一个模型:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">flowchart LR
+<div class="mermaid">flowchart LR
     subgraph A[知识网络]
         A1[其它知识模块]
         A2[认知模块]
         A4[分析模块]
         A1 ---|高度耦合| A2
     end
-    A2 --&gt; B1
-    A1 --&gt; A3
-    A4 --&gt; A3
+    A2 --> B1
+    A1 --> A3
+    A4 --> A3
     subgraph B[实际问题]
         B1[目标问题]
         B2[问题2]
         B3[问题3]
         B4[问题4]
-        B1 --&gt; B2
-        B2 --&gt; B3
-        B2 --&gt; B4
+        B1 --> B2
+        B2 --> B3
+        B2 --> B4
     end
     A3[分析映射]
-    A3 --&gt;|问题转化| B1
-    A3 --&gt;|问题分解| B2
-    A3 --&gt;|解决| B3
-    A3 --&gt;|解决| B4</code></pre><p>这里再总结一下之前着墨较少的分析模块.</p>
+    A3 -->|问题转化| B1
+    A3 -->|问题分解| B2
+    A3 -->|解决| B3
+    A3 -->|解决| B4</div><p>这里再总结一下之前着墨较少的分析模块.</p>
 <p>分析模块是针对问题本身的模块, 它用于将问题的一些共有属性提取出来或者拆分等等, 组成分析模块的知识模块包括了逻辑, 数学, 方法论, 哲学等. 分析模块不涉及具体的知识模块, 而是用于对问题进行具有普适性的分析.</p>
 <p>认知模块用于对人的直接感官得到的信息, 快速得到某个问题或结论, 其中的分析过程被直接跳过. 可以说, 认知其实是多次重复后, 能够本能完成的分析过程.</p>
 <p>到此只是粗略地总结了一个学习和思考的框架, 既然分析, 知识, 认知三者能够指导我学习并完善某个特定领域的理论学习, 那么它们应该能够做到自我迭代优化, 也就是用认知和分析的方式来改进学习方法本身. </p>
@@ -403,12 +403,20 @@ c-16-25.333-24-45-24-59z'/></svg></span></span></span></span></span></span></spa
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>

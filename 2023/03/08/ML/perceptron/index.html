@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/MLZr1j7hdDnIHGU.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/lHLk3OMeY7qXnTP.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -217,18 +217,18 @@
   <h1>感知机</h1>
   <h1 id="感知机"><a href="#感知机" class="headerlink" title="感知机"></a>感知机</h1><p>感知机部分实在简单得没有什么好说的, 先简单介绍一下其原理和学习策略罢</p>
 <h2 id="感知机结构"><a href="#感知机结构" class="headerlink" title="感知机结构"></a>感知机结构</h2><p>感知机可以视作一个单神经元分类的神经网络, 通过输入一个特征向量, 通过一个神经元计算, 得到一个输出结果, mermaid作图如下:</p>
-<pre class="language-Mermaid" data-language="Mermaid"><code class="language-Mermaid">flowchart LR
+<div class="mermaid">flowchart LR
     A((x_1))
     B((x_2))
     C((x_3))
     D((...))
     E((x_n))
-    A --&gt; F((w))
-    B --&gt; F
-    C --&gt; F
-    D --&gt; F
-    E --&gt; F
-    F --&gt; G((1 or 0))</code></pre><p>其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span>的计算过程如下:</p>
+    A --> F((w))
+    B --> F
+    C --> F
+    D --> F
+    E --> F
+    F --> G((1 or 0))</div><p>其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span>的计算过程如下:</p>
 <ol>
 <li>首先我们遍历每一个输入的训练样本, 执行以下操作<ul>
 <li>计算出该样本的输出值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x_i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
@@ -318,12 +318,20 @@ perceptron<span class="token punctuation">.</span>train_until_convergence<span c
   
 </div>
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    securityLevel: 'loose',
+    theme: 'forest',
+  });
+</script>
 
-  <!-- scripts list from theme config.yml -->
-  
-  <script src="/js/post/mermaid.js"></script>
-  
-  
+
+<!-- scripts list from theme config.yml -->
+
+<script src="/js/post/mermaid.js"></script>
+
+
     </div>
 
   </div>
