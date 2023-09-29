@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -241,6 +241,1453 @@
 
     <div class="card-info-warp">
       <div class="card-info">
+        2023-08-15
+      </div>
+      <div class="card-info">
+        5.9k字
+      </div>
+      <div class="card-info">
+        阅读时间: 5 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/08/15/draft/TypeCheck-20230815/">
+        精读编译原理6.5 - Type Checking
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+有人说编译原理是程序员的三大浪漫之一 (编译原理, OS, 图形学)
+
+---
+
+# Type Checking
+
+&gt; 一个健壮的类型检查系统不需要动态检测类型错误
+
+能够在静态阶段就排除掉类型错误, 可以有效避免一些运行时错误以及恶意攻击
+
+## Rules for Type Checking
+
+- synthesis(综合)
+- inference(推导)
+
+### Synthesis
+通过综合的方式, 我们可以从表达式树的子节点推导父节点的类型, 最后得到整个表达式的类型
+
+&gt; IF $f$ has type $s$ $\rightarrow$ $t$ and $x$ has type $s$ \
+&gt; THEN $f(x)$ has type $t$
+
+### Inference
+类似于继承(inheritance)的方式, 通过一个变量的使用方式来推导出它的类型
+
+&gt; IF $f(x)$ is an expression\
+&gt; THEN for some $\alpha$ and $\beta$, $f$ has type $\alpha$ $\rightarrow$ $\beta$, and $x$ has type $\alpha$
+
+当类型需要被检测, 但是声明name时不需要声明类型的语言, 就需要用到inference的类型检查规则
+
+## Type Conversions
+
+- widening conversions
+- narrowing conversions
+
+前者强调信息的保留, 从低精度到高精度, 后者则不考虑信息的丢失, 从高精度到低精度
+
+对于$E \rightarrow E_1 + E_2$的类型检查的semantic action(语义动作)可以用以下的函数来执行:
+
+1.  $$max(t_1,t_2)$$
+    返回两者中的高精度类型, 实现widen conversion
+
+2.  $$widen(addr,t_1,t_2)$$
+    这个函数中的$addr$代表$E$的数据的储存地址, 函数会更具后面两个类型的内存排布, 来获得两个类型的交集, 从而扩展$E$的内存空间, 实现widen conversion
+
+    书上给出的实现如下:
+    ```c++
+    Addr widen(Addr a, Type t, Type w) {
+        if (t = w) return a;
+        else if (t = integer and w = float) {
+            temp = new Temp();
+            gen(temp&#39;=&#39;&#39;(float)&#39;a);
+            return temp;
+        }
+        eles error;
+    }
+    ```
+    这是假设只有integer和float类型的情况下, 我们认为float的信息量大于integer (尽管两者都是32位bit)
+    我们可以看见, 函数选取较大的类型, 然后将a强制转换为较大类型, 然后分配给一个新的temp位置
+
+综上我们得到完整的semantic action:
+$$
+\begin{align}
+E \rightarrow E_1 + E_2 \\\{E.type &amp;= max(E_1.type, E_2.type); \\
+    a_1 &amp;= widen(E_1.addr, E_1.type, E.type); \\
+    a_2 &amp;= widen(E_2.addr, E_2.type, E.type); \\
+    E.addr &amp;= new Temp(); \\
+    &amp;\text{gen}(E.addr &#39;=&#39; a_1 &#39;+&#39; a_2); 
+\}
+\end{align}
+$$
+这段代码选取两个子表达式较大的类型, 作为新表达式的类型, 然后所有的子表达式根据自己的类型和新表达式的类型, 来进行widen conversion, 最后将两个子表达式的结果相加, 并将结果赋值给新表达式的地址
+
+## Type Inference and Polymorphic
+&gt; The term &#34;polymorphic&#34; refers to any code fragment that can be executed with arguments of different types.
+
+这里我们可以理解到多态的广义解释: 使用不同类型的参数产生不同结果的**同一段代码**, 我们称之为多态
+
+自然而然, 函数的重载可以看作一种多态的形式
+
+更具体地, 我们将多态分为编译时多态和运行时多态:
+- 编译时多态通过重载实现不同参数版本的函数(运算符), 然后编译器在编译时根据代码的参数选取合适的版本
+- 运行时多态往往结合面向对象的思想, 通过接口接受一个对象, 然后执行接口的函数, 但是具体执行了哪个函数由运行时传递的对象决定, 这就是运行时多态
+
+作为编译原理的一节, 我们这里主要讨论的是编译时多态, 也就是程序应该选取哪个版本的函数来执行
+
+现在我们来看一下书上的例子:
+
+```go
+func lenght(x) = 
+    if null(x) then 0 else length(tl(x)) + 1
+```
+其中的`tl(x)`函数将列表中的第一个元素remove后返回列表
+于是我们可以简单知道这个函数的目的: 递归统计列表长度
+
+我们知道列表`x`可以包含不同类型的元素, 这就导致了`length()`的参数类型不同, 通过类型推导, 从`if`中包括的0可以得到`length`的类型应该是一个`integer`
+
+
+### Substitution, Instances, and Unification
+这里`length()`的类型是一个含有变量的类型表达式(type expression):
+$$list(x) \rightarrow integer$$
+
+将类型表达式中的变量(variable)替换为某个类型, 我们称为一次替换(Substitution). 得到的替换结果我们称为一个实例(Instance). 如果两个类型表达式替换后的结果是一样的, 我们称为一次合一(Unification)
+
+$t$表示类型表达式, $S(t)$表示将$t$中的全部变量$\alpha$替换为$S(\alpha)$后的实例. 如果$S(t_1) = S(t_2)$则称$S$为一次合一替换. 再次地, 对于任意一个合一替换$S$, 如果存在$S&#39;$使得$S&#39;(t)$是$S(t)$的一个实例, 则$S&#39;$被称为**最一般化合一替换**
+
+所以合一简而言之就是通过替换类型变量来判断两个类型能否合并为同一个类型, 具体的, 我们可以提出以下的算法来判断两个类型是否可以合一:
+
+比如我们现在有两个类型表达式:
+
+$$
+((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_3)) \rightarrow list(\alpha_2)\\
+((\alpha_4 \rightarrow \alpha_5) \times list(\alpha_3)) \rightarrow \alpha_5
+$$
+
+我们画出它们的类型图:
+```Mermaid
+graph TD
+    A[&#34;-&gt;&#34; : 1] --&gt; B[&#34;x&#34; : 2]
+    A --&gt; C[list : 8]
+    C --&gt; D[α2 : 5]
+    B --&gt; E[&#34;-&gt;&#34; : 3]
+    E --&gt; F[α1 : 4]
+    E --&gt; D
+    B --&gt; G[list : 6]
+    G --&gt; H[α3 : 7]
+
+    I[&#34;-&gt;&#34; : 9] --&gt; J[x : 10]
+    I --&gt; K[α5 : 14]
+    J --&gt; L[&#34;-&gt;&#34; : 11]
+    J --&gt; M[list : 13]
+    L --&gt; H
+    M --&gt; H
+    L --&gt; N[α4 : 12]
+```
+每一个节点的类型都用一个单独的编号表示, 相同编号代表一个等价类
+我们执行以下规则:
+
+- $find(n)$和$union(m,n)$: 参考并查集, 代表了等价类的查找与合并
+
+- $unify(m, n)$: 对于两个节点$m$和$n$, 我们分三类情况讨论:
+  - 如果$m$和$n$是等价类, 则`return true`
+  - 如果$m$是带有$s_1$和$s_2$的$op_n$节点, $n$是带有$t_1$和$t_2$的$op_n$节点, 则将$m$和$n$合并(union), 并`return unify(s_1, t_1) and unify(s_2, t_2)`
+  - 如果$m$或$t$表示一个变量, 则合并$m$和$n$, 并`return true`
+
+完成以上操作后, 我们的类型图应该表示如下:
+```Mermaid
+graph TD
+    A[&#34;-&gt;&#34; : 1] --&gt; B[&#34;x&#34; : 2]
+    A --&gt; C[list : 7]
+    C --&gt; D[α2 : 5]
+    B --&gt; E[&#34;-&gt;&#34; : 3]
+    E --&gt; F[α1 : 4]
+    E --&gt; D
+    B --&gt; G[list : 6]
+    G --&gt; H[α3 : 4]
+
+    I[&#34;-&gt;&#34; : 1] --&gt; J[x : 2]
+    I --&gt; K[α5 : 7]
+    J --&gt; L[&#34;-&gt;&#34; : 3]
+    J --&gt; M[list : 6]
+    L --&gt; H
+    M --&gt; H
+    L --&gt; N[α4 : 5]
+```
+如果最终结果返回true, 则代表两个类型可以通过某个合一替换变为相同的类型, 具体执行的合一替换由结果图中的相同类型决定: 我们需要将等价类的叶节点进行替换, 以上图为例, 可以有:
+$$
+\begin{align}
+\alpha_1 &amp;= \alpha_3 \\
+\alpha_2 &amp;= \alpha_4 \\
+\alpha_5 &amp;= list(\alpha_2)
+\end{align}
+$$
+执行以下替换后的两式相等.
+
+然后我们再来具体看如何使用合一替换来推导函数的类型
+
+### Type Inference for length
+具体的, 我们执行如下规则:
+
+- 对于一个函数$fun \space id_1 (id_2) = E$, 我们使用一个类型表达式$\alpha \rightarrow \beta$来表示函数的类型, 然后对$E$和$id_2$进行类型推导, 得到类型$t$和$s$, 从而得到$id_1$的类型$s \rightarrow t$, 我们需要将$t$和$E$进行合一, $s$和$id_2$进行合一, 合一完成后将类型变量使用$\forall$进行约束
+
+- 每一个多态函数的出现需要将受限变量替换为某个新的类型变量
+
+具体的我们来看之前提到的`length()`函数:
+
+```go
+func lenght(x) = 
+    if null(x) then 0 else length(tl(x)) + 1
+```
+
+- `func lenght(x)`我们得到函数的类型为: $\alpha \rightarrow \beta$
+- 参数$x$为类型变量, 然后我们看函数体部分为`if`语句, 其类型为$boolean \times \alpha_i \times \alpha_i \rightarrow \alpha_i$
+- 然后我们知道`null(x)`函数的类型为$\forall\alpha.list(\alpha)\rightarrow boolean$, 这里用新变量代替受限变量得到$list(\alpha_n) \rightarrow boolean$由于推导出的参数是$x$, 所以这里需要把$x$和$list(\alpha_n)$进行合一, 于是有$x = list(\alpha_n)$
+- 接下来是$0$, 我们知道是$integer$类型, 所以$\alpha_i$和$integer$需要进行合一, 于是有$\alpha_i = integer$
+- 接下来看`length(tl(x)) + 1`部分, 首先我们看到最左边的叶节点, 即$tl(x)$, 我们知道$tl()$函数具有类型$\forall\alpha. list(\alpha) \rightarrow list(\alpha)$, 我们把受限变量替换为一个新变量得到$list(\alpha_t) \rightarrow list(\alpha_t)$, 然后得到参数类型为$x$, 于是将$x$和$list(\alpha_t)$进行合一, 得到$x = list(\alpha_t) = list(\alpha_n)$
+- 然后我们可以得到$1$的类型为$integer$, 现在`if`的三个参数都推导完毕, 我们需要把`length(tl(x))`部分和$\alpha_i$进行合一, 得到`length()` (被递归调用的length) 的类型为$list(\alpha_n) \rightarrow integer$
+- 后面只需要向上传递推导的类型并进行合一操作即可, 最后得到`length(x)`的类型为$\forall\alpha.list(\alpha)\rightarrow integer$
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-08-14
+      </div>
+      <div class="card-info">
+        7.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 7 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/08/14/draft/IDL-practice1/">
+      thrift实践 - golang实现
+    </a>
+    <span class="card-abstract">
+      
+这一部分记录了关于thrift的一些实践, 主要为使用golang完成官方的tutorial实践
+
+---
+
+# 环境
+
+- windows 10
+- golang 1.20.7
+- thrift 1.18
+
+本来是打算用C++来做实验的, 但是在windows平台上使用C++的thrift库有些麻烦, 需要自行编译其依赖库, 并且依赖库的编译又依赖于第三方的C++库, 这些会在后面有机会再尝试, 这里采用开发较为简单的golang来尝试
+
+# thrift简介
+thrift本身是一个用于定义RPC接口IDL框架, 分为两部分:
+- thrift编译器: 用于将thrift定义的IDL文件编译成各种语言的RPC接口代码
+- thrift依赖库: 各个语言有各自的thrift依赖, 用于上述编译结果的文件
+
+thrift编译器本身只要下载安装使用就行, 依赖库根据不同语言进行安装即可, 我们的工作主要是编写用于生成接口的thrift文件, 并在各自的语言中实现其接口
+
+# thrift语法
+官方给出了标准语法的巴科斯范式以及tutorial以供参考, 我们结合两者来理解
+
+```
+bool        Boolean, one byte
+i8 (byte)   Signed 8-bit integer
+i16         Signed 16-bit integer
+i32         Signed 32-bit integer
+i64         Signed 64-bit integer
+double      64-bit floating point value
+string      String
+binary      Blob (byte array)
+map&lt;t1,t2&gt;  Map from one type to another
+list&lt;t1&gt;    Ordered list of one type
+set&lt;t1&gt;     Set of unique elements of one type
+```
+这是thrift支持的数据类型, 不用过多解释
+
+```
+include &#34;shared.thrift&#34;
+```
+使用include来包含其他thrift文件中的定义
+
+```
+namespace cl tutorial
+namespace cpp tutorial
+namespace d tutorial
+namespace dart tutorial
+namespace java tutorial
+namespace php tutorial
+namespace perl tutorial
+namespace haxe tutorial
+namespace netstd tutorial
+namespace go tutorial
+```
+
+定义一个namespace, 通过文档中的说明: 
+&gt; A namespace declares which namespaces/package/module/etc. the type definitions in this file will be declared in for the target languages. The namespace scope indicates which language the namespace applies to; a scope of ‘*’ indicates that the namespace applies to all target languages.
+
+这规定了当前thrift文件编译目标语言时, 会被分配到哪一个模块中, 对于C++而言就是namespace, 对于golang而言就是package
+
+
+以上部分属于Header, 一个thrift文件由Header和Definition组成, Definition部分包括:
+```
+Definition      ::=  Const | Typedef | Enum 
+                | Struct | Union | Exception | Service
+```
+具体如下:
+```
+typedef i32 MyInteger
+```
+这允许我们为类型取一个别名
+
+```thrift
+const i32 INT32CONSTANT = 9853
+const map&lt;string,string&gt; MAPCONSTANT = {&#39;hello&#39;:&#39;world&#39;, &#39;goodnight&#39;:&#39;moon&#39;}
+
+enum Operation {
+  ADD = 1,
+  SUBTRACT = 2,
+  MULTIPLY = 3,
+  DIVIDE = 4
+}
+```
+定义常量和枚举
+
+```
+struct Work {
+  1: i32 num1 = 0,
+  2: i32 num2,
+  3: Operation op,
+  4: optional string comment,
+}
+```
+
+struct的语法如下:
+```
+Struct          ::=  &#39;struct&#39; Identifier &#39;{&#39; Field* &#39;}&#39;
+```
+其中的Field的语法如下:
+```
+Field           ::=  FieldID? FieldReq? FieldType 
+                Identifier (&#39;=&#39; ConstValue)? XsdFieldOptions ListSeparator?
+
+FieldID         ::=  IntConstant &#39;:&#39;
+```
+
+这要求我们以一个可选的数字ID来为struct的每个字段开头, 以及一个optional来表明字段的可选择性, 然后必要部分包括字段类型, 标识符, 以及可选的默认值. (最后两个我们忽视掉, 官方文档的说明不足)
+
+```
+exception InvalidOperation {
+  1: i32 whatOp,
+  2: string why
+}
+```
+exception和struct类似, 但是用于生成target lan的异常类
+
+```
+service Calculator extends shared.SharedService {
+
+   void ping(),
+
+   i32 add(1:i32 num1, 2:i32 num2),
+
+   i32 calculate(1:i32 logid, 2:Work w) throws (1:InvalidOperation ouch),
+
+   oneway void zip()
+}
+```
+service可以选择性地继承自另一个service, 并在其中声明定义一系列的方法
+
+方法定义解决C-style, 用返回值类型 + 标识符 + 符合字段格式的参数, 以及可选的抛出的错误类型
+
+
+文档中关于thrift的基本语法就到这里
+
+---
+
+# 在golang中实现接口
+
+我们通过`thrift -r --gen go tutorial`生成了目标代码的文件, 完成相关module的配置后, 我们可以实现定义的接口:
+
+```go
+type CalculatorHandler struct {
+	log map[int]*tutorial.SharedStruct
+}
+
+func NewCalculatorHandler() *CalculatorHandler {
+	return &amp;CalculatorHandler{log: make(map[int]*tutorial.SharedStruct)}
+}
+```
+`CalculatorHandler`就是我们的服务了, 我们在服务中定义一个`log`字段用于记录服务日志
+
+```go
+func (p *CalculatorHandler) Ping(ctx context.Context) (err error) {
+	fmt.Print(&#34;ping()\n&#34;)
+	return nil
+}
+
+func (p *CalculatorHandler) Add(ctx context.Context, num1 int32, num2 int32) (retval17 int32, err error) {
+	fmt.Print(&#34;add(&#34;, num1, &#34;,&#34;, num2, &#34;)\n&#34;)
+	return num1 + num2, nil
+}
+
+func (p *CalculatorHandler) Calculate(ctx context.Context, logid int32, w *tutorial.Work) (val int32, err error) {
+	fmt.Print(&#34;calculate(&#34;, logid, &#34;, {&#34;, w.Op, &#34;,&#34;, w.Num1, &#34;,&#34;, w.Num2, &#34;})\n&#34;)
+	switch w.Op {
+	case tutorial.Operation_ADD:
+		val = w.Num1 + w.Num2
+	case tutorial.Operation_SUBTRACT:
+		val = w.Num1 - w.Num2
+	case tutorial.Operation_MULTIPLY:
+		val = w.Num1 * w.Num2
+	case tutorial.Operation_DIVIDE:
+		if w.Num2 == 0 {
+			ouch := tutorial.NewInvalidOperation()
+			ouch.WhatOp = int32(w.Op)
+			ouch.Why = &#34;Cannot divide by 0&#34;
+			err = ouch
+			return
+		}
+		val = w.Num1 / w.Num2
+	default:
+		ouch := tutorial.NewInvalidOperation()
+		ouch.WhatOp = int32(w.Op)
+		ouch.Why = &#34;Unknown operation&#34;
+		err = ouch
+		return
+	}
+	entry := tutorial.NewSharedStruct()
+	entry.Key = logid
+	entry.Value = strconv.Itoa(int(val))
+	k := int(logid)
+	/*
+	   oldvalue, exists := p.log[k]
+	   if exists {
+	     fmt.Print(&#34;Replacing &#34;, oldvalue, &#34; with &#34;, entry, &#34; for key &#34;, k, &#34;\n&#34;)
+	   } else {
+	     fmt.Print(&#34;Adding &#34;, entry, &#34; for key &#34;, k, &#34;\n&#34;)
+	   }
+	*/
+	p.log[k] = entry
+	return val, err
+}
+
+func (p *CalculatorHandler) GetStruct(ctx context.Context, key int32) (*tutorial.SharedStruct, error) {
+	fmt.Print(&#34;getStruct(&#34;, key, &#34;)\n&#34;)
+	v := p.log[int(key)]
+	return v, nil
+}
+
+func (p *CalculatorHandler) Zip(ctx context.Context) (err error) {
+	fmt.Print(&#34;zip()\n&#34;)
+	return nil
+}
+```
+
+然后实现了接口中的全部方法 (在golang中, 只要实现了对应的方法就可视为实现接口)
+
+接下来我们看看如何启动一个服务:
+
+```go
+func runServer(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {
+	var transport thrift.TServerTransport 
+
+	var err error
+	if secure {
+		cfg := new(tls.Config)
+		if cert, err := tls.LoadX509KeyPair(&#34;server.crt&#34;, &#34;server.key&#34;); err == nil {
+			cfg.Certificates = append(cfg.Certificates, cert)
+		} else {
+			return err
+		}
+		transport, err = thrift.NewTSSLServerSocket(addr, cfg)
+	} else {
+		transport, err = thrift.NewTServerSocket(addr)
+	}
+
+	if err != nil {
+		return err
+	}
+	fmt.Printf(&#34;%T\n&#34;, transport)
+	handler := NewCalculatorHandler()
+	processor := tutorial.NewCalculatorProcessor(handler)
+	server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)
+
+	fmt.Println(&#34;Starting the simple server... on &#34;, addr)
+	return server.Serve()
+}
+```
+
+首先我们看函数中的第一行:
+`thrift.TServerTransport`
+
+这是一个接口, 定义如下:
+```go
+// Server transport. Object which provides client transports.
+type TServerTransport interface {
+	Listen() error
+	Accept() (TTransport, error)
+	Close() error
+
+	// Optional method implementation. This signals to the server transport
+	// that it should break out of any accept() or listen() that it is currently
+	// blocked on. This method, if implemented, MUST be thread safe, as it may
+	// be called from a different thread context than the other TServerTransport
+	// methods.
+	Interrupt() error
+}
+```
+可以看出, 这是一个经典的Socket Server的接口
+
+然后是建立一个Socket接口, 这里的代码根据secure参数来决定是否使用TLS加密
+```go
+if secure {
+		cfg := new(tls.Config)
+		if cert, err := tls.LoadX509KeyPair(&#34;server.crt&#34;, &#34;server.key&#34;); err == nil {
+			cfg.Certificates = append(cfg.Certificates, cert)
+		} else {
+			return err
+		}
+		transport, err = thrift.NewTSSLServerSocket(addr, cfg)
+	} else {
+		transport, err = thrift.NewTServerSocket(addr)
+	}
+```
+
+建立好了Socket链接后, 我们将实现了接口的`CalculatorHandler`传入`NewCalculatorProcessor`中, 生成一个`processor`, 然后将其传入`NewTSimpleServer4`中, 生成一个`server`, 最后调用`server.Serve()`来启动服务
+
+```go
+fmt.Printf(&#34;%T\n&#34;, transport)
+handler := NewCalculatorHandler()
+processor := tutorial.NewCalculatorProcessor(handler)
+server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)
+fmt.Println(&#34;Starting the simple server... on &#34;, addr)
+return server.Serve()
+```
+
+具体可以表示为下述的图:
+
+```Mermaid
+graph TD
+CalculatorHandler --&gt;|implement| CalculatorHandler.Interface
+CalculatorHandler --&gt;|composition| Processor
+Processor --&gt;|composition| Server
+Transport --&gt;|composition| Server
+Server --&gt; Run
+```
+接下来我们只要在main函数中调用`runServer`和`runClient`就可以启动并使用服务了
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-08-04
+      </div>
+      <div class="card-info">
+        838字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/08/04/hello-world/">
+        Hello World
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
+
+## Quick Start
+
+### Create a new post
+
+``` bash
+$ hexo new &#34;My New Post&#34;
+```
+
+More info: [Writing](https://hexo.io/docs/writing.html)
+
+### Run server
+
+``` bash
+$ hexo server
+```
+
+More info: [Server](https://hexo.io/docs/server.html)
+
+### Generate static files
+
+``` bash
+$ hexo generate
+```
+
+More info: [Generating](https://hexo.io/docs/generating.html)
+
+### Deploy to remote sites
+
+``` bash
+$ hexo deploy
+```
+
+More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-08-02
+      </div>
+      <div class="card-info">
+        3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/08/02/network/works-projects/wireShark-5-DHCP/">
+      wireshark practice 3 - DNS
+    </a>
+    <span class="card-abstract">
+      
+1.	Are DHCP messages sent over UDP or TCP? 
+
+    `All DHCP messages are sent over UDP.`
+
+2.	Draw a timing datagram illustrating the sequence of the first four-packet Discover/Offer/Request/ACK DHCP  exchange between the client and server. For each packet, indicated the source and destination port numbers. Are the port numbers the same as in the example given in this lab assignment? 
+
+    ```Mermaid
+    sequenceDiagram
+        participant Client
+        participant Server
+        Client-&gt;&gt;Server: DHCP Discover(67)
+        Server-&gt;&gt;Client: DHCP Offer(68)
+        Client-&gt;&gt;Server: DHCP Request(67)
+        Server-&gt;&gt;Client: DHCP ACK(68)
+    ```
+
+3.	What is the link-layer (e.g., Ethernet) address of your host?
+4.	What values in the DHCP discover message differentiate this message from the DHCP request message?
+5.	What is the value of the Transaction-ID in each of the first four (Discover/Offer/Request/ACK) DHCP messages?  What are the values of the Transaction-ID in the second set (Request/ACK) set of DHCP messages?  What is the purpose of the Transaction-ID field?
+6.	A host uses DHCP to obtain an IP address, among other things. But a host’s IP address is not confirmed until the end of the four-message exchange!  If the IP address is not set until the end of the four-message exchange, then what values are used in the IP datagrams in the four-message exchange?  For each of the four DHCP messages (Discover/Offer/Request/ACK DHCP), indicate the source and destination IP addresses that are carried in the encapsulating IP datagram.
+7.	What is the IP address of your DHCP server?
+8.	What IP address is the DHCP server offering to your host in the DHCP Offer message?  Indicate which DHCP message contains the offered DHCP address.
+9.	In the example screenshot in this assignment, there is no relay agent between the host and the DHCP server. What values in the trace indicate the absence of a relay agent?  Is there a relay agent in your experiment? If so what is the IP address of the agent?
+10.	Explain the purpose of the router and subnet mask lines in the DHCP offer message.
+11.	In the DHCP trace file noted in footnote 2, the DHCP server offers a specific IP address to the client (see also question 8. above).  In the client’s response to the first server OFFER message, does the client accept this IP address?  Where in the client’s RESPONSE is the client’s requested address?
+12.	Explain the purpose of the lease time. How long is the lease time in your experiment?
+13.	What is the purpose of the DHCP release message?  Does the DHCP server issue an acknowledgment of receipt of the client’s DHCP request?  What would happen if the client’s DHCP release message is lost?
+14.	Clear the bootp filter from your Wireshark window. Were any ARP packets sent or received during the DHCP packet-exchange period? If so, explain the purpose of those ARP packets.
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-07-27
+      </div>
+      <div class="card-info">
+        1.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/07/27/golang-basic/projectManage/">
+        Golang的项目管理基础
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+本文只是个人学习的知识整理和记录, 不含有教程性质, 仅供参考
+
+# Golang的项目管理基础
+
+[toc]
+
+这里要讨论的内容主要包括:
+- golang的依赖管理
+- golang的模块
+- golang的package
+- golang的workspace
+
+我们层层递进介绍每一个级别的管理在做什么
+
+## 文件
+golang的源码文件格式为`xxx.go`, 每个文件都必须归属于一个package, 这个package我们在程序的第一行声明, 例如:
+```go
+package calc
+```
+
+文件是我们实现源代码的位置
+
+## package
+package是golang组织和管理代码的基本单位, 每个文件都必须归属于一个package. 我们规定同一个目录下的所有文件都归属于同一个package, 除了`xxx_test`包可以和对应的被测试包在同一个目录下
+
+- 属于同一个package的文件可以互相访问对方的变量和函数
+- package的名字可以和目录名不同, 但是需要注意:
+  - import一个包时是通过目录名字引入的
+  - 使用一个包时是通过package name使用的
+
+比如我存在以下目录:
+```
+- tttt
+    - walk.go
+    - walk_test.go
+```
+我在import walk时需要使用`import &#34;path_to_module/tttt&#34;`, 但是使用时需要根据`walk.go`设定的package name来使用: `walk.Walk()`
+
+package导出的变量和函数的规则和struct一样, 首字母大写的变量和函数可以被外部包访问, 小写的变量和函数只能在内部包内部访问
+
+包之间可以进行相互嵌套, 此时如果你要导入一个嵌套的package, 我们使用的是目录来导入, 类似于以下结构`module/path/to/the/package`, 这个路径是相对于module而言的路径
+
+## module
+模块是golang管理项目的基本单位, 一个项目需要的依赖和包的管理都在moddule中完成
+
+为了建立一个module, 我们需要先在我们的目录之下执行`go mod init module_name`指令, 这个指令会创建一个`go.mod`文件, 这个文件记录了我们的module的名字和依赖
+
+一个`go.mod`就声明了一个模块, 其对应目录下的所有文件和package都属于这个模块, 当我们想要引入一个package时, 需要通过对应的module路径来引入, 比如我们有以下目录:
+
+```
+work
+│   go.mod
+│   go.sum
+│
+├───main
+│       main.go
+│
+└───walk
+        walk.go
+        walk_test.go
+```
+
+我们在main中导入walk时, 需要使用`import &#34;work/walk&#34;`
+依赖通过`go.mod`来管理, 如果使用的是本地module, 则使用`import + 相对路径`或者在`go.mod`中添加`require + &#34;package name&#34;` 和 `replace + &#34;package name&#34; =&gt; &#34;path to package&#34;`来指定本地module的位置, 如下:
+  
+```go
+module work
+
+go 1.16
+
+require (
+    github.com/urfave/cli/v2 v2.3.0
+)
+
+replace github.com/urfave/cli/v2 =&gt; ../cli/v2
+```
+然后就可以直接导入`import &#34;github.com/urfave/cli/v2&#34;`了
+
+## workspace
+我们可以建立一个workspace, 通过`go.work`配置来让多个模块可以协同工作, 类似于使用replace的导入方式, 但是指定workspace可以让全部模块互相调用, 而不用在各自的`go.mod`中配置
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-07-25
+      </div>
+      <div class="card-info">
+        9.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 8 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/07/25/essay/afterReadingCleanCode/">
+      Clean Code阅读笔记
+    </a>
+    <span class="card-abstract">
+      
+*Clean Code* called 《代码整洁之道》in Chinese give a lot of guidance on how to write readable code. 
+
+在此为此书的阅读做出整理
+
+---
+
+&lt;!-- TOC --&gt;
+
+- [第一部分](#第一部分)
+  - [格式(format)部分](#格式format部分)
+    - [vertical formatting](#vertical-formatting)
+    - [horizontal formatting](#horizontal-formatting)
+  - [intermission](#intermission)
+- [第二部分](#第二部分)
+  - [对象和数据结构](#对象和数据结构)
+    - [数据的抽象](#数据的抽象)
+    - [反对称性](#反对称性)
+    - [迪米特原则](#迪米特原则)
+    - [对象和数据结构](#对象和数据结构-1)
+  - [错误处理](#错误处理)
+  - [边界(boundary)](#边界boundary)
+  - [单元测试](#单元测试)
+    - [TTD(Test-Driven Development)](#ttdtest-driven-development)
+    - [clean test](#clean-test)
+  - [Class](#class)
+    - [Small Enough!](#small-enough)
+    - [Organizing for Change](#organizing-for-change)
+  - [System](#system)
+    - [依赖注入](#依赖注入)
+    - [Ioc](#ioc)
+    - [AOP](#aop)
+    - [Test drive the Archithecture](#test-drive-the-archithecture)
+    - [做出更好的决定](#做出更好的决定)
+    - [理性对待*标准*](#理性对待标准)
+    - [使用DSL(Domain Specific Language)](#使用dsldomain-specific-language)
+  - [Emergence](#emergence)
+    - [Emergent Design](#emergent-design)
+  - [Concurrency](#concurrency)
+    - [SRP in Conccurrency](#srp-in-conccurrency)
+    - [减少共享数据, 缩小数据scope](#减少共享数据-缩小数据scope)
+    - [尽量独立](#尽量独立)
+    - [Excution Models](#excution-models)
+      - [Produceer-Consumer](#produceer-consumer)
+      - [Readers-Writers](#readers-writers)
+      - [Dining Philosophers](#dining-philosophers)
+    - [Synchronized Method](#synchronized-method)
+- [第三部分](#第三部分)
+
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+&lt;!-- /TOC --&gt;
+
+---
+
+# 第一部分
+这一部分以代码提供有效的信息和组织代码以优化信息为主.
+
+
+- 给变量取名字要清晰，避免多个名字的混淆，这对于英语词汇量的要求会很高
+
+- 函数的取名最好用动词，用来描述函数的行为，如果能够给出一个好命名的话, 只需要看函数和变量命名就能知道代码的行为, 我们认为这是好代码
+  ```java
+    // bad
+    public List&lt;int[]&gt; getThem() {
+        List&lt;int[]&gt; list1 = new ArrayList&lt;int[]&gt;();
+        for (int[] x : theList)
+            if (x[0] == 4)
+                list1.add(x);
+        return list1;
+    }
+    // good
+    public List&lt;int[]&gt; getFlaggedCells() {
+        List&lt;int[]&gt; flaggedCells = new ArrayList&lt;int[]&gt;();
+        for (int[] cell : gameBoard)
+            if (cell[STATUS_VALUE] == FLAGGED)
+                flaggedCells.add(cell);
+        return flaggedCells;
+    }
+    ```
+    没有人知道`getThem`到底是想要得到什么, `list1`也只是让人知道这是个列表, 想要理解代码逻辑必须仔细阅读才行
+    如果按照下面的代码命名, 我们能够一眼看出函数的作用: 得到被标记的格子. 然后我们可以看出代码是在从棋盘上遍历所有格子, 然后检查各自的状态, 并将标记的各自取出返回
+    代码就像是在&#34;tell a story&#34;, 能够通过阅读理解, 而不是分析理解
+
+&amp;emsp;
+
+- 函数和变量的命名可以形成动宾结构, 对象和成员函数的命名可以形成主谓结构, 遵守这样的原则可以让代码更加清晰
+  ```
+  targetStudent.isGirl();
+  targetStudent.setScore(100);
+
+  targetClass.deleteStudent(targetStudent);
+  ```
+  这样的代码即便我们不去阅读class的源码, 也能够一眼看出代码的作用
+
+  实际上我们此处的代码应该更加简化 [^1] 
+
+[^1]: 这里的`targetClass.deleteStudent(targetStudent);`实际上可以简化为`targetClass.delete(targetStudent);`因为Class和Student实际上存在着一种潜在的必然关系, 并且我们的参数命名也应该提供足够的信息, 来明确此处要删除的是Student, 所以在函数名中再强调删除对象是多余的
+
+&amp;emsp;
+
+- 为了尽量维护动宾结构和主谓结构, 我们函数的参数最好不要超过两个参数 (可变参数除外), 三个参数的函数我们认为已经是极其糟糕的结构了
+  一个函数只要负责一个功能就行了, 最理想的情况是每个函数总行数不超过5行, 除非函数需要实现高聚合度的复杂功能
+  对于一些情况, 需要完成某些功能确实需要大量的参数设定时, 不要局限于用一个函数来实现. 比如我们要实现一个http的request, 我们需要设定url, header, timeout等参数信息, 使用一个函数来实现就十分的不优雅. 
+  具体的, 我们对于一个request编写一个class, 将参数设定为成员变量, 然后针对每一个参数编写设置函数, 最后编写一个`send`函数来发送请求, 这样的代码就十分的优雅了, 这种设计模式我们称为**建造者**模式
+
+&amp;emsp;
+
+- 注释不是必要的, 我们需要达到的至高境界是, 能够只通过函数和变量的命名, 就能够把代码的含义表述清楚
+- 上面一条不是你不写注释的理由, 相信我, 你的代码写不到这么好
+- 下面是一些通过注释写明的信息:
+  - 合法信息: 包括了代码的作者, 版权信息, 代码的版本号等
+  - 对于复杂内容的阐明: 我们不能保证代码中所有内容都能通过函数和变量名表述清楚, 比如我在一处使用了正则表达式匹配, 正则表达式本身的可读性是很差的, 所以我或许需要用注释来阐明一下它的含义和匹配对象
+  - TODO注释: 用来标记一些未完成的工作, 以及一些需要改进的地方
+- 阐明代码意图和解释模糊代码, 这是弥补代码不足的方式
+
+- 对于一段代码, 如果需要警告用户一些重要的使用规则, 那么使用注释是没问题的, 比如对于一个计算函数:
+  ```java
+  //WARNING: totalAmount can&#39;t be zero
+  double calTheUtilization(int usedAmount, int totalAmount){
+    return (double)usedAmount / totalAmount;
+  }
+  ```
+  提示用户参数的使用限制, 这是一个合理的注释使用
+
+- 对每一个参数都做注释并不是必要的, 但是对于一些规范的库而言, 给与尽可能详细的注释是有必要的
+
+- 现在的IDE一般会提供良好的注释辅助, 将函数, class, 参数的注释直接显示给用户, 也提供了引用查找之类的便捷功能, 所以一些旧时代遗留下来注释习惯我们往往不必去在意
+
+## 格式(format)部分
+
+### vertical formatting
+- 适当的空行, 以分割代码逻辑
+- 控制垂直密度, 过高密度降低可读性
+- 控制垂直距离, 减少被调用代码和调用代码的距离, 相近概念的代码放在一起
+- 排列垂直顺序, 被调用者在调用者后面, 主要逻辑在细微逻辑后面, 把代码的主要内容放在最前面
+
+### horizontal formatting
+- 横线的信息密度由类似链式调用的代码提供, 我们需要控制横向代码的密度
+- 横向对齐
+
+---
+
+## intermission
+
+到这里为止的五章可以归类为第一部分, 这一部分强调的是代码本身为程序员提供信息理解的这一部分.
+
+变量和函数的命名提供了信息, format为信息提供了组织形式, 注释为信息提供了补充.
+所有这些要素一起协作为我们提供了理解代码的基本信息, 优秀的代码凭借这些基本原则可以提供很高的可读性.
+
+---
+
+# 第二部分
+这一部分以设计模式和设计原则为主
+
+## 对象和数据结构
+
+### 数据的抽象
+我们将数据设置为private, 通过函数的方式让外界来获取数据, 这样能够将数据的真实情况抽象出来, 让user不关注于数据的具体实现.
+
+具体来说, 我们可以使用`x, y`表示笛卡尔坐标系的一个点, 但是我们获取数据时完全可以使用polar coordinates的方式获得坐标点, 尽管底层实际是`x, y`
+
+### 反对称性
+尽管我们一般使用将数据抽象出来的方式, 以OPP的思想来实现数据的获取, 但是实际上将数据暴露出来, 通过一个过程来获得其数据也不是没有不可取之处.
+
+考虑如下的情况:
+
+```Mermaid
+classDiagram
+  class Shape{
+    +auto somedata
+    +getArea()
+    +getPerimeter()
+  }
+  class Rectangle{
+    +auto somedata
+  }
+  class Circle{
+    +auto somedata
+    +getRadius()
+  }
+  Shape &lt;|-- Rectangle
+  Shape &lt;|-- Circle
+```
+
+此时如果我们需要给Shape添加新的功能, 比如获取图形的`metadata`, 那么新的函数需要所有的class都做出修改才能实现
+
+如果是将数据暴露出来, 使用一个公共过程的话, 我们就可以不对储存数据的结构做出任何修改, 只用修改管理函数的一个类即可:
+
+```Mermaid
+classDiagram
+  class Shape{
+    +auto somedata
+  }
+  class Rectangle{
+    +auto somedata
+  }
+  class Circle{
+    +auto somedata
+  }
+  Shape &lt;|-- Rectangle
+  Shape &lt;|-- Circle
+
+  class Method{
+    +getArea(Shape)
+    +getPerimeter(Shape)
+    +getRadius(Shape)
+  }
+
+  Shape --&gt; Method
+```
+
+### 迪米特原则
+&gt; 只与你的直接朋友交谈, 不要和陌生人说话
+
+也就是说一个类$C$中的函数$f$只应该调用以下的其他函数或变量:
+- $C$本身
+- $f$自己创建的对象
+- 作为参数传递给$f$的对象
+- $C$的成员
+
+此原则的最终目的是**低耦合, 高内聚**
+
+### 对象和数据结构
+
+对象是隐藏内部, 只展示operation的, 而数据结构暴露内部数据, 而提供很少的对外行为
+
+对于只提供数据的存在, 我们使用结构来实现, 而如果我们需要实现某种行为, 我们需要考虑对象, 并且遵守**低耦合高内聚**的原则
+
+对于完全没有自己行为, 完全只有数据的struct, 我们可以将其视作DTO(Data Transfer Object), 或者叫做一个Bean
+
+## 错误处理
+感悟不是很深, 随便记几点:
+- 不要传递Null
+- 不要返回Null
+- 用异常机制代替错误码
+- 避免不必要的错误捕捉
+
+## 边界(boundary)
+
+边界用于描述一个模块与外部相连的部分, 可以参照类的接口来理解
+
+- 对于一个模块提供的过多的并不需要的功能, 我们通过封装来减少第三方代码的边界, 从而降低自己的代码和第三方代码的耦合性, 并且提高可读性, 避免冗余信息
+
+- 学习探索第三方代码的最佳方式就是test, 自己编写相关功能的测试代码, 来理解各个代码的作用如何. 官方提供的测试用例也是使用代码的良好参考
+
+- 可以使用不存在的代码, 然后将这些代码编写为一个adapter接口, 再使用第三方代码进行实现, 使我们在选择依赖前先完成自己的设计
+
+## 单元测试
+
+### TTD(Test-Driven Development)
+
+TTD的原则:
+
+- You may not write production code until you have written a failing unit test.
+- You may not write more of a unit test than is sufficient to fail, and not compiling is failing.
+- You may not write more production code than is sufficient to pass the currently failing test.
+
+测试使得开发更稳定灵活, 你不必再担心代码改动是否会造成其他部分的故障, 因为test能够限制代码在一定的范围中起作用.
+
+### clean test
+为了编写简洁的测试, 我们需要将测试需要的数据生成部分单独编写分离, 避免在test函数中编写生成数据的逻辑.
+
+然后, 我们调用需要测试的函数, 并尽量避免在test函数中编写过多的逻辑
+
+最后, 我们使用**一条**断言来判断输出的正确性
+
+
+## Class
+
+### Small Enough!
+类的大小应该足够小, 对于一个类的设计, 我们应该满足SRP(Single Responsibility Principle)
+
+怎样来划分责任取决于设计者的喜好, 但是我们总存在一个普遍认可的指导原则: **高内聚(High Cohesion)**
+
+内聚是指类的成员函数和成员变量之间的关系, 如果一个函数能够尽量多地使用成员变量, 那么我们则称为**高内聚**.
+于是如果一个类的责任过多, 不同的函数之间对变量的使用不可能完全重合, 所以过多的责任将导致类的内聚程度降低, 所以使用**高内聚**的原则来划分类的责任是一个值得参考的方式
+
+### Organizing for Change
+将代码变化部分和不变部分分离, 形成继承结构, 从而满足OCP(Open Closed Principle)
+
+开闭原则指的是, **开放扩展, 关闭修改**.
+
+当我们需要扩展功能时, 通过继承就能实现, 而不改变已有部分
+
+使用接口是对于Change处理的极端情况, 我们将不变部分设置为接口, 我们的扩展行为是对接口的实现. 而使用接口的部分不需要进行修改.
+
+
+## System
+
+构建系统和使用系统是两个事情, 我们应该将其分开, 其中的一种实现方式叫做DI(dependency injection)
+
+### 依赖注入
+我们构建一个服务时需要使用很多额外的工具和依赖, 我们需要创建这些依赖并配置它们, 然后使用它们.
+
+依赖注入的思想就是将创建和配置的过程交给其他类来负责, 服务中只需要使用传递进来的完成的依赖的对象即可, 然后在服务中直接使用.
+
+### Ioc
+IoC(Inversion of Control)是一种设计思想, 即把程序的某一部分的控制抽取出来, 让外界来负责这一部分的职责.
+依赖注入是控制反转的一种具体实现, 将程序的依赖反转给了外部来实现.
+
+### AOP
+AOP(Aspect Oriented Programming)是一种编程思想, 我们的程序运行中存在许多固定的phrase, 这些共同的phrase我们可以看作一个切面, 然后我们通过某些方式将代码加入到切面的某个位置, 从而实现在所有相同的阶段来进行某个操作, 比如记录日志等
+
+### Test drive the Archithecture
+我们先编写测试, 而在架构上偏向于使用高度解耦但是简单且原生的方式来实现, 然后在测试中不断优化, 增加功能, 最后实现稳定可靠的系统
+
+### 做出更好的决定
+
+做决定时, 将决定权分散(去中心化)能够更好的保证决定的正确性, 并且应当将决定放到不得不做时再决定, 此时你才拥有最多的信息来判断决定的正确性
+
+### 理性对待*标准*
+对于所谓的行业标准或者编码标准, 只有当你能明确其带来的价值时, 才去采用它, 否则只是无故的增加工作的难度和员工犯错的可能性
+
+### 使用DSL(Domain Specific Language)
+领域特定语言是对应领域的描述方式, 某个领域的专家更偏向于使用的专业语言. 
+
+如果我们在代码中使用这样的语言来表达, 可以更好的减少代码对于领域特定实现的错误
+
+---
+
+## Emergence
+
+涌现(emergence)如同字面意思一样, 不同的元素如同泉水一般一点点从泉眼中出现, 量少而连续不断
+
+### Emergent Design
+涌现式设计就是这种形式的一种体现, 我们会源源不断地产生新的想法和方案, 然后将这些想法一一付诸实践. 但是这势必会造成现有系统的不断更改, 从而造成无用工作. 所以对于涌现式设计, 我们需要在项目建立之时就采用灵活且低耦合的设计方式, 然后不断地将想法融入其中.
+
+为了实现涌现式设计, 我们需要遵守以下原则:
+
+- 编写好完整地测试
+  
+  编写好了完整地测试后, 我们就可以自由地修改现有程序, 而保证我们的修改没有破坏原本的程序
+
+- Refactory(重构)
+  
+  完成了测试后, 我们需要不断地重构代码, 具体包括如下;
+  - 消除重复代码
+  - 优化代码表达性
+  - 最小化类和方法
+
+## Concurrency
+并发从来都是一个提高程序性能但是难以把控的问题.
+
+简单回顾一下引发死锁的四个必要条件:
+
+- 互斥条件: 一个资源每次只能被一个进程使用
+- 请求与保持条件: 一个进程因请求资源而阻塞时, 对已获得的资源保持不放
+- 不剥夺条件: 进程已获得的资源, 在末使用完之前, 不能强行剥夺
+- 循环等待条件: 若干进程之间形成一种头尾相接的循环等待资源关系
+
+### SRP in Conccurrency
+由于并发代码的复杂性, 并且其拥有单独的错误和调试方式, 所以我们应当将并发代码视作单独的责任, 尽管它属于功能的一部分.
+
+### 减少共享数据, 缩小数据scope
+数据一致性问题是并发编程面对的主要挑战之一, 所以为了减少shared data带来的问题, 我们偏好于减少共享数据的采用.
+
+其中一种解决方式是通过拷贝原始数据到多个threads中, 然后在完成后将各自的结果合并.
+
+### 尽量独立
+
+线程进行的任务应该尽量的独立, 而不依靠其他线程, 这样可以减少条件变量和线程之间的依赖, 降低系统复杂度, 从而减少问题的产生.
+
+### Excution Models
+
+#### Produceer-Consumer
+生产者消费者模型, 很常见
+
+#### Readers-Writers
+读写锁相关的模型
+
+#### Dining Philosophers
+多个消耗资源的对象和多个资源构成的模型.
+
+
+### Synchronized Method
+使用``Synchronized``修饰的方法可以保证内部的原子性, 但是需要注意多个方法之间的并发问题
+
+---
+# 第三部分
+第三部分是关于工程实践, 略过
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-07-25
+      </div>
+      <div class="card-info">
+        2.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/07/25/golang-basic/basic-1/">
+        Golang基础练习
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 来自A Tour of Go的两道练习
+
+## 并发比较二叉树元素是否相同
+
+### 题目描述
+
+这道题中我们使用`tree.New(x)`来生成一个有十个元素$x, 2x, 3x, ..., 10x$的具有随机结构的二叉树, 我们需要实现`Walk`函数来遍历一个二叉树, 并通过`Same`函数来比较两个二叉树是否相同, 我们使用Go语言的并发特性和`channel`来实现这个功能
+
+### 解决方案
+
+首先Walk函数遍历节点的值我们加入一个channel中, 作为后续的使用,
+
+```golang
+var wait sync.WaitGroup
+func Walk(t *tree.Tree, ch chan int, depth int) {
+	ch &lt;- t.Value
+	if depth == 0 {
+		defer close(ch)
+	} else {
+		defer wait.Done()
+	}
+	if t.Left != nil {
+		wait.Add(1)
+		go Walk(t.Left, ch, depth+1)
+	}
+	if t.Right != nil {
+		wait.Add(1)
+		go Walk(t.Right, ch, depth+1)
+	}
+	if depth == 0 {
+		wait.Wait()
+	}
+	return
+}
+```
+
+我们可以看到, 代码中除了正常的左右节点遍历外, 对于深度为0的节点我们进行了特殊判定, 通过`defer`语句来关闭channel, 并且通过`sync.WaitGroup`来等待所有的goroutine结束, 从而保证channel中的数据全部被读取
+
+关闭`channel`是为了后续的并发比较能够检测到树已经遍历完毕, 这里我们知道树的大小固定为10, 所以可以通过简单的计数来实现, 但大多数情况需要通过某个信号来判断树已经判断完毕
+
+需要注意的编码规范:
+- 函数名遵循大驼峰命名法
+- 变量名遵循小驼峰命名法
+
+针对上面的代码, 我们可以通过封装函数来优化其可读性:
+- 对于`defer`部分, 我们可以只defer一个函数, 将我们的逻辑判断封装其中, 而不是在不同的程序点进行判断:
+```go
+defer func() {
+	if depth == 0 {
+		close(ch)
+	} else {
+		wait.Done()
+	}
+}()
+```
+
+- 对于条件判断部分, 左右部分的遍历是相同的操作, 所以我们封装为一个操作:
+```go
+ToChild := func(child *tree.Tree) {
+    if child != nil {
+        wait.Add(1)
+        go Walk(child, ch, depth+1)
+    }
+}
+```
+然后我们的代码可以简化为:
+```go
+var wait sync.WaitGroup
+func Walk(t *tree.Tree, ch chan int, depth int) {
+	ch &lt;- t.Value
+    defer func() {
+        if depth == 0 {
+            close(ch)
+        } else {
+            wait.Done()
+        }
+    }()
+    ToChild := func(child *tree.Tree) {
+        if child != nil {
+            wait.Add(1)
+            go Walk(child, ch, depth+1)
+        }
+    }
+    ToChild(t.Left)
+    ToChild(t.Right)
+	
+    if depth == 0 {
+        wait.Wait()
+    }
+    return
+}
+```
+其实这样的编程方式在Javascript中很常见, 熟悉之后对于提高代码的整洁性相当有益
+
+接下来我们为`Walk`函数编写对应的单元测试
+
+首先我们创建相应的测试文件:
+```
+- tree
+    - compare_tree.go
+    - compare_tree_test.go
+```
+
+文件命名的规范为:
+- 文件全部使用小写字母命名, 使用下划线分词
+- 测试文件在最后加上`_test`后缀
+
+测试文件在构建时忽略, 在执行`go test`时运行
+
+这里由于涉及到了多文件的项目, 我们需要事先明确一下golang的项目管理方式: [Golang的项目管理基础](https://dnullp.github.io/2023/07/27/golang/projectManage/)
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
         2023-07-21
       </div>
       <div class="card-info">
@@ -255,12 +1702,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/07/21/compiler/staticProgramAnalysis/">
-        静态程序分析
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/07/21/compiler/staticProgramAnalysis/">
+      静态程序分析
+    </a>
+    <span class="card-abstract">
+      
 本笔记是基于龙书和南京大学《软件分析》课程的学习笔记, 本文不具有教程科普的性质, 只是个人学习过程中的理解记录
 
 ---
@@ -429,12 +1875,8 @@ $$
 ## 常量传播
 
 TODO
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -444,13 +1886,11 @@ TODO
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2023-07-21
@@ -467,11 +1907,12 @@ TODO
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2023/07/21/essay/2023-7-21/">
-      对数据流分析的一点理解总结
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/07/21/essay/2023-7-21/">
+        对数据流分析的一点理解总结
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 由于是理解和心得是会随着时间的变化而改变的, 本文只是初学时的想法整理
 
 
@@ -515,8 +1956,12 @@ $$OUT[s] = \bigcup_{p \in pred[s]} IN[p]$$
 准确来说, 控制流是程序执行的走向, 而数据流是数据的传递和改变走向
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -526,11 +1971,13 @@ $$OUT[s] = \bigcup_{p \in pred[s]} IN[p]$$
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2023-07-10
@@ -547,12 +1994,11 @@ $$OUT[s] = \bigcup_{p \in pred[s]} IN[p]$$
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/07/10/compiler/CH9-MechineDependentOptimism/">
-        机器无关优化
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/07/10/compiler/CH9-MechineDependentOptimism/">
+      机器无关优化
+    </a>
+    <span class="card-abstract">
+      
 数据流分析是这一章前半部分的重要内容, 包含了数据流分析初步:
 
 - 到达定值分析
@@ -628,1231 +2074,6 @@ CFG中最大的无环(acyclic)的路径的长度称为这条路径的深度
 第一部分我们建立了关于CFG中对于循环的基本模型, 接下来基于之前的循环模型, 我们建立起**基于区域**的数据流分析
 
 TODO
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-06-30
-      </div>
-      <div class="card-info">
-        3.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/06/30/compiler/CH8-CodeGeneration/">
-      代码生成
-    </a>
-    <span class="card-abstract">
-      
-本文不具有教程科普的性质, 只是个人学习过程中的理解记录
-
----
-
-在得到中间代码以后, 我们可以优化中间代码, 并生成目标代码(一般为汇编代码), 最后通过汇编器生成目标程序
-
-而优化中间代码并生成目标代码部分我们称为后端, 是我们编译器的最后一个阶段
-
----
-
-代码生成(code generation)包含以下几个重要的部分:
-
-- instruction selection: 选择指令
-- register allocation: 寄存器分配
-- register assignment: 赋值
-- instruction order: 指令排序
-
-## instruction selection
-
-我们需要为对应的中间代码选择合适的指令来完成相应的操作
-
-比如我们需要计算一个表达式`a = b + c`, 我们需要选择`add`指令来完成加法运算, 而在此之前我们需要将`b`和`c`的值分别存入寄存器中, 这又需要选择`load`指令
-
-## register allocation
-
-寄存器的分配是一个复杂的问题, 我们可用的寄存器一般是有限的, 而寄存器中的数据对于CPU来说又可以更快访问, 我们需要选择适合的数据存入寄存器中
-
-## register assignment
-
-选择了要存储的数据, 还需要选择存储的寄存器, 如果寄存器还有空余, 直接存取就行了, 但是如果寄存器满了, 我们就需要选择一个寄存器将其内容存入内存中, 然后再将新的数据存入寄存器中
-
-## instruction order
-
-有些指令可以优化或者更改顺序, 但是有些指令是不能的, 具体细节和规则都将在下面讨论
-
----
-
-## retargetable compiler
-
-可以从多个指令集生成目标程序的编译器
-
-## Virtual Machine
-
-虚拟机, 把字节码实时翻译成机器码运行, 称为即使编译器(just-in-time compiler)
-
-## CISC and RISC
-
-- CISC: 一般使用两地址码, 以及更复杂的寻址模式
-- RISC: 一般使用三地址码
-
----
-
-## 如何进行寄存器分配
-
-我们将中间代码表示为一个flow graph, 每个节点表示一个basic block, basic block是由程序的控制流来分割的: 一个basic block的入口只有一个, 一个basic block的出口也只有一个, 除了最后一个basic block, 其余的basic block的出口都是下一个basic block的入口
-
-分割规则如下:
-
-- if语句分割: 从if处分割基本块, 一般包含then和else两个基本块
-- 循环语句分割: 循环语句的出口连接自己的入口, 并且连接跳出循环后的部分
-
-比如以下代码:
-
-```c
-int a = 1;
-int b = 2;
-\\ block1
-
-if (a &gt; 0) {
-    b = a + 1;
-    \\ block2
-} else {
-    b = a - 1;
-    \\ block3
-}
-```
-
-我们可以将其分割为以下几个基本块:
-
-```Mermaid
-graph LR
-    A[entry] --&gt; B[block1]
-    B --&gt; C[block2]
-    B --&gt; D[block3]
-    C --&gt; E[exit]
-    D --&gt; E
-```
-
-然后我们在基本块的出口和入口处按照以下规则标记变量:
-
-- 如果一个变量在基本块中没有被改变(赋值)就被使用了, 那么我们认为这个变量在这个基本块中活跃, 我们将其标记在基本块入口
-- 在出口处连接的所有入口处标记的变量的并集, 我们认为这些变量在出口处活跃, 我们将其标记在基本块出口
-
-使用一个全局寄存器(这里的全局指的是全部的基本块)可以让位于**入口**处的变量减少读取的成本, 可以让位于**出口**的变量减少写回内存和重新读取的成本
-
-### Ershov数
-
-Ershov数是用于计算表达式需要的寄存器数的一种方法
-
-现在假设我们已经有一个表达式树, 现在我们按照以下规则计算:
-
-- 所有叶子节点标号为0
-- 只有一个子节点的节点标号与子节点相同
-- 有两个子节点标号不同, 则其标号为较大子节点的标号
-- 有两个子节点标号相同, 则其标号为子节点的标号加1
-
-最后根节点的值就是计算表达式需要的寄存器数量, 在计算过程中如果寄存器数量不足, 我们需要将一些变量存到内存中, 在需要时再加载回来
-
-### 使用DP来生成表达式代码
-我们可以使用DP来生成子表达式的最优代码, 然后再生成整个表达式的最优代码
-
-对于每个子树使用不同数量的寄存器计算, 代价花费是不同的
-
----
-
-## 代码的简化
-
-### 表达式化简
-DAG图可以用于表示程序的表达式, 并进行相应的优化
-
-比如以下的代码:
-
-```c
-a = b + c;
-b = b - d;
-c = c + d;
-e = b + c;
-```
-
-我们将其表示为DAG图:
-
-```Mermaid
-graph TD
-    +:e --&gt; -:b
-    +:e --&gt; +:c
-    +:a --&gt; b0
-    +:a --&gt; c0
-    -:b --&gt; b0
-    -:b --&gt; d0
-    +:c --&gt; c0
-    +:c --&gt; d0
-```
-
-其中的`d0, b0, c0`表示在被赋值前的变量
-
-从上到下, 如果某个根节点在后续并没有被用到, 我们就将其视为**死代码(dead code)**, 可以将其删除
-
-如果两个变量的计算表达式相同, 可以使用同一个节点表示, 从而化简代码, 比如:
-
-```c
-a = b + c;
-b = a - d;
-c = b + c;
-d = a - d;
-```
-
-化为DAG:
-
-```Mermaid
-graph TD
-    +:a --&gt; b0
-    +:a --&gt; c0
-    -:b --&gt; +:a
-    -:b --&gt; d0
-    +:c --&gt; -:b
-    +:c --&gt; c0
-    -:d --&gt; +:a
-    -:d --&gt; d0
-```
-
-其中的`-:b`和`-:d`可以合并为一个节点, 从而化简代码:
-
-```Mermaid
-graph TD
-    +:a --&gt; b0
-    +:a --&gt; c0
-    -:bd --&gt; +:a
-    -:bd --&gt; d0
-    +:c --&gt; -:bd
-    +:c --&gt; c0
-
-```
-
-### Peephole优化
-窥孔优化
-
-我们使用一个窗口, 从上至下扫描代码, 对于代码中出现的特定结构进行优化, 就称为窥孔优化, 这种优化可以优化表达式以外的更多代码语句
-
-其中的优化包括了:
-- 冗余指令删除
-- 控制流优化
-- 代数化简
-- 机器特有指令使用
-
----
-
-## 代码生成的顺序
-
-我们构造DAG中有`a`和`a0`, 其中的`a0`表示`a`在被赋值前的值, 所以在`a`的赋值语句之后, 新的`a`节点取代了`a0`节点, 我们称`a0`节点被**杀死**了
-
-这里需要特别注意的是指针的使用:
-
-- 在`=*`之前的所有值都要当作被`=*`操作使用过, 这影响到死代码消除
-- `*=`会**杀死**所有的之前的节点
-
-由于数组和指针有着相似原理, 所以:
-- `[]=`会杀死所有的`=[]`的节点
-
----
-
-## 代码的生成
-
-讨论过寄存器的分配, 代码化简和生成顺序后, 代码可以按照基本块来生成
-
-此外, 我们通过为每个寄存器维护一个表, 我们称为Register Descriptor(寄存器描述符), 用来表示有哪些变量的值可以用这个寄存器来表示
-
-相对的, 我们也为每个变量维护一个表, 我们称为Address Descriptor(地址描述符), 用来表示这个变量的值可以在哪些寄存器获得
-
-### 通过树生成代码
-我们通过解析代码树中的某些结构, 来生成对应的代码, 其中解析树可以使用前缀表达式来表示, 于是这最后变成了一个SDT的问题, 我们需要制定相应的语法制导方案
-
----
-
-## 局部代码优化和全局代码优化
-
-以上的表达式化简, 窥孔优化, 寄存器分配优化都是基于局部的代码优化, 也就是只是在basic block中进行的优化
-
-在第九章中将进行全局代码优化的讨论, 全局代码优化是在完成了局部代码优化后, 对整个程序进行优化
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-06-26
-      </div>
-      <div class="card-info">
-        2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/06/26/compiler/CH7-Environment/">
-        运行时环境
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### stack and heap
-
-堆栈, 无需解释
-
-### activation record
-
-活动记录表, 过程调用中保存的堆栈信息, 我们称为活动记录表, 也称为栈帧
-
-书中描述的完整结构如下:
-
-|Bottom|
-|:---:|
-|Actual parameters|
-|Returned value|
-|Control link|
-|Access link|
-|Saved machine status|
-|Local datas|
-|Temporaries|
-
-- Actual parameters: 调用使用的参数
-- Returned value: 返回值的预留空间
-- Control link: 指向调用者的活动记录表
-- Access link: 指向被调用过程需要用到的, 但是存在于其他activation record中的数据
-- Saved machine status: 保存机器状态, 如寄存器, 程序计数器等
-- Local datas: 被调用过程的局部变量
-- Temporaries: 临时变量, 比如循环中创建声明的那些变量
-
-### activation tree
-激活树, 其实就是函数调用的DFA过程
-
-### display
-展示表, 在函数可嵌套的语言里, 向上找对应函数的作用域是费时的, 所以使用一个display表来储存每个嵌套深度中的函数活动表的链表
-
----
-
-### heap management
-堆管理没什么好说的, 关于空闲内存的管理和合并, 以及对于内存的分配都已经在操作系统和CSAPP中看过很多了
-
-### garbage collection
-
-垃圾回收
-
-### type safety
-类型安全是保证能适用垃圾回收的重要条件, 一个数据中每一部分的组成都是确定的, 我们称为类型安全, 像是java的内存是运行时动态分配的, 并不是编译时决定的, 但是运行时的分配的数据始终有唯一的类型, 所以是类型安全的
-
-但是C++对于已经分配的内存可以使用不同的指针来进行操作, 是不安全的
-
-不过只要不乱用指针, C++也是可以使用一些并不健壮(unsound)的垃圾回收机制的
-
-### reference counting
-引用计数, 为每个对象维护一个引用计数器, 每当有一个指针指向这个对象时, 计数器加一, 指针指向其他对象时, 计数器减一, 当计数器为0时, 说明这个对象没有被引用, 可以被回收
-
-### root set
-根集, 包括了所有的全局变量, 静态变量, 寄存器中的变量, 以及栈中的变量, 这些变量是不能被回收的, 所以作为reference的起点
-
-### defered reference counting
-延期引用计数, 在引用为0时并不立即回收, 而是等到需要的时候统一进行回收计算
-
-### mark and sweep
-标记, 扫描, 清除
-
-其中一种优化避免扫描整个heap区域, 而是通过集合运算, 从分配的空间中减去可达的空间, 得到不可达空间
-
-### mark and compact
-扫描出的可达数据重新分配到heap的同一端, 从而保证可达数据在一块, 可分配空间在一块
-
-### copying collector
-将heap分为两块, 其中一块用于分配, 当空间满时, 将其中的可达数据全部复制到另一半heap中, 从而获得更多可用空间
-
-### short-pause collector
-以上几种方式都需要花耗较长的时间来完成GC, 以下提出的几种方式可以减少GC的暂停时间
-
-### incremental collector
-增量式GC将上面的GC需要操作的过程分成几个部分, 分别插入(interleave)到mutator的不同位置, 从而将GC花耗的时间amortize到整个程序的运行中
-
-### partial collector
-只对heap中的一部分进行GC, 从而减少每次暂停的时间
-
-具体的包括了:
-- generational collection: 将heap分为几代, 每次只对最新的几代进行GC
-- train collection: 将heap分为几个车厢, 每次只对一个车厢进行GC
-
-GC中值得注意的是:
-- 需要注意增量式GC中, mutator使得某些对象的引用改变, 从而使得对象无法被扫描到
-- 需要注意在火车算法中, 可能出现无限创建新车厢的情况, 从而导致GC无法完成
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-05-25
-      </div>
-      <div class="card-info">
-        3.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/05/25/compiler/CH6-IR-Generation/">
-      中间代码生成
-    </a>
-    <span class="card-abstract">
-      
-## Three-Address Code
-三地址码, 包含若干种形式:
-
-- `x = y op z`
-- `x = y`
-- `x = op y`
-- `x = *y`
-- `*x = y`
-- `x = &amp;y`
-- `goto L`
-- `if x goto L`
-- `ifFalse x goto L`
-- `param x`
-- `x = call y`
-- `x = y [z]`
-
-## DAG
-Directed Acyclic Graph, 有向无环图, 可以表示表示三地址码:
-
-`a + a * c + (b - c) - (b - c)`
-
-以此为例构建三地址码:
-```C
-t1 = a * c
-t2 = a + t1
-t3 = b - c
-t4 = t2 + t3
-t5 = t4 - t3
-```
-
-同时构造DAG:
-```Mermaid
-graph TD
-    -_2 --&gt; +_1
-    -_2 --&gt; -_1
-    +_1 --&gt; +_2
-    +_1 --&gt; -_1
-    +_2 --&gt; a
-    +_2 --&gt; *
-    * --&gt; a
-    * --&gt; c
-    -_1 --&gt; b
-    -_1 --&gt; c
-```
-
-主要理念就是相同的三地址码, 可以能够重复用来表示代码
-
-## quadruples
-四元式, 用来直接表示三地址码
-
-| op | arg1 | arg2 | result |
-|:--:|:----:|:----:|:------:|
-| +  | a    | c    | t1     |
-| *  | a    | t1   | t2     |
-| -  | b    | c    | t3     |
-
-类似以上结构, 直接储存三地址码
-
-## Triples
-三元式, 用类似于DAG的变量复用模式来构建表
-
-| line | op | arg1 | arg2 |
-|:----:|:--:|:----:|:----:|
-| 1    | *  | a    | c    |
-| 2    | +  | a    | 1    |
-| 3    | -  | b    | c    |
-| 4    | +  | 2    | 3    |
-
-类似以上结构, 数字表示行号, 进行变量的引用
-使用行号在进行编译器优化时有明显的不便: 当移动修改代码时, 行号就改变了, 所以通过建立映射表的方式来解决
-
-## Indirect Triples
-间接三元式
-
-&lt;table&gt;
-
-&lt;th&gt;
-
-| line | pointer |
-|:----:|:-------:|
-| 66    | 1       |
-| 67    | 2       |
-| 78    | 3       |
-
-&lt;/th&gt;
-
-&lt;th&gt;
-
-| op | arg1 | arg2 |
-|:--:|:----:|:----:|
-| *  | a    | c    |
-| +  | a    | 1    |
-| -  | b    | c    |
-| +  | 2    | 3    |
-
-&lt;/th&gt;
-
-&lt;/table&gt;
-
-## static single assignment
-静态单赋值, 简而言之就是三地址码中的每个变量都表示为单独的变量, 以便于编译器的某些优化
-
----
-
-## Incremental Code Generation
-增量代码生成: 通过生成新的三地址码, 来避免使用很长的字符串属性
-
-## type checking
-
-- sound type system: 这里的sound表示健全的意思
-- strongly typed language: 强类型语言
-
-### synthesis, inference
-两者是类型检查的方式:
-- 类型综合:
-  通过在翻译方案中制定规则, 使得不同的类型之间的组合得到指定的类型:
-  `int = int + int`, `float = int + float`, 像这样的规则就是综合产生的
-- 类型推断:
-  通过上下文来推断一个位置的类型:
-  `if(C) S`这里的`C`一定是`bool`类型, `S`是代码块, 没有类型, 为`void`
-
-### type conversion
-类型转换
-- widening: 拓宽转换, 从信息少的类型到信息多的类型
-- narrowing: 窄化转换, 从信息多的类型到信息少的类型
-
-- coercion: 隐式类型转换, 由编译器自动进行, 我们称之为implicit的
-- cast: 显式类型转换, 由程序员自己进行, 我们称之为explicit的
-
-### overloaded
-重载
-
-### substution, instance, unification
-
-这里首先区别类型变量和类型表达式:
-- 类型变量: 一般用α, β, γ等表示, 表示未知类型`list(α)`就算是一个类型变量
-- 类型表达式: 具有具体值得变量类型
-
-如果我们用某个类型替换类型变量中的变量, 记为$S(list(α)) = list(int)$, 我们称之为替换, 也就是substitution
-
-其中得`list(int)`我们称之为类型变量`list(α)`的实例(instance)
-
-如果通过某个替换, 可以使得两个类型变量相等, 即$S(list(α)) = S(list(β))$, 我们称之为**合一替换**
-
-如果替换后的类型表达式是另一个替换后的类型变量的实例, 即$S(list(α))$是$S(list(β))$的实例, 我们称之为**最一般合一替换**
-
-使用合一的方法可以实现检测和类型推断
-
-$$
-((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_3)) \rightarrow list(\alpha_2) \\
-((\alpha_3 \rightarrow \alpha_4) \times list(\alpha_3)) \rightarrow \alpha_5
-$$
-
-以上的两个函数类型, 通过合一替换, 可以得到:
-$$
-((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_1)) \rightarrow list(\alpha_2) \\
-$$
-
-也就是说我可以用一个函数的多态来同时接受其他两个函数, 因为两者的类型其实可以认为是等价的
-
-### control flow
-控制流包括if, while, for, switch等等影响程序流程的语句
-#### fall
-当条件满足时直接下一句就是对应的执行语句, 而不用使用`goto`进行跳转, 我们称之为**fall(穿透)**
-
-#### backpatching
-回填技术, 简单来说就是一些控制流在生成跳转语句时并不知道需要跳转的代码在哪一行, 所以使用一个临时符号来表示跳转的位置
-
-同时, 我们使用一个集合来表示这个跳转的位置, 将control flow中全部需要跳转到这个位置的代码都加入其中, 在这个位置确定后, 在返回去把这些跳转补全, 此称为回填技术
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-05-21
-      </div>
-      <div class="card-info">
-        3.6k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/05/21/operating-system/CH3-fileSystem/">
-        文件系统的实现
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-文件系统中的主要要素在一篇Linux的文件指令中已经提及差不多了, 主要就是`inode`的查询和维护, `block`的分配和对应
-
-下面主要介绍一些文件系统中会用到的实现方案
-
----
-
-# 一个简单的文件系统结构
-
-|bitmap|inode|data|
-|:---:|:---:|:---:|
-
-我们将文件系统分为三个大部分:
-- bitmap: 通过位的方式标记block的占用情况
-- inode: 储存文件, 文件夹, 软链接的元数据&#39;
-- data: 储存文件的实际数据
-
-所谓block为块, 是文件系统中分割硬盘大小的基本单位, 现在的文件系统一般为`4096kb`
-
-磁盘上的数据位置被抽象为了物理地址, 因此现在一般不用考虑如何通过`磁道, 扇区, 盘号`来定位数据, 而直接使用类似于内存地址的方式来寻找block
-
-我们现在如果有一个文件的路径`/home/bar/foo`, 我们可以模拟一下系统是如何找到这个文件的:
-
-1. 首先读取根目录的inode, 读取inode中的数据, 找到`home`的inode位置
-2. 修改`root`的incode的最近访问时间等信息
-3. 读取`home`的inode, 找到`bar`的inode位置, 修改`home`的inode的最近访问时间等信息
-4. 读取`bar`的inode, 找到`foo`的inode位置, 修改`bar`的inode的最近访问时间等信息
-5. 读取`foo`的inode, 找到`foo`的数据位置, 修改`foo`的inode的最近访问时间等信息
-6. 读取`foo`的数据, 修改`foo`的inode的最近访问时间等信息
-
-上面的操作中一共读取了5次磁盘, 4次是在读取`inode`, 如果文件夹中的文件数目过多, 单个block大小的`incode`容纳不下, 那么还可能需要在`data`区中为文件夹分配区域, 于是又要多一层从文件夹`inode`到`data`的读取
-
-如果是创建文件的话, 磁盘的读取和修改次数会更多, 因为写文件的同时除了要不停读取维护`inode`的信息, 还要读取维护`bitmap`的信息, 这样的话读写量又翻了一倍
-
-虽然效率低, 但是这确实是一个比较完善的文件系统
-
-# FFS
-这是一个比较完善的文件系统, 也是现在大多数文件系统的基础, 其中对于上述问题的优化方式仍然值得借鉴
-
-## 基于磁盘原理的优化
-我们读取一个文件时, 会先读取`inode`, 然后再读取对应的`data block`, 如果两个数据在磁盘上相隔较远的话, 会产生额外的寻道时间, 降低效率
-
-FFS优化的第一个思路就是基于磁盘的寻道原理, 将磁盘分为一个个**柱面(cylinder)**, 然后将连续的柱面编组, 然后将同一个文件的`block`或者同一个目录下的相关`block`放在一个柱面组中
-
-最上面的盘面包含了文件系统的元数据, 下面的盘面依次包含`bitmap`, `inode`, `data`, 于是我们查询了一个`inode`后, 往往不需要寻道, 而是简单的更换读取的磁头即可
-
-这种优化方式我们可以总结为**优化文件系统的局部性**
-
-局部性原理在计算机的数据读取中常常提到, 可以参考CSAPP
-
-# 文件检查和修复
-由于各种各样的原因, 在文件系统中可能发生一系列的错误, 可能是`bitmap`部分发生错误, 也可能是`inode`部分发生错误, 也可能是`data`部分发生错误
-
-这时候我们需要对文件系统进行检查和修复, 一般的检查和修复的方式是通过`fsck`指令, 但是这个指令的执行时间可能会很长, 因为它需要对整个文件系统进行扫描, 一般的文件系统都会在启动时自动执行`fsck`指令
-
-对于`bitmap`和`inode`部分正确, 但是`data`部分错误的情况, 文件系统可以建立自洽的`inode`和`bitmap`信息, 只不过对应的文件中的信息就损坏了, 我们称为**垃圾数据**
-
-如果`bitmap`和`inode`其中一个部分错误, 那么文件系统就会处理这种错误, 可以考虑根据`inode`的信息恢复`bitmap`的信息, 或者根据`bitmap`的信息恢复`inode`的信息, 也可以根据情况直接将错误的`inode`删除, 并重建新的`bitmap`
-
-## 日志文件系统
-日志的概念来源于数据库软件, 用于记录数据库的操作, 以便在数据库发生错误时进行恢复
-
-在文件系统中使用日志机制, 可以分为两种: 
-- 数据日志
-- 元数据日志
-
-在我们执行一个写的文件操作前, 我们需要先在磁盘的日志区域写入本次操作的信息, 包括了`bitmap`, `inode`, `data`的修改信息, 然后再执行实际的写操作, 这样的话, 如果写操作失败, 我们可以根据日志信息进行恢复
-
-写入日志的格式如下:
-|TxB|I[v2]|B[v2]|D|TxE|
-|---|---|---|---|---|
-
-前后俩个为单条日志的表示, 中间分别是`inode`, `bitmap`, `data`的数据
-
-这里的流程我们总结为两步:
-- 写入日志(write journaling)
-- 写入数据(checkpoint)
-
-为了提高写入日志的速度, 我们使用并行来写入这五个不同的内容
-但是这产生一个新问题, 如果在写入日志的过程中, 系统崩溃了, 而`TxB`和`TxE`成功写入, 其他部分没有完成写入, 那么文件系统在恢复时就会使用错误的日志信息进行恢复
-
-对此我们有以下解决方式:
-- 给日志加入**校验和**机制来保证日志的正确性
-- 对前面的`TxB`, `I[v2]`, `B[v2]`, `D`进行并行写入作为一个事务, 然后再写入`TxE`作为事务的结束标志
-
-以上是数据日志的大概方式, 而元数据(metadata)的日志方式则是去除了`data`部分, 只保留文件的信息部分
-
-此外还要考虑日志数据的回收, 最后我们得到数据日志的流程:
-- Journal write: 写入前四个部分的日志
-- Journal commit: 写入`TxE`作为事务的结束标志
-- Checkpoint: 将数据写入磁盘
-- Journal recycle: 回收过期的日志
-
----
-
-相比于数据日志, 元数据日志的性能消耗更少, 并且只提供文件信息的恢复, 不恢复丢失的数据
-
-所以我们要保证其记录的元数据的信息符合对应的数据: 如果一个`data`未完成写操作, 但是元数据的日志已经记录了, 那么恢复时文件就会得到错误的元数据(写操作成功后的数据)
-
-所以数据的写入需要在元数据的修改之前, 于是我们得到以下流程:
-- data write: 写入数据, 等待完成
-- Journal write: 写入元数据的日志
-- Journal commit: 写入`TxE`作为事务的结束标志
-- Checkpoint: 将元数据写入磁盘
-- Journal recycle: 回收过期的日志
-
-元数据的数量远少于数据的数量, 所以元数据日志的性能消耗更少, 一般是用来记录用户对数据的操作, 而不是用于数据的恢复备份
-
-# Log-structured File System
-日志结构文件系统可以带入版本控制的思想, 其大概实现如下:
-
-当一个`data block`被修改时, 我们不会直接修改原来的`data block`, 而是在一块新的空间中写入新的`data block`, 然后通过&#34;指针&#34;将新旧数据连接起来, 当我们需要读取时, 就会从最开始的块开始, 向前寻找最新版本的数据, 然后优化指针结构(更新指针)
-
-当然, 为了优化速度, 我们会在缓存(内存)中先暂存这些数据, 等到积累了一定的数据后, 一次性写入这些数据, 由于这样的写入是顺序写入, 所以需要消耗的更少的寻找时间
-
-并且由于每次写入的数据相对整个磁盘空间较小, 对应的`bitmap`, `inode`, `data`的位置也相对较近, 完全可以结合FFS的优化一起使用
-
-这种文件系统需要注意的主要就是指针的更新, 以及数据的回收
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-05-20
-      </div>
-      <div class="card-info">
-        11k字
-      </div>
-      <div class="card-info">
-        阅读时间: 10 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/05/20/operating-system/CH3-linuxFileCommand/">
-      Linux文件命令
-    </a>
-    <span class="card-abstract">
-      
-# 文件系统中的三个要素
-
-- 文件
-- 文件夹
-- 软连接
-
-我们可以通过stat命令查看文件的详细信息
-
-```bash
-stat calc
-  File: calc
-  Size: 4096            Blocks: 0          IO Block: 4096   directory
-Device: 50h/80d Inode: 14918173766102459  Links: 1
-Access: (0777/drwxrwxrwx)  Uid: ( 1000/   dnull)   Gid: ( 1000/   dnull)
-Access: 2023-05-20 13:08:53.499645400 +0800
-Modify: 2023-05-03 20:31:58.232250800 +0800
-Change: 2023-05-03 20:31:58.232250800 +0800
- Birth: -
-```
-
-可以发现, 这是大小为4096kb大小的文件夹, 有一个链接, 有读写执行权限, 创建于2023年5月3日, 修改于2023年5月3日
-
-文件和文件夹都很容易理解, 软连接一般而言讨论较少
-
-## 软链接(soft link)和硬链接(hard link)
-
-### 硬链接
-
-我们可以使用指令`ln src target`来创建硬链接, 创建的硬链接相当于一个文件的别名
-
-我们创建的文件实际上是储存在硬盘上, 通过inode来储存文件或文件夹的信息, 我们寻找一个文件都是通过寻找到指定的inode后, 在通过inode中的硬盘地址来获得数据的
-
-而硬链接相当于对于一个文件, 建立了一个新的inode, 两个inode指向相同的位置, 此时我们可以通过两个inode来访问同一个文件, 但是硬链接不能跨文件系统, 也就是说硬链接不能跨硬盘
-
-当我们为一个文件创建了硬链接后, 文件的link数目就会增加, 表示有多少个inode指向这个文件, 当link数目为0时, 文件就会被删除
-所以说我们删除一个文件时, 删除的只是这个文件的inode, 文件在硬盘中仍然存在, 只有在需要的时候, 硬盘才会将没有引用的数据删除
-
-### 软链接
-
-我们可以用`ln -s src target`来创建软链接, 软链接相当于一个快捷方式, 保存了文件的绝对路径或相对路径, 所以软链接的大小由路径长度决定
-
-软链接并不会增加引用数, 所以当源文件删除后, 软链接就会失效
-
-## 创建和读写文件
-
-创建文件有很多指令可以使用, 但是具体到系统层面的话, 其实都是调用了`open()`的系统调用, 比如我们可以用`strace`指令来跟踪一个进程的系统调用:
-
-```bash
-strace cat ans.txt
-execve(&#34;/usr/bin/cat&#34;, [&#34;cat&#34;, &#34;ans.txt&#34;], 0x7ffd820abd98 /* 24 vars */) = 0
-brk(NULL)                               = 0x55994fa81000
-arch_prctl(0x3001 /* ARCH_??? */, 0x7ffcb848ae30) = -1 EINVAL (Invalid argument)
-mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f377e104000
-access(&#34;/etc/ld.so.preload&#34;, R_OK)      = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/etc/ld.so.cache&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=52955, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 52955, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f7000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/lib/x86_64-linux-gnu/libc.so.6&#34;, O_RDONLY|O_CLOEXEC) = 3
-read(3, &#34;\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0&gt;\0\1\0\0\0P\237\2\0\0\0\0\0&#34;..., 832) = 832
-pread64(3, &#34;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&#34;..., 784, 64) = 784
-pread64(3, &#34;\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0&#34;..., 48, 848) = 48
-pread64(3, &#34;\4\0\0\0\24\0\0\0\3\0\0\0GNU\0i8\235HZ\227\223\333\350s\360\352,\223\340.&#34;..., 68, 896) = 68
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=2216304, ...}, AT_EMPTY_PATH) = 0
-pread64(3, &#34;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&#34;..., 784, 64) = 784
-mmap(NULL, 2260560, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f377decf000
-mmap(0x7f377def7000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x7f377def7000
-mmap(0x7f377e08c000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bd000) = 0x7f377e08c000
-mmap(0x7f377e0e4000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000) = 0x7f377e0e4000
-mmap(0x7f377e0ea000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f377e0ea000
-close(3)                                = 0
-mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f377decc000
-arch_prctl(ARCH_SET_FS, 0x7f377decc740) = 0
-set_tid_address(0x7f377decca10)         = 86
-set_robust_list(0x7f377decca20, 24)     = 0
-rseq(0x7f377decd0e0, 0x20, 0, 0x53053053) = 0
-mprotect(0x7f377e0e4000, 16384, PROT_READ) = 0
-mprotect(0x55994df3a000, 4096, PROT_READ) = 0
-mprotect(0x7f377e13e000, 8192, PROT_READ) = 0
-prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
-munmap(0x7f377e0f7000, 52955)           = 0
-getrandom(&#34;\x0a\x0d\x6a\x29\x8e\x1d\xb1\x4c&#34;, 8, GRND_NONBLOCK) = 8
-brk(NULL)                               = 0x55994fa81000
-brk(0x55994faa2000)                     = 0x55994faa2000
-openat(AT_FDCWD, &#34;/usr/lib/locale/locale-archive&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/share/locale/locale.alias&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=2996, ...}, AT_EMPTY_PATH) = 0
-read(3, &#34;# Locale name alias data base.\n#&#34;..., 4096) = 2996
-read(3, &#34;&#34;, 4096)                       = 0
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_IDENTIFICATION&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_IDENTIFICATION&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=258, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 258, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e13d000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache&#34;, O_RDONLY) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=27002, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 27002, PROT_READ, MAP_SHARED, 3, 0) = 0x7f377e0fd000
-close(3)                                = 0
-futex(0x7f377e0e9a6c, FUTEX_WAKE_PRIVATE, 2147483647) = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_MEASUREMENT&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MEASUREMENT&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=23, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 23, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0fc000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_TELEPHONE&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_TELEPHONE&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=47, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 47, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0fb000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_ADDRESS&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_ADDRESS&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=127, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 127, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0fa000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_NAME&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_NAME&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=62, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 62, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f9000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_PAPER&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_PAPER&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=34, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 34, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f8000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_MESSAGES&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MESSAGES&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFDIR|0755, st_size=4096, ...}, AT_EMPTY_PATH) = 0
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=48, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 48, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f7000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_MONETARY&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MONETARY&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=270, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 270, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377decb000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_COLLATE&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_COLLATE&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=1406, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 1406, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377deca000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_TIME&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_TIME&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=3360, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 3360, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377dec9000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_NUMERIC&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_NUMERIC&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=50, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 50, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377dec8000
-close(3)                                = 0
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_CTYPE&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_CTYPE&#34;, O_RDONLY|O_CLOEXEC) = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=353616, ...}, AT_EMPTY_PATH) = 0
-mmap(NULL, 353616, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377de71000
-close(3)                                = 0
-newfstatat(1, &#34;&#34;, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x7), ...}, AT_EMPTY_PATH) = 0
-openat(AT_FDCWD, &#34;ans.txt&#34;, O_RDONLY)   = 3
-newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0777, st_size=6, ...}, AT_EMPTY_PATH) = 0
-fadvise64(3, 0, 0, POSIX_FADV_SEQUENTIAL) = 0
-mmap(NULL, 139264, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f377de4f000
-read(3, &#34;hello\n&#34;, 131072)              = 6
-write(1, &#34;hello\n&#34;, 6hello
-)                  = 6
-read(3, &#34;&#34;, 131072)                     = 0
-munmap(0x7f377de4f000, 139264)          = 0
-close(3)                                = 0
-close(1)                                = 0
-close(2)                                = 0
-exit_group(0)                           = ?
-```
-
-上面的指令打开了`ans.txt`文件，然后读取文件内容，最后输出到标准输出
-
-我们可以从中提取出关键的几个调用
-
-```bash
-openat(AT_FDCWD, &#34;ans.txt&#34;, O_RDONLY)   = 3
-read(3, &#34;hello\n&#34;, 131072)              = 6
-write(1, &#34;hello\n&#34;, 6hello
-)                  = 6
-read(3, &#34;&#34;, 131072)                     = 0
-```
-
-可以看见, `openat`函数打开了`ans.txt`文件，然后`read`函数读取了文件内容，最后`write`函数将内容输出到标准输出
-
-其中`openat`函数的返回值`3`表示该文件描述符的值为3
-
-### 文件描述符
-
-文件描述符是每个进程独有的, 用来表示打开的文件的标志
-
-标准输入输出也被视作了文件, 所以文件描述符`1` `2`都已经被占用了, 所以`openat`函数返回的文件描述符为`3`
-
-然后`read(3, &#34;hello\n&#34;, 131072)`函数读取长度为`131072`的内容到缓冲区中, 这里直接将缓冲区的内容展示出来了
-
-然后`write(1, &#34;hello\n&#34;, 6hello)`函数将缓冲区的内容输出到标准输出
-
-这里是文件描述符的基本使用
-
-### 文件的数据结构
-
-对于一个打开的文件, 进程会使用一个数据结构来维护文件的相关信息, 不同的系统使用的结构各有不同, 以下是书上提到的关于xv6的文件结构:
-
-```c
-struct file {
-    int ref;
-    char readable;
-    char writable;
-    struct inode *ip;
-    uint off;
-};
-```
-其中的`off`表示当前读取的位置, 进程会维护这个位置, 每次读取后会自动更新到读取的位置
-
-此外我们还有一个相关的系统调用:
-`lseek(int fd, int offset, int whence)`
-
-这个调用能够将当前文件的位置移动到`offset`对应位置, 其中`whence`表示相对位置, 有三个值:
-
-- `SEEK_SET` 从文件开头开始
-- `SEEK_CUR` 从当前位置开始
-- `SEEK_END` 从文件结尾开始
-
-此外, 进程会使用一个文件表来维护所有打开的文件
-
-特别的, 一个进程的子进程产生时, 会复制父进程的文件表, 也就是说子进程可以继承父进程打开的文件
-
----
-
-### 文件系统
-包含若干文件, 文件夹, 和软链接的一起管理的集合, 我们称为文件系统
-
-我们可以把一个磁盘分为多个区域, 每个区域都是独立的文件系统来管理
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-05-18
-      </div>
-      <div class="card-info">
-        1.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/05/18/operating-system/CH2-Condition-Varible/">
-        Condition Varible
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-# 条件变量(Condition Varible)
-
-在介绍条件变量前, 我们先来对多线程的资源共享问题做一个形象化的解释:
-
-每一个线程就是一个工人, 每个资源就是一个加工产品, 当一个工人对一个产品进行加工时, 其他工人是不能对其进行加工的, 所以需要所谓**锁**来告诉其他线程: &#34;这个资源正在被使用&#34;
-
-这个需要锁住的资源不一定是某个文件, 而是critical section(临界区)
-
-于是互斥锁为我们实现了这个功能
-
-现在我们要考虑的新问题是:
-
-`如果这个产品的加工必须按照某个顺序进行, 应该如何实现?`
-
-这个时候我们就要用到条件变量了
-
-## 什么是条件变量?
-条件变量是一个全局变量, 用于记录一个条件是否满足的状态
-当我们的线程进行到critical section中需要顺序执行的部分时, 会检查这个条件是否满足, 如果满足, 则继续执行, 否则线程会阻塞, 释放锁, 等待条件变量的状态改变
-
-然后此时其他的线程在改变了条件变量的状态后, 会通知这个线程, 这个线程就会重新获得锁, 并验证状态是否满足条件, 如果满足, 则继续执行, 否则继续阻塞
-
-## 在C中使用条件变量
-在C语言中, 为了使用条件变量, 我们需要三个部分:
-- 一个变量
-- 一个互斥锁
-- 一个条件变量
-
-声明:
-```c
-pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t c = PTHREAD_COND_INITIALIZER;
-int done = 0;
-```
-
-现在我们的线程进入到了critical section:
-```c
-pthread_mutex_lock(&amp;m);
-while (!done) {
-    pthread_cond_wait(&amp;c, &amp;m);
-}
-pthread_mutex_unlock(&amp;m);
-```
-` pthread_cond_wait(&amp;c, &amp;m);`会自动释放锁, 并阻塞线程, 直到条件变量的状态改变, 然后重新获得锁
-
-然后是其他线程改变这个变量时, 需要发出信号告诉阻塞的线程, 条件变量的状态已经改变了:
-```c
-pthread_mutex_lock(&amp;m);
-done = 1;
-pthread_cond_signal(&amp;c);
-pthread_mutex_unlock(&amp;m);
-```
-
-以上便是条件变量的
-
-好像就完了? 比想象得写得少
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-05-18
-      </div>
-      <div class="card-info">
-        992字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/05/18/operating-system/CH2-Samephore/">
-      信号量
-    </a>
-    <span class="card-abstract">
-      
-信号量是我最喜欢的计算机科学家之一: Edsger Dijkstra 发明的一种同步机制, 用于解决多线程的同步问题
-
----
-
-信号量可以看作互斥锁的超集, 互斥锁只有两种状态: 锁住和未锁住, 而信号量可以有多种状态, 用于解决更复杂的同步问题
-
-## 信号量的定义
-我们实现互斥锁时, 用一个变量储存0或1来表示锁的状态, 当锁为0时则说明锁住了
-
-而信号量在此基础上, 可以有0, 1, 2, 3, ...等多种状态, 每当一个线程获取锁时, 信号量的值减一, 当信号量的值为0 (或小于0) 时, 说明锁住了, 此时其他线程获取锁时, 会阻塞
-
-当一个线程完成了critical section中的操作后, 会将信号量的值加一, 并向所有阻塞的线程发出信号, 通知它们可以继续执行了
-
-当然, 我们将阻塞的线程加入一个等待队列中, 直接从中选取一个线程来继续执行, 而不用让这些线程来&#34;争抢&#34;信号量的资源
-
-这个队列中的线程我们就可以按照之前的进程调度中介绍过的方法来安排调度了: 包括了**优先级调度**, **FIFO**等
-
-## 信号量的使用
-下面是C语言中的信号量使用:
-声明与初始化:
-```c
-sem_t s;
-sem_init(&amp;s, 0, 1);
-```
-- `int sem_init(sem_t *sem, int pshared, unsigned int value);`
-  - 第一个参数是信号量变量
-  - 第二个参数是进程间的共享标志, 如果为0则在当前线程中使用, 如果为其他参数则可以在不同进程中按照参数值进行共享
-  - 第三个参数是信号量的初始值
-
-所以信号量也可以用于进程之间的通信
-
-P操作:
-```c
-sem_wait(&amp;s);
-```
-- 这个操作使信号量的值减一, 如果信号量的值小于0, 则阻塞当前线程
-
-V操作:
-```c
-sem_post(&amp;s);
-```
-- 这个操作使信号量的值加一, 并向所有阻塞的线程发出信号, 通知它们可以继续执行了
     </span>
 
   </div>
@@ -1867,7 +2088,7 @@ sem_post(&amp;s);
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/">Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/3/">Next</a>
+  <a class="extend prev" rel="prev" href="/">Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/3/">Next</a>
 </div>
     </div>
 

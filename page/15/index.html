@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/q9skN6cPAZ14fwH.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/Bd46rfJ2HYhQGkM.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -244,6 +244,1594 @@
         2021-01-01
       </div>
       <div class="card-info">
+        2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/DichotomyGraph/">
+        二分图
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+二分图匹配的算法涉及到一部分网络流的知识
+
+&lt;!-- more ---&gt;
+
+### 二分图的判定
+
+判定一个图是不是二分图，只需要判定这个图上是否存在奇环即可
+
+判断图上是否存在奇环的方式采用染色法，通过dfs给路径上的点交替染上黑白两色，如果遍历到一个访问过的点，并且颜色和前驱节点相同，则存在一个奇环，该图不是二分图
+
+### 二分图的匹配
+
+从二分图中取出一些边，使得这些边所连接的节点没有重复的，那么这些边就称为二分图的一组匹配
+
+换个说法，为了使二分图的两个集合中的**一些**节点都能唯一与另一个集合中的一个节点连接，所选出的一组边，称为一组匹配
+
+而尽多地连接节点所选出来的，能够连接最多节点数的一组匹配，我们称之为**二分图的最大匹配**，如何求出二分图的最大匹配将是关于二分图的第一个问题
+
+### 匈牙利算法
+
+又称增广路算法
+
+首先简单说明一下匈牙利算法：
+- 首先选择一个左集合的节点，寻找其右边的可匹配节点，如果找到的右节点没有匹配，则直接匹配
+- 若找到的右节点已经匹配，则寻找一条增广路到达右边的未匹配节点
+- 如果存在这么一条增广路，则说明可以通过修改增广路上的节点匹配来使得新的节点互相匹配，修改的结果就是增广路上的匹配边
+- 重复此过程，直到左边每一个点都尝试过
+
+然后说明一下增广路：
+这里的增广路的特点是：由不匹配边和匹配边交替连接的一条路径，如果将这条路径上的匹配边和不匹配边的状态反转的话，会多出一条新的匹配边，匈牙利算法就是不断重复这个过程来增加匹配边
+
+如果亲手模拟一次这个过程就能很快理解为什么会这样
+
+**实现代码** Luogu P3386：
+
+```cpp
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+#define MAX_ 0x7fffff
+
+using namespace std;
+
+struct Edge
+{
+    int from;
+    int to;
+    int next;
+} ed[100005];
+
+int head[1005];
+int num = 0;
+
+void add(int a, int b)
+{
+    ed[++num].from = a;
+    ed[num].to = b;
+    ed[num].next = head[a];
+    head[a] = num;
+}
+
+bool vi[1005];
+int match[1005];
+
+bool dfs(int p)
+{
+    for (int i = head[p]; i; i = ed[i].next)
+    {
+        int y = ed[i].to;
+        if (vi[y])
+        {
+            continue;
+        }
+        vi[y] = 1;//只会记录右边的节点的访问情况
+        if (!match[y] || dfs(match[y]))
+        {
+            match[y] = p;//match记录的是右边节点匹配的左节点
+            return true;//所以dfs遍历的一直都是左节点
+        }
+    }
+    return false;
+}
+
+int n, m, e;
+
+int main()
+{
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; e;
+    for (int i = 1; i &lt;= e; i++)
+    {
+        int x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        y += n;
+        add(x, y);
+        add(y, x);
+    }
+    int ans = 0;
+    for (int i = 1; i &lt;= n; i++)
+    {
+        memset(vi, 0, sizeof(vi));
+        if (dfs(i))
+        {
+            ans++;
+        }
+    }
+    cout &lt;&lt; ans;
+}
+```
+
+### 二分图多重匹配
+
+当一个节点可以连接多条边时，求最大匹配的问题就延申为了更普遍的问题——多重匹配
+
+将二分图的左右集合分成两层，源点
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Dichotomy/">
+      二分及精度问题
+    </a>
+    <span class="card-abstract">
+      
+关于二分的精度的问题的记录
+
+&lt;!-- more ---&gt;
+
+在进行实数范围的二分时，应该据情况控制二分的精度范围：
+
+```cpp
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;utility&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+double cal(double x)
+{
+    return 8.0 * pow(x, 4.0) + 7.0 * pow(x, 3.0) + 2.0 * pow(x, 2.0) + 3.0 * (x) + 6.0;
+}
+
+double find(double Y)
+{
+    double l = 0.0, r = 100.0;
+    while (r - l &gt; 1e-13)
+    {
+        double mid = (l + r) / 2;
+
+        if (cal(mid) &gt; Y)
+        {
+            r = mid - 1e-14;//there to control the accuracy
+        }
+        else
+        {
+            l = mid + 1e-14;
+        }
+    }
+    return (l + r) / 2;
+}
+
+int main()
+{
+    int T;
+    cout &lt;&lt; fixed &lt;&lt; setprecision(4);
+    while (cin &gt;&gt; T)
+    {
+        for (int i = 1; i &lt;= T; i++)
+        {
+            double Y;
+            cin &gt;&gt; Y;
+
+            if (Y &lt; cal(0) || Y &gt; cal(100))
+            {
+                cout &lt;&lt; &#34;No solution!&#34; &lt;&lt; endl;
+                continue;
+            }
+
+            cout &lt;&lt; find(Y) &lt;&lt; endl;
+        }
+    }
+}
+```
+
+- 小数间的比较要相减再在精度范围内比较
+- 左右边界改变时要加减上对应的精度
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Dichotomy-OR/">
+        二分相关算法题
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+
+# 基础二分
+
+### 二分查找
+从有序序列中查找某个值的位置
+**STL**：lower_bound()、upper_bound
+
+----
+
+### 二分答案
+通过判断某个条件是否满足，对一个范围内的答案进行二分
+
+**最简单的实例**：
+给出一个1~100范围内的随机数，要求你用最少的次数猜中这个数字
+
+----
+
+![](/image/oi/1_1.png)
+
+---
+
+### 二分查找与二分答案的联系
+**二分答案**是某个连续区间内的**二分查找**
+
+---
+
+### 二分边界的判断
+
+
+```cpp
+while (L &lt; R)
+{
+    int mid = (L + R) &gt;&gt; 1;
+    if(check(mid)){
+        L = mid + 1;
+    }
+    else{
+        R = mid;
+    }
+}
+```
+
+### 实数范围内的二分
+
+```cpp
+while (L &lt; R)
+{
+    int mid = (L + R) &gt;&gt; 1;
+    if(check(mid)){
+        L = mid + 0.0001;
+    }
+    else{
+        R = mid - 0.0001;
+    }
+}
+```
+
+---
+
+![](/image/oi/1_2.png)
+
+# 二分题目的考法
+
+二分题目不会单独考二分，而是作为解题的一个关键思路：
+
+关键词：**最小值最大**和**最大值最小**
+
+
+![](/image/oi/1_3.png)
+
+**二分思路**：
+1. 首先确定二分区间，这里最保守的答案范围是最小边的长度和所有边的总长度
+2. 然后检测mid是否满足条件，当mid作为最小长度的最大值时，无法修建出这样的赛道，说明答案应该大于mid，取右区间，如果可以修建，说明答案应该小于等于mid，取左区间
+3. 当```L&gt;=R```时，得到确定的答案
+
+---
+
+![](/image/oi/1_5.png)
+
+**二分思路**：
+1. 首先确定二分范围是最小的岩石距离和所有岩石的距离和
+2. 然后检测mid是否满足条件，如果通过某种方案移走石头可以使mid满足条件，则说明答案大于mid，反之则小于mid
+3. 当```L&gt;R```时，得到答案
+
+### 上面的二分题目到底在求解什么？
+
+我们直观的看到，上面关于二分答案的题目都是在求**最大值**、**最小值**
+
+而最大值最小值都是一种**边界**
+
+### 二分算法的概念
+
+$对于一个命题p(x=k)，若存在k0使得当k&lt;k0时命题为真，当k&gt;k0时命题为假，当k=k0时命题为真或为假，则称命题p(x=k)满足二分单调性$
+
+$二分算法则是在对于任意x=k’都能判断p(x=k’)真假的情况下，快速找到分界线K0的算法$
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/GameTheory/">
+      博弈论
+    </a>
+    <span class="card-abstract">
+      
+基础博弈论只要记住几个结论公式就好，但是通用的博弈论解决方式还是要用SG函数
+
+
+
+### 巴什博弈
+有N个物品，双方玩家轮流拿$1-M$个，拿到最后一个物品的玩家胜利
+
+```cpp
+if (n % (m + 1) != 0)
+{
+    先手必胜
+}
+else
+{
+    后手必胜
+}
+```
+
+### Nim博弈
+
+有n堆物品，每堆有$a_i$个，每次可从一堆中取不少于1个物品，最后无物可取者输
+
+**结论**：
+每堆物品数量的异或和为0则先手必败，否则后手必败
+
+
+像以上所描述的这些“必胜”、“必败”的局面，我们称为非奇异局面和奇异局面
+如果先手处于“非奇异局面”，那么可以通过某种操作使得对手进入“奇异局面”
+### SG函数
+
+游戏的每个状态作为一个节点，以玩家的每次操作作为单向边构成一个有向图
+
+定义一个函数:$mex(\{a_i\})$，函数值为序列$a_i$中最小的未包含的自然数
+
+然后每个节点的SG函数的值为$mex(\{SG(该节点的所有子节点)\})$
+
+最后初始节点的SG函数值为这个博弈的SG函数值，记为$SG(G)$
+
+### 几道例题
+
+#### 题目描述
+Problem Description
+任何一个大学生对菲波那契数列(Fibonacci numbers)应该都不会陌生，它是这样定义的：
+F(1)=1;
+F(2)=2;
+F(n)=F(n-1)+F(n-2)(n&gt;=3);
+所以，1,2,3,5,8,13……就是菲波那契数列。
+在HDOJ上有不少相关的题目，比如1005 Fibonacci again就是曾经的浙江省赛题。
+今天，又一个关于Fibonacci的题目出现了，它是一个小游戏，定义如下：
+1、 这是一个二人游戏;
+2、 一共有3堆石子，数量分别是m, n, p个；
+3、 两人轮流走;
+4、 每走一步可以选择任意一堆石子，然后取走f个；
+5、 f只能是菲波那契数列中的元素（即每次只能取1，2，3，5，8…等数量）；
+6、 最先取光所有石子的人为胜者；
+
+假设双方都使用最优策略，请判断先手的人会赢还是后手的人会赢。
+
+Input
+输入数据包含多个测试用例，每个测试用例占一行，包含3个整数m,n,p（1&lt;=m,n,p&lt;=1000）。
+m=n=p=0则表示输入结束。
+
+Output
+如果先手的人能赢，请输出“Fibo”，否则请输出“Nacci”，每个实例的输出占一行。
+
+#### 解题思路
+
+首先这可以看作一个NIM博弈的模型，但是每个石子堆的拿取数量有限制，所以通过给这个新的拿取规则建立SG函数，从而得到每个石子堆的SG函数值，再用NIM博弈的模型来判断先手的胜负
+
+#### 实现代码
+```cpp
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;list&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+
+using namespace std;
+
+int f[100];
+int sg[1005];
+int vi[1005];
+
+int main()
+{
+    int n, m, p;
+
+    f[1] = 1;
+    f[2] = 2;
+    for (int i = 3;; i++)
+    {
+        f[i] = f[i - 1] + f[i - 2];//计算斐波那契数列
+        if (f[i] &gt;= 1000)
+        {
+            break;
+        }
+    }
+    sg[0] = 0;
+    for (int i = 1; i &lt;= 1000; i++)
+    {
+        memset(vi, 0, sizeof(vi));
+        for (int j = 1; f[j] &lt;= i; j++)
+        {
+            vi[sg[i - f[j]]] = 1;
+        }
+        for (int j = 0; j &lt;= i; j++)
+        {
+            if (!vi[j])
+            {
+                sg[i] = j;//计算SG函数
+                break;
+            }
+        }
+    }
+
+    while (cin &gt;&gt; n &gt;&gt; m &gt;&gt; p)
+    {
+        if (n + m + p == 0)
+        {
+            break;
+        }
+        if (sg[n] ^ sg[m] ^ sg[p])//处理NIM博弈
+        {
+            cout &lt;&lt; &#34;Fibo&#34; &lt;&lt; endl;
+        }
+        else
+        {
+            cout &lt;&lt; &#34;Nacci&#34; &lt;&lt; endl;
+        }
+    }
+}
+```
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        4.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/HandWrittenHeap/">
+        手写堆模板
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+手写了一个堆的类模板，以后遇到需要用堆的情况会直接使用
+&lt;!-- more --&gt;
+```cpp
+#include &lt;list&gt;
+
+using namespace std;
+
+template &lt;typename T&gt;
+class heap
+{
+private:
+    bool SH;
+    int size_;
+    T *node_ = new T[1000005];
+
+    void update(int node);
+    void update_down(int node);
+
+public:
+    heap(bool);
+    heap(bool, list&lt;T&gt;);
+
+    void insert(T);
+    void extract();
+    T GetTop();
+    void remove(int);
+    void print_all();
+
+    ~heap();
+};
+
+template &lt;typename T&gt;
+heap&lt;T&gt;::heap(bool BigOrSmall, list&lt;T&gt; init_)
+{
+    this-&gt;SH = BigOrSmall;
+}
+
+template &lt;typename T&gt;
+heap&lt;T&gt;::heap(bool BigOrSmall)
+{
+    this-&gt;SH = BigOrSmall;
+}
+
+template &lt;typename T&gt;
+heap&lt;T&gt;::~heap() {}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::update(int node)
+{
+    if (node == 1)
+        return;
+
+    int father = (node ^ 1) / 2;
+    if ((*(node_ + father) &gt; *(node_ + node)) == SH)
+    {
+        swap(*(node_ + father), *(node_ + node));
+
+        update(father);
+    }
+}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::update_down(int node)
+{
+    int Lc = 2 * node;
+    int Rc = 2 * node + 1;
+
+    int target = node;
+
+    if (Rc &lt;= size_)
+    {
+        if ((*(node_ + target) &gt; *(node_ + Rc)) == SH)
+        {
+            target = Rc;
+        }
+    }
+    if (Lc &lt;= size_)
+    {
+        if ((*(node_ + target) &gt; *(node_ + Lc)) == SH)
+        {
+            target = Lc;
+        }
+    }
+    if (target == node)
+        return;
+    swap(*(node_ + node), *(node_ + target));
+    update_down(target);
+}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::insert(T val)
+{
+
+    *(node_ + (++size_)) = val;
+    update(size_);
+}
+
+template &lt;typename T&gt;
+T heap&lt;T&gt;::GetTop()
+{
+    return *(node_ + 1);
+}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::extract()
+{
+    swap(*(node_ + 1), *(node_ + size_));
+
+    size_--;
+    update_down(1);
+}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::remove(int node)
+{
+    swap(*(node_ + node), *(node_ + size_));
+
+    size_--;
+    update_down(node);
+    update(node);
+}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::print_all()
+{
+    for (int i = 0; i &lt; size_; i++)
+    {
+        cout &lt;&lt; *(node_ + i + 1) &lt;&lt; &#39; &#39;;
+    }
+    cout &lt;&lt; endl;
+}
+
+int main(){}
+```
+
+**版本2.0**
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;list&gt;
+
+using namespace std;
+
+template &lt;typename T&gt;
+class heap
+{
+private:
+    bool SH = 1;
+    int size_ = 0;
+    T *node_ = new T[805];
+
+    void update(int node);
+    void update_down(int node);
+
+public:
+    heap(bool);
+    heap();
+    heap(bool, list&lt;T&gt;);
+
+    void insert(T);
+    void extract();
+    T GetTop();
+    T GetVal(int);
+    int GetBetter_child(int);
+    void remove(int);
+    void print_all();
+    int size()
+    {
+        return size_;
+    }
+
+
+    ~heap();
+};
+template &lt;typename T&gt;
+heap&lt;T&gt;::heap(){};
+template &lt;typename T&gt;
+heap&lt;T&gt;::heap(bool BigOrSmall, list&lt;T&gt; init_)
+{
+    this-&gt;SH = BigOrSmall;
+}
+template &lt;typename T&gt;
+heap&lt;T&gt;::heap(bool BigOrSmall)
+{
+    this-&gt;SH = BigOrSmall;
+}
+template &lt;typename T&gt;
+heap&lt;T&gt;::~heap() {}
+
+template &lt;typename T&gt;
+void heap&lt;T&gt;::update(int node)
+{
+    if (node == 1)
+        return;
+
+    int father = (node ^ 1) / 2;
+    if ((*(node_ + father) &gt; *(node_ + node)) == SH)
+    {
+        swap(*(node_ + father), *(node_ + node));
+
+        update(father);
+    }
+}
+template &lt;typename T&gt;
+void heap&lt;T&gt;::update_down(int node)
+{
+    int Lc = 2 * node;
+    int Rc = 2 * node + 1;
+
+    int child = GetBetter_child(node);
+    if (child == 0)
+        return;
+    if(*(node_+node)&gt;*(node_+child)==SH)
+    swap(*(node_ + node), *(node_ + child));
+    update_down(child);
+}
+
+template &lt;class T&gt;
+T heap&lt;T&gt;::GetVal(int node)
+{
+    return *(node_ + node);
+}
+template &lt;typename T&gt;
+void heap&lt;T&gt;::insert(T val)
+{
+
+    *(node_ + (++size_)) = val;
+    update(size_);
+}
+template &lt;typename T&gt;
+T heap&lt;T&gt;::GetTop()
+{
+    return *(node_ + 1);
+}
+template &lt;typename T&gt;
+int heap&lt;T&gt;::GetBetter_child(int node)
+{
+    int Lc = 2 * node;
+    int Rc = 2 * node + 1;
+
+    int target = 0;
+
+    if (Rc &lt;= size_)
+    {
+        target = Rc;
+    }
+    if (Lc &lt;= size_)
+    {
+        if ((*(node_ + target) &gt; *(node_ + Lc)) == SH)
+        {
+            target = Lc;
+        }
+    }
+    return target;
+}
+template &lt;typename T&gt;
+void heap&lt;T&gt;::extract()
+{
+    swap(*(node_ + 1), *(node_ + size_));
+
+    size_--;
+    update_down(1);
+}
+template &lt;typename T&gt;
+void heap&lt;T&gt;::remove(int node)
+{
+    swap(*(node_ + node), *(node_ + size_));
+
+    size_--;
+    update_down(node);
+    update(node);
+}
+template &lt;typename T&gt;
+void heap&lt;T&gt;::print_all()
+{
+    for (int i = 0; i &lt; size_; i++)
+    {
+        cout &lt;&lt; *(node_ + i + 1) &lt;&lt; &#39; &#39;;
+    }
+    cout &lt;&lt; endl;
+}
+int main(){}
+```
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        6.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 6 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/LCA/">
+      最近公共祖先
+    </a>
+    <span class="card-abstract">
+      图论基础算法之一，在此记录树上倍增法和Tarjan算法
+
+### 树上倍增法
+在线算法，比较简单实用   
+
+具体实现过程依靠倍增思想，通过数组$f[p][k]$记录p节点的第$2^k$辈父节点，而数组$f$可以通过树上DP的方式求得
+
+- DP公式：
+  $$f[p][k]=f[f[p][k-1]][k-1]$$
+  正确性很容易验证
+
+在完成$f$数组的预处理后，对于一对点x，y我们先将x，y中较深的一个点移动到同一深度，具体方法依靠于之前求得的$f$数组，具体倍增的方式就不做叙述，细节可参考代码
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+struct Edge
+{
+    int from;
+    int to;
+    int val;
+    int next;
+};
+
+class Solver
+{
+private:
+    int N;
+    int M;
+    int S;
+    Edge *edges = new Edge[1000005]{};
+    int *head = new int[500005]{};
+    int *deep = new int[500005]{};//记录每个节点的深度
+
+    //int (*f)[20] = new int[500005][20]{};
+    //这个地方由于评测机配置问题，发生段错误
+    int f[500005][20]{};
+    int num;
+
+public:
+    Solver(int n, int m, int s)
+    {
+        N = n;
+        M = m;
+        S = s;
+        deep[0] = -0x3f3f3f3f;
+
+        for (int i = 1; i &lt;= n - 1; i++)
+        {
+            int u, v;
+            cin &gt;&gt; u &gt;&gt; v;
+            add(u, v);
+            add(v, u);
+        }
+        dfs(S, 1);
+
+        for (int i = 1; i &lt;= m; i++)
+        {
+            int x, y;
+            cin &gt;&gt; x &gt;&gt; y;
+
+            cout &lt;&lt; LCA(x, y) &lt;&lt; endl;
+        }
+    }
+
+    void add(int u, int v)
+    {
+        edges[++num].from = u;
+        edges[num].to = v;
+        edges[num].next = head[u];
+        head[u] = num;
+    }
+
+    void dfs(int pos, int depth)//预处理深度、f数组
+    {
+        deep[pos] = depth;
+
+        for (int k = 1; deep[pos] - (1 &lt;&lt; k) &gt;= 1; k++)
+        {
+            f[pos][k] = f[f[pos][k - 1]][k - 1];
+        }
+
+        for (int i = head[pos]; i; i = edges[i].next)
+        {
+            if (edges[i].to != f[pos][0])
+            {
+                f[edges[i].to][0] = pos;
+                dfs(edges[i].to, depth + 1);
+            }
+        }
+    }
+    int LCA(int x, int y)
+    {
+        if (deep[x] &lt; deep[y])
+        {
+            swap(x, y);
+        }
+        for (int k = log(deep[x] - 1) / log(2); k &gt;= 0; k--)
+        {
+            if (deep[f[x][k]] &gt;= deep[y])
+            {
+                x = f[x][k];//调整为同一深度
+
+                if (deep[x] == deep[y])
+                {
+                    break;
+                }
+            }
+        }
+        if (x == y)
+        {
+            return x;
+        }
+        for (int k = log(deep[x] - 1) / log(2); k &gt;= 0; k--)
+        {
+            if (f[x][k] != f[y][k])
+            {
+                x = f[x][k];
+                y = f[y][k];//从到小同时往上跳
+            }
+        }
+        return f[x][0];
+    }
+};
+
+int main()
+{
+    int n, m, s;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
+    Solver work(n, m, s);
+}
+```
+
+### Tarjan算法
+
+Tarjan算法的基本原理和树上倍增法一样，都是基于向上标记法的思想   
+
+Tarjan算法主要可以分为以下几个步骤：
+- 提前统计好每个查询指令
+- 进行dfs，在dfs的过程中给每个点做上记号   
+  已经完成回溯的标记为2，未完成回溯的标记为1
+- 当dfs到存在查询指令的节点时，检查对应的查询节点的标记：
+  - 若为1，则LCA为查询的节点
+  - 若为2，则LCA为查询节点的最近的标记为1的父节点
+  - 若没有标记，则跳过该查询
+- 查询节点的最近父节点用并查集优化，具体方法见代码
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+#include &lt;utility&gt;
+
+using namespace std;
+
+struct Edge
+{
+    int from;
+    int to;
+    int val;
+    int next;
+};
+
+struct Query
+{
+    int next;
+    int id;
+    int y;
+};
+
+class MF_Set//并查集
+{
+private:
+    int n;
+    int *father = new int[500005];
+
+public:
+    MF_Set(int input_1)
+    {
+        n = input_1;
+        for (int i = 1; i &lt;= n; i++)
+        {
+            father[i] = i;
+        }
+    }
+    int findFather(int a)
+    {
+        if (father[a] != a)
+        {
+            return father[a] = findFather(father[a]);
+        }
+        else
+        {
+            return a;
+        }
+    }
+    void merge(int a, int father_)
+    {
+        int FatherA = findFather(a);
+        int FatherB = findFather(father_);
+        if (FatherA != FatherB)
+        {
+            father[FatherA] = FatherB;
+        }
+    }
+    bool inSameSet(int a, int b)
+    {
+        return findFather(a) == findFather(b);
+    }
+};
+
+class Solver
+{
+private:
+    int N;
+    int M;
+    int S;
+    Edge *edges = new Edge[1000005]{};
+    int *head = new int[500005]{};
+    int *fa = new int[500005]{};
+    int *tag = new int[500005]{};
+
+    Query *query = new Query[500005]{};
+    int *head_q = new int[500005]{};
+    int num_q = 0;//用前向星记录节点上的查询
+
+    int *ans = new int[1000005]{};
+    MF_Set *set = new MF_Set(500000);
+
+    int num;
+
+public:
+    Solver(int n, int m, int s)
+    {
+        N = n;
+        M = m;
+        S = s;
+
+        for (int i = 1; i &lt;= n - 1; i++)
+        {
+            int u, v;
+            cin &gt;&gt; u &gt;&gt; v;
+            fa[u] = -1;
+            fa[v] = -1; //-1代表还没有父亲
+            add(u, v);
+            add(v, u);
+        }
+        Input();
+        tarjan(S);
+
+        for (int i = 1; i &lt;= M; i++)
+        {
+            cout &lt;&lt; ans[i] &lt;&lt; endl;
+        }
+    }
+
+    void add(int u, int v)
+    {
+        edges[++num].from = u;
+        edges[num].to = v;
+        edges[num].next = head[u];
+        head[u] = num;
+    }
+
+    void Input()
+    {
+        int x, y;
+        for (int i = 1; i &lt;= M; ++i)
+        {
+            cin &gt;&gt; x &gt;&gt; y;
+            query[++num_q].id = i;
+            query[num_q].y = y;
+            query[num_q].next = head_q[x];
+            head_q[x] = num_q;
+
+            query[++num_q].id = i;
+            query[num_q].y = x;
+            query[num_q].next = head_q[y];
+            head_q[y] = num_q;
+        }
+    }
+
+    void tarjan(int pos)
+    {
+        tag[pos] = 1;
+
+        for (int i = head_q[pos]; i; i = query[i].next)
+        {
+            if (tag[query[i].y] == 1)
+            {
+                ans[query[i].id] = query[i].y;
+            }
+            else if (tag[query[i].y] == 0)
+            {
+                continue;
+            }
+            else if (tag[query[i].y] == 2)
+            {
+                ans[query[i].id] = set-&gt;findFather(query[i].y);
+            }
+        }
+
+        for (int i = head[pos]; i; i = edges[i].next)
+        {
+            if (fa[pos] == edges[i].to)
+            {
+                continue;
+            }
+            else
+            {
+                fa[edges[i].to] = pos;
+                tarjan(edges[i].to);
+                set-&gt;merge(edges[i].to, set-&gt;findFather(pos));
+            }//把子树节点的父节点都设为了当前未完成遍历的节点
+        }
+        tag[pos] = 2;
+    }
+};
+
+int main()
+{
+    int n, m, s;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
+    Solver work(n, m, s);
+}
+```
+很不幸的是，我的内存使用在洛谷评测上会超空间限制
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        4.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/MSSet/">
+        并查集
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+算是比较基础的数据结构，把模板放在这里，并讨论一点扩展
+
+&lt;!-- more ---&gt;
+
+## 模板：
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;queue&gt;
+//#include &#34;Custom.h&#34;
+
+using namespace std;
+
+int father[10005];
+
+int Get(int x)
+{
+    if (father[x] != x)
+    {
+        return father[x] = Get(father[x]);
+    }
+    else
+        return x;
+}
+
+void merge(int x, int y)
+{
+    father[Get(x)] = Get(y);
+}
+
+int main()
+{
+    /* FILE *stream1;
+    freopen_s(&amp;stream1, &#34;data.in&#34;, &#34;r&#34;, stdin);
+    freopen_s(&amp;stream1, &#34;a.out&#34;, &#34;w&#34;, stdout); */
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 1; i &lt;= n; i++)
+    {
+        father[i] = i;
+    }
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int op;
+        int x, y;
+        cin &gt;&gt; op &gt;&gt; x &gt;&gt; y;
+
+        if (op == 1)
+        {
+            merge(x, y);
+        }
+        if (op == 2)
+        {
+            cout &lt;&lt; ((Get(x) == Get(y)) ? &#39;Y&#39; : &#39;N&#39;) &lt;&lt; endl;
+        }
+    }
+
+    // fclose(stdin);
+    // fclose(stdout);
+}
+```
+基础的功能实现和路径压缩就不讨论了
+
+## 带扩展域的并查集：
+
+这种并查集的使用思路来源于**NOI2001食物链**     
+
+当一个元素，可能具有多种不同的身份时，我们把他的三种身份在不同的扩展域中表示出来。   
+
+例如题目中，有A、B、C三种动物，每种动物同时具有捕食者、被捕食者这两重身份，并且每种动物捕食和被捕食的对象是唯一的，那么我们可以添加两个扩展域，对应每个动物的捕食对象和被捕食对象。
+
+这样，如果X捕食Y的话，X的捕食对象、Y本身、以及XY以外的第三种动物的被捕食对象就应该是同一个元素。   
+以此为依据，我们就可以对语句的正确性进行判断，如果不与之前的语句冲突，我们就可以一次性把三者一起合并。
+
+这种方法不需要对并查集的操作本身做改变，只需添加扩展域即可。
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int father[150005];
+int value[150005];
+
+int Get(int x)
+{
+    if (father[x] != x)
+    {
+        return father[x] = Get(father[x]); //update
+    }
+    else
+        return x;
+}
+
+void merge(int x, int y)
+{
+    father[Get(x)] = Get(y);
+}
+
+int main()
+{
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 1; i &lt;= 150000; i++)
+    {
+        father[i] = i;
+    }
+    int ans = 0;
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int op;
+        int x, y;
+        cin &gt;&gt; op &gt;&gt; x &gt;&gt; y;
+        if (x &gt; n || y &gt; n)
+        {
+            ans++;
+            continue;
+        }
+        if (op == 2)
+        {
+            if (Get(x) == Get(y) || Get(y + 50000) == Get(x))
+            {
+                ans++;
+                continue;
+            }
+            merge(x + 50000, y);//50000以后是捕食对象的扩展域
+            merge(x, y + 100000);//100000以后是被捕食对象的扩展
+            merge(x + 100000, y + 50000);
+        }
+        if (op == 1)
+        {
+            if (Get(x + 50000) == Get(y) || Get(y + 50000) == Get(x))
+            {
+                ans++;
+                continue;
+            }
+            merge(x, y);
+            merge(x + 50000, y + 50000);
+            merge(x + 100000, y + 100000);
+        }
+    }
+    cout &lt;&lt; ans;
+}
+```
+## 带权值的并查集
+
+以上这道食物链的题，还有一种权值并查集的写法。    
+
+首先大致说明一下权值并查集：   
+
+一般的并查集可以看作一个只存在单向边的树形结构，箭头指向表示所属关系，但是在此题中除了所属关系外，还包括了捕食和被捕食关系。于是，我们给单向边引入权值，不同的权值表示不同的关系。   
+
+相对应的，我们在压缩路径时，也需要引入权值的改变方式，也就是说我们需要对Get()和Merge()操作进行修改。   
+
+```cpp
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int father[50005];
+int value[50005];//储存边权
+int map_[4][4] = {{},
+                  {0, 1, 2, 3},
+                  {0, 2, 3, 1},
+                  {0, 3, 1, 2}};
+int map_2[4] = {0,3,1,2};
+int map_3[4] = {0,3,2,1};
+int map_4[4] = {0,1,3,2};
+
+int Get(int x)
+{
+    if (father[x] != x)
+    {
+        int temp = father[x];
+        father[x] = Get(father[x]); // update
+        value[x] = map_[value[x]][value[temp]];
+        return father[x];
+    }
+    else
+    {
+        value[x] = 1;
+        return x;
+    }
+}
+
+void merge(int x, int y, int state)
+{
+    int temp = Get(x);
+    if(state==3)
+    value[temp] = map_3[value[x]];
+    if(state==1)
+    value[temp] = map_4[value[x]];
+    father[temp] = y;
+}
+
+int main()
+{
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 1; i &lt;= 50000; i++)
+    {
+        father[i] = i;
+        value[i] = 1;
+    }
+    int ans = 0;
+    for (int i = 1; i &lt;= m; i++)
+    {
+        int op;
+        int x, y;
+        cin &gt;&gt; op &gt;&gt; x &gt;&gt; y;
+        if (x &gt; n || y &gt; n)
+        {
+            ans++;
+            continue;
+        }
+        if (op == 2)
+        {
+            if (Get(x) == Get(y))
+            {
+                if (map_2[value[y]]!=value[x])
+                {
+                    ans++;
+                    continue;
+                }
+            }
+            else
+            {
+                merge(x, y, 3);
+            }
+        }
+        if (op == 1)
+        {
+            if (Get(x) == Get(y))
+            {
+                if (value[x] != value[y])
+                {
+                    ans++;
+                    continue;
+                }
+            }
+            else
+            {
+                merge(x, y, 1);
+            }
+        }
+    }
+    cout &lt;&lt; ans;
+}
+```
+在以上的代码中，用了几个map数组，用来帮助构造权值改变的规则，由于说明起来过于复杂，如果无法理解建议自行思考构造方式。
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         5k字
       </div>
       <div class="card-info">
@@ -255,12 +1843,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Segment-Tree/">
-        线段树
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        综合了多种思想于一体的一种基础数据结构，适用于区间维护问题。
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Segment-Tree/">
+      线段树
+    </a>
+    <span class="card-abstract">
+      综合了多种思想于一体的一种基础数据结构，适用于区间维护问题。
 &lt;!-- more ---&gt;
 
 对于线段树而言，在实现的思想方面不必多谈，无非就是二分区间，再进行合并。以下仅针对代码的具体实现进行一定的记录。
@@ -514,12 +2101,8 @@ void spread(int p)
 
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -529,13 +2112,11 @@ void spread(int p)
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -552,11 +2133,12 @@ void spread(int p)
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Tree-Array/">
-      树形数组
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/Tree-Array/">
+        树形数组
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 最简单的一种用于区间维护的数据结构
 &lt;!-- more ---&gt;
 
@@ -736,8 +2318,12 @@ int main()
 
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -747,11 +2333,13 @@ int main()
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -768,12 +2356,11 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/ST-about/">
-        ST表
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        由倍增算法和思想衍生出的一种适用于区间查询的基本数据类型
+    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/ST-about/">
+      ST表
+    </a>
+    <span class="card-abstract">
+      由倍增算法和思想衍生出的一种适用于区间查询的基本数据类型
 
 &lt;!-- more ---&gt;
 
@@ -857,2023 +2444,6 @@ int main()
 
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        4.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 4 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/SmallestSpanTree/">
-      最小生成树
-    </a>
-    <span class="card-abstract">
-      一种基本的图论算法，求得联通块中边权和最小的生成树
-
-&lt;!-- more ---&gt;
-
-### 最小生成树
-联通块中边权和最小的生成树
-
-### Kruskal算法
-基于贪心思想，将所有边按照边权进行排序，如果两个端点不在同一个联通块中，则将两节点归入一个连通块中（用并查集实现），然后将该边统计入答案   
-
-遍历完m条边后得到n-1条边，所构成的就是对应图的最小生成树   
-
-特别的，如果得到的边数小于n-1条，则说明该图不连通   
-
-**洛谷模板题代码**：
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;iterator&gt;
-
-using namespace std;
-
-struct Edge
-{
-    int from;
-    int to;
-    int val;
-    int next;
-    bool operator&lt;(Edge b) const
-    {
-        return val &lt; b.val;
-    }
-};
-
-class MF_Set
-{
-private:
-    int n;
-    int *father = new int[5005];
-
-public:
-    MF_Set(int input_1)
-    {
-        n = input_1;
-        for (int i = 1; i &lt;= n; i++)
-        {
-            father[i] = i;
-        }
-    }
-    int findFather(int a)
-    {
-        if (father[a] != a)
-        {
-            return father[a] = findFather(father[a]);
-        }
-        else
-        {
-            return a;
-        }
-    }
-    void merge(int a, int b)
-    {
-        int FatherA = findFather(a);
-        int FatherB = findFather(b);
-        if (FatherA != FatherB)
-        {
-            father[FatherA] = FatherB;
-        }
-    }
-    bool inSameSet(int a, int b)
-    {
-        return findFather(a) == findFather(b);
-    }
-};
-
-class Solver
-{
-private:
-    Edge *edges = new Edge[200005];
-
-    int *head = new int[5005];
-    int num = 0;
-    int n, m;
-
-public:
-    Solver(int input_1, int input_2)
-    {
-        n = input_1;
-        m = input_2;
-
-        for (int i = 0; i &lt; m; i++)
-        {
-            int u, v, val;
-            cin &gt;&gt; u &gt;&gt; v &gt;&gt; val;
-            add(u, v, val);
-        }
-    }
-
-    void add(int u, int v, int val)
-    {
-        edges[num].from = u;
-        edges[num].to = v;
-        edges[num].val = val;
-        edges[num].next = head[u];
-        head[u] = num++;
-    }
-
-    int Kruskal()
-    {
-        sort(edges, edges + m - 1);
-
-        MF_Set set(n);
-        int sum = 0;
-        int times = 0;
-        for (int i = 0; i &lt; m; i++)
-        {
-            int u = edges[i].from;
-            int v = edges[i].to;
-            if (!set.inSameSet(u, v))
-            {
-                sum += edges[i].val;
-                times++;
-                set.merge(u, v);
-            }
-        }
-        if (times != (n - 1))
-        {
-            return -1;
-        }
-        return sum;
-    }
-};
-
-int main()
-{
-    int n, m;
-    cin &gt;&gt; n &gt;&gt; m;
-    Solver work(n, m);
-    int ans = work.Kruskal();
-    if (ans != (-1))
-    {
-        cout &lt;&lt; ans;
-    }
-    else
-    {
-        cout &lt;&lt; &#34;orz&#34;;
-    }
-}
-```
-### Prim算法
-Prim算法和Kruskal算法一样基于贪心思想，将图上的节点分两类：属于最小生成树的节点和不属于最小生成树的节点，用集合$T$和$S$表示   
-
-每次找到集合$T$组成的连通块相连的最近的属于$S$的节点，将其加入$T$中，并将其边长统计入答案。可以保证最后得到的树为最小生成树。   
-
-这种贪心思想和dijsktra算法很相似，并且都可使用堆优化查找最小值的过程   
-**洛谷模板题代码***
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;queue&gt;
-
-using namespace std;
-
-struct Edge
-{
-    int from;
-    int to;
-    int val;
-    int next;
-};
-
-class Solver
-{
-private:
-    Edge *edges = new Edge[400005]{};
-
-    int *head = new int[5005]{};
-    int num = 0;
-    int n, m;
-
-public:
-    Solver(int input_1, int input_2)
-    {
-        n = input_1;
-        m = input_2;
-
-        for (int i = 0; i &lt; m; i++)
-        {
-            int u, v, val;
-            cin &gt;&gt; u &gt;&gt; v &gt;&gt; val;
-            add(u, v, val);
-            add(v, u, val);
-        }
-    }
-
-    void add(int u, int v, int val)
-    {
-        edges[++num].from = u;
-        edges[num].to = v;
-        edges[num].val = val;
-        edges[num].next = head[u];
-        head[u] = num;
-    }
-
-    struct disNode
-    {
-        int val;
-        int node;
-        bool operator&lt;(disNode b) const
-        {
-            return val &gt; b.val;
-        }
-    };
-
-    int prim()
-    {
-        bool *visit = new bool[5005]{0};
-
-        priority_queue&lt;disNode&gt; heap;
-
-        heap.push(disNode{0, 1});
-
-        int sum = 0;
-        int times = 0;
-
-        while (heap.size())
-        {
-            disNode temp = heap.top();
-            heap.pop();
-
-            if (visit[temp.node])
-            {
-                continue;
-            }
-            visit[temp.node] = 1;
-            sum += temp.val;
-            times++;
-            for (int i = head[temp.node]; i; i = edges[i].next)
-            {
-                if (!visit[edges[i].to])
-                    heap.push(disNode{edges[i].val, edges[i].to});
-            }
-        }
-        if (times != n)
-        {
-            return -1;
-        }
-        return sum;
-    }
-};
-
-int main()
-{
-    int n, m;
-    cin &gt;&gt; n &gt;&gt; m;
-    Solver work(n, m);
-    int ans = work.prim();
-    if (ans != -1)
-    {
-        cout &lt;&lt; ans;
-    }
-    else
-        cout &lt;&lt; &#34;orz&#34;;
-}
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        6.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 6 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/TreeToList/">
-        树链剖分
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-树链剖分，原理不算复杂，但是代码十分难打的一种偏暴力的算法
-
-&lt;!-- more ---&gt;
-
-首先就如它的名字一样，树链剖分，把树剖分成链式结构，符合主宾谓结构，看来命名者精通日语......（我在说什么）
-
-### 树链剖分主要分为以下步骤：
-- **第一遍对树进行dfs**：
-  - 记录每个节点的深度
-  - 记录每个节点的父节点
-  - 记录每个节点的子树大小（含自己）
-  - 记录每个节点的重儿子
-
-关于重儿子、轻儿子等概念就不解释记录了，我只是在记录自己的学习过程，不是写教程
-
-- **第二遍对树进行dfs**：
-  - 根据第一遍跑出来的重儿子对每个节点进行重编号   
-    优先对重链编上连续的新编号
-  - 记录每个节点在当前重链上的$top$节点
-
-完成两次dfs后，树链剖分的过程基本完成了，接下来写个线段树对重编号的序列进行区间维护   
-
-- **在两点间的路径进行操作**：   
-  选择两点中top节点较深的节点，跳到top节点的父节点上，并对```id[x]```和```id[top[x]]```区间进行操作——树链剖分后保证该段连续   
-  重复此过程直到两个节点到同一条重链上
-
-- **对子树进行操作**：   
-  树链剖分后保证整个子树在新序列上连续，所以直接通过之前记录过的子树大小得到对应区间
-
-## luogu模板题代码：
-
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;cmath&gt;
-
-using namespace std;
-
-struct Edge
-{
-    int from;
-    int to;
-    int val;
-    int next;
-};
-
-int N;
-int M;
-int S;
-int MOD;
-Edge edges[1000005]{};
-int head[500005]{};
-int fa[500005]{};
-int depth[500005]{};
-int childSize[500005]{};
-
-int node[500005];
-int heavySon[500005];
-int id[500005];
-int top[500005];
-int aimList[500005];
-
-int num;
-
-struct SegmentTree
-{
-    int L, R;
-    int data;
-    int lazy = 0;
-} T_node[2000005];
-
-void build(int p, int l, int r)
-{
-    T_node[p].L = l;
-    T_node[p].R = r;
-
-    if (l == r)
-    {
-        T_node[p].data = aimList[l];
-        return;
-    }
-    int mid = (l + r) / 2;
-
-    build((p &lt;&lt; 1), l, mid);
-    build((p &lt;&lt; 1) + 1, mid + 1, r);
-
-    T_node[p].data = (T_node[(p &lt;&lt; 1)].data + T_node[(p &lt;&lt; 1) + 1].data) % MOD;
-}
-
-void spread(int p)
-{
-    if (T_node[p].lazy)
-    {
-        T_node[(p &lt;&lt; 1)].data += T_node[p].lazy * (T_node[(p &lt;&lt; 1)].R - T_node[(p &lt;&lt; 1)].L + 1);
-        T_node[(p &lt;&lt; 1) + 1].data += T_node[p].lazy * (T_node[(p &lt;&lt; 1) + 1].R - T_node[(p &lt;&lt; 1) + 1].L + 1);
-
-        T_node[(p &lt;&lt; 1)].data %= MOD;
-        T_node[(p &lt;&lt; 1) + 1].data %= MOD;
-
-        T_node[(p &lt;&lt; 1)].lazy += T_node[p].lazy;
-        T_node[(p &lt;&lt; 1) + 1].lazy += T_node[p].lazy;
-
-        T_node[(p &lt;&lt; 1)].lazy %= MOD;
-        T_node[(p &lt;&lt; 1) + 1].lazy %= MOD;
-
-        T_node[p].lazy = 0;
-    }
-}
-
-void changePlus(int p, int l, int r, int val)
-{
-    if (T_node[p].L &gt;= l &amp;&amp; T_node[p].R &lt;= r)
-    {
-        T_node[p].data += (T_node[p].R - T_node[p].L + 1) * val;
-        T_node[p].data %= MOD;
-        T_node[p].lazy += val;
-        T_node[p].lazy %= MOD;
-        return;
-    }
-    spread(p);
-    int mid = (T_node[p].L + T_node[p].R) / 2;
-
-    if (l &lt;= mid)
-    {
-        changePlus((p &lt;&lt; 1), l, r, val);
-    }
-    if (r &gt;= mid + 1)
-    {
-        changePlus((p &lt;&lt; 1) + 1, l, r, val);
-    }
-    T_node[p].data = (T_node[(p &lt;&lt; 1)].data + T_node[(p &lt;&lt; 1) + 1].data % MOD);
-}
-
-int query(int p, int l, int r)
-{
-    if (T_node[p].L &gt;= l &amp;&amp; T_node[p].R &lt;= r)
-    {
-        return T_node[p].data;
-    }
-    spread(p);
-    int mid = (T_node[p].L + T_node[p].R) / 2;
-
-    int sum = 0;
-    if (l &lt;= mid)
-    {
-        sum += query((p &lt;&lt; 1), l, r);
-    }
-    if (r &gt;= mid + 1)
-    {
-        sum += query((p &lt;&lt; 1) + 1, l, r);
-    }
-    sum %= MOD;
-    return sum;
-}
-
-void add(int u, int v)
-{
-    edges[++num].from = u;
-    edges[num].to = v;
-    edges[num].next = head[u];
-    head[u] = num;
-}
-
-int dfs_1(int pos, int depth_)
-{
-    int sum = 1;
-    int MaxSon = -1;
-
-    depth[pos] = depth_;
-    for (int i = head[pos]; i; i = edges[i].next)
-    {
-        if (fa[pos] == edges[i].to)
-        {
-            continue;
-        }
-        else
-        {
-            fa[edges[i].to] = pos;
-            int sonM = dfs_1(edges[i].to, depth_ + 1);
-
-            if (sonM &gt; MaxSon)
-            {
-                MaxSon = sonM;
-                heavySon[pos] = edges[i].to;
-            }
-            sum += sonM;
-        }
-    }
-    childSize[pos] = sum;
-    return sum;
-}
-
-int temp_num = 0;
-void dfs_2(int pos)
-{
-    id[pos] = ++temp_num;
-    aimList[temp_num] = node[pos];
-
-    if (heavySon[pos])
-    {
-        top[heavySon[pos]] = top[pos];
-        dfs_2(heavySon[pos]);
-    }
-    for (int i = head[pos]; i; i = edges[i].next)
-    {
-        if (!id[edges[i].to])
-        {
-            top[edges[i].to] = edges[i].to;
-            dfs_2(edges[i].to);
-        }
-    }
-}
-
-void op_1(int x, int y, int val)
-{
-    while (top[x] != top[y])
-    {
-        if (depth[top[y]] &gt; depth[top[x]])
-        {
-            swap(x, y);
-        }
-        int l = id[top[x]];
-        int r = id[x];
-        changePlus(1, l, r, val);
-        x = fa[top[x]];
-    }
-    if (depth[y] &gt; depth[x])
-    {
-        swap(x, y);
-    }
-    changePlus(1, id[y], id[x], val);
-}
-
-int op_2(int x, int y)
-{
-    int sum = 0;
-    while (top[x] != top[y])
-    {
-        if (depth[top[y]] &gt; depth[top[x]])
-        {
-            swap(x, y);
-        }
-        int l = id[top[x]];
-        int r = id[x];
-        sum += query(1, l, r);
-        sum %= MOD;
-        x = fa[top[x]];
-    }
-    if (depth[y] &gt; depth[x])
-    {
-        swap(x, y);
-    }
-    sum += query(1, id[y], id[x]);
-    return sum % MOD;
-}
-
-void op_3(int p, int val)
-{
-    changePlus(1, id[p], id[p] + childSize[p] - 1, val);
-}
-
-int op_4(int p)
-{
-    return query(1, id[p], id[p] + childSize[p] - 1) % MOD;
-}
-
-void Solver(int n, int m, int s, int mod)
-{
-    N = n;
-    M = m;
-    S = s;
-    MOD = mod;
-
-    for (int i = 1; i &lt;= N; i++)
-    {
-        cin &gt;&gt; node[i];
-    }
-
-    for (int i = 1; i &lt;= n - 1; i++)
-    {
-        int u, v;
-        cin &gt;&gt; u &gt;&gt; v;
-        fa[u] = -1;
-        fa[v] = -1;
-        add(u, v);
-        add(v, u);
-    }
-    dfs_1(S, 1);
-
-    top[S] = S;
-    dfs_2(S);
-
-    build(1, 1, N);
-
-    for (int i = 0; i &lt; M; i++)
-    {
-        int op;
-        cin &gt;&gt; op;
-        if (op == 1)
-        {
-            int x, y, val;
-            cin &gt;&gt; x &gt;&gt; y &gt;&gt; val;
-            op_1(x, y, val);
-        }
-        if (op == 2)
-        {
-            int x, y;
-            cin &gt;&gt; x &gt;&gt; y;
-            cout &lt;&lt; op_2(x, y) % MOD &lt;&lt; endl;
-        }
-        if (op == 3)
-        {
-            int x, val;
-            cin &gt;&gt; x &gt;&gt; val;
-            op_3(x, val);
-        }
-        if (op == 4)
-        {
-            int x;
-            cin &gt;&gt; x;
-            cout &lt;&lt; op_4(x) &lt;&lt; endl;
-        }
-    }
-}
-
-int main()
-{
-    int n, m, s, mod;
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s &gt;&gt; mod;
-    Solver(n, m, s, mod);
-}
-```
-
-将近300行代码，我觉得我不大会在考场上选择这种方法，太野蛮了
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/dataStruct-S/">
-      简单数据结构
-    </a>
-    <span class="card-abstract">
-      啊对了，这是我回高中给学弟讲图论时用的课件
-
-**信息学竞赛 = 算法 + 数据结构**
-
-### 什么是数据结构？
-
-数据结构是储存数据的方式
-
-### 数据结构和算法之间的关系
-
-按照某种方式储存的数据可以更加方便快速地执行某些算法
-
-### 数据结构的简单分类
-
-线性数据结构
-
-图
-
-树型结构
-
-### 一个简单的例子
-
-```cpp
-struct Student
-{
-    string name;
-    int age;
-    bool gender;
-};
-```
-这也可以算作一种数据结构，通过这种结构方式，我们可以很容易的通过排序算法来把一堆学生按照年龄或者姓名进行排序
-
-## 线性数据结构
-
-线性数据结构像是数组这样的，每个数据都有明确的“上一个数据”和“下一个数据”，这样的数据组成形式
-
-### 栈
-
-设定一个数组，所有的数据都只能从其中一个方向进入和移出，满足先进先出规则
-
-![](/image/oi/2_1.png)
-
-#### STL模板中的栈
-
-```cpp
-int main()
-{
-    stack&lt;int&gt; test;
-    test.push(5);
-    cout &lt;&lt; test.top();
-    test.pop();
-}
-```
-
-STL模板中的栈是**容器适配器**，不是容器
-
-#### 计算机中的栈
-
-栈空间：计算机在编译阶段就完成的空间分配，一般有大小限制
-
-**递归调用栈的原理**：
-
-C++程序在编译的过程中是先翻译成**汇编语言**，再编译成可直接执行的二进制程序（exe）
-
-汇编语言和C++一样**从上到下执行**指令，执行指令时会把整个程序拷贝到内存**栈空间**中，但是每个函数在栈空间中的**地址**不一样，所以在**调用函数**时需要从内存的一个位置跳转到另一个位置，并记录下原来的地址，在执行完调用的函数后跳回原本的函数
-
-这个记录下的**原地址**就储存在提前分配好大小的栈空间中，所以如果**递归函数**调用自身的次数过多，就会使数据超出规定的栈空间大小，造成**内存泄漏**
-
-此时如果你使用的是dev，那么程序就会**默不作声**地结束掉，就像是自己的程序没有输出结果一样
-
-#### 练习：
-不做具体题目了，用数组自行实现一个栈结构，要求功能：
-1. push()
-2. pop()
-3. top()
-4. 正确处理空栈时执行pop()的错误
-
-考虑一下栈和计算表达式中的括号匹配的关系
-
-### 队列
-
-队列和栈比较相似，其满足的性质是：**数据从一边进入，从另一边移出**
-
-相比栈在计算机中的基本应用，队列更多的是在算法层面提供帮助
-
-通过一边进一边出并且不改变数据的顺序，我们可以通过队列实现对某些非线性数据结构的线性处理
-
-比如之后要说的：BFS算法
-
-单独考队列也不太可能，所以如果没有特别需求同样可以使用STL模板中的queue满足基本使用
-
-```cpp
-int main()
-{
-    queue&lt;int&gt; test;
-    test.push(5);
-    cout &lt;&lt; test.front();
-    cout &lt;&lt; test.back();
-    test.pop();
-}
-```
-
-#### 练习：
-如果使用数组实现队列，在数组装满后，移出了一些数据，使得数组的前半部分有空余空间，此时再插入数据的话，数据将从数组的头部进入队列，实现一个**头尾相接**，这样的数组称为**循环队列**
-
-尝试使用数组实现循环队列，要求功能：
-1. push()
-2. pop()
-3. front()
-4. back()
-
-### 数组
-
-数组本质不是指针，而是包含了一段**连续内存空间**的**基址指针**，和数组大小的一种数据结构
-
-直接使用数组名，数组会返回该数组的**基址指针**
-
-```*(a+10) == a[10]```
-
-因为数组在内存空间中是连续的，所以可以使用下标进行**随机访问**
-
-**动态数组**：要学就连上STL中的基础容器一起学
-
-### 链表
-
-数组在内存中是连续的，所以可以通过$*(a+10)$这样的指针计算直接得到某个位置的数据，而链表在内存中是**碎片化**储存的，通过指针将其链接起来
-
-![](/image/oi/2_2.png)
-
-这种结构使得链表不能像数组一样通过计算定位某个元素的位置，所以要得到任何元素都必须通过**遍历**的方式
-
-相对应的，其优点是进行批量的**数据删除、添加**可以比数组更快、更方便，并且链表数据容量是不固定的，可以随时加入更多的元素，而数组在编译阶段就固定了数据容量
-
-#### 计算机中的链表
-
-我们知道（至少你现在知道了），数据在内存中是**碎片化储存**的，当我们需要分配一块新的内存时，需要从碎片化的**空闲内存**中找出一片合适的内存，并从中分割内存
-
-当一块占用内存使用完毕需要释放后，我们需要把他和相邻的空闲内存合并
-
-管理这样**分散**的内存块很明显使用链表会更加方便，这样在计算机系统中用于管理内存的链表我们称为**空闲链表**，是计算机内存管理的重要组成
-
-#### 链表的使用
-
-链表同样一般不会出单独的题目进行考察，如果没有特殊需要推荐使用STL中的**List**容器
-
- ```cpp
-
-int main()
-{
-    list&lt;int&gt; test;
-    test.push_back(5);
-    test.push_front(6);
-    test.pop_back();
-    test.pop_front();
-    test.insert(test.begin(), 5);
-}
-```
-链表的实现可以使用**指针**和**类**，进行比较标准的实现，如果不熟悉面向对象编程和指针，也可以使用数组进行实现
-
-在oi竞赛里用数组模拟链表、树这类需要指针的情况非常常见，一般说法是：用数组模拟可以比用指针更快，空间占用更多，但是如果按照更规范的写法，仍然使用指针和类实现
-
-#### 练习
-按照你的习惯，编写一个链表的基本实现，功能要求：
-1. insert()//从中间插入数据
-2. remove()//从中间删除数据
-
-#### 线性结构相关题
-
-简单题：
-P1449 后缀表达式
-P1996 约瑟夫问题
-
-## 图
-
-### 什么是图？
-一种用节点和边链接而成的非线性结构
-
-![](/image/oi/2_3.png)
-
-**连通块**：节点之间满足两两联通的部分
-
-### 什么是树？
-
-满足**边的数量=节点数量 - 1**的联通图
-
-### 图的储存方式
-
-##### 邻接矩阵：
-
-![](/image/oi/2_4.png)
-
-实现方式：二位数组
-
-##### 邻接表：
-
-每个节点建立一个数组（链表），储存以该节点为起点，通往相邻节点的边
-
-### 树的储存方式
-
-和图一样
-
-#### 练习
-
-尝试上面的建图方法，并且输出每个节点所连接的边的数量
-
-## 二叉树
-
-每个节点都最多只有两个儿子的树
-
-二叉树可以用数组的方式储存
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        4.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 4 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/distant/">
-        单源最短路和负环
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        对于最短路的内容有所遗忘，复习的同时，将常用的几种与最短路有关的算法记录下来
-
-&lt;!-- more ---&gt;
-
-# 堆优化的dijkstra算法
-
-dijkstra采用贪心思想，对于产生负边权的图，并不会回过头去更新减少费用的路径，但是对于正边权的图是有效的计算方式
-
-**代码如下**：
-```cpp
-#include &lt;iostream&gt;
-#include &lt;cmath&gt;
-#include &lt;queue&gt;
-using namespace std;
-
-struct edge
-{
-    int f;
-    int t;
-    int val;
-    int next;
-} ed[200005];
-
-int num = 0;
-int head[100005];
-
-void add(int f, int t, int val)
-{
-    ed[++num].f = f;
-    ed[num].t = t;
-    ed[num].val = val;
-    ed[num].next = head[f];
-    head[f] = num;
-}
-
-struct node_
-{
-    int dis;
-    int node;
-    bool operator &lt; (node_ a)const//此处牵涉到stl的内部实现
-                                  //堆使用&lt;比较
-    {
-        return dis &lt; a.dis;
-    }
-};
-int dis[100005];
-bool vi[100005];
-
-void dijkstra()
-{
-    priority_queue&lt;node_&gt; dui;
-    for (int i = 0; i &lt; 100005; i++)
-    {
-        dis[i] = 1e9 + 7;
-    }
-    dis[1] = 0;
-    dui.push(node_{0, 1});
-
-    while (dui.size())
-    {
-        int node = dui.top().node;
-        dui.pop();
-
-        if (vi[node])
-            continue;
-        vi[node] = 1;
-
-        for (int i = head[node]; i != 0; i = ed[i].next)
-        {
-            dis[ed[i].t] = min(dis[ed[i].t], dis[ed[i].f] + ed[i].val);
-            dui.push(node_{dis[ed[i].t], ed[i].t});
-        }
-    }
-}
-
-int main()
-{
-    int n, m, s;
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
-
-    for (int i = 0; i &lt; m; i++)
-    {
-        int a, b, c;
-        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
-        add(a, b, c);
-    }
-    dijkstra();
-    for(int i=1;i&lt;=n;i++){
-        cout&lt;&lt;dis[i]&lt;&lt;&#39; &#39;;
-    }
-}
-```
-# Bellman-ford算法
-依照对“松弛操作”的理解，每一次对所有边进行松弛后，必定有一个点的最短路能得到答案。   
-如果对于之后存在负边能使到达该点的最短路更小的节点超过两个，那么必定是存在负环的情况。
-
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;cmath&gt;
-#include &lt;queue&gt;
-
-using namespace std;
-
-struct edge
-{
-    int f;
-    int t;
-    int val;
-    int next;
-} ed[500005];
-
-int num = 0;
-int head[100005];
-
-void add(int f, int t, int val)
-{
-    ed[++num].f = f;
-    ed[num].t = t;
-    ed[num].val = val;
-    ed[num].next = head[f];
-    head[f] = num;
-}
-
-long long dis[100005];
-bool vi[100005];
-int n, m, s;
-void bellman()
-{
-    for (int i = 1; i &lt;= n; i++)
-        dis[i] = (1 &lt;&lt; 31) - 1;
-    dis[s] = 0;
-    for (int i = 1; i &lt;= n - 1; i++)
-    {
-        for (int j = 1; j &lt;= m; j++)
-        {
-            if (dis[ed[j].t] &gt; dis[ed[j].f] + ed[j].val)
-            {
-                dis[ed[j].t] = dis[ed[j].f] + ed[j].val;
-            }
-        }
-    }
-}
-
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
-
-    for (int i = 0; i &lt; m; i++)
-    {
-        int a, b, c;
-        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
-        add(a, b, c);
-    }
-    bellman();
-    for (int i = 1; i &lt;= n; i++)
-    {
-        cout &lt;&lt; dis[i] &lt;&lt; &#39; &#39;;
-    }
-}
-```
-# SPFA算法：
-Bellman-ford算法的优化版，优化了遍历的边的数量和遍历的层数。
-每次只更新dis改变的节点相连的边，用队列来存储，直到清空队列为止。   
-但是特殊情况下时间复杂度会劣化，比如菊花图，并且在算法比赛中卡SPFA是个常识了。（已经死了）   
-说实话，关于堆优化的Bellman-ford、SPFA及其各种优化、堆优化的dijkstra等算法我觉还应该更多地思考一下。
-
-**代码如下：**
-
-```cpp
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;queue&gt;
-
-using namespace std;
-
-struct edge
-{
-    int f;
-    int t;
-    int val;
-    int next;
-} ed[500005];
-
-int num = 0;
-int head[100005];
-
-void add(int f, int t, int val)
-{
-    ed[++num].f = f;
-    ed[num].t = t;
-    ed[num].val = val;
-    ed[num].next = head[f];
-    head[f] = num;
-}
-
-long long dis[100005];
-bool vi[100005];
-int n, m, s;
-void SPFA()
-{
-    for (int i = 1; i &lt;= n; i++)
-        dis[i] = (1 &lt;&lt; 31) - 1;
-    dis[s] = 0;
-
-    queue&lt;int&gt; que;
-
-    que.push(s);
-    vi[s] = 1;
-
-    while (que.size())
-    {
-        int node = que.front();
-        que.pop();
-        vi[node] = 0;
-
-        for (int i = head[node]; i; i = ed[i].next)
-        {
-            if (dis[ed[i].t] &gt; dis[ed[i].f] + ed[i].val)
-            {
-                dis[ed[i].t] = dis[ed[i].f] + ed[i].val;
-                que.push(ed[i].t);
-                vi[ed[i].t] = 1;
-            }
-        }
-    }
-}
-
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s;
-
-    for (int i = 0; i &lt; m; i++)
-    {
-        int a, b, c;
-        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
-        add(a, b, c);
-    }
-    SPFA();
-    for (int i = 1; i &lt;= n; i++)
-    {
-        cout &lt;&lt; dis[i] &lt;&lt; &#39; &#39;;
-    }
-}
-```
-# 关于堆优化dijkstra和SPFA的思考
-
-仔细想想堆优化的dijkstra和SPFA，其实非常相似，只是SPFA中的容器是一个队列，而dijksta中使用的是堆，那么我是否可以认为其实堆优化的dijkstra其实是一种堆优化的bellman-ford算法？
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        6.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 6 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/learning-note/network-flows/">
-      最大流问题
-    </a>
-    <span class="card-abstract">
-      
-网络流是一个比较庞大的图论分支，有些懒，大概记个思路和代码就行了
-
-&lt;!-- more ---&gt;
-
-## 最大流问题
-
-### EK算法
-
-通过搜索的方式找到一条增广路，然后该路径上的流量增加$min(f(u,v))$，即最小边的容量
-
-重复这个过程直到搜索不出一条增广路为止，得到最大流
-
-**实现代码**：
-```cpp
-#include &lt;iostream&gt;
-#include &lt;cstdio&gt;
-#include &lt;algorithm&gt;
-#include &lt;cstring&gt;
-#include &lt;queue&gt;
-#include &lt;cmath&gt;
-#define MAX_ 0x7fffff;
-
-using namespace std;
-
-struct Edge
-{
-    int from;
-    int to;
-    long long c;
-    long long flow;
-    int next;
-} ed[10001];
-
-int head[201];
-int num = 1;
-void add(int f, int t, long long c)
-{
-    ed[++num].from = f;
-    ed[num].to = t;
-    ed[num].c = c;
-    ed[num].flow = 0;
-    ed[num].next = head[f];
-    head[f] = num;
-}
-
-int n, m, s, t;
-long long ans = 0;
-
-long long min_ = MAX_;
-int vi[201];
-
-int pre[5001];
-
-bool BFS()
-{
-    queue&lt;int&gt; nodeQueue;
-    memset(vi, 0, sizeof(vi));
-    min_ = MAX_;
-    nodeQueue.push(s);
-    vi[s] = 1;
-
-    while (nodeQueue.size())
-    {
-        int x = nodeQueue.front();
-        nodeQueue.pop();
-
-        for (int i = head[x]; i; i = ed[i].next)
-        {
-            int y = ed[i].to;
-            if (vi[y])
-            {
-                continue;
-            }
-            else if (ed[i].c - ed[i].flow &gt; 0)
-            {
-                nodeQueue.push(y);
-                min_ = min(min_, ed[i].c - ed[i].flow);
-                //record the minimum remained capacity
-                pre[y] = i;
-                vi[y] = 1;
-            }
-        }
-        if (vi[t])
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-void update()
-{
-    int p = t;
-    while (p != s)
-    {
-        ed[pre[p]].flow += min_;
-        ed[pre[p] ^ 1].flow -= min_;
-        p = ed[pre[p]].from;
-    }
-    ans += min_;
-}
-
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s &gt;&gt; t;
-    for (int i = 1; i &lt;= m; i++)
-    {
-        int x, y, c;
-        cin &gt;&gt; x &gt;&gt; y &gt;&gt; c;
-        add(x, y, c);
-        add(y, x, -c);
-    }
-    while (BFS())
-    {
-        update();
-    }
-    cout &lt;&lt; ans;
-}
-
-```
-
-EK算法的时间复杂度为$O(nm^2)$，适用于稀疏图，无法通过洛谷模板题
-
-所以接下来学习Dinic算法
-
-### Dinic算法
-
-Dinic算法主要思路如下
-- 通过BFS构造残量网络的分层图
-- 在分层图上进行DFS寻找增广路
-
-```cpp
-#include &lt;iostream&gt;
-#include &lt;cstdio&gt;
-#include &lt;algorithm&gt;
-#include &lt;cstring&gt;
-#include &lt;queue&gt;
-#include &lt;cmath&gt;
-#define MAX_ 0x7fffff
-
-using namespace std;
-
-struct Edge
-{
-    int from;
-    int to;
-    long long c;
-    long long flow;
-    int next;
-} ed[10001];
-
-int head[201];
-int num = 1;
-void add(int f, int t, long long c)
-{
-    ed[++num].from = f;
-    ed[num].to = t;
-    ed[num].c = c;
-    ed[num].flow = 0;
-    ed[num].next = head[f];
-    head[f] = num;
-}
-
-int n, m, s, t;
-long long ans = 0;
-
-int vi[201];
-int d[201];
-
-bool BFS()
-{
-    queue&lt;int&gt; nodeQueue;
-    nodeQueue.push(s);
-    memset(vi, 0, sizeof(vi));
-    d[s] = 1;
-    vi[s] = 1;
-
-    while (nodeQueue.size())
-    {
-        int x = nodeQueue.front();
-        nodeQueue.pop();
-
-        for (int i = head[x]; i; i = ed[i].next)
-        {
-            int y = ed[i].to;
-            if (!vi[y] &amp;&amp; (ed[i].c - ed[i].flow) &gt; 0)
-            {
-                d[y] = d[x] + 1;
-                nodeQueue.push(y);
-                vi[y] = 1;
-            }
-        }
-        if (vi[t] == 1)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-long long DFS(int p, long long minFlow)
-{
-    if (p == t)
-    {
-        return minFlow;
-    }
-    long long rest = 0;
-    long long k = 0;
-    for (int i = head[p]; i &amp;&amp; minFlow; i = ed[i].next)
-    {
-        int y = ed[i].to;
-        if (ed[i].c - ed[i].flow &gt; 0 &amp;&amp; d[y] == d[p] + 1)
-        {
-            k = DFS(y, min(minFlow, ed[i].c - ed[i].flow));
-            if (k == 0)
-            {
-                d[y] = MAX_;//一个剪枝操作
-            }
-
-            ed[i].flow += k;
-            ed[i ^ 1].flow -= k;
-
-            rest += k;
-            minFlow -= k;
-        }
-    }
-    return rest;
-}
-
-int main()
-{
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; s &gt;&gt; t;
-    for (int i = 1; i &lt;= m; i++)
-    {
-        int x, y, c;
-        cin &gt;&gt; x &gt;&gt; y &gt;&gt; c;
-        add(x, y, c);
-        add(y, x, -c);
-    }
-
-    while (BFS())
-    {
-        ans += DFS(s, MAX_);
-    }
-
-    cout &lt;&lt; ans;
-}
-```
-
-在dinic算法中，增广的步骤在DFS中，$minFlow$表示到这个节点为止的路径上的最小残量，$rest$用于记录后续路径上的总容量
-
-到达t节点后开始回溯，减去最小残量后如果还有支路则继续遍历，每个分支的容量都会回溯到之前的道路上，直到共同道路上的$minFlow$全部消耗完
-
-讲真，虽然看代码理解了实现过程在做什么，但是表述起来还是有些难度
-
-此外，这里的dinic算法还使用了一些剪枝操作
-
-### 使用最大流算法求解二分图最大匹配
-
-匈牙利算法中寻找增广路的本质其实和最大流算法求解的本质一样，都是通过寻找所谓“增广路”来扩展最大流量，我们只要添加一个源点S和一个汇点T，分别连接左右区域的全部节点，每条边的最大流量为1，这样跑一遍最大流，得到的答案就是二分图的最大匹配
-
-通过模拟算法过程可以发现，求最大流的过程和匈牙利算法一摸一样
-
-```cpp
-#include &lt;iostream&gt;
-#include &lt;cstdio&gt;
-#include &lt;list&gt;
-#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-#include &lt;cmath&gt;
-#include &lt;cstring&gt;
-#include &lt;queue&gt;
-#include &lt;utility&gt;
-#define MAX_ 0x7fffffff
-
-using namespace std;
-
-struct Edge
-{
-    int to;
-    int next;
-    int remain;
-} ed[200005];
-
-int num = 1;
-
-int head[2005];
-int n, m, e;
-
-const int S = 1001;
-const int T = 1002;
-
-void add(int f, int t, int c)
-{
-    ed[++num].to = t;
-    ed[num].remain = c;
-    ed[num].next = head[f];
-    head[f] = num;
-}
-void input()
-{
-    cin &gt;&gt; n &gt;&gt; m &gt;&gt; e;
-    int f, t;
-    for (int i = 1; i &lt;= e; i++)
-    {
-        cin &gt;&gt; f &gt;&gt; t;
-        add(f, t + n, 1);
-        add(t + n, f, 0);
-    }
-    for (int i = 1; i &lt;= n; i++)
-    {
-        add(S, i, 1);
-        add(i, S, 0);
-    }
-    for (int i = n + 1; i &lt;= n + m; i++)
-    {
-        add(i, T, 1);
-        add(T, i, 0);//将左右区的节点和源点相连
-    }
-}
-
-bool vi[1005];
-int d[1005];
-int BFS()
-{
-    queue&lt;int&gt; nodeQueue;
-    nodeQueue.push(S);
-    memset(vi, 0, sizeof(vi));
-    d[S] = 1;
-    vi[S] = 1;
-
-    while (nodeQueue.size())
-    {
-        int pos = nodeQueue.front();
-        nodeQueue.pop();
-
-        for (int i = head[pos]; i; i = ed[i].next)
-        {
-            if (ed[i].remain &gt; 0 &amp;&amp; !vi[ed[i].to])
-            {
-                d[ed[i].to] = d[pos] + 1;
-
-                nodeQueue.push(ed[i].to);
-                vi[ed[i].to] = 1;
-            }
-        }
-        if (vi[T] == 1)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-int DFS(int p, int minFlow)
-{
-    if (p == T)
-    {
-        return minFlow;
-    }
-    int sum = 0;
-    int branchFlow = 0;
-    for (int i = head[p]; i &amp;&amp; minFlow; i = ed[i].next)
-    {
-        int y = ed[i].to;
-        if (ed[i].remain &amp;&amp; d[y] == d[p] + 1)
-        {
-            branchFlow = DFS(ed[i].to, min(minFlow, ed[i].remain));
-            if (branchFlow == 0)
-            {
-                d[y] = MAX_;
-            }
-            sum += branchFlow;
-            minFlow -= branchFlow;
-
-            ed[i].remain -= branchFlow;
-            ed[i ^ 1].remain += branchFlow;
-        }
-    }
-    return sum;
-}
-
-int main()
-{
-    input();
-    int ans = 0;
-    while (BFS())
-    {
-        ans += DFS(S, MAX_);
-    }
-    cout &lt;&lt; ans;
-}
-```
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/algorithm/oi/quiz/1003-hdu/">
-        hdu1003
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-照理说应当是一道相当简单入门的线性题，但是实际做的时候还是踩了不少坑
-
-### 几种没有考虑到的特殊情况：
-- 数列全为负数的情况下，应当找到最小负数
-- 线性过程中的t_sum应该在首项赋值
-
-&lt;!-- more --&gt;
-
-**代码如下**：
-
-```c++
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;vector&gt;
-#include &lt;cstring&gt;
-#include &lt;string&gt;
-#include &lt;string.h&gt;
-#include &lt;ctime&gt;
-#include &lt;cmath&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;iomanip&gt;
-
-using namespace std;
-
-struct ANS_
-{
-    int begin = 0;
-    int end = 0;
-    int sum = 0;
-};
-
-ANS_ caculate(int seq[], int l)
-{
-    ANS_ ans;
-
-    int t_sum = seq[0];
-    ans.sum = seq[0];
-    int last = 0;
-    for (int i = 0; i &lt; l; i++)
-    {
-        if (last != i)
-            t_sum += seq[i];
-
-        //cout &lt;&lt; t_sum &lt;&lt; endl;
-
-        if (t_sum &gt;= 0 &amp;&amp; t_sum &gt; ans.sum)
-        {
-            ans.sum = t_sum;
-            ans.end = i;
-            ans.begin = last;
-        }
-        else if (t_sum &lt; 0)
-        {
-            if (t_sum &gt; ans.sum)
-            {
-                ans.sum = t_sum;
-                ans.end = i;
-                ans.begin = last;
-            }
-
-            t_sum = seq[i + 1];
-            last = i + 1;
-        }
-    }
-    return ans;
-}
-
-int main()
-{
-    //FILE *stream1;
-    //freopen_s(&amp;stream1, &#34;data.in&#34;, &#34;r&#34;, stdin);
-    //freopen_s(&amp;stream1, &#34;a.out&#34;, &#34;w&#34;, stdout);
-
-    int n;
-    int seq[100005];
-
-    cin &gt;&gt; n;
-
-    for (int j = 0; j &lt; n; j++)
-    {
-        int l;
-        cin &gt;&gt; l;
-
-        for (int i = 0; i &lt; l; i++)
-        {
-            cin &gt;&gt; seq[i];
-        }
-        ANS_ ans = caculate(seq, l);
-        cout &lt;&lt; &#34;Case &#34; &lt;&lt; j + 1 &lt;&lt; &#39;:&#39; &lt;&lt; endl
-             &lt;&lt; ans.sum &lt;&lt; &#39; &#39; &lt;&lt; ans.begin + 1 &lt;&lt; &#39; &#39; &lt;&lt; ans.end + 1 &lt;&lt; endl;
-
-        if (j != n - 1)
-            cout &lt;&lt; endl;
-        // &lt;&lt; endl;
-    }
-    fclose(stdin);
-    fclose(stdout);
-}
-```
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/oi/quiz/1005-hdu/">
-      hdu1005
-    </a>
-    <span class="card-abstract">
-      
-求一个递推公式得第n项，数据范围不能使用线性算法，所以采用矩阵快速幂的做法   
-
-&lt;!-- more --&gt;
-
-虽然是很久以前就会的算法，但是实际写起来还是踩了不少坑，此外在写对拍程序时遇到了c++输出的缓冲问题，以至于数据生成器一直无法生成数据，非常消耗人的心态   
-
-另外此题貌似可以通过找规律来解决，但是我并不想花时间去玩找规律的游戏
-
-### 本题踩的一些坑
-- 重载矩阵乘法时，下标搞错
-- 需要特殊判断n=1的情况
-
-### 代码如下：
-
-```c++
-#include &lt;cstdio&gt;
-#include &lt;iostream&gt;
-#include &lt;map&gt;
-#include &lt;cstring&gt;
-
-using namespace std;
-
-struct rec_2
-{
-    int a_11 = 0, a_12 = 0, a_21 = 0, a_22 = 0;
-
-    rec_2 operator*(rec_2 b)
-    {
-
-        rec_2 c(0, 0, 0, 0);
-
-        c.a_11 = (a_11 * b.a_11 + a_12 * b.a_21) % 7;
-        c.a_12 = (a_11 * b.a_12 + a_12 * b.a_22) % 7;
-        c.a_21 = (a_21 * b.a_11 + a_22 * b.a_21) % 7;
-        c.a_22 = (a_21 * b.a_12 + a_22 * b.a_22) % 7;
-
-        return c;
-    }
-    rec_2(int a, int b, int c, int d)
-    {
-        a_11 = a;
-        a_21 = b;
-        a_12 = c;
-        a_22 = d;
-    }
-};
-
-rec_2 qpow(rec_2 x, long long a)
-{
-    rec_2 base = x;
-    rec_2 ans(1, 0, 0, 1);
-
-    while (a)
-    {
-        if (a &amp; 1)
-            ans = ans * base;
-        base = base * base;
-        a &gt;&gt;= 1;
-    }
-    return ans;
-}
-
-int main()
-{
-    /* FILE *stream1;
-    freopen_s(&amp;stream1, &#34;data.in&#34;, &#34;r&#34;, stdin);
-    freopen_s(&amp;stream1, &#34;a.out&#34;, &#34;w&#34;, stdout); */
-
-    while (true)
-    {
-        int A, B;
-        long long n;
-
-        cin &gt;&gt; A &gt;&gt; B &gt;&gt; n;
-
-        if (A == 0 &amp;&amp; B == 0 &amp;&amp; n == 0)
-            break;
-
-        if(n==1){
-            cout&lt;&lt;1&lt;&lt;endl;
-            continue;
-        }
-        if(n==0){
-            continue;
-        }
-        rec_2 base(A, B, 1, 0);
-        rec_2 f(1, 0, 1, 0);
-
-        f = f * qpow(base, n - 2);
-
-        cout &lt;&lt; f.a_11 % 7 &lt;&lt; endl;
-    }
-
-    //fclose(stdin);
-    //fclose(stdout);
-}
-```
-
     </span>
 
   </div>
@@ -2888,7 +2458,7 @@ int main()
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/14/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/16/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/14/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/16/">Next</a>
 </div>
     </div>
 

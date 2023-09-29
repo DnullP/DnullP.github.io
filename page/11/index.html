@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/RedmkprBY81ZhaV.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -244,6 +244,846 @@
         2021-01-01
       </div>
       <div class="card-info">
+        4.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/principle/">
+        设计模式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+#### 1.6 How design pattern solve design problems
+
+there are some tips taken down:
+- **request** is the **only** way to get an object to excute an operation, and **operation** is the only way to change the **internal data**.
+  we call this  **encapsulated**.
+
+How to design a pattern?
+
+- 1.find the appropriate object
+- 2.determine the granularity of objects
+- 3.specifying object interface
+  **signature**: name, parameters, return value of a operation
+  **interface**: it defines all signatures of an object
+  **type**: to call a particular interface
+  different types may share their interface, and we call a type owning a subset of another type&#39;s interface **subtype**.
+  **type is not same as class. class includes implement, field, internal state of an object, while type just refers to its interface which indicates the set of requests that it can handle and respond.**
+  because of the different implement of the same interface of objects, it is a run-time association between requests and operation, which we call **&#34;dynamic binding&#34;**.
+- 4.specifying object implementation
+  objects are **instantiating** from a class to be an **instance**.
+  we use such diagram to describe a pattern:
+
+a class is present as below:
+```plantuml
+@startuml
+class ClassName{
+  Fuction( )
+  Variable
+}
+@enduml
+```
+
+this dashed arrowhead line indicates a class that instantiating objects of another class.
+```plantuml
+@startuml
+class Instantiator
+class Instantiatee
+Instantiator .&gt;Instantiatee
+hide members
+hide circle
+@enduml
+```
+and this indicates an inheritance relationship, and it&#39;s usually vertical.
+```plantuml
+@startuml
+class ParentClass{
+  operation( )
+  Variables
+}
+class Subclass{
+  operation( )
+  Variables
+}
+ParentClass &lt;|-- Subclass
+@enduml
+```
+this is an Abstract class and its Subclass 
+```plantuml
+@startuml
+hide field
+Abstract AbstractClass{
+  operation ( )
+}
+Class ConcreteSubclass{
+  operation ( )
+}
+note right of ConcreteSubclass::&#34;operation ( )&#34;
+  implementation
+  pseudocode
+end note
+AbstractClass &lt;|-- ConcreteSubclass
+@enduml
+```
+
+This is a mixin class which provide an optional interface:
+
+```plantuml
+@startuml
+hide field
+class ExistingClass{
+  operation_1 ( )
+}
+interface MixinClass{
+  operation_2 ( )
+}
+class Subclass{
+  operation_1 ( )
+  operation_2 ( )
+}
+ExistingClass &lt;|-- Subclass
+MixinClass &lt;|-- Subclass
+@enduml
+```
+we emphasize that **program to an interface, not an implementation**.
+the most important is not code-sharing, but the relationship between class, and interface inheritance make sure the change can be carried out more easily.
+
+- class inheritance make let you implement a class in term of another one.
+- interface inheritance describe a kind of classes can be used somewhere.
+if we implement a class in term of a interface, this class can be uesed in everyplace where use the interface.
+
+##### inheritance versus composition
+it&#39;s two kinds of method to reuse code.
+composition is to assembling the objects to get a more complecated functionality, which we also call &#34;black box reuse&#34;, because we don&#39;t know the detailed implementation of each object.
+
+we emphasize that **&#34;Favor object composition over class inheritance&#34;**.
+It enhances the degree of encasulation.
+
+#### delegation
+it is a way to making the composition. we instantiate a class to an object in another class, and forward the require from the superclass to the internal object so that to realize the composition.
+
+dpciting a diagram below:
+
+```plantuml
+@startuml
+hide field
+class Window{
+  +Area ( )
+}
+show Rectangle fields
+class Rectangle{
+  +Area ( )
+  +width
+  +height
+}
+note &#34;return rectangle-&gt;Area ( )&#34; as N1
+Window::Area &lt;-- N1
+note &#34;return width * height&#34; as N2
+Rectangle::Area &lt;--N2
+Window &#34;rectangle&#34; -&gt; Rectangle
+@enduml
+```
+
+#### aggregation and acquaintance
+aggregation implies that one object own another one, which we dpcit as below: (aggregator own the aggregatee)
+
+```plantuml
+@startuml
+hide method
+hide fields
+
+class aggregator
+class aggregatee
+
+aggregator o-&gt; aggregatee
+@enduml
+```
+and the acquaintance implies they just have a somehow relationship, but not responsiblity for one another: 
+```plantuml
+@startuml
+hide method
+hide fields
+
+class ClassA
+class ClassB
+
+ClassA -&gt; ClassB
+@enduml
+```
+
+#### design for change
+different patterns make the system more rebust in a particular kind of change
+
+#### difference between a framework and a pattern
+- a pattern is usually a conception and abstraction, but a framework has concret code and implement.
+- a pattern is a small unit than framework
+- a pattern is less specialized than framework
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        828字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/prototype/">
+      原型模式
+    </a>
+    <span class="card-abstract">
+      
+### 原型模式
+
+我们先来看一看之前的abstract factory和factory method
+
+![avator](https://www.tutorialspoint.com/design_pattern/images/abstractfactory_pattern_uml_diagram.jpg)
+
+在这个抽象工厂中，为了得到一个Shape或者RoundedShape，需要两种不同的工厂
+如果我们现在拥有四个具体产品的每一个object，那么我们就可以舍弃工厂，而定义一个Prototype的接口，通过把这四个具体产品实现Prototype的接口，来给与他们自拷贝的能力
+这样一来，我们可以通过一个拷贝来获得Object，而不是工厂，而我们的类的数量就减少了（工厂类全部舍弃了）
+
+通过这种用原型拷贝的方式得到Object的模式，我们可以实现以下应用：
+- 减少框架中的类种类
+- 避免“需要建立平行的hierarchy”的情况，就像工厂方法中那样
+- 需要保存一个object的状态作为标准时，这种情况尤其在运行时发生
+
+![avator](https://www.tutorialspoint.com/design_pattern/images/prototype_pattern_uml_diagram.jpg)
+
+总结下来，原型模式的要点就是实现原型接口，提供clone方法
+
+Some of the tips：
+- 对于原型，需要一个Manage类，因为用户不会亲自去管理这些Prototype，而只是负责储存和retrieve
+- 此外可以给原型类添加初始化，以满足一些需求
+
+- JAVA的Prototype可通过继承Cloneable接口来实现
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/proxy/">
+        Proxy pattern
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### 代理模式
+
+说起代理就容易让人想起网络上的代理，简单来说，就是在一个数据接收方之前加入一个第三方服务器先接收数据，然后转发给原本的接收方
+
+设计模式上的代理模式也是一样的思想：在某个类提供的服务前加入一个类，这个类有着和原本的类相同的接口，但是实际上是原本类的聚合（aggregate），代理类可以在访问原本类的服务之前或之后进行某些处理
+
+来自refactoring.guru的类图：
+
+![](https://refactoring.guru/images/patterns/diagrams/proxy/structure.png)
+
+以上包含四个要素：
+- Client
+- ServiceInterface
+  这是服务的接口，代理类和原本的服务类都是实现自该接口
+- Service
+  这是服务类，包含一系列的方法(operation)
+- Proxy
+  这是代理类，包含了Service类和代理类的方式
+
+以下是来自noob note的代码：
+
+```java
+public interface Image {
+   void display();
+}
+```
+这是服务接口
+```java
+public class RealImage implements Image {
+ 
+   private String fileName;
+ 
+   public RealImage(String fileName){
+      this.fileName = fileName;
+      loadFromDisk(fileName);
+   }
+ 
+   @Override
+   public void display() {
+      System.out.println(&#34;Displaying &#34; + fileName);
+   }
+ 
+   private void loadFromDisk(String fileName){
+      System.out.println(&#34;Loading &#34; + fileName);
+   }
+}
+```
+这是原本提供服务的类
+
+
+```java
+public class ProxyImage implements Image{
+ 
+   private RealImage realImage;
+   private String fileName;
+ 
+   public ProxyImage(String fileName){
+      this.fileName = fileName;
+   }
+ 
+   @Override
+   public void display() {
+      if(realImage == null){
+         realImage = new RealImage(fileName);
+      }
+      realImage.display();
+   }
+}
+```
+这是代理类
+
+
+```java
+public class ProxyPatternDemo {
+   
+   public static void main(String[] args) {
+      Image image = new ProxyImage(&#34;test_10mb.jpg&#34;);
+ 
+      // 图像将从磁盘加载
+      image.display(); 
+      System.out.println(&#34;&#34;);
+      // 图像不需要从磁盘加载
+      image.display();  
+   }
+}
+```
+这是用户代码
+
+代理模式的逻辑思想相对简单
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        257字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/singleton/">
+      单例模式
+    </a>
+    <span class="card-abstract">
+      
+### 单例模式
+
+单例模式没什么值得多说的，记住几个原则和使用方法
+
+- 保证object只有一个
+- 我们可以定义一个单例接口，然后实现一堆单例类，在不同的环境使用不同的单例类，但是必须保证每个环境只有一个这样的单例类，我们通过构建一个registry来管理注册这些不同的单例类
+
+- 单例类可以用来优化全局变量，减少命名空间的使用
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.9k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/strategy/">
+        Strategy
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### Strategy
+
+策略模式是与算法的选择有关的设计模式
+现在假设我们有一个地图导航程序，我们通过输入起点和终点，能够得到一条线路，我们通过不同的算法可以得到最短线路、步行线路、经过景点的线路等等
+
+为了实现代码复用和维护方便，我们把不同的算法封装为类，满足一个接口，让程序通过接口调用不同的算法，这样的思想就是策略模式
+
+下面是来自refactoring的UML图：
+
+![](https://refactoring.guru/images/patterns/diagrams/strategy/structure.png)
+
+这里面包含了四个要素：
+- Client
+- Strategy
+  这是策略算法的接口类，其中包含一个接收参数返回结果的方法
+- Context
+  在Context中包含strategy接口，并且可以根据需求改变strategy，用以执行不同的算法
+
+下面是来自noob note的代码：
+
+```java
+public interface Strategy {
+   public int doOperation(int num1, int num2);
+}
+```
+算法策略的接口
+```java
+public class OperationAdd implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 + num2;
+   }
+}
+```
+
+```java
+public class OperationSubtract implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 - num2;
+   }
+}
+```
+
+```java
+public class OperationMultiply implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 * num2;
+   }
+}
+```
+上面实现了三种不同的算法
+```java
+public class Context {
+   private Strategy strategy;
+ 
+   public Context(Strategy strategy){
+      this.strategy = strategy;
+   }
+ 
+   public int executeStrategy(int num1, int num2){
+      return strategy.doOperation(num1, num2);
+   }
+}
+```
+上下文包含策略的管理方式
+```java
+public class StrategyPatternDemo {
+   public static void main(String[] args) {
+      Context context = new Context(new OperationAdd());    
+      System.out.println(&#34;10 + 5 = &#34; + context.executeStrategy(10, 5));
+ 
+      context = new Context(new OperationSubtract());      
+      System.out.println(&#34;10 - 5 = &#34; + context.executeStrategy(10, 5));
+ 
+      context = new Context(new OperationMultiply());    
+      System.out.println(&#34;10 * 5 = &#34; + context.executeStrategy(10, 5));
+   }
+}
+```
+使用不同的策略进行计算
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/template/">
+      Template
+    </a>
+    <span class="card-abstract">
+      
+### Template
+
+模板模式和我们平时用的template也有思想相似之处
+
+现在假设我们有一个处理文档的程序，需要先读取文档，然后将其进行处理，最后输出结果。我们读取的文档可能是不同的格式，比如PDF、DOC、TXT等，那么我们的程序在读取文档和输出阶段就会有不同方法，但是对内容的处理是相同的行为
+
+我们可以将这个程序的算法拆为几个部分：读取文档、内容处理、结果输出，既然内容处理都是相同的，就把内容处理的方法实现，作为父类，派生出多个实现了不同文档读取和输出的类，实现了对单个步骤不同的程序的代码复用
+
+下面是来自refactoring的UML图：
+
+![](https://refactoring.guru/images/patterns/diagrams/template-method/structure.png)
+
+上图有三个要素：
+
+- AbstractClass
+  这个抽象类包含了模板方法的执行（按照一定的顺序）
+  然后实现了一部分需要共用的方法，其余方法则作为抽象函数
+- ConcreteClass
+  这里派生的子类实现了其余的方法，需要的话也可以重写父类的方法
+  这样的派生同样可以派生很多层，实现不同情况的多种业务逻辑
+
+下面是来自noob note的代码
+
+```java
+public abstract class Game {
+   abstract void initialize();
+   abstract void startPlay();
+   abstract void endPlay();
+ 
+   //模板
+   public final void play(){
+ 
+      //初始化游戏
+      initialize();
+ 
+      //开始游戏
+      startPlay();
+ 
+      //结束游戏
+      endPlay();
+   }
+}
+```
+这里定义了最初的父类，```play()```是业务逻辑函数，所以加上了 ```final```的关键字，使得其不可被子类重写
+```java
+public class Cricket extends Game {
+ 
+   @Override
+   void endPlay() {
+      System.out.println(&#34;Cricket Game Finished!&#34;);
+   }
+ 
+   @Override
+   void initialize() {
+      System.out.println(&#34;Cricket Game Initialized! Start playing.&#34;);
+   }
+ 
+   @Override
+   void startPlay() {
+      System.out.println(&#34;Cricket Game Started. Enjoy the game!&#34;);
+   }
+}
+```
+
+```java
+public class Football extends Game {
+ 
+   @Override
+   void endPlay() {
+      System.out.println(&#34;Football Game Finished!&#34;);
+   }
+ 
+   @Override
+   void initialize() {
+      System.out.println(&#34;Football Game Initialized! Start playing.&#34;);
+   }
+ 
+   @Override
+   void startPlay() {
+      System.out.println(&#34;Football Game Started. Enjoy the game!&#34;);
+   }
+}
+```
+这里的两个派生类分别实现了不同的两种业务逻辑
+```java
+public class TemplatePatternDemo {
+   public static void main(String[] args) {
+ 
+      Game game = new Cricket();
+      game.play();
+      System.out.println();
+      game = new Football();
+      game.play();      
+   }
+}
+```
+我们在使用模板时，也是将尖括号中的类型直接替换成另一种，这里的模板方法则是将类型换成了方法，我们可以把不同的方法放进一个固定的业务逻辑中
+
+由此我们也可以区别模板（template）和泛型（generic），模板是一个固定的业务逻辑中，固定替换某些类型或者方法，而泛型是你可以通过一个方法对任意一个满足条件的类型做处理（比如接口做参数）
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/visitor/">
+        Visitor
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### Visitor
+
+访问者模式
+
+在讨论这个模式之前，我们先讨论一下double dispatch（双分派）
+
+当一个函数存在多个重载时，编译器会怎么选择函数的重载？
+如果这些重载的参数毫无关系，编译器自然是选择符合要求的重载
+
+但是如果接收的参数是一个接口（父类）以及一系列他的子类，编译器会怎么选择呢？
+
+我们看一下下面两种代码（动态绑定和静态绑定）：
+
+```java
+method drawShape(shape: Shape) is
+    shape.draw();
+```
+这里我们能保证每个shape都包含有 ```draw()```函数，具体的使用的哪种```draw()```函数会等到参数传递之后再决定
+
+```java
+method exportShape(shape: Shape) is
+    Exporter exporter = new Exporter()
+    exporter.export(shape);
+```
+然后我们看这种情况，```Exporter```类中包含了许多个Shape及其派生类的函数重载，看起来我们需要用到动态绑定，在传入shape后再决定调用哪个函数，但是实际上函数 ```export()```并不知道自己的重载函数有没有覆盖全部的 ```Shape```的派生类，如果使用动态绑定的话，如果传入了一个没有实现的派生类，则会找不到对应的函数，所以这里采用了早绑定的方式，所有的类传入后都当作参数里确定的类型 ```Shape```处理
+
+为了让这样的重载函数能够被识别，下面使用了一种称为双派发的技巧：
+
+```java
+class Visitor is
+    method visit(s: Shape) is
+        print(&#34;Visited shape&#34;)
+    method visit(d: Dot)
+        print(&#34;Visited dot&#34;)
+
+interface Graphic is
+    method accept(v: Visitor)
+
+class Shape implements Graphic is
+    method accept(v: Visitor)
+        v.visit(this)
+
+class Dot extends Shape is
+    method accept(v: Visitor)
+        v.visit(this)
+
+Visitor v = new Visitor();
+Graphic g = new Dot();
+
+g.accept(v);
+```
+这段代码中，```accept()```函数接收Visitor类，但是函数的重载并不是在```accept()```中实现，而是在被接收的参数类中实现，并且让其将自己作为参数执行重载函数
+
+这时，调用重载函数的对象就从外部对象变成了内部对象（自身），此时编译器就能确定传递给函数的参数一定是对象自己的类，就能够确定调用那个重载函数了
+
+这样的方式我认为还是动态绑定，```this```只有传递了参数后才知道类型，只是函数的重载从外部到了内部，编译器的视角变了，从而能够确定重载函数的调用
+
+---
+
+现在让我们把视角转到访问者模式上
+
+现在我们有一个由不同类型组成的图，我们希望遍历这个图，并对这些节点执行某个操作，很明显我们针对每个类编写这个操作的函数，那么我们该怎么样完成遍历部分呢？
+
+通过条件判断节点类型并使用不同函数显然有些麻烦，我们希望把所有的这些函数写到一个类中，方便进行维护管理，所以我们把这个操作写到一个Visitor类中，并使用重载函数的方式使其在不同类型的节点上表现不同
+
+然后我们在所有的节点中实现一个```accept(v: Visitor)```方法，通过这个方法调用 ```v.theMethod(this)```，通过上面介绍的双分配法，让传递的Visitor能够针对不同类型的节点执行不同的操作，这就是访问者模式
+
+下面是来自refactoring的UML图：
+
+![](https://refactoring.guru/images/patterns/diagrams/visitor/structure-en.png)
+
+其中包含两个主要要素：
+
+- Visitor
+  访问者实现不同类型的执行函数的重载，被传入Element并根据其类型运行不同逻辑
+- Element
+  其中实现 ```accept(v: Visitor)```函数，接收访问者，传递自身，这样访问者就能确定传入的类一定是这个类本身，而不用考虑如果传入的是没有实现的类的情况（这是编译器为了防止错误的优化，现在这样的优化只会针对没有实现的类，而不是一视同仁）
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         1.3k字
       </div>
       <div class="card-info">
@@ -255,12 +1095,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/eng/GrammarClub/">
-        《语法俱乐部整理》
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/eng/GrammarClub/">
+      《语法俱乐部整理》
+    </a>
+    <span class="card-abstract">
+      
 ## 第一章 基本句型和补语
 
 S：主语
@@ -329,12 +1168,8 @@ The house has been redecorated twice since they moved in.
 
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -344,13 +1179,11 @@ The house has been redecorated twice since they moved in.
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -367,11 +1200,12 @@ The house has been redecorated twice since they moved in.
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/essay/2022-1-19/">
-      关于游戏地图生成的想法
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/essay/2022-1-19/">
+        关于游戏地图生成的想法
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 不同的游戏生成地图的方式有所不同，在此只是记录几种不同的生成地图的方式和思路
 
 ### 地牢型地图
@@ -423,8 +1257,12 @@ MC作为一款开源模板式的游戏，它的源代码中有它完整的地形
 
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -434,11 +1272,13 @@ MC作为一款开源模板式的游戏，它的源代码中有它完整的地形
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -455,12 +1295,11 @@ MC作为一款开源模板式的游戏，它的源代码中有它完整的地形
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/essay/2022-1-8/">
-        在ubuntu上安装SCIM智能拼音输入法
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/essay/2022-1-8/">
+      在ubuntu上安装SCIM智能拼音输入法
+    </a>
+    <span class="card-abstract">
+      
 今日开始学习《深入理解计算机结构体系》这本书，打算把环境换到Linux下，也算是对这个必备系统的一个熟悉。但是在一段时间的使用后我发现，这个ubuntu系统没有自带的中文输入法，怎么办呢，自己装个呗
 
 但是并不熟悉Linux使用的情况下，我遇到了不少问题，解决后也对以后继续学习Linux系统的使用做下了一定的基础
@@ -539,1256 +1378,6 @@ deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restri
 配置好源后，再次运行安装指令，成功安装中文输入法
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/essay/%7FAnime/">
-      关于看完一部动画后的想法
-    </a>
-    <span class="card-abstract">
-      
-稍微记录点不这么技术性的问题
-
-或者说一个过程吧
-
-&lt;!-- more ---&gt;
-
-
-
-事情还要从我看完一部16年老番说起——《超自然九人组》   
-非常直白的名字，故事内容无非和超自然都市灵异传说异常的科学化故事有关，整体叙事非常快且有节奏，角色说话语速快，每一个镜头透露出的信息量都够人回想半天，然后一集结束总能让人后脊发麻
-
-然后果然评价崩了，销售量也不乐观，大概就是速度过快，让人记不住很多情节内容，导致一部分观众认为剧情脱节没逻辑，角色塑造也太粗糙，以至于整部番结束得没有实感之类的，以及作品结束时，整个作品的设定背景才算真的浮出水面，使得观众认为整部作品像个前传，后面应该有更多精彩的冲突和故事
-
-但是很不幸，故事到这里就结束了，短短十二集，发疯般的语速和进展速度，讲完了一个关于超自然现象的故事，没有后续，也没有外传，最多就只有游戏里有几种相似的结局而已
-
-然而这种奇幻的主题配上离奇的表达方式正好和咱的脑电波对上了，于是乎去查了查作品相关的资料，很不幸，作品基本属于全面完结的状态，游戏、小说、动画的剧情内容同步结束
-
-嘛，这样反而更好，没有更多的背景，没有更复杂的设定，没有一堆衍生作品，不会让人在看完后心里堵塞难受，有的仅仅是为我提供了一次精彩的奇幻体验
-
-![](/image/essay/1e30e924b899a90164eb83d115950a7b0308f57f.jpg)
-
-然后我想啊，到目前为止咱感兴趣的作品都有一些共同特点：奇幻主题、思路离奇
-
-scp可以说是这类型的作品中最具代表性的一个，由无数人的脑洞一起创造的庞大的、不定形的、离奇的、奇幻的、表现手法独特的一类文学作品，只是很可惜，我很少看到scp中有正经地二次元类型作品，或者说日漫风格的作品，所以就不从scp的角度思考了
-
-取而代之的，我想到了一些之前认定的符合咱脑电波的作品《锁锁美同学提不起劲》就是其中一部。对应的，我查了查作者日日日的资料，网友对其评价挺有趣的——轻小说界的三大神经病作家之一
-
-《锁锁美同学提不起劲》确实非常“神经病”，一共写了十部，原谅咱贫乏的形容词，咱只能表示这部作品确实非常离奇跳脱，表现手法也像是一个疯狂的科学家一样——作者疯狂地尝试不同的写作方式：各种切换视角、限制信息之类的。主题方面采用了各种神话，每一部都融入一个新的神话体系，真是要疯了，这种随心所欲，却又能在需要时强行符合的设定——就像scp作品的大多数都只有不完整的设定，所以作者之间可以随意的引用他人作品做设定上的扩展——这种混乱又离谱，但是又在有限的框架中遵循可有可无的规则的世界观，可以和咱的脑电波近乎同步
-
-相对应的，我了解到了另外两名神经病作家——西尾维新、入间人间，以及被评价“只有他的风格才能驾驭得住他们的作品”的新房昭之——虽然只有新房能驾驭有些夸张就是了
-
-西尾维新的物语系列是早有耳闻，只可惜没能找到机会去体验，但是咱发现之前被咱看上的不少作品都是出自三人之手：
-- 《虫眼球系列》
-- 《锁锁美同学@提不起劲》
-- 《电波女与青春男》
-- 《物语系列》
-- 《十二大战》
-
-看着不算多、加起来也是几十本出版书（虽然并不是全部看过就是了）
-
-我想我大概能认准一个有趣的作品的方向了，毕竟三位的作品加起来还是多得要命
-
-然后在翻看日日日的作品列表时，咱发现了意外之喜
-
-**《鏡の国のアイリス -SCP Foundation-》**
-
-![avatar](https://lain.bgm.tv/pic/cover/l/4e/e9/263009_G7d1E.jpg)
-
-这是什么？日日日写的SCP世界观下的同人轻小说，脑电波重合了是吗？我整个人都兴奋起来了，这种作品当然得好好体验一下
-
-~~但是很不幸，直接搜索到的这本小说，只有试读部分的中文翻译，全本小说完全没有汉化组接这活。别说汉化版了，网络上连日文的原版学习资料都找不到，可谓是关注度到了极低的程度（神经病写的东西谁会看呢—~~
-
-小看了网友们学习的欲望，已经收集到了学习版资源，虽然只有第一卷，而且很可能今后都只会有第一卷，但是咱不会拒绝这种scp主题的轻小说的，大概
-
-好吧，关于这三位作家就先到这里吧
-
---------------
-```
-
-
-
-```
-看小说，图的是个有趣，看漫画，图的是个有趣，看动漫，图的是个有趣   
-能让我觉得有趣的东西，是离奇的想象力、超常的表现方式——这些东西能让我的精神振奋
-
-《凉宫春日系列》
-《里世界郊游》
-《Re:Creator》
-《黑岩射手》
-《少女终末旅行》
-《魔法少女小圆》
-《Angel Beats》
-
-这是我能从“看过”列表中找出的比较符合咱说的几部番，作者并不是“神经病”，设定和表现方式依旧足够离奇古怪，此外还有很多作品是轻小说或是漫画电影之类的，所以很残念地就不在这里记录了
-
-虽然，但是并不是所有好看的动漫都必须让人兴奋，能够让人像个沙雕一样笑个不停，能够让人感受到现实的投影而感慨万千。上面说的只是咱的自我体现中所喜爱的番剧，可有些作品在非常平凡且固定的框架下，仍然能够称为优秀作品——这样的作品太多了，记录起来并没有意义
-
-总之，只要不是被框架框死的作品，总有着自己的灵性，一味地要把整个设定完全完善着实不必，幻想的作品不是物理定律，没必要非得搭建固定的系统来让故事合理，或者说让故事合理的本来就不是世界观的设定，而是作者对角色的考虑、对情节的思量。
-
-嘛，中断了一下，一时间也不知道说什么好了，总之轻松点，别太严苛了，把所有的错误封装起来，用自己最喜欢的方式去解决它们，把重点放在享受上面，享受离奇，享受思考，享受美丽，享受乐趣，享受反思
-
-我最开始要说什么来着，算了不重要了
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.6k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/math/importance-of-probability-distibution/">
-        概率论期中论文
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### &lt;p style=&#34;text-align: center;&#34;&gt;概率密度为什么重要&lt;/p&gt;
-
-&lt;p style=&#34;text-align: center;&#34;&gt;DNULL_P&lt;/p&gt;
-
-#### 概率密度函数的定义
-
-在概率论中，概率密度函数是一个函数，用于在表示一个随机变量接近一个给定样本（函数上一个点）的相对可能性。换句话说，概率密度是随机变量出现在一个无穷小区间的可能性，这么一来就涉及到微积分的问题，概率密度函数是累积分布函数的微分，而通常累计分布函数表示为:
-$$F_x(x) = P( X \le x )$$
-概率密度函数表示为：
-$$f_x(x) = \frac{d[F_x(x)]}{dx}$$
-
-#### 概率密度函数的作用
-
-首先我们从离散概率出发，一个随机变量取成一个样本的概率是给定的，我们可以给出一个概率质量函数去表示：
-$$p(x) = P( X=x ) = a$$
-然后对这个函数进行积分我们就获得了离散的累计分布函数
-
-接下来我们讨论累计分布函数的性质：
-累计分布函数表示一个随机变量X的值小于给定参数x的概率，对于无论离散还是连续的概率分布而言，该函数的定义域都是R、值域都是$[0,1]$，并且保证为一个单调不下降函数
-
-累计分布函数具有通用性，可以用来表示离散和连续的概率分布，但是它只能反映出概率的整体特征，每个函数值表示的是此前所有概率的累加，并不能表示某一个具体样本的出现概率
-
-离散概率可以用概率质量函数来表示某个样本出现的概率，但是连续的概率分布中，某个具体的样本出现的概率无限趋近于0（总概率1被分成无数份），即$P( X=x ) = 0$。所以需要从微分的角度来看待连续的概率分布
-
-那么对连续的累计分布函数进行微分，就可以得到概率密度函数，概率质量函数在连续概率分布中对应的一个概念，这样就可以局部表示一个连续概率分布
-$f_x(x) = \frac{d[F_x(x)]}{dx}$表示的是随机变量在x的一个极小邻域内的概率，而不是具体这个点的概率
-
-综上所述，概率密度函数的作用就是从局部来描述一个连续概率分布。
-
-#### 概率密度函数的重要性
-
-上面我们已经知道，概率密度函数的作用就是来描述一个连续概率分布的局部的概率，如果我们直接用概率分布$P$来描述一个样本的出现概率，会出现不符合我们预期的情况。
-
-例如，我们对于某个组合样本的条件概率有:
-$$P(A|B) = \frac{P(AB)}{P(A)}$$
-此时如果A和B是属于某个连续概率分布的样本，$P(A) = P(B) = 0$，很明显我们不希望分母出现0，所以这个条件概率不能使用概率分布函数来表示，采用概率密度函数来表示：
-$$f_{A|B}(A|B) = \frac{f_{A,B}(AB)}{f_A(A)}$$
-
-此外，采用概率密度函数的方式来表示概率分布比使用累计分布函数更直观，可以直接通过函数值的大小判断某个样本出现的概率，而累计分布函数无法直观体现这种特性。不管是教科书还是百科，对一个分布的描述首先使用的都是概率密度函数的图像，来描述这个分布的特性，而不是累计分布函数。
-
-综上所述，概率密度函数的重要性分为两点：
-- 在连续概率分布相关定律的证明上，概率密度函数的存在是必要的，最简单的例子是避免概率分布函数为0
-- 在各种分布的特性描述上，使用概率密度函数是直观的
-
----
-
-设随机变量$X$服从正态分布$N(1,1)$，且$\Phi(z_\alpha) = 1-\alpha$，求$x$满足$P\{|X-1|&lt;x\} = \alpha$
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        18k字
-      </div>
-      <div class="card-info">
-        阅读时间: 16 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/math/probability-theory/">
-      概率论期末复习
-    </a>
-    <span class="card-abstract">
-      
-# 第一章 基本概念
-- 随机试验：可以在相同条件下重复进行，每次试验的可能结果不止一个，能明确所有可能的结果，不能确定每次的结果，记为 $E$
-
-- 样本空间：所有可能结果的集合，记为 $S$
-- 样本点：其中一个可能结果，记为 $S_i$
-- 随机事件、基本事件、必然事件是样本空间的子集、单个样本点、样本空间自身的集合
-- 这些事件可以通过集合运算来计算（合取析取）
-- 频率：进行 $n$次试验，事件 $A$发生次数为 $n_A$，称 $n_A$为频数，$\frac{n_A}{n}$为频率，记为 $f_n(A)$
-- 概率：概率是 $n$接近无穷时的一个近似值，是一个事件固有的属性，而频率是观测得到的数值
-- 事件的概率的运算遵守集合间运算的规则，需要考虑容斥原理等
-
----
-- 古典概型（等可能概型）
-  - 样本空间只有有限个元素
-  - 基本事件发生可能性相同
-
-- 条件概率
-  - 在事件 $B$发生的前提下，事件 $A$发生的概率
-  - 可以表示为：
-    $$P(A|B) = \frac{P(AB)}{P(B)}$$
-
----
-- 全概率公式：
-  事件 $A$发生的概率等于样本空间的一个划分的全部条件概率之和，可以表示为：
-  $$P(A) = \sum{P(A|B_i)}$$
-  其中 $B_i$是样本空间的划分
-
-- 贝叶斯公式：
-  $$P(B_i|A) = \frac{P(B_iA)}{P(A)} = \frac{P(A|B_i)P(B_i)}{\sum{P(A|B_j)P(B_j)}}$$
-
----
-- 独立性：两个事件的发生不会相互影响概率
-  此时有 $P(AB) = P(A|B)P(B) = P(A)P(B)$
-
-# 第二章 随机变量和分布
-- 随机变量：
-  将每个事件对应一个实数，这个从集合映射到实数的函数我们称为随机变量，符号语言表述如下：
-  $S = \{e\}，X = X(e)$
-
-- 离散型随机变量：
-  有可列无限个或有限个可能取到的值的随机变量为离散型
-
-- 概率分布：
-  对每个可能取值都有一个发生的概率，表达这个概率的函数我们称为概率分布函数
-  tips：关于分布、概率密度这些概念我觉得书上的区别比较模糊，同时也没有带上英文术语方便查证，所以我用以下方式区别术语：
-  - 概率分布函数（累计分布函数）是概率按照随机变量进行积分的函数，书上称为分布函数，对于连续型随机变量是积分，而离散型就只是概率的累计相加
-  - 概率密度函数，一般是对于连续型随机变量进行局部概率描述的函数，对于离散型随机变量我们可以直接是用一一映射的方式
-  - 概率分布，是指随机变量不同取值概率的一个分布情况
-  - 分布律，用来表达一个事件的发生概率（实际上就是离散型概率密度函数），符号表达如下：
-    $$P\{X = x_k\} = p_k, k = 1,2...$$
-    连续型随机变量的分布可以用累计分布函数表示：
-    $$P\{x_1&lt;X&lt;x_2\} = P\{X&lt;x_2\}-P\{X&lt;x_1\}$$
-    所以$P\{X&lt;x\}$其实就是累计分布函数
-
----
-## 三个离散型概率分布
-- 0-1分布：
-  对于随机变量只有0和1的试验（样本空间只有两个事件），其概率分布我们称为01分布，其分布律可表示为（为了打字方便就用括号代替花括号了）：
-  $$P(X=k)=p^k(1-p)^{1-k}, k=1,0$$
-
-- $n$重$Bernoulli$试验就是只有两个事件的样本空间的随机试验，连续做$n$次，其结果（我们把发生事件1的次数相同的结果作为一个事件，构成新的样本空间）的概率分布我们称为二项分布：
-  $$P(X=k)=\tbinom{n}{k}p^k(1-p)^{n-p}$$
-  二项分布有两个参数$n$和$p$，满足二项分布的随机变量可以表示为：
-  $$X\sim b(n,p)$$
-
-- 泊松分布：
-  $$P(X=k) = \frac{\lambda^ke^{-\lambda}}{k!}$$
-  泊松分布有一个参数$\lambda$，可以表示为：
-  $$X(k) = \pi(\lambda)$$
-
-- 泊松定理
-  二项分布的参数$p$和$n$满足$pn = \lambda$时，当$n\rarr \infty$时，二项分布逼近泊松分布，可表达如下：
-  $$\lim_{n\rarr \infty}\tbinom{n}{k}p_n^k(1-p_n)^{n-k} = \frac{\lambda^ke^{-\lambda}}{k!}$$
-
----
-## 三种连续型概率分布
-概率分布在书上指分布函数，连续型随机变量是用概率密度函数表示，离散型使用分布律表示
-
-- 均匀分布：
-  $$f(x) = \begin{cases} \frac{1}{b-a} &amp; a\leq x\leq b \\ 0 &amp; \text{otherwise} \end{cases}$$
-  均匀分布的参数是$a$和$b$，可以表示为：
-  $$X\sim U(a,b)$$
-
-- 指数分布：
-  $$f(x) = \begin{cases} \lambda e^{-\lambda x} &amp; x\geq 0 \\ 0 &amp; \text{otherwise} \end{cases}$$
-  指数分布的参数是$\lambda$，可以表示为：
-  $$X\sim Exp(\lambda)$$
-
-- 正态分布：
-  $$f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
-  正态分布的参数是$\mu$和$\sigma$，可以表示为：
-  $$X\sim N(\mu,\sigma)$$
-  - 正态分布的图像曲线关于$\mu$对称，当$x = \mu$时，曲线的最大值为$\frac{1}{\sqrt{2\pi\sigma^2}}$，当$\sigma$越大，曲线越平缓，当$\sigma$越小，曲线越陡峭
-
-  - 有限个满足正态分布的相互独立的随机变量，其线性组合也满足正态分布，且参数满足：
-    $$\mu = \sum_{i=1}^nC_i\mu_i$$
-    $$\sigma^2 = \sum_{i=1}^nC_i^2\sigma_i^2$$
-
----
-
-## 随机变量的函数的分布
-我们现在有随机变量$X$的概率密度函数$f_X(x)$，对于随机变量$X$存在函数$Y=g(X)$，然后其反函数是$h(x)$，则$Y$的概率密度函数为：
-$$f_Y(y) = \begin{cases} f_X(h(y))\left|\frac{d}{dy}h(y)\right|，&amp; (\alpha&lt;y&lt;\beta)\\
-0，&amp; otherwise\end{cases}$$
-
----
-# 第三章 多维随机变量及其分布
-
-对于二维随机变量我们称为联合分布函数
-
-对于离散型随机变量来说，联合分布律可以用二维表格表示，对于连续型随机变量可以用二维函数表示概率密度函数
-
-相对的，对于一个二维概率密度函数，只对其中一个变量积分，的带的概率密度我们称为边缘分布，也就是在不管其中一个变量取值的情况下，另一个变量的概率分布（概率密度）
-
-## 条件分布
-由之前的条件概率公式可以得到，一个联合分布的条件分布可以通过以下公式计算：
-$$P(X=x|Y=y) = \frac{P(X=x,Y=Y)}{P(Y=y)}$$
-用概率密度表示如下：
-$$f_{X|Y}(x|y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}$$
-
-对于相互独立的随机变量，其联合概率分布满足：
-$$f_{X,Y}(x,y) = f_X(x)f_Y(y)$$
-$$P(X\le x,Y\le y) = P(X\le x)P(Y\le y)$$
-$$F_{X,Y}(x,y) = F_X(x)F_Y(y)$$
-
-## 两个随机变量的函数的分布
-- $Z = X + Y$
-  $$f_Z(z) = \int_{-\infty}^{\infty}f_X(x)f_Y(z-x)dx$$
-  $$f_z(z) = \int_{-\infty}^{\infty}f_X(z-y)f_Y(y)dy$$
-  我们又称之为卷积公式，可以理解为将$x$或$y$代换为用$z$表示的形式，然后对另一个变量进行积分
-
-- $Z = Y/X$ and $Z = XY$
-  $$f_Z(z) = \int_{-\infty}^{\infty}|x|f(x,zx)dx$$
-  $$f_Z(z) = \int_{-\infty}^{\infty}|\frac{1}{x}|f(x,z/x)dx$$
-  这些公式的推导过程都可以简要概括如下：
-  - 写出$Z$的分布函数：
-    $$F_Z(z) = P(Z\le z) = P(Y/X \le z)$$
-  - 然后将概率分布用联合分布函数表示出来：
-    $$
-    \iint\limits_{G_1\cup G_2}f(x,y)dxdy\\
-    = \iint\limits_{y/x\le z;x&lt;0}f(x,y)dxdy + \iint\limits_{y/x\le z;x&gt;0}f(x,y)dxdy\\
-    $$
-  - 然后将$y = xz$带入上式求出最后积分式即可
-  对于乘积和相加的推导过程可以使用同样的方法推导而得
-
-- $M = max\{X,Y\}$
-  对于若干个不同的随机变量，$F_{max}(z) = F_{X_1}(z)F_{X_2}(z)F_{X_3}(z)...$
-  相似的可以推出：$F_{min}(z) = 1-[1-F_{X_1}(z)][1-F_{X_2}(z)][1-F_{X_3}(z)]...$
-
----
-
-# 第四章 随机变量的数字特征
-概率分布描述了随机变量取值的可能性，而对于一个随机变量的分布具有某些数值特征的刻画，包括期望、方差等
-
-- 期望
-  期望又叫均值，对于离散随机变量可以直接将各个变量取值和概率相乘再相加得到，公式表示如下：
-  $$E(X) = \sum\limits_{i=1}^n x_iP(X=x_i)$$
-  对于连续型随机变量则是对取值和概率密度相乘的积分，公式表示如下：
-  $$E(X) = \int\limits_{-\infty}^{\infty}xf_X(x)dx$$
-
-- 期望的性质
-  - $E(aX+b) = aE(X)+b$
-  - 如果$X$和$Y$相互独立，则$E(XY) = E(X)E(Y)$
-
-- 方差（variance）
-  方差是衡量随机变量与期望的偏差的一个值，可以用期望表示如下：
-  $$Var(X) = E[(X-E(X))^2]$$
-  方差也可以用字母$D$表示
-  方差的开方我们称为标准差，用字母$\sigma$表示
-
-- 方差的性质：
-  - 方差可以用以下公式计算：
-    $$Var(X) = E(X^2) - E(X)^2$$
-    该公式用积分式推出
-  - $$X^* = \frac{X-\mu}{\sigma}$$
-    $X^*$我们称为标准化变量，其关于 $x = 0$对称，且方差为1
-  - $$D(C) = 0$$
-  - $$D(CX) = C^2D(X)$$
-  - $$D(X+Y) = D(X)+D(Y)+2E\{[X-E(X)][Y-E(Y)]\}$$
-    - 如果$X$和$Y$相互独立，则$D(X+Y) = D(X)+D(Y)$，这表明 $2E\{[X-E(X)][Y-E(Y)]\}$是衡量$X$和$Y$的相互独立的一个指标
-
-- 切比雪夫不等式：
-  $$P(|X-E(X)|\ge k) \le \frac{D(X)}{k^2}$$
-  - 这个不等式的含义是：随机变量和期望的差大于一个阈值的概率应该小于方差除以阈值的平方，这是对随机变量与期望偏差的一个估计
-  - 这个不等式还可写成：
-    $$P(|X-E(X)|\le k) \ge 1-\frac{D(X)}{k^2}$$
-
----
-- 协方差（covariance）
-  协方差是衡量两个随机变量的相关程度的一个值，可以用期望表示如下：
-  $$Cov(X,Y) = E[(X-E(X))(Y-E(Y))]$$
-  可以理解为将方差中的一个随机变量替换为了另一个随机变量
-  我们知道：
-  $$\frac{D(X)}{\sqrt{D(X)}\sqrt{D(X)}} = 1$$
-  我们用类似的思路可以设：
-  $$\rho_{AB} = \frac{Cov(A,B)}{\sqrt{D(A)}\sqrt{D(B)}}$$
-  我们称之为相关系数
-
-- 相关系数的取值：
-  - 如果$A$和$B$相互独立，则$\rho_{AB} = 0$
-  - 如果$A$和$B$完全满足线性关系，则$\rho_{AB} = 1$
-  - $\rho$越大，则两者的相关程度越高
-
-- 协方差的性质：
-  - $$Cov(X,Y) = Cov(Y,X)$$
-  - $$Cov(aX+b,cY+d) = abCov(X,Y)$$
-  - $$Cov(X+Y,Z) = Cov(X,Z)+Cov(Y,Z)$$
-  用上面的三条性质也可以推导出方差的性质，方差可以说是协方差的一种特殊情况
-  - 值得注意的是，协方差评估的是随机变量的相关性，和独立性不一样，如果两个随机变量相互独立，那么它们不相关，但是两个随机变量相关，它们却不一定相互独立
-
----
-
-## 矩（Moment）
-矩这个名字相当的具有迷惑性，矩原本是物理学中的一个概念，但是到统计学这里已经和原本的含义几乎没有关系了，所以我们并不需要去详细追究矩这个名字到底有何含义
-
-- $n$阶关于常数$c$矩的公式如下：
-  $$
-  \begin{align}
-    \mu_n  &amp;= E[(X-c)^n] \\
-    &amp;= \iint_{-\infty}^{\infty}(x-c)^n f(x)dx \\
-  \end{align}
-  $$
-- 对于上面这个式子，我们有：
-  - 对于参数 $n$对应的矩我们称为**n阶矩**
-  - 对于参数 $c$
-    - 如果 $c=0$，我们称为**原点矩**
-    - 如果 $c=E(X)$，我们称为**中心矩**
-
-- 如果我们有多个随机变量：
-  $$E\{[X-E(X)]^k[Y-E(Y)]^l\}$$
-  我们称之为**X和Y的k+l阶混合中心矩
-
-以上是矩的定义和分类，矩是我们描述随机变量的数字特征，我们之前提到过的：
-- 方差：关于X的二阶中心矩
-- 期望：关于X的一阶原点矩
-- 协方差：关于X和Y的二阶混合中心矩
-这些都属于矩，用于描述随机变量
----
-- 多维随机变量：
-  一个向量的所有元素都是随机变量，我们认为他是一个多维随机变量
-
-对于一个多维随机变量，以二维随机变量$(X_1,X_2)$为例子，我们可以定义它的**协方差矩阵**（相当于一维变量的协方差）：
-$$
-c_1 = Cov(X_1,X_1) \\
-c_2 = Cov(X_1,X_2) \\
-c_3 = Cov(X_2,X_1) \\
-c_4 = Cov(X_2,X_2) \\
-Matrix = \begin{bmatrix}
-c_1 &amp; c_2 \\
-c_3 &amp; c_4
-\end{bmatrix}
-$$
-这个矩阵既包含了描述单个随机变量方差的信息，也包含了描述两个随机变量协方差的信息
-
-- 多维随机变量的概率密度可以用协方差矩阵来表示
----
-
-# 第五章 大数定律和中心极限定理
-
-关于大数定理和中心极限定理这一节主要是概率论的基础理论
-
-- 弱大数定理（Weak Law of Large Numbers）
-  对于一些独立同分布的随机变量，变量的数量接近无穷多时，它们的均值会无限接近这个随机变量的期望
-
-- 伯努利大数定理
-  书上没有英文命名，网上也只有中文资料简单的介绍了一下，大概就是n次伯努利试验，其事件发生次数所占的比例随着n接近无穷而接近单个事件发生的概率p
-  这是波莱尔大数定理（Borel&#39;s Law of Large Numbers）的弱大数定理版本，关于强弱大数定理书上没有介绍和区别，就不说了
-
-
-大数定理都是关于频率逼近概率的一些理论，在实用上感觉意义不大，主要是概率论理论成立的基础，以及帮助我们理解概率的本质
-
----
-
-- 中心极限定理：
-  - 独立同分布中心极限定理：
-    对于若干独立同分布的随机变量，如果随机变量的数目接近于无穷大，那么它们的和将会满足正态分布，且正态分布参数为：
-    $$\mu_{sum} = n\mu \\ \sigma_{sum} = \sqrt{n}\sigma$$
-    该定理可以表示如下：
-    $$\frac{\frac{1}{n}\sum\limits_{k=1}^{n}X_k-\mu}{\sigma/\sqrt{n}}\sim N(0,1)$$
-    或者：
-    $$\frac{\sum\limits_{k=1}^{n}X_k-\mu n}{\sigma\sqrt{n}}\sim N(0,1)$$
-    这个定理也可以吻合前面正态分布的线性组合部分
-
-  - 李雅普诺夫定理（Lyapunov&#39;s central limit theory):
-    对于若干独立但是不一定同分布的随机变量，我们可以写出类似的定理：
-    $$\frac{\sum\limits_{k=1}^{n}X_k-\sum\limits_{k=1}^{n}\mu_k}{\sqrt{D(\sum\limits_{k=1}^{n}X_k)}}\sim N(0,1)$$
-
-  - 棣莫佛－拉普拉斯定理（de Moivre - Laplace theorem）：
-    这个定理是经典中心极限理论（classical CLT）的一个特别情况
-    对于一个n次伯努利试验，我们把每次试验结果当作一次0-1分布的随机变量，然后把他们套用CLT即可得到一个二项分布的近似分布——二项分布的极限逼近于一个正态分布
-
----
-
-总结一下大数定理和中心极限定理：
-- 大数定理是独立同分布的随机变量足够多时，它们的均值会无限接近于随机变量的期望，也就是说频率会逼近概率，大数定理是概率论成立的基础
-- 中心极限定理则揭示了一个现象：
-  任何分布的随机变量的和都会趋近于正态分布，而一个二项分布甚至可以直接逼近一个正态分布，这无疑揭示了正态分布的重要性
-
----
-
-# 第六章 样本及抽样分布
-
-从这一章开始就进入了数理统计的部分，概率论部分是对于已知的分布进行分析，并通过各种数字特征描述一个或一组随机变量，而数理统计是基于样本数据，对未知的分布进行估计、推断的理论
-
----
-
-- 随机样本：
-  - 总体：一个试验可能的观察值的所有可能
-  - 个体：每一个可能的观察值
-  - 容量：总体的可能数量
-  
-总体的概念和之前的样本空间的概念比较像，但是之前是概率论的概念，也就是说，之前的概率是基于已经确定的事件的分布和概率确定的
-但是总体是数理统计相关的，它代表了实验中可以观察到的个体结果的总和
-
-比如说我们有一千个学生，然后我们观察每个学生的身高，一个学生观察到的身高我们称为个体，所有学生可能观察到的身高我们称为总体
-总体这个概念是基于一定数量的试验，或者说抽样才存在的
-
-- 对于独立同分布的若干次试验，我们得到的 $n$个随机变量我们称其为样本，样本的具体观察值我们称为样本值
-
-具体来说，样本就是一个试验的若干次结果的集合，它决定了我们要取多少次试验的结果，而取出不同的样本观察值可能每次都不一样
-而之前的总体和个体是描述这个试验的属性，从总体中抽取个体形成样本，通过分析样本来推测总体
-
----
-- 直方图：
-  将处于不同区间的样本值数据分到各自区间中，做出统计图
-
-- 箱线图：
-  箱线图主要由五个数值确定：
-  - 最大值
-  - 最小值
-  - 第四分之一分位值 $Q_1$
-  - 中位数
-  - 第四分之三分位值 $Q_3$
-  然后这五个点分成四段，第一段和第四段用线连接，第二段和第三段用矩形连接，这样就形成了一个箱子
-  我们称 $IQR = Q_3 - Q_1$为四分位间距，如果一个数据的值小于 $Q_1 - 1.5IQR$ 或者大于 $Q_3 + 1.5IQR$，那么我们认为这个数据是个异常值，需要进行处理
----
-
-我们说了，抽样样本是对随机变量进行有限次的测量，每次抽样得到的结果我们称为观察值，样本代表的是从总体中获得若干个体的数量或方法
-
-但是有时候我们需要的不是样本本身，而是样本的一个函数，我们称之为**统计量**比如我们的样本：
-$$X_1,X_2,X_3,X_4,X_5...X_n$$
-我们定义以下统计量：
-- 样本均值：
-  $$\bar{X} = \frac{1}{n}\sum\limits_{i=1}^{n}X_i$$
-- 样本方差：
-    $$S^2 = \frac{1}{n-1}\sum\limits_{i=1}^{n}(X_i-\bar{X})^2 = \frac{1}{n-1}(\sum\limits_{i=1}^{n}X_i^2 - n\bar{X}^2)$$
-- 样本标准差：
-  $$S = \sqrt{S^2} = \sqrt{\frac{1}{n-1}\sum\limits_{i=1}^{n}(X_i-\bar{X})^2}$$
-
-- 样本 $k$阶原点矩：
-  $$\mu_k = E(X^k) = \frac{1}{n}\sum\limits_{i=1}^{n}X_i^k$$
-
-- 样本 $k$阶中心矩：
-  $$\mu_k = E((X-\bar{X})^k) = \frac{1}{n}\sum\limits_{i=1}^{n}(X_i-\bar{X})^k$$
-
-当样本中的 $n$足够大时，由之前的大数定理我们可以得到：此时样本的统计量将会逼近于总体的分布所对应的数字特征
-
-- 经验分布函数
-  $$F_n(x) = P(X\leq x) = \frac{1}{n}\sum\limits_{i=1}^{n}I(X_i\leq x)$$
-  经验分布函数也是一个样本的统计量，但是是对应于总体分布函数的统计量
-
-- 格里汶科定理
-  $$P\{\lim\limits_{n\rarr\infty}\sup\limits_{-\infty&lt;x&lt;+\infty}|F_n(x)-F(x)|=0\}=1$$
-  这个式子的意思是当 $n$接近无穷时，经验分布函数以概率1无限逼近于总体分布函数，可以类比之前的大数定律等
-
----
-
-- $\chi^2$分布（卡方分布）
-  首先假设我我们有一组样本：
-  $$X_1,X_2,X_3,X_4,X_5...X_n$$
-  假设这些样本都服从$N\sim(0,1)$的正态分布，那么我们可以得到：
-  $$\chi^2 = X_1^2+X_2^2+X_3^2+X_4^2+X_5^2+...+X_n^2$$
-  这个 $\chi^2$所服从的分布就是 $\chi^2$分布，它的概率密度函数为：
-  $$f(x) = \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}x^{\frac{n}{2}-1}e^{-\frac{x}{2}}$$
-  - 我们称一个 $\chi^2$分布的随机变量的数量为**自由度**，写作$\chi^2 \sim\chi^2(n)$
-  - $\chi^2$分布具有可加性，公式表达为：
-    $$\chi^2_1 + \chi^2_2 \sim \chi^2(n_1 + n_2)$$
-  - $\chi^2$分布的期望为：
-    $$E(\chi^2) = n$$
-  - $\chi^2$分布的方差为：
-    $$Var(\chi^2) = 2n$$
-  - $\chi^2$分布的上$\alpha$分位数：
-    我们作出卡方分布的分布图，占据了面积比例为$\alpha$的前面部分所对应的取值，就是卡方分布的上$\alpha$分位数
-&lt;br&gt;&lt;/br&gt;
-
-- $t$分布（学生分布）
-  假设我们有两个随机变量 $X,Y$，其中 $X \sim N(0,1)$，$Y \sim \chi^2(n)$，且 $X,Y$相互独立，那我们可以得到：
-  $$t = \frac{X}{\sqrt{Y/n}}\sim t(n)$$
-  学生分布的概率密度函数复杂，不用记了，我们可以大概记住其概率分布的图像，类似于正态分布一样对称的拱形
-  事实上，当 $\lim n\rarr \infty$时，$t$分布逼近于正态分布$N(0,1)$
-  关于 $t$分布的上$\alpha$分位数也有相关的表可以查询
-
-- $F$分布
-  假设我们有两个随机变量 $X,Y$，其中 $X \sim \chi^2(n_1)$，$Y \sim \chi^2(n_2)$，且 $X,Y$相互独立，那我们可以得到：
-  $$F = \frac{X/n_1}{Y/n_2}\sim F(n_1,n_2)$$
-
----
-
-## 正态总体的样本均值于样本方差的分布
-
-首先假设我们有一个满足正态分布 $N(\mu,\sigma^2)$的总体，我们从这个总体中抽取一个样本，记为 $X_1,X_2,X_3,X_4,X_5...X_n$，那么我们可以得到：
-
-- 这个样本的均值为 $\bar{X}$，方差为 $S^2$
-  那么有：
-  $$
-  E(\bar{X}) = \mu \\
-  D(\bar{X}) = \frac{\sigma^2}{n} \\
-  $$
-  这表示如果样本取的次数够多，那么样本的均值的均值还是接近于总体的均值，但是样本均值的方差会按照样本的大小 $n$减小，仔细想想就能明白多次取样的均值会使得均值变化更小，更接近平均
-  换而言之我们有以下结论：
-  $$\bar{X} \sim N(\mu,\frac{\sigma^2}{n})$$
-
-- 此外，我们还有以下不加证明的结论：
-  - $$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2(n-1)$$
-  - $\bar{X}$与 $S^2$相互独立
-    也就是说样本的均值和样本的方差互不影响
-  - $$\frac{\bar{X}-\mu}{\frac{S}{\sqrt{n}}} \sim t(n-1)$$
-
-- 如果我们有两个来自不同正态总体的样本，记为：
-  $$X_1,X_2,X_3,X_4,X_5...X_n \sim N(\mu_1,\sigma_1^2)$$
-  $$Y_1,Y_2,Y_3,Y_4,Y_5...Y_n \sim N(\mu_2,\sigma_2^2)$$
-  那么我们可以得到以下结论：
-  - $$\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2}\sim F(n_1-1,n_2-1)$$
-  由于 $\sigma_1$和 $\sigma_2$是常数，所以可以理解为两个样本的统计量的比值服从于和两个样本大小有关的 $F$分布
-- 基于上面的结论，当$\sigma_1^2 = \sigma_2^2 = \sigma$时，我们有以下结论：
-  $$\frac{(\bar{X}-\bar{Y})-(\mu_1-\mu_2)}{S_W\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} \sim t(n_1+n_2-2)$$
-  其中的 $S_W$为：
-  $$S_W^2 = \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$
-
----
-
-# 第七章 参数估计
-
-假设我们已知总体满足的分布形式，但是不知道具体的参数，那么我们可以通过样本来估计总体的分布的参数
-
-## 点估计
-
-点估计法就是通过样本直接估计参数的一个值，所以称为点估计，而后面的区间估计则是通过样本估计参数的取值范围
-
-- 矩估计
-  矩估计法就是基于矩来对参数进行估计的方式，具体的步骤如下：
-  - 首先依据大数定律我们知道，样本矩依概率收敛于总体矩，所以我们可以假定样本就等于总体矩：
-    $$\bar{X} = E(X)$$
-    $$S^2 = D(X)$$
-  - 然后总体矩我们可以由参数计算出来，或者由参数直接获得，比如正态分布的均值和方差，就可以直接带入以上式子，从而得到：
-    $$\bar{X} = \mu$$
-    $$S^2 = \sigma^2$$
-  - 然后我们把要求的参数移到左边，并把样本矩带入式子，就可以得到方程组：
-    $$\mu = \frac{1}{n}\sum_{i=1}^n X_i$$
-    $$\sigma^2 = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2$$
-  矩估计法只能用于需要求的参数可以用矩表示出来的情况，比如均匀分布，或者直接要求的参数就是矩，比如正态分布
-
-- 最大似然法估计
-  最大似然法估计的基本思想如下：
-  首先我们要知道待估总体的分布形式，然后写出其概率密度函数（或者是分布律），然后我们可以写出一个样本出现的概率为：
-  $$L(\theta) = P(X_1,X_2,X_3,X_4,X_5...X_n) = \prod_{i=1}^n f(x_i,\theta)$$
-  其中的 $\theta$就是我们要求的参数
-  我们称$L(\theta)$为**似然函数**，然后我们假定我们出现的这个样本是概率最大的样本，也就是说这个样本的取值应该是最大值，而似然函数中唯一的变量为$\theta$，所以我们的只要让$\theta$的取值可以使得似然函数最大，即可得到其估计值
-  如果存在多个参数需要估计，我们就针对每个参数，对似然函数求偏导，然后联立方程组即可
-
-  以下我们以一个正态分布的参数求解作为例子：
-  - 现在假设我们有一个总体$X \sim N(\mu,\sigma^2)$，然后我们有一个样本$X_1,X_2,X_3,X_4,X_5...X_n$，来自该总体，我们要求$\mu$和$\sigma^2$的最大似然估计量
-  - 首先我们写出正态分布的概率密度函数：
-    $$f(x;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})$$
-  - 然后我们可以写出似然函数如下：
-    $$
-    \begin{aligned}
-    L(\mu,\sigma^2) &amp;= \prod_{i=1}^n f(x_i;\mu,\sigma^2) \\
-    &amp;= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x_i-\mu)^2}{2\sigma^2}) \\
-    &amp;= (\frac{1}{\sqrt{2\pi}\sigma})^nexp(-\frac{\sum{(x_i-\mu)^2}}{2\sigma^2})
-    \end{aligned}
-    $$
-  - 然后等式两边同时取对数（方便求导运算）：
-    $$
-    \begin{aligned}
-    lnL(\mu,\sigma^2) = nln(\frac{1}{\sqrt{2\pi}\sigma})-\frac{\sum{(x_i-\mu)^2}}{2\sigma^2}
-    \end{aligned}
-    $$
-  - 然后我们对似然函数求$\sigma$和$\mu$的偏导：
-    $$
-    \begin{aligned}
-    \frac{\partial lnL(\mu,\sigma^2)}{\partial \mu} &amp;= \frac{\sum{(x_i-\mu)}}{\sigma^2} = 0\\
-    \frac{\partial lnL(\mu,\sigma^2)}{\partial \sigma^2} &amp;= -\frac{n}{2\sigma^2}+\frac{\sum{(x_i-\mu)^2}}{\sigma^4} = 0
-    \end{aligned}
-    $$
-    联立二式即可得到：
-    $$
-    \begin{aligned}
-    \mu &amp;= \frac{1}{n}\sum_{i=1}^n X_i  = \bar{X}\\
-    \sigma^2 &amp;= \frac{1}{n}\sum_{i=1}^n (X_i-\mu)^2 = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2 = S^2
-    \end{aligned}
-    $$
-
-- 基于截尾样本的最大似然估计
-  对于电池或者灯具的使用寿命这样的随机变量，测试所需要的时间可能很长，所以我们通过两种截尾方式来减少测量时间：
-  - 定时截尾样本：这种方式是我们设定一个时间，在这个时间内损坏的灯泡我们记录其寿命，然后到时间后，所有还工作的灯泡我们都按照未损坏处理
-  - 定数截尾样本：类比上面一种方式，我们的样本只记录到指定的损坏数量
-
-  然后我们就对所有被截尾的灯泡的概率做一个积分计算：
-  - 假设我们的截尾时间为 $t_m$，那么一个灯泡截尾的概率为：
-    $$P(X&gt;t_m) = \int_{t_m}^{\infty} f(x;\theta)dx$$
-  然后我们有 $m$个灯泡被截尾，那么被截尾的概率就是：
-  $$
-  \binom{n}{m}\left(\int_{t_m}^{\infty} f(x;\theta)dx\right )^{n-m}
-  $$
-  然后把截尾的概率乘在似然函数上，就得到了基于截尾样本的最大似然估计：
-  $$
-  \begin{aligned}
-  L(\theta) &amp;= \prod_{i=1}^n f(x_i;\theta) \\
-  &amp;= \prod_{i=1}^n f(x_i;\theta)\binom{n}{m}\left(\int_{t_m}^{\infty} f(x;\theta)dx\right )^{n-m}
-  \end{aligned}
-  $$
-
----
-
-- 无偏估计量
-  我们认为：
-  - 如果对于一个估计量$\hat{\theta}$有：
-    $$E(\hat{\theta}) = \theta$$
-    那么我们就称这个估计量是无偏的
-- 有效性
-  如果对于两个估计量$\hat{\theta}_1$和$\hat{\theta}_2$有：
-  $$Var(\hat{\theta}_1) \leq Var(\hat{\theta}_2)$$
-  那么我们则称$\hat{\theta}_2$比$\hat{\theta}_1$更有效
-- 相合性
-  对于估计量$\hat{\theta}(X_1,X_2...,X_n)$，如果$n\rightarrow \infty$时，$\hat{\theta}$的方差收敛于$theta$，那么我们就称这个估计量是相合的
-
----
-
-## 区间估计
-点估计是根据一组样本，来估计一个参数的值，而区间估计是根据一组样本估计一个参数的取值范围，并且给出准确的参数在该范围内的概率
-
-区间估计的主要方法是寻找一个**枢轴量**，这是一个分布与未知参数无关的函数，我们记为：
-$$W = W(X_1,X_2,...,X_n;\theta)$$
-
-比如在第六章最后提到的那些不加证明的结论：
-$$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2(n-1)$$
-如果$n$是已知的话，那么这就可以当作一个枢轴量，因为$S^2$只是样本的统计量
-
-找到这个枢轴量后，我们设定一个区间：
-$$\chi^2_{1-\alpha/2}(n-1) \leq \frac{(n-1)S^2}{\sigma^2} \leq \chi^2_{\alpha/2}(n-1)$$
-然后查表带入卡方分布的值即可求出方差的置信区间
-
-下面详细解释几种常见参数的区间估计方法：
-
-- 单个正态总体$N(\mu,\sigma^2)$的均值
-  - 如果$\sigma$为已知值，我们则采用枢轴量：
-    $$\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim N(0,1)$$
-
-  - 如果$\sigma$为未知值，我们则采用枢轴量：
-    $$\frac{\bar{X}-\mu}{S/\sqrt{n}} \sim t(n-1)$$
-
-- 单个正态总体$N(\mu,\sigma^2)$的方差
-  此处只考虑$\mu$未知的情况，我们采用枢轴量：
-  $$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$
-
-- 两个正态总体$N(\mu_1,\sigma_1^2)$和$N(\mu_2,\sigma_2^2)$的均值差和方差比
-  - 均值差
-    - 如果$\sigma_1$和$\sigma_2$都为已知值，我们则采用枢轴量：
-    $$\frac{\bar{X}_1-\bar{X}_2-\mu_1+\mu_2}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}} \sim N(0,1)$$
-    - 如果$\sigma_1$和$\sigma_2$都为未知值，我们则采用枢轴量：
-    $$\frac{(X_1-X_2)-(\mu_1-\mu_2)}{S_W\sqrt{1/n_1+1/n_2}}\sim t(n_1+n_2-2)$$
-      其中$S_W^2$为两个总体的方差的加权平均：
-      $$S_W^2 = \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$
-  - 方差比
-    如果$\sigma_1$和$\sigma_2$都为已知值，我们则采用枢轴量：
-    $$\frac{S_1^2/S_2^2}{\sigma_1^2/\sigma_2^2} \sim F(n_1-1,n_2-1)$$
-
-只要记住了第六章的这些公式，就可以通过对应的枢轴量来求出区间估计了
-
-- 01分布参数的区间估计
-  书上只介绍了当 $n$足够大时的区间估计，此时的样本满足二项分布，而二项分布逼近于正态分布，所以我们可以采用正态分布的区间估计方法来求出区间估计：
-  $$\frac{\bar{X}-p}{\sqrt{\frac{p(1-p)}{n}}} \sim N(0,1)$$
-
-- 单侧置信区间
-  当置信区间只有一侧时，注意 $\alpha$的取值不要除以2即可
-
----
-# 第八章 假设检验
-
-我们要检验一个总体是否满足一个分布（这个分布已经给定且不知道是否正确），我们可以用假设检验的方式来验证，具体步骤如下：
-
-比如现在我们要验证一个总体是否满足正态分布 $N(\mu_0,\sigma^2_0)$：
-- 提出两个互相对立的假设：
-  $$H_0: \mu = \mu_0$$
-  $$H_1: \mu \neq \mu_0$$
-  其中$H_0$为原假设，$H_1$为备择假设
-- 我们认为方差一般要比均值更稳定，所以我们默认 $\sigma$为正确值，而只验证 $\mu$的正确性
-- 我们采用统计量：
-  $$Z = \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}} \sim N(0,1)$$
-  如果我们的样本的 $Z$值的绝对值大于某一个值，那么我么则认为这个样本不满足 $H_0$，即拒绝 $H_0$，而这个值的大小决定了我们的判断的正确概率，我们类似参数估计中的方式，将其设定为 $z_{\alpha/2}$
-
-- 其中的 $\alpha$我们称为**显著性水平**，它决定了我们的判断的正确概率，一般取值为0.05或0.01，而 $Z$被称为**检验统计量**
-- 错误分为两种：
-  - 当 $H_0$为真时，我们拒绝 $H_0$，这被称为**第一类错误**
-  - 当 $H_0$为假时，我们接受 $H_0$，这被称为**第二类错误**
-  我们可以通过该变 $\alpha$的值来控制两类错误的概率，但是这样会导致另一类错误的概率增大
-  我们一般只考虑减小第一类错误的概率，令其发生概率为 $\alpha$，这被称为**显著性检验**
-
-- 单边检验
-  当我们的假设为两个相反的不等式时：
-  $$
-  H_0: \mu \leq \mu_0\\
-  H_1: \mu &gt; \mu_0
-  $$
-  这被称为右边检验
-  此时我们要检验 $H_0$，那么我们依然使用同样的检验统计量，但是我们将不再使用绝对值，因为样本的 $\mu$要比假设小，所以我们的检验统计量也会偏小，那么我们可以认为拒绝域为统计量大于某个值，而这个值就设定为 $x_\alpha$
-  左边检验反过来即可
-
----
-
-## 正态总体均值的假设检验
-
-- 均值$\mu$的检验：
-  - 知道 $\sigma$时：
-    我们使用统计量：
-    $$Z = \frac{\bar{X}-\mu_0}{\sigma\sqrt{n}} \sim N(0,1) $$
-
-  - 不知道 $\sigma$时：
-    我们使用统计量：
-    $$T = \frac{\bar{X}-\mu_0}{S\sqrt{n}} \sim t(n-1)$$
-
-- 两个正态总体的均值差：
-  我们使用统计量：
-  $$T = \frac{\bar{X}_1-\bar{X}_2-\mu_1+\mu_2}{S_W\sqrt{1/n_1+1/n_2}} \sim t(n_1+n_2-2)$$
-  其中 $S_W^2$为两个总体的方差的加权平均：
-  $$S_W^2 = \frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$
-
-- 正态总体方差的假设检验：
-  我们使用统计量：
-  $$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        384字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/math-physics/descretMath/">
-        离散数学——逻辑运算
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-```plantuml
-@startmindmap
-
-* 命题
-
-**_ 真命题
-**_ 假命题
-
-** 简单命题
-***_ 命题常项
-***_ 命题变项
-
-** 复合命题
-
-***: 合式公式
-(命题公式、命题形式);
-
-****_ 原子合式公式
-****:元语言符号
-A、B这类可代表任何合式公式的符号;
-****:对象语言符号
-q、p这类有具体命题的符号;
-****:合式公式的层数
-单个命题变项为0层，一次逻辑连接加一层;
-****:赋值(解释)
-将公式中的命题变项全部指定一个真值;
-*****_ 成真赋值
-*****_ 成假赋值
-@endmindmap
-```
-打算
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/openGL/2022-9-2/">
-      OpenGL学习记录（一）
-    </a>
-    <span class="card-abstract">
-      
-## 环境的配置
-
-OpenGL是一组通用的图形库标准，具体的软硬件实现方式各有不同，一般由显卡内部的固件自带，在不同系统下调用OpenGL核心的方式不同，所以通过第三方库来实现对OpenGL上下文的创建
-
-#### 步骤
-1. 下载源代码，通过Cmake搭建工程，并编译出lib文件
-2. 新建工程，并添加头文件引用、lib库引用、链接器配置
-
-## 关于头文件glad.h
-OpenGL的驱动版本众多，一般在运行时作为动态库储存在内存中，需要通过函数查询其内存地址，glad文件将这一步骤封装好，使得编写程序时不必为函数指针的维护做考虑
-
-## 基本代码的解析
-
-```cpp
-#include &lt;glad/glad.h&gt;
-#include &lt;GLFW/glfw3.h&gt;
-#include &lt;iostream&gt;
-#include &lt;cstdlib&gt;
-#include &lt;ctime&gt;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
-
-int main()
-{
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	GLFWwindow* window = glfwCreateWindow(800, 600, &#34;LearnOpenGL&#34;, NULL, NULL);
-	if (window == NULL)
-	{
-		std::cout &lt;&lt; &#34;Failed to create GLFW window&#34; &lt;&lt; std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	glfwMakeContextCurrent(window);
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout &lt;&lt; &#34;Failed to initialize GLAD&#34; &lt;&lt; std::endl;
-		return -1;
-	}
-
-	glViewport(0, 0, 800, 600);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-	while (!glfwWindowShouldClose(window))
-	{
-		processInput(window);
-
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glfwPollEvents();
-		glfwSwapBuffers(window);
-	}
-
-	glfwTerminate();
-
-	return 0;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
-void processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-}
-```
-以上为完整的代码，下面将逐句进行记录
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/music/2022-1-8/">
-        乐理再学习（一）
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-参考教材《音乐理论基础》
-
-## 第一章
-
-**乐音体系**：固定音高的一系列音的总和
-
-**音列**：乐音体系中的音按照上行或下行排成一列
-
-**基本音级**：七个基本音
-
-**变化音级**：以七个基本音升降变化得到
-
-中央C对应的分组为**小字一组**
-
-**题目**：
-
-![](/image/music/1_1.png)
-
-1. 振动
-2. 音高之间的差距是固定的，构成乐音体系
-3. 两种，乐音，噪音，由于声波的规律性而不同
-4. 人的听感不同，乐音用得多，噪音用得少，但是用处很多
-5. 由不同的正弦波叠加而成
-6. 音程固定的一系列音的总和；由乐音体系的音按上行下行排列而成；各个音
-7. 七个基本音，CDEFGAB
-8. 升降音
-9. 之间间隔八个基本音
-10. 中央C小字一组
-11. 音域是乐器能达到的音的部分，音区是音域的分区
-
-## 第二章
-
-先记一下升降符号，用作复制
-
-```
-1、升记号（♯）表示将基本音级升高半音。
-
-2、降记号（♭）表示将基本音级降低半音。
-
-3、重升记号（×）表示将基本音级升高两个半音（一个全音）。
-
-4、重降记号（♭♭）表示将基本音级降低两个半音（一个全音）。
-
-5、还原记号(♮)表示将已经升高或降低的音还原。
-```
-
-**自然全音和自然半音**：
-由相邻音级组成的全音或半音：C—D、♭E—F、E—F
-
-**变化全音和变化半音**：
-由同一个音级组成的全音或半音：C—♯C
-
-**等音**：
-音高和意义相同但是记法不同的音：C—♭♭D—♯B
-
-
-**题目**
-![](/image/music/2_1.png)
-
-1. 分解音高的方式
-2. 略
-3. 略
-4. 略
-5. 略
-6. 略
-7. 相邻音级组成
-8. 同一音级组成
-9. 记法不同的相同音
-10. 三个
-
-## 第三章
-
-本章为记谱法，略过
-
-## 第四章
-
-**调式**：按照一定关系连接在一起的一系列音（一般不超过七个），组成一个体系，并以一个音为**主音**，这个体系叫做调式
-
-**音阶**：调式中的音按照上行排列，叫做音阶
-
-音阶反应调式的特性，而音列是构成调式的材料
-
-**调**：调式和音高的组合，比如C大调，E小调
-
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        164字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/music/guitae-1/">
-      电吉他入门记录（一）
-    </a>
-    <span class="card-abstract">
-      
-电吉他可以说是我最喜欢的乐器之一，但是在不会弹电吉他的情况下，使用纯粹的手动编写模拟的电吉他是相对困难的，本文会记录我使用电吉他音源的过程中一步步的改善
-
-
-
     </span>
 
   </div>
@@ -1803,7 +1392,7 @@ void processInput(GLFWwindow* window)
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/10/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/12/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/10/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/12/">Next</a>
 </div>
     </div>
 

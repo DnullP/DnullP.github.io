@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/Xj4wlzuKTDQOmHh.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/xjcUksAMvHQVhim.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -287,6 +287,1837 @@
 
     <div class="card-info-warp">
       <div class="card-info">
+        2023-09-29
+      </div>
+      <div class="card-info">
+        17k字
+      </div>
+      <div class="card-info">
+        阅读时间: 15 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/09/29/draft/6.828-2018-lab1/">
+        
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+
+# 环境准备
+
+基本环境:
+- ubuntu-22.04.1
+- GCC-11.4.0
+
+## 安装推荐版本QUME
+- 安装python2
+- 安装libglib2.0
+- 安装pixman
+- 安装libfdt1
+
+### 编译QEMU
+遇到编译错误, 使用不存在的reference &#34;minor&#34; 和 &#34;major&#34;
+经过网络搜索, 在报错文件中添加`sys/sysmacros.h`头文件即可, 该头文件中包含的minor和major看起来和设备号什么的有关
+
+存在与系统函数冲突的`gettid`, 将QEMU源码的`gettid`注释, 从而使用系统的`gettid`函数
+
+该QEMU使用弃用的系统函数`stime`, 由于报错实在太多, 决定更换使用官方提供的QEMU
+
+## 启动JOS
+按照指导成功启动jos系统及其对应的GDB调试
+
+## exercise 1
+是的, 我熟悉X86指令集, 并完成过一些二进制炸弹的实验.
+
+## exercise 2
+```bash
+[f000:e05b]    0xfe05b:	cmpw   $0xffc8,%cs:(%esi)
+0x0000e05b in ?? ()
+[f000:e062]    0xfe062:	jne    0xd241d0b0
+0x0000e062 in ?? ()
+[f000:e066]    0xfe066:	xor    %edx,%edx
+0x0000e066 in ?? ()
+[f000:e068]    0xfe068:	mov    %edx,%ss
+0x0000e068 in ?? ()
+[f000:e06a]    0xfe06a:	mov    $0x7000,%sp
+0x0000e06a in ?? ()
+[f000:e070]    0xfe070:	mov    $0xfc1c,%dx
+0x0000e070 in ?? ()
+[f000:e076]    0xfe076:	jmp    0x5576cf2d
+```
+首先进入是一条比较指令, 根据搜索, 一般这些比较指令是用于检查硬件是否可用, 然后如果检测通过则继续执行, 否则jmp到一个对应的位置(可能是系统错误的响应程序之类的)
+
+后面清空了两个寄存器`edx`和`ss`, 在我的印象中, `edx`寄存器在函数传参或者返回结果时用得比较多, 很多计算的结果都会存在这个寄存器里, 其本身是个通用寄存器, 理论上可以承担任何作用.
+
+`ss`寄存器是用于储存栈段的, 虽然我知道段式内存管理, 但是感觉并没有在现在的计算机中很常见, 或许是因为我看的汇编代码都是现代编译器编译而成的.
+
+`0x7000`看起来是个低内存地址, 看起来并没有被分配为IO接口, 暂时不知道用处
+
+```bash
+[f000:cf2d]    0xfcf2d:	mov    %ax,%cx
+[f000:cf30]    0xfcf30:	mov    $0x8f,%ax
+[f000:cf36]    0xfcf36:	out    %al,$0x70
+[f000:cf38]    0xfcf38:	in     $0x71,%al
+[f000:cf3a]    0xfcf3a:	in     $0x92,%al
+[f000:cf3c]    0xfcf3c:	or     $0x2,%al
+[f000:cf3e]    0xfcf3e:	out    %al,$0x92
+[f000:cf40]    0xfcf40:	mov    %cx,%ax
+[f000:cf43]    0xfcf43:	lidtl  %cs:(%esi)
+[f000:cf49]    0xfcf49:	lgdtl  %cs:(%esi)
+```
+
+这一段涉及的内存地址都是为材料提到的IO端口, 大概用处是启动时对系统设备和IO设备的检测
+
+最后两行是将全局表和中断表的地址设定为`%cs:(%esi)`, 应该可以认为是系统中断的初始化
+
+在上面的代码中, `esi`的值都是0, 所以我们可以认为系统初始化时把两个表的段地址都记录为了0
+
+```bash
+=&gt; 0xebf67:	call   0xe9803
+=&gt; 0xe9803:	movsbl %dl,%edx
+=&gt; 0xe9806:	jmp    *(%eax)
+=&gt; 0xeb0a7:	mov    %dl,%al
+=&gt; 0xeb0a9:	mov    0xf6034,%dx
+=&gt; 0xeb0b0:	test   %dx,%dx 
+=&gt; 0xeb0b3:	je     0xeb0b6
+=&gt; 0xeb0b5:	out    %al,(%dx)
+=&gt; 0xeb0b6:	ret    
+=&gt; 0xebf6c:	mov    %edi,%esi 
+=&gt; 0xebf6e:	jmp    0xebf72
+=&gt; 0xebf72:	lea    0x1(%esi),%edi
+=&gt; 0xebf75:	jmp    0xebd1e
+=&gt; 0xebd1e:	movsbl (%edi),%edx
+=&gt; 0xebd21:	test   %dl,%dl
+=&gt; 0xebd23:	je     0xebf7a
+=&gt; 0xebd29:	cmp    $0x25,%dl
+=&gt; 0xebd2c:	jne    0xebf65
+=&gt; 0xebf65:	mov    %ebx,%eax
+```
+接下来系统进入了对上述函数的循环中, 结合实验说明中的描述, 我可以合理猜测这段代码在循环检查IO设备中的磁盘的扇区, 直到找到一个引导扇区, 然后结束并跳转到启动代码中
+
+## exercise 3
+```bash
+(gdb) x/30i 0x7c00
+=&gt; 0x7c00:	cli    
+   0x7c01:	cld    
+   0x7c02:	xor    %eax,%eax
+   0x7c04:	mov    %eax,%ds
+   0x7c06:	mov    %eax,%es
+   0x7c08:	mov    %eax,%ss
+   0x7c0a:	in     $0x64,%al
+   0x7c0c:	test   $0x2,%al
+   0x7c0e:	jne    0x7c0a
+   0x7c10:	mov    $0xd1,%al
+   0x7c12:	out    %al,$0x64
+   0x7c14:	in     $0x64,%al
+   0x7c16:	test   $0x2,%al
+   0x7c18:	jne    0x7c14
+   0x7c1a:	mov    $0xdf,%al
+   0x7c1c:	out    %al,$0x60
+   0x7c1e:	lgdtl  (%esi)
+   0x7c21:	fs jl  0x7c33
+   0x7c24:	and    %al,%al
+   0x7c26:	or     $0x1,%ax
+   0x7c2a:	mov    %eax,%cr0
+   0x7c2d:	ljmp   $0xb866,$0x87c32
+   0x7c34:	adc    %al,(%eax)
+   0x7c36:	mov    %eax,%ds
+   0x7c38:	mov    %eax,%es
+   0x7c3a:	mov    %eax,%fs
+--Type &lt;RET&gt; for more, q to quit, c to continue without paging--c
+   0x7c3c:	mov    %eax,%gs
+   0x7c3e:	mov    %eax,%ss
+   0x7c40:	mov    $0x7c00,%esp
+   0x7c45:	call   0x7d19
+```
+
+实际内存中加载的指令与汇编前的指令存在以下区别:
+
+- 伪指令: 伪指令是汇编器用的一些用于进行汇编操作的指令, 在实际执行中不存在很正常. (相当于编译时和运行时)
+- 指令后缀: 汇编前指令包含控制操作数长度的后缀, 比如`w(字)`,`l(双字)`之类的, 在实际运行中, 这些修饰直接反映在了操作寄存器上.
+- 宏和标志替换: `$PROT_MODE_CSEG`这样的宏和`$protcseg`这样的标志都直接替换为了目标地址
+
+汇编后的程序和加载到内存后的区别:
+- 需要寄存器计算的位置直接替换为了计算出的地址
+```bash
+ljmp    $PROT_MODE_CSEG, $protcseg
+    7c2d:	ea                   	.byte 0xea
+    7c2e:	32 7c 08 00          	xor    0x0(%eax,%ecx,1),%bh
+```
+变为了
+```bash
+0x7c2d:	ljmp   $0xb866,$0x87c32
+```
+- 需要外部链接的符号也替换为了相应内存中的地址
+```bash
+call bootmain
+    7c45:	e8 cf 00 00 00       	call   7d19 &lt;bootmain&gt;
+```
+变为了
+```bash
+   0x7c45:	call   0x7d19
+```
+
+跟踪进入readsect函数(已作出每条语句的注释):
+```bash
+(gdb) x/40i 0x7c78
+=&gt; 0x7c78:	push   %ebp
+   0x7c79:	mov    %esp,%ebp
+   0x7c7b:	push   %edi
+   0x7c7c:	push   %eax
+   0x7c7d:	mov    0xc(%ebp),%ecx
+#  waitdisk();
+   0x7c80:	call   0x7c6a
+#  outb(0x1F2, 1);
+   0x7c85:	mov    $0x1,%al
+   0x7c87:	mov    $0x1f2,%edx
+   0x7c8c:	out    %al,(%dx)
+#  outb(0x1F3, offset);
+   0x7c8d:	mov    $0x1f3,%edx
+   0x7c92:	mov    %ecx,%eax
+   0x7c94:	out    %al,(%dx)
+#  outb(0x1F4, offset &gt;&gt; 8);
+   0x7c95:	mov    %ecx,%eax
+   0x7c97:	mov    $0x1f4,%edx
+   0x7c9c:	shr    $0x8,%eax
+   0x7c9f:	out    %al,(%dx)
+#  outb(0x1F5, offset &gt;&gt; 16);
+   0x7ca0:	mov    %ecx,%eax
+   0x7ca2:	mov    $0x1f5,%edx
+   0x7ca7:	shr    $0x10,%eax
+   0x7caa:	out    %al,(%dx)
+#  outb(0x1F6, (offset &gt;&gt; 24) | 0xE0);
+   0x7cab:	mov    %ecx,%eax
+   0x7cad:	mov    $0x1f6,%edx
+   0x7cb2:	shr    $0x18,%eax
+   0x7cb5:	or     $0xffffffe0,%eax
+   0x7cb8:	out    %al,(%dx)
+#  outb(0x1F7, 0x20);
+   0x7cb9:	mov    $0x20,%al
+   0x7cbb:	mov    $0x1f7,%edx
+   0x7cc0:	out    %al,(%dx)
+#  waitdisk();
+   0x7cc1:	call   0x7c6a
+#  insl(0x1F0, dst, SECTSIZE/4);
+   0x7cc6:	mov    $0x80,%ecx
+   0x7ccb:	mov    0x8(%ebp),%edi
+   0x7cce:	mov    $0x1f0,%edx
+   0x7cd3:	cld    
+   0x7cd4:	repnz insl (%dx),%es:(%edi)
+   0x7cd6:	pop    %edx
+   0x7cd7:	pop    %edi
+   0x7cd8:	pop    %ebp
+   0x7cd9:	ret 
+```
+
+通过main.c的注释容易得知, 当boot程序循环读取完程序段后, 会通过一下代码跳转到内核程序的入口
+```c
+((void (*)(void)) (ELFHDR-&gt;e_entry))();
+```
+断点设置位置为: `0x0010000c`
+
+## 回答以下问题
+
+### q1
+&gt; At what point does the processor start executing 32-bit code? What exactly causes the switch from 16- to 32-bit mode?
+
+```bash
+lgdt    gdtdesc
+movl    %cr0, %eax
+orl     $CR0_PE_ON, %eax
+movl    %eax, %cr0
+```
+这一段代码做了这件事, `cr0`寄存器中的一位用于控制实模式和保护模式, 通过或操作来修改这一位来切换系统的工作模式
+
+### q2
+&gt; What is the last instruction of the boot loader executed, and what is the first instruction of the kernel it just loaded?
+
+`call 0x0010000c`是最后一条指令, 用于跳转到内核entry
+`0x10000c:	movw   $0x1234,0x472`是内核的第一条指令, 看起来在写入某一个值
+
+
+### q3
+&gt; Where is the first instruction of the kernel?
+
+`0x0010000c`是第一条指令的位置
+
+### q4
+&gt; How does the boot loader decide how many sectors it must read in order to fetch the entire kernel from disk? Where does it find this information?
+
+```c
+#define ELFHDR		((struct Elf *) 0x10000)
+```
+
+这一行代码定义了一个elf的信息, 从这个固定的位置我们应该可以获得内核程序的相关大小信息
+
+## exercise 4
+我觉得对于指针和函数指针我还算是熟悉, 可以略过此练习
+
+## exercise 5
+可执行程序头中有两个字段, VMA和LMA, 当分别代表程序运行时所在的地址和程序被加载进入内存时的地址
+
+对于一般的程序, 由于虚拟内存的缘故, VMA和LMA是相同的, 每个程序都装载进入相同的地址, 但是位于不同的内存空间
+
+对于OS启动以前的程序, VMA和LMA一般也是相同的, 只是在物理内存上装载而已
+
+但是对于bootloader程序而言, 它们被操作系统强制装载在了一个固定的内存位置`0x7c00`, 然后bootload一般会把内核装载进入`0x10000`的位置, 并在运行后, OS再将自己的位置映射到虚拟内存的其他位置
+
+由于程序中存在很多位置相关的符号, 在链接时需要根据程序运行的位置来计算跳转的相对位置, 如果我们把bootloader的VMA和LMA改变, 那么其中的符号位置会按照修改的值来计算, 但是bootloader是被强制加载在0x7c00的位置, 这就导致了程序会跳转到未知的位置, 从而导致无法启动
+
+```bash
+[   0:7c2a] =&gt; 0x7c2a:	mov    %eax,%cr0
+[   0:7c2d] =&gt; 0x7c2d:	ljmp   $0xb866,$0x87c32
+=&gt; 0x7c32:	mov    $0x10,%ax
+```
+这是正确的VMA下跳转的地址
+
+```bash
+[   0:7c2a] =&gt; 0x7c2a:	mov    %eax,%cr0
+[   0:7c2d] =&gt; 0x7c2d:	ljmp   $0xb866,$0x87c12
+[f000:e05b]    0xfe05b:	cmpw   $0xffc8,%cs:(%esi)
+```
+这是修改为0x7be0后的VMA计算跳转的地址, 但是实际程序加载的位置还是0x7c00, 所以跳转到了错误的位置
+
+## exercise 6
+练习6的问题根据以上的信息已经很明确了:
+
+在bootloader加载时, 内核还没加载, 而内核加载的位置正是0x100000, 所以此时这个地址后的内存应该是未赋值的状态, 而在加载内核后显示的应该是内核开头的指令
+
+ ## exercise 7
+```bash
+0xf0100000 &lt;_start-268435468&gt;:	Cannot access memory at address 0xf0100000
+```
+这是执行`mov    %eax,%cr3`之前的内存情况
+
+```bash
+ 0x100000:	464367618	0	3830599678	1912981350
+0x100010:	872415236	268482578	571408401	3223326680
+0x100020:	16777485	3223457664	268447672	3185639408
+0x100030:	0	284164284	6875376	4276813824
+0x100040:	1457883477	24307795	3280011264	66238
+(gdb) x/20fu 0xf0100000
+0xf0100000 &lt;_start-268435468&gt;:	464367618	0	3830599678	1912981350
+0xf0100010 &lt;entry+4&gt;:	872415236	268482578	571408401	3223326680
+0xf0100020 &lt;entry+20&gt;:	16777485	3223457664	268447672	3185639408
+0xf0100030 &lt;relocated+1&gt;:	0	284164284	6875376	4276813824
+0xf0100040 &lt;test_backtrace&gt;:	1457883477	24307795	3280011264	6
+```
+在设置了内存映射后, 无法访问的位置映射到了对应的低内存位置上
+
+## 回答实验问题
+Be able to answer the following questions:
+
+&gt; Explain the interface between printf.c and console.c. Specifically, what function does console.c export? How is this function used by printf.c?
+
+首先在printf.c中将console提供的cputchar函数封装为了putch函数, 然后传递给vprintfmt作为输出的函数, 而vprintfmt是用于解析输出格式的函数, 解析后的结果通过传入的putch输出. 最后将两者组合为cprintf函数.
+
+&gt; Explain the following from console.c:
+
+```c
+  if (crt_pos &gt;= CRT_SIZE) {
+    int i;
+    memmove(crt_buf, crt_buf + CRT_COLS,(CRT_SIZE - CRT_COLS) * sizeof(uint16_t));
+    for (i = CRT_SIZE - CRT_COLS; i &lt; CRT_SIZE; ++)
+        crt_buf[i] = 0x0700 | &#39; &#39;;
+    crt_pos -= CRT_COLS;
+  }
+```
+根据代码上下文我们得知, 这段代码来自cga_putc函数, 是用于在cga设备上输出字符的函数, 前文代码已经将内容输出了, 这一段代码首先比较了当前位置是否超出了屏幕的大小, 如果超出了, 则把当前缓冲区中的内容向上移动一行, 然后将最后一行的内容清空, 并将当前位置修改为对应的新行
+
+
+&gt; For the following questions you might wish to consult the notes for Lecture 2. These notes cover GCC&#39;s calling convention on the x86.
+Trace the execution of the following code step-by-step:
+```bash
+int x = 1, y = 3, z = 4;
+cprintf(&#34;x %d, y %x, z %d\n&#34;, x, y, z);
+```
+
+我最开始没能理解该如何执行上面的函数, 最开始想的是题目是不是让我追踪系统中的cprintf函数, 然后我发现这玩意在linux不自带
+
+然后我寻思能不能引用源码的stdio, 但是源码中的构建在make中写好了, 我自己引用要改makefile之类的, 我对此并不熟悉
+
+通过搜索后我才知道, monitor.c实现了系统的命令行, 我完全可以在这里面实现相应的函数和指令来调用cprintf
+
+于是我这么做并跟踪了对cprintf的调用, 下面是我需要回答的问题
+
+&gt; In the call to cprintf(), to what does fmt point? To what does ap point?
+
+这个问题不太需要跟踪, 显然fmt是传入的第一个包含格式控制符的字符串, 而ap是一个参数列表, 包含后续的不定长参数
+
+&gt;List (in order of execution) each call to cons_putc, va_arg, and vcprintf. For cons_putc, list its argument as well. For va_arg, list what ap points to before and after the call. For vcprintf list the values of its two arguments.
+
+对于这个问题, 我们分别给这三个函数打上断点 (但是给va_arg调试真的不是一个没道理的选择吗?)
+然后我们启动程序:
+```bash
+vcprintf (fmt=0xf0101a17 &#34;6828 decimal is %o octal!\n&#34;, ap=0xf010efe4 &#34;\254\032&#34;)
+cons_putc (c=54)
+...
+```
+对于上面两个函数代码的信息显示不错, 但是对于va_arg却一点作用没有
+通过简单的查询和阅读可以得知, va_arg是只是GCC内建函数的一个宏, 这个函数的调用是在编译期完成的, 所以我认为这一步是无法完成的
+
+&gt; Run the following code.
+
+```bash
+    unsigned int i = 0x00646c72;
+    cprintf(&#34;H%x Wo%s&#34;, 57616, &amp;i);
+```
+&gt; What is the output? 
+
+程序输出了`He110 World`
+
+&gt; Explain how this output is arrived at in the step-by-step manner of the previous exercise.
+The output depends on that fact that the x86 is little-endian. If the x86 were instead big-endian what would you set i to in order to yield the same output? Would you need to change 57616 to a different value?
+
+通过代码我们可以得知, 代码是从低地址向高地址输出字符串的
+```c
+for (; (ch = *p++) != &#39;\0&#39; &amp;&amp; (precision &lt; 0 || --precision &gt;= 0); width--)
+				if (altflag &amp;&amp; (ch &lt; &#39; &#39; || ch &gt; &#39;~&#39;))
+					putch(&#39;?&#39;, putdat);
+				else
+					putch(ch, putdat);
+```
+于是我们在小端机中的`i`的排列就应该是`72 6c 64 00`, 于是输出结果按照ascll码可以很容易得到`rld`, 并在00处终止输出
+
+而对于前面的十六进制数没有值得深究的, 仅仅是按照base=16进行进制转换后的输出, 转换的是通过递归输出实现的, 我觉得这段代码很有意思, 我并没有思考过这种将输出和转换写为同一段代码的方式
+
+如果是大端机的话, 字符串的输出肯定需要将遍历的顺序逆转, 而对于16进制数, 由于这个操作是整个数组传递的, 并没有涉及字节层面的操作, 所以我认为不需要额外的修改
+
+
+&gt; In the following code, what is going to be printed after &#39;y=&#39;? (note: the answer is not a specific value.) Why does this happen?
+
+```c
+cprintf(&#34;x=%d y=%d&#34;, 3);
+```
+这仍然是一个可以通过阅读源码得知的答案, 首先答案不会是一个固定值.
+出现这种情况的原因是缺少足够的参数, 而vprintfmt函数在解析到`y=%d`时, 仍然会向不定参数表去取下一个参数, 具体的行为在`getint`函数中定义. 由于`va_arg`对应的函数是一个GCC内置函数, 我并不能确定它在异常情况下的表现.
+
+&gt; Let&#39;s say that GCC changed its calling convention so that it pushed arguments on the stack in declaration order, so that the last argument is pushed last. How would you have to change cprintf or its interface so that it would still be possible to pass it a variable number of arguments?
+
+首先我们需要明确, GCC函数调用约定中是按照参数从右向左压栈, 而vprintfmt函数是按照可变参数从左到右读取参数的, 如果改为按声明来压栈的话, va_arg函数很可能会按照错误的顺序来读取参数, 暂时没有好的办法来解决这个问题, 使用声明顺序可能会需要我给每个数据添加一个声明的时间戳, 这需要涉及修改编译器了, 显然不太现实
+
+## exercise 8
+解决以上问题后, 我们简单在在`printfmt.c`中添加以下代码即可:
+```c
+case &#39;o&#39;:
+	num = getuint(&amp;ap, lflag);
+	base = 8;
+	goto number;
+```
+
+## exercise 9
+
+
+```bash
+.data
+	.p2align	PGSHIFT		# force page alignment
+	.globl		bootstack
+bootstack:
+	.space		KSTKSIZE
+	.globl		bootstacktop   
+bootstacktop:
+```
+这一段代码定义了操作系统的栈的位置和结构, 具体解释一下就是, 在data段中, 按照PGSHIFT的2次幂对齐, 定义一段长度为KSTKSIZE的空间, 作为操作系统的栈
+
+然后在entry.S的代码中可以很容易通过注释找到OS初始化帧栈的代码:
+```bash
+# Clear the frame pointer register (EBP)
+	# so that once we get into debugging C code,
+	# stack backtraces will be terminated properly.
+	movl	$0x0,%ebp			# nuke frame pointer
+
+	# Set the stack pointer
+	movl	$(bootstacktop),%esp
+```
+
+清零了帧寄存器, 然后将定义的栈结构写入了栈寄存器, 从而得到一片栈空间
+
+通过gdb运行时调试, 我们可以知道运行时的栈地址为:
+
+```bash
+(gdb) print &amp;bootstack
+$1 = (&lt;data variable, no debug info&gt; *) 0xf0107000
+(gdb) print &amp;bootstacktop
+$2 = (&lt;data variable, no debug info&gt; *) 0xf010f000 &lt;entry_pgtable&gt;
+```
+这里使用的是虚拟地址, 物理地址应该是`0x107000`到`0x10f000`的一段空间
+
+整个问题的答案都在上面的调试内容中了
+
+## exercise 10
+我们在`f0100040 &lt;test_backtrace&gt;:`处设置断点, 然后在此处中断时查看栈顶元素: `x/10x $esp`
+
+输出结果如下:
+```bash
+Breakpoint 1, test_backtrace (x=5) at kern/init.c:13
+13	{
+(gdb) x/10x $esp
+0xf010efdc:	0xf01000f4	0x00000005	0x00001aac	0x00000660
+0xf010efec:	0x00000000	0x00000000	0x00010094	0x00000000
+0xf010effc:	0xf010003e	0x00000003
+(gdb) c
+Continuing.
+=&gt; 0xf0100040 &lt;test_backtrace&gt;:	push   %ebp
+
+Breakpoint 1, test_backtrace (x=4) at kern/init.c:13
+13	{
+(gdb) x/10x $esp
+0xf010efbc:	0xf0100076	0x00000004	0x00000005	0x00000000
+0xf010efcc:	0xf010004a	0xf0110308	0x00010094	0xf010eff8
+0xf010efdc:	0xf01000f4	0x00000005
+(gdb) c
+Continuing.
+=&gt; 0xf0100040 &lt;test_backtrace&gt;:	push   %ebp
+
+Breakpoint 1, test_backtrace (x=3) at kern/init.c:13
+13	{
+(gdb) x/10x $esp
+0xf010ef9c:	0xf0100076	0x00000003	0x00000004	0x00000000
+0xf010efac:	0xf010004a	0xf0110308	0x00000005	0xf010efd8
+0xf010efbc:	0xf0100076	0x00000004
+(gdb) 
+
+```
+由上我们可以看出, 每次调用函数向栈中压入了2 word(8字节)的数据
+
+然后我们仔细看看每次压入的数据:
+```bash
+0xf010efdc:	0xf01000f4	0x00000005	0x00001aac	0x00000660
+```
+
+这是第一次对test_backtrace的调用, 我们压入了返回位置`0xf01000f4`, $eip和参数是caller负责储存的值
+
+然后我们压入上一个函数的栈帧压入
+
+然后一直到下一次储存$ebp的位置, 我们都当作传入的参数:
+```bash
+0xf010efbc:	**0xf0100076**	0x00000004	0x00000005	0x00000000
+0xf010efcc:	0xf010004a	0xf0110308	0x00010094	**0xf010eff8**
+0xf010efdc:	0xf01000f4
+```
+这里的`0xf010eff8`作为栈帧, 我们可以追溯函数的调用栈, 然后与其相邻的前一个地址就是函数的返回地址
+
+## exercise 11
+在`kern/monitor.c`中添加以下代码:
+```c
+int mon_backtrace(int argc, char **argv, struct Trapframe *tf)
+{
+	cprintf(&#34;Stack backtrace:\n&#34;);
+	int ebp = read_ebp();
+	while (ebp != 0x0)
+	{
+		int eip = *(int *)(ebp + 4);
+		int arg1 = *(int *)(ebp + 8);
+		int arg2 = *(int *)(ebp + 12);
+		int arg3 = *(int *)(ebp + 16);
+		int arg4 = *(int *)(ebp + 20);
+		int arg5 = *(int *)(ebp + 24);
+		cprintf(&#34;  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n&#34;, ebp, eip, arg1, arg2, arg3, arg4, arg5);
+		ebp = *(int *)ebp;
+	}
+	return 0;
+}
+```
+即可
+
+## exercise 12
+这一步花了不少功夫, 由于我对于stab info的认知欠缺, 所以查了不少资料并做了不少推测才理解了题目要求补全的代码该怎么做
+
+首先stab info是储存在目标文件的.stab区域的信息, 目的是为了调试使用, 其全称为symbol table, 所以我们可以用objdump得到其内容.
+
+然后我们通过分析可以看出, stab信息是以嵌套的方式储存的条目:
+```bash
+SO     0      2      f0100040 31     kern/entrypgdir.c
+15     OPT    0      0      00000000 49     gcc2_compiled.
+16     GSYM   0      0      00000000 64     entry_pgdir:G(0,1)=ar(0,2)=r(0,2);0;4294967295;;0;1023;(0,3)=(0,4)=(0,5)=r(0,5);0;4294967295;
+17     LSYM   0      0      00000000 158    pde_t:t(0,3)
+18     LSYM   0      0      00000000 171    uint32_t:t(0,4)
+19     LSYM   0      0      00000000 187    unsigned int:t(0,5)
+20     GSYM   0      0      00000000 207    entry_pgtable:G(0,6)=ar(0,2);0;1023;(0,7)=(0,4)
+21     LSYM   0      0      00000000 255    pte_t:t(0,7)
+22     SO     0      0      f0100040 0      
+```
+
+从这一段我们可以看出, SO条目包围了一些其他条目, 于是我们可以认为这些条目是属于这个SO条目(源文件)的. 于是kdegub中的函数就很好理解了:
+stab_binsearch是在二分搜索一个scope, 将左右指针停在对应scope的头尾
+
+于是我们在接下来的代码中加入以下代码:
+```c
+lline = lfun;
+rline = rfun;
+stab_binsearch(stabs, &amp;lline, &amp;rline, N_SLINE, 0);
+```
+和
+```c
+info-&gt;eip_line = stabs[rline].n_desc;
+```
+
+就可以在搜索出函数信息后, 找到对应的第一个行号信息了
+
+然后我们在`monitor.c`文件中实现对应的命令即可:
+
+```c
+{&#34;backtrace&#34;, &#34;Display the stack backtrace&#34;, mon_backtrace}
+```
+
+```c
+int mon_backtrace(int argc, char **argv, struct Trapframe *tf)
+{
+	cprintf(&#34;Stack backtrace:\n&#34;);
+	int ebp = read_ebp();
+	while (ebp != 0x0)
+	{
+		int eip = *(int *)(ebp + 4);
+		int arg1 = *(int *)(ebp + 8);
+		int arg2 = *(int *)(ebp + 12);
+		int arg3 = *(int *)(ebp + 16);
+		int arg4 = *(int *)(ebp + 20);
+		int arg5 = *(int *)(ebp + 24);
+		cprintf(&#34;  ebp %08x  eip %08x  args %08x %08x %08x %08x %08x\n&#34;, ebp, eip, arg1, arg2, arg3, arg4, arg5);
+		struct Eipdebuginfo info;
+
+		if (debuginfo_eip(eip, &amp;info) == 0)
+		{
+			int fn_name_length = info.eip_fn_namelen;
+			char fn_name[fn_name_length + 1];
+			memcpy(fn_name, info.eip_fn_name, fn_name_length);
+			fn_name[fn_name_length] = &#39;\0&#39;;
+
+			cprintf(&#34;	%s:%d: %s+%d\n&#34;, info.eip_file, info.eip_line, fn_name, eip - info.eip_fn_addr);
+		}
+
+		ebp = *(int *)ebp;
+	}
+	return 0;
+}
+```
+
+到此, 整个lab 1就完成了, 起码花费了我10 hours以上的时间
+在控制台运行`make grade`, 每个测试点都能通过
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-09-28
+      </div>
+      <div class="card-info">
+        6.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 6 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/09/28/draft/SE-design/">
+      软件工程-需求分析
+    </a>
+    <span class="card-abstract">
+      
+&lt;!-- TOC --&gt;
+
+- [软件设计](#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1)
+    - [什么是设计?](#%E4%BB%80%E4%B9%88%E6%98%AF%E8%AE%BE%E8%AE%A1)
+    - [设计的过程](#%E8%AE%BE%E8%AE%A1%E7%9A%84%E8%BF%87%E7%A8%8B)
+- [软件设计原则](#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99)
+    - [抽象](#%E6%8A%BD%E8%B1%A1)
+        - [parametrization](#parametrization)
+        - [specification规范](#specification%E8%A7%84%E8%8C%83)
+        - [封装与信息隐藏](#%E5%B0%81%E8%A3%85%E4%B8%8E%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F)
+    - [低耦合与高内聚](#%E4%BD%8E%E8%80%A6%E5%90%88%E4%B8%8E%E9%AB%98%E5%86%85%E8%81%9A)
+        - [解耦与模块化](#%E8%A7%A3%E8%80%A6%E4%B8%8E%E6%A8%A1%E5%9D%97%E5%8C%96)
+        - [接口与实现分离](#%E6%8E%A5%E5%8F%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%88%86%E7%A6%BB)
+        - [sufficiency, completeness, primitiveness](#sufficiency-completeness-primitiveness)
+        - [separation of concerns](#separation-of-concerns)
+    - [七条设计原则](#%E4%B8%83%E6%9D%A1%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99)
+        - [单一职责原则SRP](#%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99srp)
+        - [里氏替换原则LSP](#%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99lsp)
+        - [依赖反转原则DIP](#%E4%BE%9D%E8%B5%96%E5%8F%8D%E8%BD%AC%E5%8E%9F%E5%88%99dip)
+        - [接口隔离原则ISP](#%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99isp)
+        - [合成/聚合复用原则CARP](#%E5%90%88%E6%88%90%E8%81%9A%E5%90%88%E5%A4%8D%E7%94%A8%E5%8E%9F%E5%88%99carp)
+        - [最少知识原则LoD](#%E6%9C%80%E5%B0%91%E7%9F%A5%E8%AF%86%E5%8E%9F%E5%88%99lod)
+- [软件设计的关键issue](#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%85%B3%E9%94%AEissue)
+    - [并发问题](#%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98)
+    - [事件的控制和处理](#%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%8E%A7%E5%88%B6%E5%92%8C%E5%A4%84%E7%90%86)
+    - [data persistence](#data-persistence)
+    - [distribution of components](#distribution-of-components)
+    - [Error and Exception Handling and fault](#error-and-exception-handling-and-fault)
+    - [Interaction and presentation](#interaction-and-presentation)
+    - [Security](#security)
+- [软件结构和架构](#%E8%BD%AF%E4%BB%B6%E7%BB%93%E6%9E%84%E5%92%8C%E6%9E%B6%E6%9E%84)
+    - [viewpoint](#viewpoint)
+    - [架构风格](#%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC)
+- [设计模式](#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
+- [UI设计](#ui%E8%AE%BE%E8%AE%A1)
+    - [基本原则](#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99)
+    - [基本问题](#%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98)
+    - [UI设计类型](#ui%E8%AE%BE%E8%AE%A1%E7%B1%BB%E5%9E%8B)
+    - [数据呈现](#%E6%95%B0%E6%8D%AE%E5%91%88%E7%8E%B0)
+    - [UI设计过程](#ui%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B)
+    - [metaphor and conceptual models](#metaphor-and-conceptual-models)
+- [软件设计的质量分析](#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E7%9A%84%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90)
+    - [如何分析质量](#%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90%E8%B4%A8%E9%87%8F)
+- [软件设计符号](#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E7%AC%A6%E5%8F%B7)
+    - [结构描述](#%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0)
+    - [行为描述](#%E8%A1%8C%E4%B8%BA%E6%8F%8F%E8%BF%B0)
+- [编程范式](#%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F)
+
+&lt;!-- /TOC --&gt;
+
+
+# 软件设计
+
+## 什么是设计?
+设计我们可以分为以下几个部分:
+
+- goals
+- constraints
+- alternatives
+- representations
+- solutions
+
+软件设计位于需求分析和软件实现的中间层, 目的是为了把现实的需求转化为技术的实现, 并为后续的测试维护提供便利.
+
+## 设计的过程
+设计过程我们分为:
+- 架构设计
+- 细节设计
+
+# 软件设计原则
+所谓原则, 是不可违背的东西, 但是在软件设计中是需要根据具体的context来变通的东西.
+
+常规的设计中, 我们总有一些值得参考的设计原则:
+
+## 抽象
+抽象指的是把关注的内容提取出来, 然后忽略掉不关注的部分, 我们可以简单提出两种常用的抽象思路:
+
+### parametrization
+参数化意味着我们把一个过程从硬编码的数据, 抽象为了由参数控制的数据, 我们只关注了执行过程, 而不再关注数据的指定
+
+### specification(规范)
+规范则是从另一个角度来看待抽象, 包括了三点:
+
+- 过程抽象
+- 数据抽象
+- 控制抽象
+
+### 封装与信息隐藏
+抽象的具体手段之一
+
+## 低耦合与高内聚
+耦合指系统或组件之间的互相依赖的程度
+
+内聚指的是系统内部组件的相互依赖程度
+
+此原则关注的是要在组件间相互独立, 组件内部相互依赖
+
+### 解耦与模块化
+
+这是实施低耦合与高内聚的手段过程
+
+### 接口与实现分离
+
+这一步包含了抽象与解耦的思想, 实际上抽象也就是解耦的一种实践, 将特定部分分离出来, 降低了各部分的耦合程度
+
+### sufficiency, completeness, primitiveness
+充分, 完备, 原始, 是抽象的部分需要具备的属性, 抽象的部分需要能够完整实现其目标要求, 并且覆盖尽可能多的情况, 并且尽可能的简单而不可再分
+
+### separation of concerns
+关注点的分离, 最直观的例子就是AOP(面向切面编程)
+
+我们将关注点提取出来, 作为整个程序的切面, 也就是一种横向的抽象
+
+## 七条设计原则
+
+七条设计原则是评价设计的七条重要指标
+
+### 单一职责原则(SRP)
+每个类只要单一的责任, 不应该过于复杂
+
+### 里氏替换原则(LSP)
+任何父类可以出现的地方, 都可以用子类替换, 实现过程复用
+
+### 依赖反转原则(DIP)
+一个具体类要依赖于抽象, 先面向接口编程, 再实现接口
+
+具体的例子可以参考Ioc和DI:
+
+Ioc(控制反转)会将程序的控制从用户编写的主程序转移到框架中, 并留下接口, 来让用户编写在不同控制流的位置行为.
+
+DI(依赖注入)是Ioc的一种具体实现, 通过将依赖从程序逻辑中抽象出来, 编写为配置文件, 然后将控制交给框架, 让框架来进行业务逻辑和依赖的交互
+
+这些都是DIP的具体实现
+
+### 接口隔离原则(ISP)
+
+接口描述尽量小, 提高复用和灵活性, 不向类提供不需要的接口
+
+### 合成/聚合复用原则(CARP)
+代码复用使用组合聚合的方式, 而不是继承, 继承应该是实现多态的方式 (即便golang完全采用了组合来实现多态)
+
+### 最少知识原则(LoD)
+
+又称为迪米特原则, 要求类之间的了解最少, 从而实现类之间的解耦, 只通过边界来交互
+
+# 软件设计的关键issue
+
+## 并发问题
+
+并发的本质是对问题的分解和解耦, 使得问题能够在不同等级的进程和线程运行
+
+## 事件的控制和处理
+事件机制在很多系统中都存在, 包括最基本的操作系统也一般实现了自己的事件机制
+
+## data persistence
+
+## distribution of components
+分布式系统架构
+
+## Error and Exception Handling and fault
+错误处理和异常处理, 良好的错误处理能力能提高系统的可用性
+
+## Interaction and presentation
+其实就是前端的展示
+
+## Security
+安全的范畴很大, 不在我们的考虑中
+
+# 软件结构和架构
+
+## viewpoint
+从不同的角度来看待一个软件会有不同层级的抽象, 从不同的抽象层级来看待软件, 可以简单考虑到以下视角:
+
+- logical: 关注软件的逻辑行为, 注重功能的实现
+- process: 关注进程级别的软件, 注重并发并行和进程通信等
+- physical: 关注软件的物理部署, 注重硬件和软件的交互
+- development: 关注软件的开发过程, 关注软件的组成和解耦等
+
+## 架构风格
+架构风格指的是 &#34;一组元素, 一组类型的相互关系, 和一组约束的集合&#34;, 架构为软件提供了高等级的组织指导
+
+- 通常架构: 一般软件的架构
+  - layers
+  - pipes and filters
+  - blackboard
+
+- 分布式架构:
+  - BS架构
+  - three-ties架构
+  - 经纪人架构(broker)
+
+- 交互式架构:
+  - MVC
+  - PAC
+
+- 适配性架构(adaptive)
+  - microkernel
+  - reflection
+
+# 设计模式
+
+注重于类和对象级别的设计, 层级低于架构, 此略, 详见其他文章
+
+# UI设计
+
+UI设计属于软件设计的一部分, 针对于用户交互部分
+
+## 基本原则
+
+- 易于学习
+- 用户熟悉
+- 统一性
+- 减少&#34;surprise&#34;
+- 可恢复用户的错误操作
+- 有指导
+- 考虑用户的多样化(盲人, 聋哑人等)
+
+## 基本问题
+1. 如何和用户交互
+2. 如何呈现数据(view)
+
+## UI设计类型
+
+- QA: 用户提出问题, 系统作出响应
+- Menu selection: 用户通过菜单选择操作
+- Form fill-in: 用户填写表单
+- Command language: 用户通过命令行操作
+- Natural language: 用户通过自然语言操作
+
+## 数据呈现
+
+MVC模式
+
+UI主要复杂V部分的转换, 将C提供的Raw data以直观的方式呈现
+
+tips:
+- 对于过多数据使用抽象形式呈现
+- 使用颜色作为设计要素
+  - 颜色不宜过多
+  - 颜色要展示对应的系统状态
+  - 颜色要有一致性, 不要多处的颜色表示不同含义
+  - 考虑用户多样性
+
+
+## UI设计过程
+- user analysis
+- software prototyping
+- interface evaluation
+
+## metaphor and conceptual models
+类比是对于用户快速学习一个东西的最好的方式, 通过现有的知识能够快速掌握新的技能, 所以UI设计需要符合人们的常识和直觉, 使用统一的概念模型
+
+# 软件设计的质量分析
+
+由于处于设计阶段, 对于软件质量的分析方式和后续的实现后的质量分析并不一样
+
+## 如何分析质量
+- 设计审查(review)
+- 静态分析(static analysis)
+- simulation and prototype
+
+# 软件设计符号
+
+设计时可以采用很多描述设计的方式:
+
+## 结构描述
+
+- ADL(Architecture Description Language)
+- class and object diagram
+- Class responsibility collaboration(CRC) cards
+- deployment diagram
+  
+  用一系列的节点和链接关系来表示物理设备的部署关系
+- ER diagram (实体关系图)
+
+- IDL(接口描述语言)
+  实际上比起描述符号, IDL更多的在RPC中使用, 利用thrift之类的软件进行代码生成
+
+- structure charts
+
+## 行为描述
+- active diagrams
+  注重描述一个行为的过程, 使用流程图
+- communication diagram
+  注重于描述交流过程
+- data flow diagram
+  描述数据流
+- decision table
+  描述决策表
+- flowchart
+  控制流图
+- Sequence diagram
+    时序图
+- state diagram
+  状态图
+- 形式语言描述
+- PDLs(pseudo code and program design)
+
+# 编程范式
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-09-27
+      </div>
+      <div class="card-info">
+        206字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/09/27/draft/database-3/">
+        数据库原理(345)SQL
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+数据库的语法很多, 能够实现的功能多且杂, 很多功能其实未必会用上, 但是对于软件能够做到的事情要有一个基本的认知, 在需要实现的时候才能定向搜索资料, 实现目标功能
+
+---
+
+# SQL基础
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-09-24
+      </div>
+      <div class="card-info">
+        2.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/09/24/draft/database-2/">
+      数据库原理(2)关系模型
+    </a>
+    <span class="card-abstract">
+      
+# 关系模型
+
+关系模型可以简单理解为描述数据关系的模型, 一般用一张表来表示, 一个格子中储存数据, 然后通过横纵坐标来确定数据和其他事物的关系
+
+## 关系型数据库
+
+基于关系模型建立的数据库我们称为关系型数据库
+
+对于关系型数据库, 我们有以下基本的概念和元素:
+
+- 表(table): 一张表就是一个二维表格
+- 元组(tuple): 表中的一行
+- 属性(attribute): 表中的一列
+
+我们用**relation instance**表示一个表的实例, 我们所说的关系的最小单位可以视作一个表, 因为只有完整的横纵坐标才能构成一组关系
+
+- 域(domain): attribute的取值范围
+
+当一个域规定的元素不可再分, 我们称这个域是atomic(原子)的, 对于一个用户的地址, 我们一般可以将其细分为街道, 楼栋, 门牌号等, 这时我们就认为地址这个attribute的domain是non-atomic的
+
+具体的一个属性是否可再分, 要根据情况来制定, 如果我们对于地址数据并不需要单独取出街道, 楼栋等, 那么我们就可以将其视作atomic的
+
+在设计schema时, 我们要求属性的domain必须是atomic的, 对于一个属性如果我们会采用其子集的数据的话, 意味着我们需要将其进行更细化的分割
+
+- 键(key): 键是我们可以用来唯一确定一个值的钥匙
+
+我们确定了一个tuple, 然后可以用一个属性对应的key来找到这个元组对应的属性值
+
+所有的属性构成了一个元组(词条), 一个entry的属性是将其和其他entry区别开来的关键. 但是如果一个entry的所有属性和其他entry一样 (这在实际数据库中很常见), 我们查询时就无法有效区别一些对象
+
+对于能够区别每一个entry的属性的组合, 我们称其为一组**super key**
+
+在所有的super key中, 最小的super key我们称为**candidate key**
+
+在许多的candidate key中选择的一个唯一用来区分不同tuple的key, 我们称这个属性为**primary key**, 一个表中只能有一个primary key
+
+### foreign-key(外键)
+对于外键用一个形式化的描述会更清楚一点:
+$r_1$是一个关系, $r_2$是另一个关系, 对于$r_1$中存在一个属性$A$有着和$r_2$中的属性$B$完全相同的domain, 那么我们就可以通过$r_1$中的$A$属性, 找到$r_2$中的属性$B$中的相同tuple
+
+我们称$r_1$是referencing relation, $r_2$是referenced relation
+
+这里的$A$被称为外键, $B$被称为**唯一键**
+
+我们要求$B$能够唯一识别每一个tuple, 但是$A$外键并不需要
+
+
+
+### Schema and instance
+
+- schema是关系数据库的logical design, 包含了表的关系设计, 约束设计等
+- instance是schema的实例化, 是对应结构的数据库在某一个时刻下的具体数据状态(snapshot)
+
+
+### schema diagram
+很适合的直观宝石schema的办法
+
+---
+
+# 关系代数
+
+## select
+$$
+\sigma_{condition}(r)
+$$
+
+## project
+$$
+\pi_{attribute-list}(r)
+$$
+
+## composition
+我们可以将关系代数的操作组合起来, 比如将上述的两种操作组合可以得到
+
+$$
+\pi_{attribute-list}(\sigma_{condition}(r))
+$$
+
+表示从关系中选出满足条件的元组, 然后再从中选出指定的属性
+
+## cartesian product
+$$
+r_1 \times r_2
+$$
+笛卡尔积要做的事情可以简单描述为:
+&gt; 将$r_1$中的每一个元组和$r_2$中的每一个元组组合起来, 得到一个新的元组
+
+容易得知新关系的大小为$r_1$的大小乘以$r_2$的大小
+
+## join
+连接操作就是将外键和对应的referenced table连接起来得到新表的过程
+
+$$
+r_1 \bowtie r_2
+$$
+等价于
+$$
+\sigma_{r_1.A = r_2.B}(r_1 \times r_2)
+$$
+
+## set operations
+
+### union
+$$
+r_1 \cup r_2
+$$
+我们每次选取出来的tuples是一个集合, 所以我们自然可以进行一些集合的操作
+
+### intersection
+$$
+r_1 \cap r_2
+$$
+
+### assignment
+$$
+r_3 \leftarrow r_1 \cup r_2
+$$
+
+## rename
+$$
+\rho_{new-name(attribute-list)}(r)
+$$
+
+## Equivalent Queries
+$$
+\sigma_{condition}(r) \cup \sigma_{\neg condition}(r) = r
+$$
+集合运算是有等价运算的, 可以通过这个等价关系来进行优化
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-09-20
+      </div>
+      <div class="card-info">
+        4.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/09/20/draft/database-1/">
+        数据库原理(一)总览
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 数据库的作用
+
+早些时候我们使用文件来储存和操作数据, 但是对于大量的数据和操作并不理想, 针对其中缺陷, 我们可以映射出数据库需要提供的功能.
+
+- 解决数据冗余和一致性问题
+- 访问数据的困难
+- 数据隔离
+- 完整性问题
+- 原子性问题
+- 并发访问问题
+
+# 数据视图
+
+数据视图可以看作对于数据的抽象
+
+首先我们明确一下抽象(abstraction)的定义:
+
+&gt; 抽象是对于事物属性中, 我们感兴趣的那一部分共有属性的提取, 使我们可以只专注于感兴趣的特定部分
+
+于是数据视图是根据用户感兴趣的程度, 提供不同的数据, 进行整理修改后提供的特定呈现模式
+
+## 数据模型
+
+- Relational Model(关系模型)
+- Entity-Relationship Model(实体-联系模型)
+- Semi-structured Model(半结构化模型)
+- Object-oriented Model(面向对象模型)
+
+## 数据抽象
+这一部分是更纯粹的数据抽象, 我们从不同的level来关注数据:
+
+- logical level
+- phyiscal level
+
+# Database Design
+数据库的设计我们一般认为是数据库的schema的设计
+
+schema可以看作对于需求的数据库概念实现, 通过实例化schema来让业务的数据需求再数据库中实现
+
+我们可以将设计过程概括为下图:
+
+```mermaid
+flowchart LR
+    subgraph A[Data model]
+        direction LR
+        A_1[Relational Model]
+        A_2[Entity-Relationship Model]
+        A_3[Semi-structured Model]
+        A_4[Object-oriented Model]
+    end
+
+    B[model concept]
+
+    A --&gt;|选择模型| B
+
+    direction LR
+
+    D[&#34;Functional \n requirement \n Specification&#34;]
+
+    C[conceptual schema]
+
+    E{根据需求使用 \n concept构建schema}
+
+    B --&gt; E
+    D --&gt; E
+
+    E --&gt; C
+```
+
+# 数据库系统
+数据库系统包含三个主要组件:
+
+- storage manager
+- query processor
+- transaction manager
+
+## storage manager
+具体职责如下:
+
+```mermaid
+flowchart LR
+
+A[DML]
+C[file system]
+
+subgraph B[storage manager]
+    
+    subgraph B_1[resposiblity]
+        B_1_1[Authorization]
+        B_1_2[integrity management]
+        B_1_3[transaction management]
+        B_1_4[file management]
+        B_1_5[buffer management]
+    end
+    
+    subgraph B_2[Data structure]
+        B_2_1[Data files]
+        B_2_2[Data dictionary]
+        B_2_3[indices]
+    end
+end
+
+A --&gt; B
+
+B --&gt; C
+```
+
+- Authorization: 对用户的权限进行验证, 保证用户只能访问其有权限的数据. 要知道, 用户数据大多数时候也是以数据形式储存在数据库中的, 所以交由storage management来验证用户权限是说得通的
+- integrity management: 保证数据的完整性, 这主要是要求对数据的修改必须满足数据的约束(constraint), 不破坏schema
+- transaction management: 保证事务的原子性, 一致性, 隔离性, 持久性
+- file management: 数据本身是要持久化到文件中的, 所以需要对文件进行管理, 包括文件的创建, 删除, 修改, 读取等
+- buffer management: 与数据的交互中间需要经过一层内存, 用于数据交互的缓存
+  
+- indices: 索引, 对数据建立索引加快了对数据的查询, 具体建立索引的方式涉及到底层的数据结构, 不在此展开
+
+## query processor
+
+查询处理主要是转化用户的指令, 让storage manager能够理解并执行相应的底层操作
+
+- DDL: 数据定义语言, 用于定义schema
+- DML: 数据操作语言, 用于对数据进行操作
+- Query evaluation engine: 查询执行引擎, 用于执行查询语句
+
+## transaction manager
+管理事务
+
+### ACID
+- Atomicity: 原子性, 事务要么全部执行, 要么全部不执行
+- Consistency: 一致性, 事务执行前后, 数据库的状态要保持一致
+- Isolation: 隔离性, 事务之间互不干扰
+- Durability: 持久性, 事务执行后, 数据库的状态要持久化
+
+# 数据库系统的架构
+
+## 数据库系统自身架构
+
+```mermaid
+flowchart TB
+    subgraph D[User]
+        D_1[native user]
+        D_2[application programmer]
+        D_3[sophisticated user]
+        D_4[database administrator]
+    end
+
+    D_1 --&gt;|use| E_1[application interfaces]
+    D_2 --&gt;|write| E_2[application interfaces]
+    D_3 --&gt;|use| E_3[query tools]
+    D_4 --&gt;|use| E_4[administerators tools]
+
+    E_1 --&gt; A_5
+    E_2 --&gt; A_3
+    E_3 --&gt; A_2
+    E_4 --&gt; A_1
+
+    subgraph A[query processor]
+        direction TB
+        A_1[DDL interpreter]
+        A_2[DML queries]
+        A_3[compiler and linker]
+        A_4[DML compiler and organizer]
+        A_5[application program object code]
+        A_6[query evaluation engine]
+
+        A_2 --&gt; A_4
+
+        A_3 --&gt; A_2
+        A_3 --&gt; A_5
+
+        A_5 --&gt; A_2
+        A_5 --&gt; A_6
+
+        A_4 --&gt; A_6
+
+        
+    end
+
+    
+
+    subgraph B[storage manager]
+        B_1[authorization and integrity manager]
+        B_2[transaction manager]
+        B_3[file manager]
+        B_4[buffer manager]
+    end
+
+    
+
+    A_6 --&gt; B_1
+    A_6 --&gt; B_2
+    A_6 --&gt; B_3
+    A_6 --&gt; B_4
+
+    subgraph C[disk storage]
+        C_1[data]
+        C_2[indices]
+        C_3[data dictionary]
+        C_4[statistical data]
+    end  
+
+    B_3 --- C_1
+    B_3 --- C_2
+
+    B_4 --- C_1
+    B_4 --- C_2
+
+    A_4 --- C_3
+    A_4 --- C_4
+
+    B_1 --- C_3
+```
+
+自身架构的基本逻辑是, 不同的用户通过不同的工具接入查询处理层, 在这个层将不同形式的查询和操作统一翻译为数据库能够理解的语言, 交由storage manager进行处理, 最后将数据持久化到设备中
+
+## 数据库使用架构
+
+使用场景的架构大致分为两类:
+
+- 双层架构
+- 三层架构
+
+### 双层架构
+双层架构场景比较简单, 只有数据库和数据库使用者, 主要是直接提供数据库服务, 一般是2b服务
+
+### 三层架构
+三层架构是在用户和数据库之间提供一个业务层, 也是当下互联网的一个基本架构逻辑
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-09-20
+      </div>
+      <div class="card-info">
+        4.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/09/20/draft/SE-req/">
+      软件工程-需求分析
+    </a>
+    <span class="card-abstract">
+      
+&lt;!-- TOC --&gt;
+&lt;!-- TOC --&gt;
+
+- [分类](#%E5%88%86%E7%B1%BB)
+- [需求过程](#%E9%9C%80%E6%B1%82%E8%BF%87%E7%A8%8B)
+    - [过程模型](#%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B)
+    - [过程活动者](#%E8%BF%87%E7%A8%8B%E6%B4%BB%E5%8A%A8%E8%80%85)
+- [需求抽取](#%E9%9C%80%E6%B1%82%E6%8A%BD%E5%8F%96)
+    - [需求源](#%E9%9C%80%E6%B1%82%E6%BA%90)
+        - [需求的交流](#%E9%9C%80%E6%B1%82%E7%9A%84%E4%BA%A4%E6%B5%81)
+        - [需求的优先级](#%E9%9C%80%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7)
+    - [需求抽取的方式](#%E9%9C%80%E6%B1%82%E6%8A%BD%E5%8F%96%E7%9A%84%E6%96%B9%E5%BC%8F)
+- [需求分析](#%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90)
+    - [需求分类](#%E9%9C%80%E6%B1%82%E5%88%86%E7%B1%BB)
+    - [概念建模](#%E6%A6%82%E5%BF%B5%E5%BB%BA%E6%A8%A1)
+        - [如何选择合适的UML?](#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84uml)
+    - [Architecture Design and Requirements Allocation](#architecture-design-and-requirements-allocation)
+    - [需求协商](#%E9%9C%80%E6%B1%82%E5%8D%8F%E5%95%86)
+    - [形式分析](#%E5%BD%A2%E5%BC%8F%E5%88%86%E6%9E%90)
+- [需求标准](#%E9%9C%80%E6%B1%82%E6%A0%87%E5%87%86)
+    - [System Definition Document](#system-definition-document)
+    - [System requirements specification](#system-requirements-specification)
+    - [Software requirements specification](#software-requirements-specification)
+- [需求验证Validation](#%E9%9C%80%E6%B1%82%E9%AA%8C%E8%AF%81validation)
+    - [需要执行的步骤](#%E9%9C%80%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E6%AD%A5%E9%AA%A4)
+- [其他需要考虑的](#%E5%85%B6%E4%BB%96%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84)
+    - [需求过程的迭代性质](#%E9%9C%80%E6%B1%82%E8%BF%87%E7%A8%8B%E7%9A%84%E8%BF%AD%E4%BB%A3%E6%80%A7%E8%B4%A8)
+    - [需求的可追踪性](#%E9%9C%80%E6%B1%82%E7%9A%84%E5%8F%AF%E8%BF%BD%E8%B8%AA%E6%80%A7)
+
+&lt;!-- /TOC --&gt;
+
+软件工程中的需求我们可以大致按照以下内容分类:
+
+- 系统需求
+    - 软件需求
+        - 产品需求
+          - 功能性需求
+          - 非功能性需求
+        - 过程需求
+
+# 需求过程
+
+需求过程是制定需求, 管理需求, 维护需求的一系列过程
+
+需求定义是软件生命周期初始化的配置(configure)
+需求过程贯穿软件生命周期
+
+## 过程模型
+过程模型是整个生命周期采用的模型, 比如瀑布模型, 增量模型, 敏捷模型等
+
+## 过程活动者
+
+- 需求专家
+- 利益相关者
+  - 用户
+  - 客户
+  - 开发者
+  - 维护者
+  - 市场分析师(面向大市场的代理客户)
+
+# 需求抽取
+
+这一步是提取出不同的需求要素, 获得基本的需求信息
+
+## 需求源
+- 目标 (高级别的需求, 可行性调查)
+- 领域知识
+- 利益相关者
+- 商业规则
+- 可操作环境
+- 组织环境
+
+### 需求的交流
+在不同的需求之间进行交流评估, 使得不同领域的专家和利益相关者能够互相沟通. 这需要一些通用的表达来有效化沟通
+
+&gt; A set of internally consistent model at different levels of abstraction facilitate the communication and understanding.
+
+也就是说我们将一个内部一致的系统, 从不同的级别和角度将其抽象出来, 使得不同的对象都能对同一个系统建立有效的理解
+
+### 需求的优先级
+我们需要明确`项目的范围`
+
+明确范围的目的是为了确定优先级, 将高优先级的任务先完成
+
+同时保证可扩展性, 便于在后期对初期列表中没有的任务进行添加
+
+## 需求抽取的方式
+- 面谈
+- 制定场景, 然后模拟需求的场景
+- 制造原型产品, 并进行各类评估
+- 交流回忆
+- 观察
+- 用户描述
+
+# 需求分析
+
+从不同渠道得到需求信息后, 需要进行进一步的分析
+
+包含了:
+
+- 检查并解决需求间的冲突
+- 发现需求的边界, 并阐明边界如何交互
+- 详细阐述系统需求以能够衍生出软件需求
+
+## 需求分类
+- 功能性需求
+- 非功能性需求
+---
+- 从高级别衍生的需求
+- 由相关需求源直接提出的需求
+
+---
+
+- 产品需求
+- 过程需求 (对开发方式的要求, 制定某些技术栈之类的)
+
+---
+
+- 强制需求
+- 高期待需求
+- 期待需求
+- 可选需求
+
+---
+
+- 全局需求 (需求会影响大量软件组件)
+- 局部需求
+
+---
+
+- 稳定需求
+- 可变需求
+
+## 概念建模
+
+- 用例图(use case diagram)
+- 数据流模型(data flow model)
+- 状态模型(state model)
+- 目标模型(goal model)
+- 用户交互模型(user interaction model)
+- 对象模型(object model)
+- 数据模型(data model)
+
+这些模型统称为UML(Unified Modeling Language)
+
+### 如何选择合适的UML?
+考虑如下的因素:
+1. 问题的性质
+2. 软件工程师的经验
+3. 用户的过程需求
+
+&gt; 建立软件的需求前, 需要先建立对上下文情景的建模
+
+## Architecture Design and Requirements Allocation
+
+架构中的不同组件满足不同的需求, 组件之间的链接交互进一步满足更多的需求
+
+将需求分配给组件我们称为需求分配(requirements allocation), 一个独立的需求分配, 指的是一个需求对应架构中的一个组件, 而不是多个组件的连接.
+
+对于需要在基础的需求分配给单独组件的基础上建立的futher Req, 我们可以作出相应的DAG, 作为依赖图(拓扑排序)
+
+## 需求协商
+
+目的是解决需求中的冲突
+
+通过建立优先级来明确任务的先后
+
+- cost-value方法
+- analytic hierarchy process(AHP)
+
+关于AHP方法或许需要单独开一篇笔记或者在其他的相关文章中记录
+
+## 形式分析
+通过对情景建模, 对需求进行理论证明和模型检查
+
+一般来说形式建模会放到项目较后期进行, 形式符号的建模也需要随着需求的变化更新
+
+# 需求标准
+
+&gt; A document that can be systematically reviewed, evaluated and approved.
+
+## System Definition Document
+
+专业领域的高级别系统
+
+引出DDD(Domain Driven Design)
+
+## System requirements specification
+
+基于系统定义, 引出系统层面的需求
+
+## Software requirements specification
+
+基于系统需求, 引出软件层面的需求
+
+# 需求验证(Validation)
+
+需要保证以下几点:
+
+- 软件工程师能够理解
+- 保证需求文档易于理解验证, 使用通用或广泛使用的标准术语等. 如果没有使用标准, 则需要在公司标准和广泛标准间建立映射
+
+## 需要执行的步骤
+1. review: 需要一群人完成
+2. prototyping: 制作原型是验证最简单直接的方式, 但是要考虑成本和切实可行性
+3. model validation: 进行模型验证可能需要一定程度的形式化定义
+4. acceptance test
+
+# 其他需要考虑的
+## 需求过程的迭代性质
+如果需求是可迭代性的, 我们需要制定一条基准线(baselined)
+
+在Req elicitation的过程中需要进行**变更管理**
+
+## 需求的可追踪性
+需要做好需求的追踪
+
+对于一个需求, 向后我们需要能够找到需求和对于的利益相关者, 向前我们要能找到架构设计中对应的部分和承担着
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-09-15
+      </div>
+      <div class="card-info">
+        900字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/09/15/draft/MESI/">
+        MESI机制
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+此处记录一个硬件中解决cache coherence(缓存一致性)的机制: MESI
+
+# 缓存行
+
+缓存行是缓存中的最小单位, 一般为64字节, 也就是16个int
+
+# MESI
+
+- modified
+- exclusive
+- shared
+- invalid
+
+这四个单词代表了缓存行的四种状态
+
+## modified
+状态M表示数据只存在于当前的缓存行中, 并且已经被修改过
+
+## exclusive
+状态E表示数据被当前缓存行独占, 但是没有修改过
+
+## shared
+状态S表示数据在多个缓存行中使用, 并且未被修改
+
+## invalid
+表示缓存行数据无效, 可以被新数据占用
+
+# 状态转换
+
+```mermaid
+flowchart
+M[modified]
+S[shared]
+I[invalid]
+E[exclusive]
+
+M --&gt;|远程读取| S
+M --&gt;|远程写入| I
+M --&gt;|本地读取| M
+M --&gt;|本地写入| M
+
+S --&gt;|远程读取| S
+S --&gt;|远程写入| I
+S --&gt;|本地读取| S
+S --&gt;|本地写入| M
+
+I --&gt;|本地读取| E
+I --&gt;|本地读取| S
+I --&gt;|本地写入| M
+
+E --&gt;|本地读取| E
+E --&gt;|本地写入| M
+E --&gt;|远程读取| S
+E --&gt;|远程写入| I
+
+
+```
+
+
+M态的缓存行, 需要在其他缓存行读取数据时, 将数据写回内存, 然后转换为S态, 如果其他缓存行将数据写入, 则转换为I态
+
+S态的缓存行, 在远程写入时无效化, 在修改时变为M
+
+I态的缓存行, 在本地读取时变为E或者S, 在本地写入时变为M
+
+E态的缓存行, 在本地写入时变为M, 在远程读取时变为S, 在远程写入时变为I
+
+缓存之间通过一条总线感知其他缓存的写入和读取
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
         2023-09-13
       </div>
       <div class="card-info">
@@ -301,12 +2132,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/09/13/draft/OSC_1/">
-        os-learning-overview
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/09/13/draft/OSC_1/">
+      os-learning-overview
+    </a>
+    <span class="card-abstract">
+      
 本文结合之前哦ostep的知识, 和Operating System Concepts PART ONE的阅读, 对OS的整体做一个概括性的总结整理
 
 # 操作系统
@@ -418,12 +2248,8 @@ E --&gt; F
 - 创建删除目录
 - 对文件和目录的基本操作
 - 对文件到mass storage的映射 (文件本身只是inode, 实际数据在mass storage中)
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -433,13 +2259,11 @@ E --&gt; F
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2023-09-04
@@ -456,11 +2280,12 @@ E --&gt; F
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2023/09/04/draft/verilog/">
-      verilog基础
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/09/04/draft/verilog/">
+        verilog基础
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 # verilog特性
 
 在开始基本语法前, 先强调两点关于verilog这种硬件编程语言和C的区别:
@@ -606,8 +2431,12 @@ c = d
 关于verilog语言本身需要注意的地方并不多, 硬件设计更重要的是元件的设计, 就像使用计数器来统计数量就比寄存器+加法器要好很多. 又或者是我们需要设置一个全局的时钟信号来同步设备的运作.
 
 很多的设计原理和硬件设计相关, 所以如何建立起良好的硬件意识才是更重要的事情, 对于编写Verilog来说.
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -617,11 +2446,13 @@ c = d
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2023-08-21
@@ -638,12 +2469,11 @@ c = d
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/08/21/draft/StudyMethod/">
-        My Study Methodology
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/08/21/draft/StudyMethod/">
+      My Study Methodology
+    </a>
+    <span class="card-abstract">
+      
 今天是返校的前一天, 这个假期我的思维改变了许多, 我觉得是时候写一篇文章来总结一下自己的观念和认知了
 
 ---
@@ -926,1452 +2756,6 @@ flowchart LR
 今天实在是太累了, 这篇文章就到此为止, 初步整理出学习的框架, 接下来我需要阅读一些相关的书籍, 从而进一步完善这个框架, 并且将其应用到实际的学习中
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-08-15
-      </div>
-      <div class="card-info">
-        5.9k字
-      </div>
-      <div class="card-info">
-        阅读时间: 5 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/08/15/draft/TypeCheck-20230815/">
-      精读编译原理6.5 - Type Checking
-    </a>
-    <span class="card-abstract">
-      
-有人说编译原理是程序员的三大浪漫之一 (编译原理, OS, 图形学)
-
----
-
-# Type Checking
-
-&gt; 一个健壮的类型检查系统不需要动态检测类型错误
-
-能够在静态阶段就排除掉类型错误, 可以有效避免一些运行时错误以及恶意攻击
-
-## Rules for Type Checking
-
-- synthesis(综合)
-- inference(推导)
-
-### Synthesis
-通过综合的方式, 我们可以从表达式树的子节点推导父节点的类型, 最后得到整个表达式的类型
-
-&gt; IF $f$ has type $s$ $\rightarrow$ $t$ and $x$ has type $s$ \
-&gt; THEN $f(x)$ has type $t$
-
-### Inference
-类似于继承(inheritance)的方式, 通过一个变量的使用方式来推导出它的类型
-
-&gt; IF $f(x)$ is an expression\
-&gt; THEN for some $\alpha$ and $\beta$, $f$ has type $\alpha$ $\rightarrow$ $\beta$, and $x$ has type $\alpha$
-
-当类型需要被检测, 但是声明name时不需要声明类型的语言, 就需要用到inference的类型检查规则
-
-## Type Conversions
-
-- widening conversions
-- narrowing conversions
-
-前者强调信息的保留, 从低精度到高精度, 后者则不考虑信息的丢失, 从高精度到低精度
-
-对于$E \rightarrow E_1 + E_2$的类型检查的semantic action(语义动作)可以用以下的函数来执行:
-
-1.  $$max(t_1,t_2)$$
-    返回两者中的高精度类型, 实现widen conversion
-
-2.  $$widen(addr,t_1,t_2)$$
-    这个函数中的$addr$代表$E$的数据的储存地址, 函数会更具后面两个类型的内存排布, 来获得两个类型的交集, 从而扩展$E$的内存空间, 实现widen conversion
-
-    书上给出的实现如下:
-    ```c++
-    Addr widen(Addr a, Type t, Type w) {
-        if (t = w) return a;
-        else if (t = integer and w = float) {
-            temp = new Temp();
-            gen(temp&#39;=&#39;&#39;(float)&#39;a);
-            return temp;
-        }
-        eles error;
-    }
-    ```
-    这是假设只有integer和float类型的情况下, 我们认为float的信息量大于integer (尽管两者都是32位bit)
-    我们可以看见, 函数选取较大的类型, 然后将a强制转换为较大类型, 然后分配给一个新的temp位置
-
-综上我们得到完整的semantic action:
-$$
-\begin{align}
-E \rightarrow E_1 + E_2 \\\{E.type &amp;= max(E_1.type, E_2.type); \\
-    a_1 &amp;= widen(E_1.addr, E_1.type, E.type); \\
-    a_2 &amp;= widen(E_2.addr, E_2.type, E.type); \\
-    E.addr &amp;= new Temp(); \\
-    &amp;\text{gen}(E.addr &#39;=&#39; a_1 &#39;+&#39; a_2); 
-\}
-\end{align}
-$$
-这段代码选取两个子表达式较大的类型, 作为新表达式的类型, 然后所有的子表达式根据自己的类型和新表达式的类型, 来进行widen conversion, 最后将两个子表达式的结果相加, 并将结果赋值给新表达式的地址
-
-## Type Inference and Polymorphic
-&gt; The term &#34;polymorphic&#34; refers to any code fragment that can be executed with arguments of different types.
-
-这里我们可以理解到多态的广义解释: 使用不同类型的参数产生不同结果的**同一段代码**, 我们称之为多态
-
-自然而然, 函数的重载可以看作一种多态的形式
-
-更具体地, 我们将多态分为编译时多态和运行时多态:
-- 编译时多态通过重载实现不同参数版本的函数(运算符), 然后编译器在编译时根据代码的参数选取合适的版本
-- 运行时多态往往结合面向对象的思想, 通过接口接受一个对象, 然后执行接口的函数, 但是具体执行了哪个函数由运行时传递的对象决定, 这就是运行时多态
-
-作为编译原理的一节, 我们这里主要讨论的是编译时多态, 也就是程序应该选取哪个版本的函数来执行
-
-现在我们来看一下书上的例子:
-
-```go
-func lenght(x) = 
-    if null(x) then 0 else length(tl(x)) + 1
-```
-其中的`tl(x)`函数将列表中的第一个元素remove后返回列表
-于是我们可以简单知道这个函数的目的: 递归统计列表长度
-
-我们知道列表`x`可以包含不同类型的元素, 这就导致了`length()`的参数类型不同, 通过类型推导, 从`if`中包括的0可以得到`length`的类型应该是一个`integer`
-
-
-### Substitution, Instances, and Unification
-这里`length()`的类型是一个含有变量的类型表达式(type expression):
-$$list(x) \rightarrow integer$$
-
-将类型表达式中的变量(variable)替换为某个类型, 我们称为一次替换(Substitution). 得到的替换结果我们称为一个实例(Instance). 如果两个类型表达式替换后的结果是一样的, 我们称为一次合一(Unification)
-
-$t$表示类型表达式, $S(t)$表示将$t$中的全部变量$\alpha$替换为$S(\alpha)$后的实例. 如果$S(t_1) = S(t_2)$则称$S$为一次合一替换. 再次地, 对于任意一个合一替换$S$, 如果存在$S&#39;$使得$S&#39;(t)$是$S(t)$的一个实例, 则$S&#39;$被称为**最一般化合一替换**
-
-所以合一简而言之就是通过替换类型变量来判断两个类型能否合并为同一个类型, 具体的, 我们可以提出以下的算法来判断两个类型是否可以合一:
-
-比如我们现在有两个类型表达式:
-
-$$
-((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_3)) \rightarrow list(\alpha_2)\\
-((\alpha_4 \rightarrow \alpha_5) \times list(\alpha_3)) \rightarrow \alpha_5
-$$
-
-我们画出它们的类型图:
-```Mermaid
-graph TD
-    A[&#34;-&gt;&#34; : 1] --&gt; B[&#34;x&#34; : 2]
-    A --&gt; C[list : 8]
-    C --&gt; D[α2 : 5]
-    B --&gt; E[&#34;-&gt;&#34; : 3]
-    E --&gt; F[α1 : 4]
-    E --&gt; D
-    B --&gt; G[list : 6]
-    G --&gt; H[α3 : 7]
-
-    I[&#34;-&gt;&#34; : 9] --&gt; J[x : 10]
-    I --&gt; K[α5 : 14]
-    J --&gt; L[&#34;-&gt;&#34; : 11]
-    J --&gt; M[list : 13]
-    L --&gt; H
-    M --&gt; H
-    L --&gt; N[α4 : 12]
-```
-每一个节点的类型都用一个单独的编号表示, 相同编号代表一个等价类
-我们执行以下规则:
-
-- $find(n)$和$union(m,n)$: 参考并查集, 代表了等价类的查找与合并
-
-- $unify(m, n)$: 对于两个节点$m$和$n$, 我们分三类情况讨论:
-  - 如果$m$和$n$是等价类, 则`return true`
-  - 如果$m$是带有$s_1$和$s_2$的$op_n$节点, $n$是带有$t_1$和$t_2$的$op_n$节点, 则将$m$和$n$合并(union), 并`return unify(s_1, t_1) and unify(s_2, t_2)`
-  - 如果$m$或$t$表示一个变量, 则合并$m$和$n$, 并`return true`
-
-完成以上操作后, 我们的类型图应该表示如下:
-```Mermaid
-graph TD
-    A[&#34;-&gt;&#34; : 1] --&gt; B[&#34;x&#34; : 2]
-    A --&gt; C[list : 7]
-    C --&gt; D[α2 : 5]
-    B --&gt; E[&#34;-&gt;&#34; : 3]
-    E --&gt; F[α1 : 4]
-    E --&gt; D
-    B --&gt; G[list : 6]
-    G --&gt; H[α3 : 4]
-
-    I[&#34;-&gt;&#34; : 1] --&gt; J[x : 2]
-    I --&gt; K[α5 : 7]
-    J --&gt; L[&#34;-&gt;&#34; : 3]
-    J --&gt; M[list : 6]
-    L --&gt; H
-    M --&gt; H
-    L --&gt; N[α4 : 5]
-```
-如果最终结果返回true, 则代表两个类型可以通过某个合一替换变为相同的类型, 具体执行的合一替换由结果图中的相同类型决定: 我们需要将等价类的叶节点进行替换, 以上图为例, 可以有:
-$$
-\begin{align}
-\alpha_1 &amp;= \alpha_3 \\
-\alpha_2 &amp;= \alpha_4 \\
-\alpha_5 &amp;= list(\alpha_2)
-\end{align}
-$$
-执行以下替换后的两式相等.
-
-然后我们再来具体看如何使用合一替换来推导函数的类型
-
-### Type Inference for length
-具体的, 我们执行如下规则:
-
-- 对于一个函数$fun \space id_1 (id_2) = E$, 我们使用一个类型表达式$\alpha \rightarrow \beta$来表示函数的类型, 然后对$E$和$id_2$进行类型推导, 得到类型$t$和$s$, 从而得到$id_1$的类型$s \rightarrow t$, 我们需要将$t$和$E$进行合一, $s$和$id_2$进行合一, 合一完成后将类型变量使用$\forall$进行约束
-
-- 每一个多态函数的出现需要将受限变量替换为某个新的类型变量
-
-具体的我们来看之前提到的`length()`函数:
-
-```go
-func lenght(x) = 
-    if null(x) then 0 else length(tl(x)) + 1
-```
-
-- `func lenght(x)`我们得到函数的类型为: $\alpha \rightarrow \beta$
-- 参数$x$为类型变量, 然后我们看函数体部分为`if`语句, 其类型为$boolean \times \alpha_i \times \alpha_i \rightarrow \alpha_i$
-- 然后我们知道`null(x)`函数的类型为$\forall\alpha.list(\alpha)\rightarrow boolean$, 这里用新变量代替受限变量得到$list(\alpha_n) \rightarrow boolean$由于推导出的参数是$x$, 所以这里需要把$x$和$list(\alpha_n)$进行合一, 于是有$x = list(\alpha_n)$
-- 接下来是$0$, 我们知道是$integer$类型, 所以$\alpha_i$和$integer$需要进行合一, 于是有$\alpha_i = integer$
-- 接下来看`length(tl(x)) + 1`部分, 首先我们看到最左边的叶节点, 即$tl(x)$, 我们知道$tl()$函数具有类型$\forall\alpha. list(\alpha) \rightarrow list(\alpha)$, 我们把受限变量替换为一个新变量得到$list(\alpha_t) \rightarrow list(\alpha_t)$, 然后得到参数类型为$x$, 于是将$x$和$list(\alpha_t)$进行合一, 得到$x = list(\alpha_t) = list(\alpha_n)$
-- 然后我们可以得到$1$的类型为$integer$, 现在`if`的三个参数都推导完毕, 我们需要把`length(tl(x))`部分和$\alpha_i$进行合一, 得到`length()` (被递归调用的length) 的类型为$list(\alpha_n) \rightarrow integer$
-- 后面只需要向上传递推导的类型并进行合一操作即可, 最后得到`length(x)`的类型为$\forall\alpha.list(\alpha)\rightarrow integer$
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-08-14
-      </div>
-      <div class="card-info">
-        7.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 7 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/08/14/draft/IDL-practice1/">
-        thrift实践 - golang实现
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-这一部分记录了关于thrift的一些实践, 主要为使用golang完成官方的tutorial实践
-
----
-
-# 环境
-
-- windows 10
-- golang 1.20.7
-- thrift 1.18
-
-本来是打算用C++来做实验的, 但是在windows平台上使用C++的thrift库有些麻烦, 需要自行编译其依赖库, 并且依赖库的编译又依赖于第三方的C++库, 这些会在后面有机会再尝试, 这里采用开发较为简单的golang来尝试
-
-# thrift简介
-thrift本身是一个用于定义RPC接口IDL框架, 分为两部分:
-- thrift编译器: 用于将thrift定义的IDL文件编译成各种语言的RPC接口代码
-- thrift依赖库: 各个语言有各自的thrift依赖, 用于上述编译结果的文件
-
-thrift编译器本身只要下载安装使用就行, 依赖库根据不同语言进行安装即可, 我们的工作主要是编写用于生成接口的thrift文件, 并在各自的语言中实现其接口
-
-# thrift语法
-官方给出了标准语法的巴科斯范式以及tutorial以供参考, 我们结合两者来理解
-
-```
-bool        Boolean, one byte
-i8 (byte)   Signed 8-bit integer
-i16         Signed 16-bit integer
-i32         Signed 32-bit integer
-i64         Signed 64-bit integer
-double      64-bit floating point value
-string      String
-binary      Blob (byte array)
-map&lt;t1,t2&gt;  Map from one type to another
-list&lt;t1&gt;    Ordered list of one type
-set&lt;t1&gt;     Set of unique elements of one type
-```
-这是thrift支持的数据类型, 不用过多解释
-
-```
-include &#34;shared.thrift&#34;
-```
-使用include来包含其他thrift文件中的定义
-
-```
-namespace cl tutorial
-namespace cpp tutorial
-namespace d tutorial
-namespace dart tutorial
-namespace java tutorial
-namespace php tutorial
-namespace perl tutorial
-namespace haxe tutorial
-namespace netstd tutorial
-namespace go tutorial
-```
-
-定义一个namespace, 通过文档中的说明: 
-&gt; A namespace declares which namespaces/package/module/etc. the type definitions in this file will be declared in for the target languages. The namespace scope indicates which language the namespace applies to; a scope of ‘*’ indicates that the namespace applies to all target languages.
-
-这规定了当前thrift文件编译目标语言时, 会被分配到哪一个模块中, 对于C++而言就是namespace, 对于golang而言就是package
-
-
-以上部分属于Header, 一个thrift文件由Header和Definition组成, Definition部分包括:
-```
-Definition      ::=  Const | Typedef | Enum 
-                | Struct | Union | Exception | Service
-```
-具体如下:
-```
-typedef i32 MyInteger
-```
-这允许我们为类型取一个别名
-
-```thrift
-const i32 INT32CONSTANT = 9853
-const map&lt;string,string&gt; MAPCONSTANT = {&#39;hello&#39;:&#39;world&#39;, &#39;goodnight&#39;:&#39;moon&#39;}
-
-enum Operation {
-  ADD = 1,
-  SUBTRACT = 2,
-  MULTIPLY = 3,
-  DIVIDE = 4
-}
-```
-定义常量和枚举
-
-```
-struct Work {
-  1: i32 num1 = 0,
-  2: i32 num2,
-  3: Operation op,
-  4: optional string comment,
-}
-```
-
-struct的语法如下:
-```
-Struct          ::=  &#39;struct&#39; Identifier &#39;{&#39; Field* &#39;}&#39;
-```
-其中的Field的语法如下:
-```
-Field           ::=  FieldID? FieldReq? FieldType 
-                Identifier (&#39;=&#39; ConstValue)? XsdFieldOptions ListSeparator?
-
-FieldID         ::=  IntConstant &#39;:&#39;
-```
-
-这要求我们以一个可选的数字ID来为struct的每个字段开头, 以及一个optional来表明字段的可选择性, 然后必要部分包括字段类型, 标识符, 以及可选的默认值. (最后两个我们忽视掉, 官方文档的说明不足)
-
-```
-exception InvalidOperation {
-  1: i32 whatOp,
-  2: string why
-}
-```
-exception和struct类似, 但是用于生成target lan的异常类
-
-```
-service Calculator extends shared.SharedService {
-
-   void ping(),
-
-   i32 add(1:i32 num1, 2:i32 num2),
-
-   i32 calculate(1:i32 logid, 2:Work w) throws (1:InvalidOperation ouch),
-
-   oneway void zip()
-}
-```
-service可以选择性地继承自另一个service, 并在其中声明定义一系列的方法
-
-方法定义解决C-style, 用返回值类型 + 标识符 + 符合字段格式的参数, 以及可选的抛出的错误类型
-
-
-文档中关于thrift的基本语法就到这里
-
----
-
-# 在golang中实现接口
-
-我们通过`thrift -r --gen go tutorial`生成了目标代码的文件, 完成相关module的配置后, 我们可以实现定义的接口:
-
-```go
-type CalculatorHandler struct {
-	log map[int]*tutorial.SharedStruct
-}
-
-func NewCalculatorHandler() *CalculatorHandler {
-	return &amp;CalculatorHandler{log: make(map[int]*tutorial.SharedStruct)}
-}
-```
-`CalculatorHandler`就是我们的服务了, 我们在服务中定义一个`log`字段用于记录服务日志
-
-```go
-func (p *CalculatorHandler) Ping(ctx context.Context) (err error) {
-	fmt.Print(&#34;ping()\n&#34;)
-	return nil
-}
-
-func (p *CalculatorHandler) Add(ctx context.Context, num1 int32, num2 int32) (retval17 int32, err error) {
-	fmt.Print(&#34;add(&#34;, num1, &#34;,&#34;, num2, &#34;)\n&#34;)
-	return num1 + num2, nil
-}
-
-func (p *CalculatorHandler) Calculate(ctx context.Context, logid int32, w *tutorial.Work) (val int32, err error) {
-	fmt.Print(&#34;calculate(&#34;, logid, &#34;, {&#34;, w.Op, &#34;,&#34;, w.Num1, &#34;,&#34;, w.Num2, &#34;})\n&#34;)
-	switch w.Op {
-	case tutorial.Operation_ADD:
-		val = w.Num1 + w.Num2
-	case tutorial.Operation_SUBTRACT:
-		val = w.Num1 - w.Num2
-	case tutorial.Operation_MULTIPLY:
-		val = w.Num1 * w.Num2
-	case tutorial.Operation_DIVIDE:
-		if w.Num2 == 0 {
-			ouch := tutorial.NewInvalidOperation()
-			ouch.WhatOp = int32(w.Op)
-			ouch.Why = &#34;Cannot divide by 0&#34;
-			err = ouch
-			return
-		}
-		val = w.Num1 / w.Num2
-	default:
-		ouch := tutorial.NewInvalidOperation()
-		ouch.WhatOp = int32(w.Op)
-		ouch.Why = &#34;Unknown operation&#34;
-		err = ouch
-		return
-	}
-	entry := tutorial.NewSharedStruct()
-	entry.Key = logid
-	entry.Value = strconv.Itoa(int(val))
-	k := int(logid)
-	/*
-	   oldvalue, exists := p.log[k]
-	   if exists {
-	     fmt.Print(&#34;Replacing &#34;, oldvalue, &#34; with &#34;, entry, &#34; for key &#34;, k, &#34;\n&#34;)
-	   } else {
-	     fmt.Print(&#34;Adding &#34;, entry, &#34; for key &#34;, k, &#34;\n&#34;)
-	   }
-	*/
-	p.log[k] = entry
-	return val, err
-}
-
-func (p *CalculatorHandler) GetStruct(ctx context.Context, key int32) (*tutorial.SharedStruct, error) {
-	fmt.Print(&#34;getStruct(&#34;, key, &#34;)\n&#34;)
-	v := p.log[int(key)]
-	return v, nil
-}
-
-func (p *CalculatorHandler) Zip(ctx context.Context) (err error) {
-	fmt.Print(&#34;zip()\n&#34;)
-	return nil
-}
-```
-
-然后实现了接口中的全部方法 (在golang中, 只要实现了对应的方法就可视为实现接口)
-
-接下来我们看看如何启动一个服务:
-
-```go
-func runServer(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {
-	var transport thrift.TServerTransport 
-
-	var err error
-	if secure {
-		cfg := new(tls.Config)
-		if cert, err := tls.LoadX509KeyPair(&#34;server.crt&#34;, &#34;server.key&#34;); err == nil {
-			cfg.Certificates = append(cfg.Certificates, cert)
-		} else {
-			return err
-		}
-		transport, err = thrift.NewTSSLServerSocket(addr, cfg)
-	} else {
-		transport, err = thrift.NewTServerSocket(addr)
-	}
-
-	if err != nil {
-		return err
-	}
-	fmt.Printf(&#34;%T\n&#34;, transport)
-	handler := NewCalculatorHandler()
-	processor := tutorial.NewCalculatorProcessor(handler)
-	server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)
-
-	fmt.Println(&#34;Starting the simple server... on &#34;, addr)
-	return server.Serve()
-}
-```
-
-首先我们看函数中的第一行:
-`thrift.TServerTransport`
-
-这是一个接口, 定义如下:
-```go
-// Server transport. Object which provides client transports.
-type TServerTransport interface {
-	Listen() error
-	Accept() (TTransport, error)
-	Close() error
-
-	// Optional method implementation. This signals to the server transport
-	// that it should break out of any accept() or listen() that it is currently
-	// blocked on. This method, if implemented, MUST be thread safe, as it may
-	// be called from a different thread context than the other TServerTransport
-	// methods.
-	Interrupt() error
-}
-```
-可以看出, 这是一个经典的Socket Server的接口
-
-然后是建立一个Socket接口, 这里的代码根据secure参数来决定是否使用TLS加密
-```go
-if secure {
-		cfg := new(tls.Config)
-		if cert, err := tls.LoadX509KeyPair(&#34;server.crt&#34;, &#34;server.key&#34;); err == nil {
-			cfg.Certificates = append(cfg.Certificates, cert)
-		} else {
-			return err
-		}
-		transport, err = thrift.NewTSSLServerSocket(addr, cfg)
-	} else {
-		transport, err = thrift.NewTServerSocket(addr)
-	}
-```
-
-建立好了Socket链接后, 我们将实现了接口的`CalculatorHandler`传入`NewCalculatorProcessor`中, 生成一个`processor`, 然后将其传入`NewTSimpleServer4`中, 生成一个`server`, 最后调用`server.Serve()`来启动服务
-
-```go
-fmt.Printf(&#34;%T\n&#34;, transport)
-handler := NewCalculatorHandler()
-processor := tutorial.NewCalculatorProcessor(handler)
-server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)
-fmt.Println(&#34;Starting the simple server... on &#34;, addr)
-return server.Serve()
-```
-
-具体可以表示为下述的图:
-
-```Mermaid
-graph TD
-CalculatorHandler --&gt;|implement| CalculatorHandler.Interface
-CalculatorHandler --&gt;|composition| Processor
-Processor --&gt;|composition| Server
-Transport --&gt;|composition| Server
-Server --&gt; Run
-```
-接下来我们只要在main函数中调用`runServer`和`runClient`就可以启动并使用服务了
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-08-04
-      </div>
-      <div class="card-info">
-        838字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/08/04/hello-world/">
-      Hello World
-    </a>
-    <span class="card-abstract">
-      Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
-
-## Quick Start
-
-### Create a new post
-
-``` bash
-$ hexo new &#34;My New Post&#34;
-```
-
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
-```
-
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
-```
-
-More info: [Generating](https://hexo.io/docs/generating.html)
-
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
-```
-
-More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-08-02
-      </div>
-      <div class="card-info">
-        3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/08/02/network/works-projects/wireShark-5-DHCP/">
-        wireshark practice 3 - DNS
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-1.	Are DHCP messages sent over UDP or TCP? 
-
-    `All DHCP messages are sent over UDP.`
-
-2.	Draw a timing datagram illustrating the sequence of the first four-packet Discover/Offer/Request/ACK DHCP  exchange between the client and server. For each packet, indicated the source and destination port numbers. Are the port numbers the same as in the example given in this lab assignment? 
-
-    ```Mermaid
-    sequenceDiagram
-        participant Client
-        participant Server
-        Client-&gt;&gt;Server: DHCP Discover(67)
-        Server-&gt;&gt;Client: DHCP Offer(68)
-        Client-&gt;&gt;Server: DHCP Request(67)
-        Server-&gt;&gt;Client: DHCP ACK(68)
-    ```
-
-3.	What is the link-layer (e.g., Ethernet) address of your host?
-4.	What values in the DHCP discover message differentiate this message from the DHCP request message?
-5.	What is the value of the Transaction-ID in each of the first four (Discover/Offer/Request/ACK) DHCP messages?  What are the values of the Transaction-ID in the second set (Request/ACK) set of DHCP messages?  What is the purpose of the Transaction-ID field?
-6.	A host uses DHCP to obtain an IP address, among other things. But a host’s IP address is not confirmed until the end of the four-message exchange!  If the IP address is not set until the end of the four-message exchange, then what values are used in the IP datagrams in the four-message exchange?  For each of the four DHCP messages (Discover/Offer/Request/ACK DHCP), indicate the source and destination IP addresses that are carried in the encapsulating IP datagram.
-7.	What is the IP address of your DHCP server?
-8.	What IP address is the DHCP server offering to your host in the DHCP Offer message?  Indicate which DHCP message contains the offered DHCP address.
-9.	In the example screenshot in this assignment, there is no relay agent between the host and the DHCP server. What values in the trace indicate the absence of a relay agent?  Is there a relay agent in your experiment? If so what is the IP address of the agent?
-10.	Explain the purpose of the router and subnet mask lines in the DHCP offer message.
-11.	In the DHCP trace file noted in footnote 2, the DHCP server offers a specific IP address to the client (see also question 8. above).  In the client’s response to the first server OFFER message, does the client accept this IP address?  Where in the client’s RESPONSE is the client’s requested address?
-12.	Explain the purpose of the lease time. How long is the lease time in your experiment?
-13.	What is the purpose of the DHCP release message?  Does the DHCP server issue an acknowledgment of receipt of the client’s DHCP request?  What would happen if the client’s DHCP release message is lost?
-14.	Clear the bootp filter from your Wireshark window. Were any ARP packets sent or received during the DHCP packet-exchange period? If so, explain the purpose of those ARP packets.
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-07-27
-      </div>
-      <div class="card-info">
-        1.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/07/27/golang-basic/projectManage/">
-      Golang的项目管理基础
-    </a>
-    <span class="card-abstract">
-      
-本文只是个人学习的知识整理和记录, 不含有教程性质, 仅供参考
-
-# Golang的项目管理基础
-
-[toc]
-
-这里要讨论的内容主要包括:
-- golang的依赖管理
-- golang的模块
-- golang的package
-- golang的workspace
-
-我们层层递进介绍每一个级别的管理在做什么
-
-## 文件
-golang的源码文件格式为`xxx.go`, 每个文件都必须归属于一个package, 这个package我们在程序的第一行声明, 例如:
-```go
-package calc
-```
-
-文件是我们实现源代码的位置
-
-## package
-package是golang组织和管理代码的基本单位, 每个文件都必须归属于一个package. 我们规定同一个目录下的所有文件都归属于同一个package, 除了`xxx_test`包可以和对应的被测试包在同一个目录下
-
-- 属于同一个package的文件可以互相访问对方的变量和函数
-- package的名字可以和目录名不同, 但是需要注意:
-  - import一个包时是通过目录名字引入的
-  - 使用一个包时是通过package name使用的
-
-比如我存在以下目录:
-```
-- tttt
-    - walk.go
-    - walk_test.go
-```
-我在import walk时需要使用`import &#34;path_to_module/tttt&#34;`, 但是使用时需要根据`walk.go`设定的package name来使用: `walk.Walk()`
-
-package导出的变量和函数的规则和struct一样, 首字母大写的变量和函数可以被外部包访问, 小写的变量和函数只能在内部包内部访问
-
-包之间可以进行相互嵌套, 此时如果你要导入一个嵌套的package, 我们使用的是目录来导入, 类似于以下结构`module/path/to/the/package`, 这个路径是相对于module而言的路径
-
-## module
-模块是golang管理项目的基本单位, 一个项目需要的依赖和包的管理都在moddule中完成
-
-为了建立一个module, 我们需要先在我们的目录之下执行`go mod init module_name`指令, 这个指令会创建一个`go.mod`文件, 这个文件记录了我们的module的名字和依赖
-
-一个`go.mod`就声明了一个模块, 其对应目录下的所有文件和package都属于这个模块, 当我们想要引入一个package时, 需要通过对应的module路径来引入, 比如我们有以下目录:
-
-```
-work
-│   go.mod
-│   go.sum
-│
-├───main
-│       main.go
-│
-└───walk
-        walk.go
-        walk_test.go
-```
-
-我们在main中导入walk时, 需要使用`import &#34;work/walk&#34;`
-依赖通过`go.mod`来管理, 如果使用的是本地module, 则使用`import + 相对路径`或者在`go.mod`中添加`require + &#34;package name&#34;` 和 `replace + &#34;package name&#34; =&gt; &#34;path to package&#34;`来指定本地module的位置, 如下:
-  
-```go
-module work
-
-go 1.16
-
-require (
-    github.com/urfave/cli/v2 v2.3.0
-)
-
-replace github.com/urfave/cli/v2 =&gt; ../cli/v2
-```
-然后就可以直接导入`import &#34;github.com/urfave/cli/v2&#34;`了
-
-## workspace
-我们可以建立一个workspace, 通过`go.work`配置来让多个模块可以协同工作, 类似于使用replace的导入方式, 但是指定workspace可以让全部模块互相调用, 而不用在各自的`go.mod`中配置
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-07-25
-      </div>
-      <div class="card-info">
-        9.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 8 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/07/25/essay/afterReadingCleanCode/">
-        Clean Code阅读笔记
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-*Clean Code* called 《代码整洁之道》in Chinese give a lot of guidance on how to write readable code. 
-
-在此为此书的阅读做出整理
-
----
-
-&lt;!-- TOC --&gt;
-
-- [第一部分](#第一部分)
-  - [格式(format)部分](#格式format部分)
-    - [vertical formatting](#vertical-formatting)
-    - [horizontal formatting](#horizontal-formatting)
-  - [intermission](#intermission)
-- [第二部分](#第二部分)
-  - [对象和数据结构](#对象和数据结构)
-    - [数据的抽象](#数据的抽象)
-    - [反对称性](#反对称性)
-    - [迪米特原则](#迪米特原则)
-    - [对象和数据结构](#对象和数据结构-1)
-  - [错误处理](#错误处理)
-  - [边界(boundary)](#边界boundary)
-  - [单元测试](#单元测试)
-    - [TTD(Test-Driven Development)](#ttdtest-driven-development)
-    - [clean test](#clean-test)
-  - [Class](#class)
-    - [Small Enough!](#small-enough)
-    - [Organizing for Change](#organizing-for-change)
-  - [System](#system)
-    - [依赖注入](#依赖注入)
-    - [Ioc](#ioc)
-    - [AOP](#aop)
-    - [Test drive the Archithecture](#test-drive-the-archithecture)
-    - [做出更好的决定](#做出更好的决定)
-    - [理性对待*标准*](#理性对待标准)
-    - [使用DSL(Domain Specific Language)](#使用dsldomain-specific-language)
-  - [Emergence](#emergence)
-    - [Emergent Design](#emergent-design)
-  - [Concurrency](#concurrency)
-    - [SRP in Conccurrency](#srp-in-conccurrency)
-    - [减少共享数据, 缩小数据scope](#减少共享数据-缩小数据scope)
-    - [尽量独立](#尽量独立)
-    - [Excution Models](#excution-models)
-      - [Produceer-Consumer](#produceer-consumer)
-      - [Readers-Writers](#readers-writers)
-      - [Dining Philosophers](#dining-philosophers)
-    - [Synchronized Method](#synchronized-method)
-- [第三部分](#第三部分)
-
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-&lt;!-- /TOC --&gt;
-
----
-
-# 第一部分
-这一部分以代码提供有效的信息和组织代码以优化信息为主.
-
-
-- 给变量取名字要清晰，避免多个名字的混淆，这对于英语词汇量的要求会很高
-
-- 函数的取名最好用动词，用来描述函数的行为，如果能够给出一个好命名的话, 只需要看函数和变量命名就能知道代码的行为, 我们认为这是好代码
-  ```java
-    // bad
-    public List&lt;int[]&gt; getThem() {
-        List&lt;int[]&gt; list1 = new ArrayList&lt;int[]&gt;();
-        for (int[] x : theList)
-            if (x[0] == 4)
-                list1.add(x);
-        return list1;
-    }
-    // good
-    public List&lt;int[]&gt; getFlaggedCells() {
-        List&lt;int[]&gt; flaggedCells = new ArrayList&lt;int[]&gt;();
-        for (int[] cell : gameBoard)
-            if (cell[STATUS_VALUE] == FLAGGED)
-                flaggedCells.add(cell);
-        return flaggedCells;
-    }
-    ```
-    没有人知道`getThem`到底是想要得到什么, `list1`也只是让人知道这是个列表, 想要理解代码逻辑必须仔细阅读才行
-    如果按照下面的代码命名, 我们能够一眼看出函数的作用: 得到被标记的格子. 然后我们可以看出代码是在从棋盘上遍历所有格子, 然后检查各自的状态, 并将标记的各自取出返回
-    代码就像是在&#34;tell a story&#34;, 能够通过阅读理解, 而不是分析理解
-
-&amp;emsp;
-
-- 函数和变量的命名可以形成动宾结构, 对象和成员函数的命名可以形成主谓结构, 遵守这样的原则可以让代码更加清晰
-  ```
-  targetStudent.isGirl();
-  targetStudent.setScore(100);
-
-  targetClass.deleteStudent(targetStudent);
-  ```
-  这样的代码即便我们不去阅读class的源码, 也能够一眼看出代码的作用
-
-  实际上我们此处的代码应该更加简化 [^1] 
-
-[^1]: 这里的`targetClass.deleteStudent(targetStudent);`实际上可以简化为`targetClass.delete(targetStudent);`因为Class和Student实际上存在着一种潜在的必然关系, 并且我们的参数命名也应该提供足够的信息, 来明确此处要删除的是Student, 所以在函数名中再强调删除对象是多余的
-
-&amp;emsp;
-
-- 为了尽量维护动宾结构和主谓结构, 我们函数的参数最好不要超过两个参数 (可变参数除外), 三个参数的函数我们认为已经是极其糟糕的结构了
-  一个函数只要负责一个功能就行了, 最理想的情况是每个函数总行数不超过5行, 除非函数需要实现高聚合度的复杂功能
-  对于一些情况, 需要完成某些功能确实需要大量的参数设定时, 不要局限于用一个函数来实现. 比如我们要实现一个http的request, 我们需要设定url, header, timeout等参数信息, 使用一个函数来实现就十分的不优雅. 
-  具体的, 我们对于一个request编写一个class, 将参数设定为成员变量, 然后针对每一个参数编写设置函数, 最后编写一个`send`函数来发送请求, 这样的代码就十分的优雅了, 这种设计模式我们称为**建造者**模式
-
-&amp;emsp;
-
-- 注释不是必要的, 我们需要达到的至高境界是, 能够只通过函数和变量的命名, 就能够把代码的含义表述清楚
-- 上面一条不是你不写注释的理由, 相信我, 你的代码写不到这么好
-- 下面是一些通过注释写明的信息:
-  - 合法信息: 包括了代码的作者, 版权信息, 代码的版本号等
-  - 对于复杂内容的阐明: 我们不能保证代码中所有内容都能通过函数和变量名表述清楚, 比如我在一处使用了正则表达式匹配, 正则表达式本身的可读性是很差的, 所以我或许需要用注释来阐明一下它的含义和匹配对象
-  - TODO注释: 用来标记一些未完成的工作, 以及一些需要改进的地方
-- 阐明代码意图和解释模糊代码, 这是弥补代码不足的方式
-
-- 对于一段代码, 如果需要警告用户一些重要的使用规则, 那么使用注释是没问题的, 比如对于一个计算函数:
-  ```java
-  //WARNING: totalAmount can&#39;t be zero
-  double calTheUtilization(int usedAmount, int totalAmount){
-    return (double)usedAmount / totalAmount;
-  }
-  ```
-  提示用户参数的使用限制, 这是一个合理的注释使用
-
-- 对每一个参数都做注释并不是必要的, 但是对于一些规范的库而言, 给与尽可能详细的注释是有必要的
-
-- 现在的IDE一般会提供良好的注释辅助, 将函数, class, 参数的注释直接显示给用户, 也提供了引用查找之类的便捷功能, 所以一些旧时代遗留下来注释习惯我们往往不必去在意
-
-## 格式(format)部分
-
-### vertical formatting
-- 适当的空行, 以分割代码逻辑
-- 控制垂直密度, 过高密度降低可读性
-- 控制垂直距离, 减少被调用代码和调用代码的距离, 相近概念的代码放在一起
-- 排列垂直顺序, 被调用者在调用者后面, 主要逻辑在细微逻辑后面, 把代码的主要内容放在最前面
-
-### horizontal formatting
-- 横线的信息密度由类似链式调用的代码提供, 我们需要控制横向代码的密度
-- 横向对齐
-
----
-
-## intermission
-
-到这里为止的五章可以归类为第一部分, 这一部分强调的是代码本身为程序员提供信息理解的这一部分.
-
-变量和函数的命名提供了信息, format为信息提供了组织形式, 注释为信息提供了补充.
-所有这些要素一起协作为我们提供了理解代码的基本信息, 优秀的代码凭借这些基本原则可以提供很高的可读性.
-
----
-
-# 第二部分
-这一部分以设计模式和设计原则为主
-
-## 对象和数据结构
-
-### 数据的抽象
-我们将数据设置为private, 通过函数的方式让外界来获取数据, 这样能够将数据的真实情况抽象出来, 让user不关注于数据的具体实现.
-
-具体来说, 我们可以使用`x, y`表示笛卡尔坐标系的一个点, 但是我们获取数据时完全可以使用polar coordinates的方式获得坐标点, 尽管底层实际是`x, y`
-
-### 反对称性
-尽管我们一般使用将数据抽象出来的方式, 以OPP的思想来实现数据的获取, 但是实际上将数据暴露出来, 通过一个过程来获得其数据也不是没有不可取之处.
-
-考虑如下的情况:
-
-```Mermaid
-classDiagram
-  class Shape{
-    +auto somedata
-    +getArea()
-    +getPerimeter()
-  }
-  class Rectangle{
-    +auto somedata
-  }
-  class Circle{
-    +auto somedata
-    +getRadius()
-  }
-  Shape &lt;|-- Rectangle
-  Shape &lt;|-- Circle
-```
-
-此时如果我们需要给Shape添加新的功能, 比如获取图形的`metadata`, 那么新的函数需要所有的class都做出修改才能实现
-
-如果是将数据暴露出来, 使用一个公共过程的话, 我们就可以不对储存数据的结构做出任何修改, 只用修改管理函数的一个类即可:
-
-```Mermaid
-classDiagram
-  class Shape{
-    +auto somedata
-  }
-  class Rectangle{
-    +auto somedata
-  }
-  class Circle{
-    +auto somedata
-  }
-  Shape &lt;|-- Rectangle
-  Shape &lt;|-- Circle
-
-  class Method{
-    +getArea(Shape)
-    +getPerimeter(Shape)
-    +getRadius(Shape)
-  }
-
-  Shape --&gt; Method
-```
-
-### 迪米特原则
-&gt; 只与你的直接朋友交谈, 不要和陌生人说话
-
-也就是说一个类$C$中的函数$f$只应该调用以下的其他函数或变量:
-- $C$本身
-- $f$自己创建的对象
-- 作为参数传递给$f$的对象
-- $C$的成员
-
-此原则的最终目的是**低耦合, 高内聚**
-
-### 对象和数据结构
-
-对象是隐藏内部, 只展示operation的, 而数据结构暴露内部数据, 而提供很少的对外行为
-
-对于只提供数据的存在, 我们使用结构来实现, 而如果我们需要实现某种行为, 我们需要考虑对象, 并且遵守**低耦合高内聚**的原则
-
-对于完全没有自己行为, 完全只有数据的struct, 我们可以将其视作DTO(Data Transfer Object), 或者叫做一个Bean
-
-## 错误处理
-感悟不是很深, 随便记几点:
-- 不要传递Null
-- 不要返回Null
-- 用异常机制代替错误码
-- 避免不必要的错误捕捉
-
-## 边界(boundary)
-
-边界用于描述一个模块与外部相连的部分, 可以参照类的接口来理解
-
-- 对于一个模块提供的过多的并不需要的功能, 我们通过封装来减少第三方代码的边界, 从而降低自己的代码和第三方代码的耦合性, 并且提高可读性, 避免冗余信息
-
-- 学习探索第三方代码的最佳方式就是test, 自己编写相关功能的测试代码, 来理解各个代码的作用如何. 官方提供的测试用例也是使用代码的良好参考
-
-- 可以使用不存在的代码, 然后将这些代码编写为一个adapter接口, 再使用第三方代码进行实现, 使我们在选择依赖前先完成自己的设计
-
-## 单元测试
-
-### TTD(Test-Driven Development)
-
-TTD的原则:
-
-- You may not write production code until you have written a failing unit test.
-- You may not write more of a unit test than is sufficient to fail, and not compiling is failing.
-- You may not write more production code than is sufficient to pass the currently failing test.
-
-测试使得开发更稳定灵活, 你不必再担心代码改动是否会造成其他部分的故障, 因为test能够限制代码在一定的范围中起作用.
-
-### clean test
-为了编写简洁的测试, 我们需要将测试需要的数据生成部分单独编写分离, 避免在test函数中编写生成数据的逻辑.
-
-然后, 我们调用需要测试的函数, 并尽量避免在test函数中编写过多的逻辑
-
-最后, 我们使用**一条**断言来判断输出的正确性
-
-
-## Class
-
-### Small Enough!
-类的大小应该足够小, 对于一个类的设计, 我们应该满足SRP(Single Responsibility Principle)
-
-怎样来划分责任取决于设计者的喜好, 但是我们总存在一个普遍认可的指导原则: **高内聚(High Cohesion)**
-
-内聚是指类的成员函数和成员变量之间的关系, 如果一个函数能够尽量多地使用成员变量, 那么我们则称为**高内聚**.
-于是如果一个类的责任过多, 不同的函数之间对变量的使用不可能完全重合, 所以过多的责任将导致类的内聚程度降低, 所以使用**高内聚**的原则来划分类的责任是一个值得参考的方式
-
-### Organizing for Change
-将代码变化部分和不变部分分离, 形成继承结构, 从而满足OCP(Open Closed Principle)
-
-开闭原则指的是, **开放扩展, 关闭修改**.
-
-当我们需要扩展功能时, 通过继承就能实现, 而不改变已有部分
-
-使用接口是对于Change处理的极端情况, 我们将不变部分设置为接口, 我们的扩展行为是对接口的实现. 而使用接口的部分不需要进行修改.
-
-
-## System
-
-构建系统和使用系统是两个事情, 我们应该将其分开, 其中的一种实现方式叫做DI(dependency injection)
-
-### 依赖注入
-我们构建一个服务时需要使用很多额外的工具和依赖, 我们需要创建这些依赖并配置它们, 然后使用它们.
-
-依赖注入的思想就是将创建和配置的过程交给其他类来负责, 服务中只需要使用传递进来的完成的依赖的对象即可, 然后在服务中直接使用.
-
-### Ioc
-IoC(Inversion of Control)是一种设计思想, 即把程序的某一部分的控制抽取出来, 让外界来负责这一部分的职责.
-依赖注入是控制反转的一种具体实现, 将程序的依赖反转给了外部来实现.
-
-### AOP
-AOP(Aspect Oriented Programming)是一种编程思想, 我们的程序运行中存在许多固定的phrase, 这些共同的phrase我们可以看作一个切面, 然后我们通过某些方式将代码加入到切面的某个位置, 从而实现在所有相同的阶段来进行某个操作, 比如记录日志等
-
-### Test drive the Archithecture
-我们先编写测试, 而在架构上偏向于使用高度解耦但是简单且原生的方式来实现, 然后在测试中不断优化, 增加功能, 最后实现稳定可靠的系统
-
-### 做出更好的决定
-
-做决定时, 将决定权分散(去中心化)能够更好的保证决定的正确性, 并且应当将决定放到不得不做时再决定, 此时你才拥有最多的信息来判断决定的正确性
-
-### 理性对待*标准*
-对于所谓的行业标准或者编码标准, 只有当你能明确其带来的价值时, 才去采用它, 否则只是无故的增加工作的难度和员工犯错的可能性
-
-### 使用DSL(Domain Specific Language)
-领域特定语言是对应领域的描述方式, 某个领域的专家更偏向于使用的专业语言. 
-
-如果我们在代码中使用这样的语言来表达, 可以更好的减少代码对于领域特定实现的错误
-
----
-
-## Emergence
-
-涌现(emergence)如同字面意思一样, 不同的元素如同泉水一般一点点从泉眼中出现, 量少而连续不断
-
-### Emergent Design
-涌现式设计就是这种形式的一种体现, 我们会源源不断地产生新的想法和方案, 然后将这些想法一一付诸实践. 但是这势必会造成现有系统的不断更改, 从而造成无用工作. 所以对于涌现式设计, 我们需要在项目建立之时就采用灵活且低耦合的设计方式, 然后不断地将想法融入其中.
-
-为了实现涌现式设计, 我们需要遵守以下原则:
-
-- 编写好完整地测试
-  
-  编写好了完整地测试后, 我们就可以自由地修改现有程序, 而保证我们的修改没有破坏原本的程序
-
-- Refactory(重构)
-  
-  完成了测试后, 我们需要不断地重构代码, 具体包括如下;
-  - 消除重复代码
-  - 优化代码表达性
-  - 最小化类和方法
-
-## Concurrency
-并发从来都是一个提高程序性能但是难以把控的问题.
-
-简单回顾一下引发死锁的四个必要条件:
-
-- 互斥条件: 一个资源每次只能被一个进程使用
-- 请求与保持条件: 一个进程因请求资源而阻塞时, 对已获得的资源保持不放
-- 不剥夺条件: 进程已获得的资源, 在末使用完之前, 不能强行剥夺
-- 循环等待条件: 若干进程之间形成一种头尾相接的循环等待资源关系
-
-### SRP in Conccurrency
-由于并发代码的复杂性, 并且其拥有单独的错误和调试方式, 所以我们应当将并发代码视作单独的责任, 尽管它属于功能的一部分.
-
-### 减少共享数据, 缩小数据scope
-数据一致性问题是并发编程面对的主要挑战之一, 所以为了减少shared data带来的问题, 我们偏好于减少共享数据的采用.
-
-其中一种解决方式是通过拷贝原始数据到多个threads中, 然后在完成后将各自的结果合并.
-
-### 尽量独立
-
-线程进行的任务应该尽量的独立, 而不依靠其他线程, 这样可以减少条件变量和线程之间的依赖, 降低系统复杂度, 从而减少问题的产生.
-
-### Excution Models
-
-#### Produceer-Consumer
-生产者消费者模型, 很常见
-
-#### Readers-Writers
-读写锁相关的模型
-
-#### Dining Philosophers
-多个消耗资源的对象和多个资源构成的模型.
-
-
-### Synchronized Method
-使用``Synchronized``修饰的方法可以保证内部的原子性, 但是需要注意多个方法之间的并发问题
-
----
-# 第三部分
-第三部分是关于工程实践, 略过
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-07-25
-      </div>
-      <div class="card-info">
-        2.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/07/25/golang-basic/basic-1/">
-      Golang基础练习
-    </a>
-    <span class="card-abstract">
-      
-# 来自A Tour of Go的两道练习
-
-## 并发比较二叉树元素是否相同
-
-### 题目描述
-
-这道题中我们使用`tree.New(x)`来生成一个有十个元素$x, 2x, 3x, ..., 10x$的具有随机结构的二叉树, 我们需要实现`Walk`函数来遍历一个二叉树, 并通过`Same`函数来比较两个二叉树是否相同, 我们使用Go语言的并发特性和`channel`来实现这个功能
-
-### 解决方案
-
-首先Walk函数遍历节点的值我们加入一个channel中, 作为后续的使用,
-
-```golang
-var wait sync.WaitGroup
-func Walk(t *tree.Tree, ch chan int, depth int) {
-	ch &lt;- t.Value
-	if depth == 0 {
-		defer close(ch)
-	} else {
-		defer wait.Done()
-	}
-	if t.Left != nil {
-		wait.Add(1)
-		go Walk(t.Left, ch, depth+1)
-	}
-	if t.Right != nil {
-		wait.Add(1)
-		go Walk(t.Right, ch, depth+1)
-	}
-	if depth == 0 {
-		wait.Wait()
-	}
-	return
-}
-```
-
-我们可以看到, 代码中除了正常的左右节点遍历外, 对于深度为0的节点我们进行了特殊判定, 通过`defer`语句来关闭channel, 并且通过`sync.WaitGroup`来等待所有的goroutine结束, 从而保证channel中的数据全部被读取
-
-关闭`channel`是为了后续的并发比较能够检测到树已经遍历完毕, 这里我们知道树的大小固定为10, 所以可以通过简单的计数来实现, 但大多数情况需要通过某个信号来判断树已经判断完毕
-
-需要注意的编码规范:
-- 函数名遵循大驼峰命名法
-- 变量名遵循小驼峰命名法
-
-针对上面的代码, 我们可以通过封装函数来优化其可读性:
-- 对于`defer`部分, 我们可以只defer一个函数, 将我们的逻辑判断封装其中, 而不是在不同的程序点进行判断:
-```go
-defer func() {
-	if depth == 0 {
-		close(ch)
-	} else {
-		wait.Done()
-	}
-}()
-```
-
-- 对于条件判断部分, 左右部分的遍历是相同的操作, 所以我们封装为一个操作:
-```go
-ToChild := func(child *tree.Tree) {
-    if child != nil {
-        wait.Add(1)
-        go Walk(child, ch, depth+1)
-    }
-}
-```
-然后我们的代码可以简化为:
-```go
-var wait sync.WaitGroup
-func Walk(t *tree.Tree, ch chan int, depth int) {
-	ch &lt;- t.Value
-    defer func() {
-        if depth == 0 {
-            close(ch)
-        } else {
-            wait.Done()
-        }
-    }()
-    ToChild := func(child *tree.Tree) {
-        if child != nil {
-            wait.Add(1)
-            go Walk(child, ch, depth+1)
-        }
-    }
-    ToChild(t.Left)
-    ToChild(t.Right)
-	
-    if depth == 0 {
-        wait.Wait()
-    }
-    return
-}
-```
-其实这样的编程方式在Javascript中很常见, 熟悉之后对于提高代码的整洁性相当有益
-
-接下来我们为`Walk`函数编写对应的单元测试
-
-首先我们创建相应的测试文件:
-```
-- tree
-    - compare_tree.go
-    - compare_tree_test.go
-```
-
-文件命名的规范为:
-- 文件全部使用小写字母命名, 使用下划线分词
-- 测试文件在最后加上`_test`后缀
-
-测试文件在构建时忽略, 在执行`go test`时运行
-
-这里由于涉及到了多文件的项目, 我们需要事先明确一下golang的项目管理方式: [Golang的项目管理基础](https://dnullp.github.io/2023/07/27/golang/projectManage/)
     </span>
 
   </div>
@@ -2386,7 +2770,7 @@ func Walk(t *tree.Tree, ch chan int, depth int) {
 
 
 <div id="paginator">
-  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/">Next</a>
+  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/2/">Next</a>
 </div>
     </div>
 

@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -241,6 +241,879 @@
 
     <div class="card-info-warp">
       <div class="card-info">
+        2023-04-03
+      </div>
+      <div class="card-info">
+        1.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/04/03/automata-theory/CH45-RL-MyhillNerode/">
+        形式语言与自动机 Myhill-Nerode定理
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# Myhill-Nerode定理
+
+定理规定以下三个命题同时成立:
+
+1. $L \subseteq \Sigma^*$是正则语言
+2. $L$是$\Sigma^*$上的某一个具有有穷指数的右不变等价关系$R$的某些等价类的并
+3. $R_L$具有有穷指数
+
+好, 看到书上的三个命题已经懵逼的了
+
+我们从第二条命题中提取我们所不知道的两个关键名词**有穷指数**和**右不变等价关系$R$**
+
+## 右不变等价关系
+
+- 定义: 设$R$是$\Sigma^*$上的等价, 对于$\forall x, y \in \Sigma^*$, 如果$xRy$成立, 则$xzRyz$也成立, $z \in \Sigma^*$, 则称$R$为右不变等价关系
+
+然后我们可以定义以下两种右不变等价关系:
+
+- $R_L$: 对于一个语言$L \subseteq \Sigma^*$, $xR_Ly$表示对于$\forall x,y,z \in \Sigma^*$, $xz \in L \Leftrightarrow yz \in L$
+  也就是说在任意的$x,y$后加上一个$z$, 两者要么都是$L$的成员, 要么都不是$L$的成员
+
+- $R_M$: 对于一个自动机$M$, $xR_My \Leftrightarrow \delta(q_0, x) = \delta(q_0, y)$
+  也就是说, 两个字符串可以使得自动机停在同一个状态
+
+通过这两种右不变等价关系我们可以把$\Sigma^*$分成若干**等价类**
+
+对于一个自动机确定的右不变等价关系$R_M$, 我们可以得到对应的语言的$R_L(M)$
+
+## 关系的指数
+我们记$|\Sigma^*/R|$为$R$关于$\Sigma^*$的指数, 简称$R$的指数, 其代表的是通过$R$关系能把$\Sigma^*$分成的等价类的数量
+
+---
+
+有了这两个名词的了解就可以去理解Myhill-Nerode定理的三条等价命题了
+
+我们可以通过后两条命题判定一个语言是不是正则语言:
+
+- 我们可以通过构造某个右不变等价关系, 来使得L是其中等价类的并
+- 我们可以用$L$来构造右不变等价关系, 并判定其指数是否有穷
+
+---
+
+# DFA最小化
+正则语言有对应的最小化DFA, 存在以下算法求解:
+
+- 首先我们给出一个DFA状态**是否可区分**的判断标准: 如果, 状态$q$和$p$同时只有一个能接受某个句子, 那么则称$q$和$p$是可区分的, 符号表达为:$\exists x \in \Sigma^*, \delta(q, x) \neq \delta(p, x) and \space one \space is \space accept$
+
+- 求解最小化DFA的过程就是将所有的不可区分状态合并的过程
+
+算法步骤:
+1. 将所有$F \times (S-F)$的状态对标记为可区分
+2. 对于所有的$F \times F$和$(S-F) \times (S-F)$的状态对, 我们通过搜索的方式, 将字母表$\Sigma$中的每个字母作为输入, 改变其状态, 如果搜索到某个状态对是可区分的, 则该状态对标记为可区分
+3. 如此运行到最后, 剩下的状态对即为不可区分的状态对, 将其全部两两合为一个状态即可
+
+类似的去重思想在后面的上下文无关文法中也会有所体现
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-20
+      </div>
+      <div class="card-info">
+        727字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/03/20/operating-system/CH2-Concurrency-datastruct/">
+      多线程数据结构
+    </a>
+    <span class="card-abstract">
+      
+# 多线程数据结构
+
+## 多线程计数器(counter)
+
+我们在之前的例子中我们有多线程计数器的实现, 只需要在对变量累加前后加上锁即可
+
+但是加锁和解锁的操作对这个简单的加数来说, 造成了很大的额外开销, 即便在多线程的摊销下所花的时间并没有增加
+
+为此有一种 **approximate counter(近似计数器)** 的方法:
+
+每个cpu都有一个计数器, 每个线程在各自的cpu上计数, 每过一段时间就会把自己的计数器的值加到一个全局共享的计数器上, 然后把自己的计数器清空, 如果想要在这个过程中读取计数器的值, 就需要将所有的计数器累加起来, 不过cpu在各自的局部计数器上不需要频繁的加锁解锁了, 只需要在累加到全局计数器的时候加锁即可
+
+## 多线程链表
+
+我们可以给链表的关键操作加上锁:
+- insert
+  我们先申请一个新节点, 将新节点赋值, 然后加锁, 把它插入链表之中, 完成后解锁
+  我们加锁的过程是在修改链表的前后, 而不是申请新节点之前, 因为如果在申请新节点失败后, 我们的锁得不到释放, 就会造成资源占用, 死锁等问题
+
+- look_up
+  查询操作也需要加锁, 以免在查询中修改链表指针, 导致不可预测的情况出现
+
+## 多线程队列
+
+对于一个队列, 只有前后指针需要修改, 所以加锁的也只有这一部分, 可以比较简单地实现
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-18
+      </div>
+      <div class="card-info">
+        2.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/03/18/ML/EM/">
+        EM算法
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+当我们使用极大似然估计(MLE)来估计参数时, 我们是已知若干样本, 通过求一个参数使得出现这些样本的概率最大, 来计算参数的
+
+如果在这种问题中, 如果我们将满足两个不同分布的类别混在一起, 此时要做最大似然估计, 并且将两类分开, 该怎么做呢?
+
+此时我们有两类分布的参数$\theta_a$和$\theta_b$, 还有样本属于$A$类样本的概率$\pi$, 我们简单用$\theta$表示三个参数的集合
+
+于是我们可以画出概率树:
+
+```Mermaid
+flowchart LR
+    样本---|π|属于A类
+    样本---|1-π|属于B类
+    属于A类---|θ_a|正面1
+    属于A类---|1-θ_a|反面1
+    属于B类---|θ_b|正面2
+    属于B类---|1-θ_b|反面2
+```
+我们只能观测到概率树第三层的结果, 但是观测不到第二层, 所以我们无法直接用最大似然法来估计参数$\theta$
+
+为了解决问题, 我们先写出问题的似然函数:
+$$
+L(X,Z,\theta_a,\theta_b,\pi) = L(X,Z,\theta)
+$$
+EM算法是一种迭代算法, 我们可以先给定一个初始化的参数$\theta^{(0)}$, 然后似然函数就可以写成:
+$$
+L(X,Z,\theta^{(0)}) = \prod_{Z}{P(X_i,\theta^{(0)}; Z_i)}\\
+\log{L(X,Z,\theta^{(0)})} = \sum_{Z}{\log{P(X_i,\theta^{(0)}; Z_i)}}
+$$
+此时函数中未知的就只有未观察到的数据$Z$, 我们就可以用极大似然法来求出$Z$的极大似然估计
+
+由于每一组$X_i$和$Z_i$是相互独立的, 所以我们可以单独求出每一个$Z_i$的极大似然估计, 我们可以写出下式:
+$$
+\begin{aligned}
+P(Z_{i}|X_i,\theta^{(0)}) &amp;= \frac{P(X_i|Z_{i},\theta^{(0)})P(Z_{i}|\theta^{(0)})}{P(X_i|\theta^{(0)})} \\
+&amp;= \frac{P(X_i|Z_{i},\theta^{(0)})P(Z_{i}|\theta^{(0)})}{\sum_{Z_i}{P(X_i|Z_i,\theta^{(0)})P(Z_i|\theta^{(0)})}}
+\end{aligned}
+$$
+为了方便求出上式的最值, 我们可以按照下表的信息化简上式:
+| |正面|反面| |
+|:--:|:--:|:--:|:--:|
+|**属于A类**|$\piθ_a$|$\pi(1-θ_a)$|$\pi$|
+|**属于B类**|$(1-\pi)θ_b$|$(1-\pi)(1-θ_b)$|$(1-\pi)$|
+|**总和**|$\piθ_a+(1-\pi)θ_b$|$\pi(1-θ_a)+(1-\pi)(1-θ_b)$|$1$|
+
+$$
+\begin{aligned}
+P(Z_{i}|X_i,\theta^{(0)}) &amp;= \frac{\theta_a^{(X_i)}(1-\theta_a)^{(1-X_i)}\pi^{Z_i}}{\theta_a^{(X_i)}(1-\theta_a)^{({1-X_i})}\pi^{Z_i}+\theta_b^{(X_i)}(1-\theta_b)^{({1-X_i})}(1-\pi)^{1-Z_i}} \\
+&amp;= \mu_i
+\end{aligned}
+$$
+然后我们就能根据上式计算出$Z$的极大似然估计, 上述步骤我们称为**E步**, 也就是**Expectation步**
+
+有了$Z$数据的估计以后, 我们又能反过来用极大似然法估计$\theta$的值, 以此为迭代循环, 最后能够得到$\theta$的估计值, 并且获得了$Z$数据的估计值, 这个步骤我们称为**M步**, 也就是**Maximization步**
+
+在E步中, 我们可以直接构造一个**Q函数**:
+$$
+Q(\theta,\theta^{(k)}) = E_Z[\log P(X,Z;\theta)|X,\theta^{(k)}]
+$$
+也就是在给定观测结果和初始参数的情况下, 关于$Z$的极大似然函数的期望, 化简如下:
+$$
+\begin{aligned}
+Q(\theta,\theta^{(k)}) &amp;= E_Z[\log P(X,Z;\theta)|X,\theta^{(k)}] \\
+&amp;= \sum_{Z}{\log P(X,Z;\theta)P(Z|X,\theta^{(k)})} \\
+\end{aligned}
+$$
+M步只要最大化Q函数就可以了
+
+### 如何计算Q函数的最大化:
+$$
+\begin{aligned}
+Q(\theta,\theta^{(k)}) &amp;= \sum_{X}\sum_{Z}{\log P(X_i,Z_j;\theta)\underline{P(Z_i|X_j,\theta^{(k)}})} \\
+&amp;\text{横线部分用之前推出的式子代替}\\
+&amp;= \sum_{X}{\mu_i\log{P(X_i|Z_a,\theta)}P(Z_a|\theta)+(1-\mu_i)}\log{P(X_i|Z_b,\theta)}P(Z_b|\theta) \\
+&amp;= \sum_{X}{\mu_i\log{(\pi\theta_a^{(X_i)}(1-\theta_a)^{(1-X_i)}}}) + (1-\mu_i)\log{((1-\pi)\theta_b^{(X_i)}(1-\theta_b)^{(1-X_i)}}) \\
+\end{aligned}
+$$
+这个式子中包含了$\theta$和$\mu$两组未知参数, 我们对$\theta$中的参数求导, 并令结果为0, 化简以后就可以得到$\theta$的关于$\mu$的最大化的表达式
+然后我们再通过E步骤中求出$\mu$的最大化值即可得到一轮迭代的参数
+
+---
+这个算法真的给我不扎实的概率论基础上了一课, 关于Q函数的证明部分我已经不想管了, 具体的实现靠以上的信息已经足够了
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-17
+      </div>
+      <div class="card-info">
+        4.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/03/17/ML/HMM/">
+      
+    </a>
+    <span class="card-abstract">
+      
+# 隐马尔可夫模型
+
+## 马尔可夫链
+
+说起隐马尔可夫模型, 首先介绍马尔可夫链
+
+### 随机过程
+
+$X$是一个随机变量, 当我们在一个时间轴上不同的时间点上时, 这个随机变量的分布不同, 则我们令这个随时间变化的随机变量为$X_t$, $t$为时间, 我们称其为一个随机过程
+
+我们称下式为随机过程的分布函数:
+$$
+F(x ; t) = P(X_t \leq x)
+$$
+
+如果有很多不同的$t$构成不同的分布函数, 我们称其为**分布函数族**:
+$$
+F(x_1, x_2, \cdots, x_n ; t_1, t_2, \cdots, t_n) = P(X_{t_1} \leq x_1, X_{t_2} \leq x_2, \cdots, X_{t_n} \leq x_n)
+$$
+
+### 马尔可夫链
+
+- 马尔可夫性:
+  我们可以把一个时间点作为一个状态, 而在随机过程的进行中, 将来处于什么状态和过去处于过什么状态无关, 我们称其为**马氏性(Markov property)**, 又叫无记忆性, 无后效性
+
+也就是说, 一个状态如何转移只和当前的状态有关, 由此构成的状态机形成一个**马尔可夫链**
+
+```Mermaid
+stateDiagram
+    direction LR
+    [*] --&gt; State1 : 0.2
+    [*] --&gt; State4 : 0.8
+    State1 --&gt; State3 : 0.3
+    State1 --&gt; State2 : 0.7
+    State4 --&gt; State2 : 1
+    State2 --&gt; State3 : 1
+    State3 --&gt; State1 : 1
+```
+
+---
+
+现在话题回到隐马尔可夫模型
+
+隐马尔可夫模型首先要有一个马尔可夫链, 我们称其为**隐马尔可夫链**, 可以用一个状态转移矩阵表达:
+$$
+A = \begin{bmatrix}
+    a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\
+    a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    a_{n1} &amp; a_{n2} &amp; \cdots &amp; a_{nn}
+\end{bmatrix}
+$$
+然后我们假设这个马尔可夫链有$n$个状态:
+$$
+Q = \{q_1, q_2, \cdots, q_n\}
+$$
+然后我们实际观察到的结果由当前状态来决定, 但是状态对我们而言是不可见的, 所以被称为隐马尔可夫, 而为了得到我们观测的结果, 我们可以得到一个**观测概率矩阵**:
+$$
+B = \begin{bmatrix}
+    b_{q_1}(1) &amp; b_{q_1}(2) &amp; \cdots &amp; b_{q_1}(m) \\
+    b_{q_2}(1) &amp; b_{q_2}(2) &amp; \cdots &amp; b_{q_2}(m) \\
+    \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+    b_{q_n}(1) &amp; b_{q_n}(2) &amp; \cdots &amp; b_{q_n}(m)
+\end{bmatrix}
+$$
+表示在某个状态下出现某个观测值的概率
+
+最后我们还需要一个初始状态概率向量:
+$$
+\pi = \begin{bmatrix}
+    \pi_1 \\
+    \pi_2 \\
+    \vdots \\
+    \pi_n
+\end{bmatrix}
+$$
+
+然后我们就有了一个完整的隐马尔可夫模型
+
+根据`统计机器学习`中对隐马尔可夫模型的说明, 相关问题可以分为三类:
+
+#### 概率计算问题
+假设我们已知模型$\lambda = (A, B, \pi)$, 以及观测序列$O = o_1, o_2, \cdots, o_T$, 我们要计算观测序列在这个模型下出现的概率
+
+我们有前向算法和后向算法:
+
+- 前向算法: 
+    从初始状态出发, 逐步向后推进, 直到最后一个状态, 然后计算最后一个状态的概率
+    设下式:
+    $$
+    \begin{aligned}
+    \alpha_t(i) &amp; = P(o_1, o_2, \cdots, o_t, q_t = q_i | \lambda)
+    \end{aligned}
+    $$
+    表示到$t$时刻, 状态为$q_i$且观测到$O_1, O_2, \cdots, O_t$的概率
+    那么我们可以得到递推式:
+    $$
+    \begin{aligned}
+    \alpha_1(i) &amp; = \pi_i b_i(o_1) \\
+    \alpha_{t+1}(j) &amp; = \sum_{i=1}^n \alpha_t(i) a_{ij} b_j(o_{t+1})
+    \end{aligned}
+    $$
+    表示从前向后概率概率的累乘相加(加法原理+乘法原理)
+
+- 后向算法:
+    从最后一个状态出发, 逐步向前推进, 直到初始状态, 然后计算初始状态的概率
+    设下式:
+    $$
+    \begin{aligned}
+    \beta_t(i) &amp; = P(o_{t+1}, o_{t+2}, \cdots, o_T | q_t = q_i, \lambda)
+    \end{aligned}
+    $$
+    表示从$T$时刻开始, 状态为$q_i$且观测到$O_{t+1}, O_{t+2}, \cdots, O_T$的概率
+    那么我们可以得到递推式:
+    $$
+    \begin{aligned}
+    \beta_T(i) &amp; = 1 \\
+    \beta_{t-1}(i) &amp; = \sum_{j=1}^n a_{ij} b_j(o_t) \beta_t(j)
+    \end{aligned}
+    $$
+    设每一个最终状态的概率为$1$, 从每一个状态向前推, 直到初始状态:
+    $$
+    \begin{aligned}
+    P(O | \lambda) &amp; = \sum_{i=1}^n \pi_i b_i(o_1) \beta_1(i)
+    \end{aligned}
+    $$
+
+#### 学习问题
+
+学习分为监督学习和无监督学习
+
+对于监督学习使用极大似然法来计算:
+$$
+a_{ij} = \frac{A_{ij}}{\sum_{j=1}^{N}A_{ij}}
+$$
+表示从$i$转移到$j$在从$i$转移到任何状态的概率中所占的比例
+
+$$
+b_j(k) = \frac{B_{jk}}{\sum_{k=1}^{M}B_{jk}}
+$$
+表示在状态$j$下观测到$k$的概率
+
+$$
+\pi_i = \frac{初始状态为q_i的样本数}{样本总数}
+$$
+
+---
+
+对于无监督学习, 使用EM算法, 状态序列$Q = q_1, q_2, \cdots, q_T$, 观测序列$O = o_1, o_2, \cdots, o_T$, 隐马尔可夫模型$\lambda = (A, B, \pi)$, 我们已知观测序列, 将状态序列视作未观测量, 通过EM算法来估计模型参数
+
+推导过程略去, 我们直接记无监督学习算法如下:
+
+$$
+\begin{aligned}
+a_{ij} &amp;= \frac{\sum_{t=1}^{T-1} \zeta_t(i, j)}{\sum_{t=1}^{T-1} \gamma_t(i)} \\
+b_j(k) &amp;= \frac{\sum_{t=1}^{T} \gamma_t(j)}{\sum_{t=1}^{T} \gamma_t(j)} \\
+\pi_i &amp;= \gamma_1(i)
+\end{aligned}
+$$
+其中:
+$$
+\begin{aligned}
+\gamma_t(i) &amp; = P(q_t = q_i | O, \lambda) \\
+&amp; = \frac{\alpha_t(i) \beta_t(i)}{P(O | \lambda)} \\
+&amp; = \frac{\alpha_t(i) \beta_t(i)}{\sum_{j=1}^{N} \alpha_t(j)\beta_t(j)} \\
+\end{aligned}
+$$
+$\alpha_t(i)$和$\beta_t(i)$分别表示前向概率和后向概率, $\gamma_t(i)$表示在时刻$t$处于状态$i$的概率
+
+$$
+\begin{aligned}
+\zeta_t(i, j) &amp; = P(q_t = q_i, q_{t+1} = q_j | O, \lambda) \\
+&amp; = \frac{\alpha_t(i) a_{ij} b_j(o_{t+1}) \beta_{t+1}(j)}{P(O | \lambda)} \\
+&amp; = \frac{\alpha_t(i) a_{ij} b_j(o_{t+1}) \beta_{t+1}(j)}{\sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_t(i) a_{ij} b_j(o_{t+1}) \beta_{t+1}(j)} \\
+\end{aligned}
+$$
+$\zeta_t(i, j)$表示在时刻$t$处于状态$i$且在时刻$t+1$处于状态$j$的概率
+
+---
+
+隐马尔可夫和EM算法看了两天看麻了, 就这样吧
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-17
+      </div>
+      <div class="card-info">
+        3.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/03/17/network/works-projects/wireShark-3/">
+        wireshark practice 3 - DNS
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+1. Run nslookup to obtain the IP address of a Web server in Asia. What is the IP address of that server?
+
+```
+nslookup www.baidu.com
+Server:  UnKnown
+Address:  10.3.9.44
+
+Non-authoritative answer:
+Name:    www.a.shifen.com
+Addresses:  39.156.66.14
+          39.156.66.18
+Aliases:  www.baidu.com
+```
+
+2. Run nslookup to determine the authoritative DNS servers for a university in Europe.
+
+```
+nslookup -type=NS bupt.edu.cn
+Server:  UnKnown
+Address:  10.3.9.44
+
+Non-authoritative answer:
+bupt.edu.cn     nameserver = ns.buptnet.edu.cn
+bupt.edu.cn     nameserver = gus.buptnet.edu.cn
+```
+
+3. Run nslookup so that one of the DNS servers obtained in Question 2 is queried for the mail servers for Yahoo! mail.   What is its IP address?
+
+```
+nslookup www.baidu.com ns.buptnet.edu.cn
+Server:  UnKnown
+Address:  2001:da8:202:10::37
+```
+
+国内没有yahoo, 用百度代替
+
+---
+这一部分使用wireshark进行抓包分析
+
+4. Locate the DNS query and response messages. Are then sent over UDP or TCP?
+
+```
+UDP
+```
+
+5. What is the destination port for the DNS query message? What is the source port of DNS response message?
+
+```
+Source Address: 10.21.180.15
+Destination Address: 10.3.9.44
+```
+
+6. To what IP address is the DNS query message sent? Use ipconfig to determine the IP address of your local DNS server. Are these two IP addresses the same?
+
+```
+DNS Servers . . . . . . . . . . . : 10.3.9.44 //the same
+                                    10.3.9.45
+```
+
+7. Examine the DNS query message. What “Type” of DNS query is it? Does the query message contain any “answers”?
+
+```
+一些是A类型, 一些是AAAA类型查询
+在response中的类型可能包含一些CNAME类型, 这是域名的别名
+```
+
+8. Examine the DNS response message. How many “answers” are provided? What do each of these answers contain?
+
+```
+有些提供两个有些提供三个, 其中包含两个不同的DNS地址和一个CNAME别名
+```
+
+---
+
+9. Consider the subsequent TCP SYN packet sent by your host. Does the destination  IP address of the SYN packet correspond to any of the IP addresses provided in the DNS response message?
+
+```
+一样的, 但是发送的双方都使用的是ipv6地址, 导致之前使用IPV4地址过滤时查不到
+```
+
+10. This web page contains images. Before retrieving each image, does your host issue new DNS queries? 
+
+```
+后面确实还有一些DNS查询, 但是看起来并不是为了获取图片而进行的
+图片的请求应该使用的QUIC协议, 并且内容受到保护的样子
+```
+
+---
+
+下面是对nslookup的抓包:
+
+11.	What is the destination port for the DNS query message? What is the source port of DNS response message?
+
+```
+both are 53
+```
+
+12.	To what IP address is the DNS query message sent? Is this the IP address of your default local DNS server?
+
+```
+yes, it is 10.3.9.44
+```
+
+13.	Examine the DNS query message. What “Type” of DNS query is it? Does the query message contain any “answers”?
+
+```
+Type is A and AAAA, and it contains some answers
+```
+
+14.	Examine the DNS response message. How many “answers” are provided? What do each of these answers contain?
+
+```
+it contains three answers, two of them are CNAME and one is A
+```
+
+15.	Provide a screenshot.
+```
+no way
+```
+
+---
+
+16.	To what IP address is the DNS query message sent? Is this the IP address of your default local DNS server?
+
+```
+学校的dns查不到mit的域名, 所以使用google的公共DNS做替代:
+2001:4860:4860::8888
+显然不是我的默认DNS服务器
+```
+
+17.	Examine the DNS query message. What “Type” of DNS query is it? Does the query message contain any “answers”?
+
+```
+当然是NS类型, nslookup的参数设定里就是这么查询的
+```
+
+18.	Examine the DNS response message. What MIT nameservers does the response message provide? Does this response message also provide the IP addresses of the MIT namesers?
+
+```
+Only provide the name of the MIT nameservers, not the IP addresses
+```
+
+19.	Provide a screenshot.
+```
+no way
+```
+
+最后三个差不多, 就不做了
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-13
+      </div>
+      <div class="card-info">
+        1.3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/03/13/ML/SVM/">
+      支持向量机
+    </a>
+    <span class="card-abstract">
+      
+# 支持向量机(SVM)
+
+支持向量机是一个二分类的监督学习算法, 它的目标是找到一个超平面, 使得超平面两侧的点到超平面的距离都尽可能的远, 从而使得超平面两侧的点尽可能的分开
+
+一个超平面我们可以用下式来表示:
+$$
+w^Tx + b = 0
+$$
+其中, $w$ 是超平面的法向量, $b$ 是超平面的截距, $x$ 是描述点位置的向量
+
+如果以一个二维超平面(直线)为例子, 可以如下表示:
+$$
+w^T = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}, x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}, 
+b = constant \\
+\space \\
+w_1x_1 + w_2x_2 + b = 0
+$$
+
+![](http://shouce.jb51.net/dm-algo/img/20140502163842531.jpg)
+
+上图描述了一个SVM将数据分为两半的图像, 用两条平行的二维超平面分开, 我们让SVM划分区域的超平面为互相平行的, 也就是说$w$相等, 参考平行直线的距离公式:
+$$
+d = \frac{|b_1 - b_2|}{\sqrt{w_1^2 + w_2^2}}
+$$
+我们得到任意平行超平面距离公式为:
+$$
+d = \frac{|b_1 - b_2|}{||w||}
+$$
+其中, $||w||$ 是$w$的模, 也就是$w$的长度
+为了使$d$最大, 我们的最优化任务就是使得$||w||$最小
+
+所以我们的任务就是找到两个平行的超平面, 使得所有数据都在它们的两边, 并且这两个超平面之间的距离最大
+
+使得所有数据都在其两边是这个优化问题的约束条件, 可以用不等式表示如下:
+$$
+y_i(w^Tx_i + b) \geq 1
+$$
+
+具体解释一下这个式子:
+如果我们把一个不是直线上的点带入直线, 得到的值是什么?
+比如:
+$$
+y = -\frac{1}{2}x + 1
+$$
+我们带入$(0,0)$和$(1,1)$, 得到的结果是$-1$和$\frac{1}{2}$, 两者相对直线的距离的比例和方向都体现出来了, 同时发现计算出的值除以$||w||$就是实际上的相差距离
+
+所以我们带入$x_i$的式子:
+$$
+w^Tx_i + b \geq 1 \\
+w^Tx_i + b \leq -1 
+$$
+这里的$1$表示的就是距离为$\frac{1}{||w||}$的两条边界两边
+
+于是我们有原初(primal)的优化问题如下:
+$$
+\begin{aligned}
+\min_{w,b} &amp; \frac{1}{2}||w||^2 \\
+s.t. &amp; y_i(w^Tx_i + b) \geq 1
+\end{aligned}
+$$
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-13
+      </div>
+      <div class="card-info">
+        845字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/03/13/automata-theory/CH3-DFA/">
+        有穷状态自动机
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 有穷状态自动机(FA)
+
+关于这一节, 如果不用严格的证明表述的话还是很好理解的
+
+## 什么是自动机, 为什么要有自动机?
+这里所说的自动机可以看作对语言的形式化理解(对字符串进行理解)
+
+我们在很多地方都有用到自动机的理论, 比如数字电路中的时序电路, 我们常用状态转移图来表示一个电路状态根据输入的变化.
+
+自动机理论则是将这种状态, 状态转移, 语言的概念进行抽象, 总结出来的理论
+
+### FA的定义
+一个FA是一个五元组$(Q, \Sigma, \delta, q_0, F)$来定义的, 其中:
+- $Q$是一个有穷集合, 称为状态集合, 代表自动机的状态空间
+- $\Sigma$是一个有穷集合, 称为输入符号集合, 是我们识别串的字母表
+- $\delta$是一个从$Q\times\Sigma$到$Q$的映射, 称为状态转移函数, 代表状态转移的规则, 自动机在某个状态$q$下如果读入字母(句子)$a$则会改变自身状态
+- $q_0$表示开始状态
+- $F$表示结束状态的集合
+
+除了用符号语言表达外我们还可以用图形(状态转移图)来表示:
+
+```Mermaid
+stateDiagram
+    direction LR
+    [*] --&gt; q0                                                              
+    q0 --&gt; q1 : 1
+    q0 --&gt;q0 : 0
+    q0 --&gt;q2 : 2
+    q1 --&gt; q3:ε
+    q3 --&gt; q2: 1
+    q2 --&gt; q1: 0
+    q2 --&gt; [*]: 1
+```
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
         2023-03-12
       </div>
       <div class="card-info">
@@ -255,12 +1128,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/03/12/operating-system/CH2-Concurrency/">
-        多线程并发
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/03/12/operating-system/CH2-Concurrency/">
+      多线程并发
+    </a>
+    <span class="card-abstract">
+      
 # 多线程
 
 我们在之前对进程有了一个相对详细的介绍, 接下来要介绍的是线程和并发
@@ -589,12 +1461,8 @@ void lock_release(lock_t *lock) {
 于是我们可以使用一个**等待队列**来解决这个问题, 当一个线程获取锁失败时, 将其加入到等待队列之中
 一个线程完成解锁后, 会检查等待队列中是否有等待的线程, 如果有, 则维持锁的状态, 并将等待队列中的第一个线程唤醒
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -604,13 +1472,11 @@ void lock_release(lock_t *lock) {
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2023-03-09
@@ -627,11 +1493,12 @@ void lock_release(lock_t *lock) {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2023/03/09/operating-system/CH1-realVM/">
-      两个OS中的真实虚拟化机制
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/03/09/operating-system/CH1-realVM/">
+        两个OS中的真实虚拟化机制
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 这一章讲了在VAX/VMS和Linux中的真实虚拟化机制, 关于Linux的详细机制我们后续还有更多值得学习的东西, 我们在这里只记录其中使用的一些优化机制
 # VAX/VMS
 
@@ -732,8 +1599,12 @@ Linux的页交换策略使用的2Q算法
 如果有一个页面被提升到RUQ, 则按照LRU的策略驱逐最久未使用的页面(使用时钟算法近似)
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -743,11 +1614,13 @@ Linux的页交换策略使用的2Q算法
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2023-03-08
@@ -764,12 +1637,11 @@ Linux的页交换策略使用的2Q算法
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/03/08/ML/perceptron/">
-        感知机
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/03/08/ML/perceptron/">
+      感知机
+    </a>
+    <span class="card-abstract">
+      
 # 感知机
 
 感知机部分实在简单得没有什么好说的, 先简单介绍一下其原理和学习策略罢
@@ -882,1259 +1754,6 @@ perceptron.train_until_convergence(data, lable)
 
 ```
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-03-08
-      </div>
-      <div class="card-info">
-        1.9k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/03/08/signal/signal_2/">
-      信号与系统(二)傅里叶变换
-    </a>
-    <span class="card-abstract">
-      
-## 四类信号变换
-
-### CFT, CFS, DTFT, DFS 
-
-- CFT: Continuous Fourier Transform
-  连续傅里叶变换
-  $$
-  \begin{aligned}
-  X(j\Omega) &amp;= \int_{-\infty}^{\infty}x(t)e^{-j\Omega t}dt\\
-  x(t) &amp;= \int_{-\infty}^{\infty}X(j\Omega)e^{j\Omega t}d\Omega
-  \end{aligned}
-  $$
-  连续非周期信号 - 连续非周期频域
-- CFS: Continuous Fourier Series
-  连续傅里叶级数
-  $$
-  \begin{aligned}
-  X(jn\Omega) &amp;= \frac{1}{T}\int_{-\infty}^{\infty}\tilde{x}(t)e^{-jn\Omega t}dt\\
-  \tilde{x}(t) &amp;= \sum_{n=-\infty}^{\infty}X(n\Omega)e^{jn\Omega t}
-  \end{aligned}
-  $$
-  连续周期信号 - 离散非周期频域
-- DTFT: Discrete Time Fourier Transform
-  离散时间傅里叶变换
-  $$
-  \begin{aligned}
-  X(e^{j\Omega}) &amp;= \sum_{n=-\infty}^{\infty}x[n]e^{-jn\Omega}\\
-  x[n] &amp;= \frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\Omega})e^{jn\Omega}d\Omega
-  \end{aligned}
-  $$
-  离散非周期信号 - 离散非周期频域
-
-- DFS: Discrete Fourier Series
-  离散傅里叶级数
-  $$
-  \begin{aligned}
-  \tilde{X}(k) &amp;= \sum_{n=0}^{N-1}x[n]W_N^{nk}\\
-  \tilde{x}[n] &amp;= \frac{1}{N}\sum_{k=0}^{N-1}\tilde{X}(k)W_N^{-nk}
-  \end{aligned}
-  $$
-  离散周期信号 - 离散周期频域
-
-### DFT
-连续的信号进行采样后, 可以进行DTFT得到连续周期的频域信号
-
-为了让频域信号离散且非周期(有限), 我们对DFTF后的频域信号进行有限采样:
-
-- 在一个周期内进行采样, 多余的周期信号丢弃
-
-这样一来时域只会重复有限的周期, 从而得到有限离散的时域和频域信号
-
-我们称为**DFT(Descrite Fourier Transform)**
-
-所以DFT是从一个有限长离散的时域信号, 转化为一个有限长离散的频域信号
-
-我们记DFT的公式如下:
-$$
-\begin{aligned}
-X[k] &amp;= \sum_{n=0}^{N-1}x[n]W_N^{nk}\\
-x[n] &amp;= \frac{1}{N}\sum_{k=0}^{N-1}X[k]W_N^{-nk}
-\end{aligned}
-$$
-发现其实傅里叶级数的时域周期和频域周期相同, 所以我们在两个域内同时取N个采样点得到主值序列即可
-
-#### 补充理解:
-$N$作为采样点数, 只是对频域的采样点数, 和时域的采样点数没有关系, 一般来说习惯让频域点数和信号序列长度相同
-
-有限离散序列的频域是连续周期的, 所以采样点数只要平分一个周期即可
-
-如果采样点数大于信号长度, 多余部分的信号用0补齐
-如果采样点数小于信号长度, 信号截断, 复原的信号会产生混叠失真
-
-
-### FFT
-
-#### 旋转因子
-我们定义:
-$$
-W_N = e^{-j\frac{2\pi}{N}}
-$$
-
-将FFT按照奇偶拆分成两个序列:
-$$
-\begin{aligned}
-X[k] &amp;= \sum_{n=0}^{N-1}x[n]W_N^{nk}\\
-&amp;= \sum_{n=0}^{N-1}x[2n]W_N^{2nk} + \sum_{n=0}^{N-1}x[2n+1]W_N^{(2n+1)k}\\
-\end{aligned}
-$$
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-03-06
-      </div>
-      <div class="card-info">
-        2.5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/03/06/automata-theory/CH2-grammar/">
-        形式语言与自动机 第二章 文法
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-# 文法
-
-**文法的定义**: 一个四元组$G=(V,T,P,S)$，其中$V$是非终结符的有限集合，$T$是终结符的有限集合，$P$是产生式的有限集合，$S$是开始符号，且$S\in V$, 我们称$G$为一个文法
-
-- 变量(variable)：$V$中的元素称为变量, 一个变量是一个非终结符, 可以用来派生出其他的符号, $L(A)$称为语法范畴
-- 终结符(terminal)：$T$中的元素称为终结符, 一个终结符是一个最小的符号, 具有**原子性**(不可再分)
-- 产生式(production)：$P$中的元素称为产生式, 一个产生式是一个从变量到符号的映射, 用来描述变量如何派生出符号
-  **tips**: 符号包括了变量和终结符
-- 开始符号(start symbol)：$S$是一个变量, 用来表示文法的开始, $S$必须是$V$中的一个元素
-
-## 文法的作用
-
-通过文法我们可以描述一个语言, 通过**推导**来得到一个**句子**或**句式**
-
-- 句子: 每个元素都是终结符构成, 无法推出新的符号
-- 句式: 包含变量在其中, 可以由变量推导出句子
-
-从$S$开始, 通过产生式的推导, 最后得到一个句子或句式, 这个过程反过来, 由一个句子或句式通过**产生式**的逆推导得到$S$或者另一个句子(句式)的过程, 称为**归约**
-
-通过文法的推导和规约我们可以系统性的描述一个形式语言, 包括了计算机语法的描述, 判定等
-
-我们用符号:
-$$L(G)=\{w|w \in T^*| S \Rightarrow^* w\}$$
-表示一个由文法$G$生成的语言
-
-## 文法的分类
-
-此处分类按照教科书的乔姆斯基体系进行分类
-
-### 0型文法
-
-**0型文法**, 又叫**短语结构文法(phrase structure grammar/PSG)**, 符号定义如下:
-$$G=(V,T,P,S)$$
-简单来说, 就是没有过多限制的一个文法, 都可以叫做PSG
-
-由PSG生成的语言我们称为**0型语言(短语结构语言/PSL/递归可枚举集)**, 记为$L(G)$
-
-### 1型文法
-
-**1型文法**, 又叫**上下文有关文法(context-sensitive grammar/CFG)**, 符号语言表述如下:
-$$G=(V,T,P,S)$$
-且满足:
-$\forall a \rightarrow b \in P$有$|a|\leq|b|$
-也就是说, 推导出的语句的长度必须满足单调不下降, 这样生成的语言称为**1型语言(上下文有关语言/CSL)**
-
-### 2型文法
-
-**2型文法**, 又叫**上下文无关文法(context-free grammar/CFG)**, 符号语言表述如下:
-$$G=(V,T,P,S)$$
-且满足:
-$\forall a \rightarrow b \in P$有$|a|\leq|b|$ 且 $a\in V$
-也就是说, 只能由变量推断出终结符(标识符)
-
-### 3型文法
-
-**3型文法**, 又叫**正规文法(regular grammar/RG)**, 符号语言表述如下:
-$$G=(V,T,P,S)$$
-且满足:
-对于$\forall a \rightarrow b \in P$满足以下格式:
-$$
-\begin{cases}
-A \rightarrow wB\\
-A \rightarrow w\\
-\end{cases}
-$$
-
-### 线性文法
-
-如果产生式满足如下形式:
-$$
-\begin{cases}
-A \rightarrow wBx\\
-A \rightarrow w\\
-\end{cases}
-$$
-则称该文法为**线性文法(linear grammar)**, 对应的生成语言$L(G)$称为**线性语言(linear language)**
-
-如果只有单个方向的产生式:
-
-$\begin{cases}A \rightarrow wB\\ A \rightarrow w\\ \end{cases}$或者$\begin{cases}A \rightarrow Bx\\ A \rightarrow x\\ \end{cases}$
-则称该文法为**右线性文法(right-linear grammar)**或者**左线性文法(left-linear grammar)**
-
-可以看到, **右线性文法**其实就是**正则文法**
-
-- 定理: 左线性文法等价于右线性文法, 所以左线性文法也是正则文法
-
-### 空语句
-
-只是单纯看这一小节不太理解空语句存在的意义如何, 但是我们可以先假定以下的定理事先成立:
-
-1. 设$G(V,T,P,S)$是一个文法, 则存在一个文法$G&#39;(V&#39;,T,P&#39;,S&#39;)$满足: $S&#39;$只出现在$P&#39;$中的左部, 并且$L(G)=L(G&#39;)$
-   简要证明: 我们令$P&#39; = P \cup \{S&#39; \rightarrow S\}$, 相当于建立一个从$S&#39;$到$S$的产生式, 所以只会从$S&#39;$推导出原来$S$可以推导出来的语言, 所以满足了$L(G)=L(G&#39;)$
-
-2. 对于CSG, CFG, RG有以下性质成立:
-   如果$G(V,T,P,S)$是一个CSG/CFG/RG, 则文法$G(V,T,P\cup \{S\rightarrow\varepsilon\},S)$仍然是一个CSG/CFG/RG, 相应的生成语言也满足:
-   如果$L(G)$是一个CSL/CFG/RG, 则$L(G\cup\{\varepsilon\})$也是一个CSL/CFG/RG
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-03-06
-      </div>
-      <div class="card-info">
-        1.4k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/03/06/math/convolution/">
-      数学基础-卷积
-    </a>
-    <span class="card-abstract">
-      
-# 卷积
-## 定义
-卷积的定义式如下:
-$$
-\begin{aligned}
-f(x) * g(x) &amp; = (f*g)(x)\\
-&amp; = \int_{-\infty}^{\infty}f(\tau)g(x-\tau)d\tau\\
-\end{aligned}
-$$
-从直观的图形角度来解释, 卷积的操作步骤为:
-- 将一个函数先反转, 然后从左到右平移
-- 将两个函数相交的部分做积分, 得到的值就是卷积在$x$处的值
-
-为了更加深刻理解卷积的含义, 我们从离散信号的角度来先看待卷积的含义
-
-## 离散信号的卷积
-现在假设我们有一个线性时不变离散信号系统
-
-**tips**: 系统我们可以暂时认为是一个输入信号输出信号的函数
-
-然后我们有一个离散信号$x[n]$
-现在我们把这个离散信号看作一个单独的脉冲信号和一个冲击函数的乘积
-
-比如说我们有如下图:
-![](/image/draft/convolution_1.png)
-
-这个离散的时间信号我们可以看作若干脉冲信号的叠加, 其中的一个脉冲信号我们可以表示为:
-$$
-y[n] = x[k]  \delta[n-k]
-$$
-
-比如对于处于$k=3$处的脉冲信号, $x[3] = 8$, 我们可以将其表示为:
-$$
-y[n] = 8 \times \delta[n-3]
-$$
-根据冲击函数的采样性质, 我们可以得到:
-$$
-y[n] = 8 \times \begin{cases}
-1, &amp; n=3\\
-0, &amp; n\neq 3
-\end{cases}
-$$
-将这样的单个脉冲函数加起来, 就得到了我们的离散信号$x[n]$
-
-在这样的基础上, 我们将$\delta[n]$函数换成对于一个信号的响应(加权函数), 这样输入的每一个离散的脉冲信号都会在结果的输出信号的每一个位置上有一个加权的影响, 和其他时间点的信号同时对输出结果产生影响, 这样我们就得到了离散时间信号的卷积
-
-我们可以认为卷积是在一个系统中, 输入的信号上的每一个脉冲信号都会影响整体的输出信号的一个叠加运算, 而在连续的时间信号中就可以用最开始提的积分式来表示
-
----
-
-## 过了许久后的进一步理解
-两个函数的卷积, 我们把一个函数作为信号, 一个函数作为系统, 信号的某一个点的值, 在卷积的过程中相当于通过这个系统, 产生一个输出信号, 所有的输出信号的叠加就是卷积的结果, 也是通过这个系统的输出信号
-
-### 循环卷积:
-循环卷积需要规定一个做卷积的**长度**, 两个序列都必须满足这个长度, 然后之前被视作**系统**的函数会反转后从头开始和**信号**的函数进行卷积, 但是超过长度的部分会循环到另一端, 而不是直接截断
-
-比如:
-$$
-[1,2,3,4]
-$$
-和
-$$
-[1,2,3,4,5,6]
-$$
-做长度为7的卷积
-
-我们把长度补为7, 得到:
-$$
-[1,2,3,4,0,0,0]
-$$
-和
-$$
-[1,2,3,4,5,6,0]
-$$
-然后卷积方式为:
-$$
-y[0] = multiply([1,2,3,4,0,0,0], [1,0,6,5,4,3,2])
-$$
-可以看到, 原本超出序列的部分被循环补充到了尾部
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-03-06
-      </div>
-      <div class="card-info">
-        1.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/03/06/signal/signal/">
-        信号与系统(一)特殊函数
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-## 矩形函数
-
-矩形函数的定义式如下:
-$$
-\begin{aligned}
-  \text{rect}(t) &amp;= \begin{cases}
-    1, &amp; t \in (-\frac{1}{2}, \frac{1}{2}) \\
-    \frac{1}{2} , &amp; t =\{\frac{1}{2},-\frac{1}{2}\} \\
-    0, &amp; \text{otherwise}
-  \end{cases}
-\end{aligned}
-$$
-
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Rectangular_function.svg/450px-Rectangular_function.svg.png)
-
-## 单位阶跃函数
-单位阶跃函数(Heaviside function)的定义式如下:
-$$
-\begin{aligned}
-  H(t) &amp;= \begin{cases}
-    0, &amp; t &lt; 0 \\
-    1, &amp; t \geq 0
-  \end{cases}
-\end{aligned}
-$$
-
-## 冲激函数(狄拉克函数)(delt delta function)
-
-冲激函数主要满足以下两个特征(定义):
-
-- 冲激函数值在某一个点(原点)的值为无穷大, 在其他点的值为0
-  由于这个原因, 我们其实并不认为冲激函数是一个&#34;函数&#34;, 而是一个测度或者其他什么的
-
-- 冲激函数在实数域上的积分为$1$:
-  $$\int_{-\infty}^{+\infty}\delta(x)dx = 1$$
-
-对于冲激函数我们可以用以下定义式来表示:
-$$ \delta_a(x) = \frac{1}{|a|\sqrt{\pi}}e^{-\frac{x^2}{a^2}} $$
-其中$a \rightarrow 0$时, $\delta_a(x)$趋近于$\delta(x)$
-
-wikipedia上有相当直观的动图:
-&lt;center&gt;
-&lt;iframe src=&#34;https://upload.wikimedia.org/wikipedia/commons/b/b4/Dirac_function_approximation.gif&#34; width=&#34;200&#34; height=&#34;400&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/center&gt;
-
-### 性质
-
-- 缩放性(scaling):
-  $$\delta_{a}(ax) = \frac{1}{|a|}\delta\left(x\right)$$
-  - 证明:
-    $$
-    \begin{aligned}
-    \delta_a(bx) &amp; = \frac{1}{|a|\sqrt{\pi}}e^{-\frac{(bx)^2}{a^2}} \\
-     &amp;= \frac{1}{|bc|\sqrt{\pi}}e^{-\frac{(bx)^2}{(bc)^2}} \\
-     &amp;= \frac{1}{|b|} \frac{1}{|c|\sqrt{\pi}}e^{-\frac{x^2}{c^2}} \\
-     &amp;= \frac{1}{|b|} \delta_c(x)
-    \end{aligned}
-    $$
-  用于逼近$0$的$a$被换为了$c$, 但是冲激函数本身不会变化
-
-- 采样性(sampling):
-  $$\int_{-\infty}^{\infty}f(t)\delta(t-t_0)dt = f(t_0)$$
-  又被称为筛性(sifting)
-
-$$
-x[n] = x_c(nT) = x_c\left(\frac{n}{f}\right)
-$$
-$$ \int_{-\infty}^{\infty} f(t) \delta(t) dt = f(0) $$
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-03-04
-      </div>
-      <div class="card-info">
-        10k字
-      </div>
-      <div class="card-info">
-        阅读时间: 9 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/03/04/ML/decision_tree/">
-      决策树
-    </a>
-    <span class="card-abstract">
-      
-# 决策树
-
-## 决策树的基本逻辑
-
-决策树简单来说就是一棵多叉树, 一个测试数据从根节点开始, 每到达一个节点, 该节点对数据的某一个属性进行检测, 并决定该数据属于某一个子树的类型, 直到一个叶子节点, 可以完全确定该数据的类型
-
-- 对于这个测试数据的属性, 如果是离散的属性, 那么这个决策树就是一个分类树, 解决机器学习中的分类问题
-- 如果是连续的属性, 那么这个决策树就是一个回归树, 解决机器学习中的回归问题
-
-## 决策树的原理
-
-### 信息增益
-
-在解释信息增益前, 先了解一下简单的信息熵:
-$$H(X)=-\sum_{i=1}^n p_i \log_2 p_i$$
-其中$p_i$是第$i$个事件发生的概率, 在决策树中可以理解为一个类型的物体, 在总物体中数量的占比
-信息熵的取值范围为:
-$$0 \leq H(X) \leq \log_2 n$$
-由于概率的区间为$[0,1]$, 在这个区间范围内的函数图像如下:
-![](/svg/decision_tree_1.svg)
-由上我们可以直觉地理解: 信息熵描述信息的不确定性(复杂度), 当一个随机变量发生的概率越小, 我们就越不能确定该事件的发生, 所以信息的不确定性越大, 信息熵越大
-
-而从总体上来解释, 信息熵描述的是信息的**不纯度**, 信息熵越大, 信息中的杂项越多, 信息的纯度越低
-
-当某一个类概率为$1$时, 信息熵为$0$, 当所有类平分概率时, 信息熵为$1$
-
-然后我们以作业的数据为例, 来演示一下详细过程:
-
-![](/image/draft/decision_tree_1.png)
-
-首先我们计算出需要分类的信息熵:
-
-- 首先统计出可贷款的人数和不可贷款的人数: $9$和$6$
-- 然后计算出熵:
-  $$H(X)=-\frac{9}{15} \log_2 \frac{9}{15} - \frac{6}{15} \log_2 \frac{6}{15} \approx 0.97$$
-
-接下来我们提出**信息增益**的概念:
-$$Gain(D, a)=H(D)-\sum_{v=1}^V \frac{|D^v|}{|D|} H(D^v)$$
-
-其中$\sum_{v=1}^V \frac{|D^v|}{|D|} H(D^v)$我们又称为**条件熵**, 记为$H(D|a)$, 其中$D$是数据集, $a$是属性, $D^v$是数据集$D$中在属性$a$上取值为$v$的子集
-
-于是我们可以计算出某个属性的信息增益, 以年龄为例子(5青年,5中年,5老年): 
-$$
-\begin{aligned}
-  H(D^v) = -\frac{5}{15} \log_2 \frac{5}{15} - \frac{5}{15} \log_2 \frac{5}{15} - \frac{5}{15} \log_2 \frac{5}{15} \approx 1.585
-\end{aligned}  \\
-\begin{aligned}
-Gain(D, age) &amp;= H(D) - \sum_{v=1}^V \frac{|D^v|}{|D|} H(D^v) \\
-&amp;= 0.97 - \frac{5}{15} \times 1.585 - \frac{5}{15} \times 1.585 - \frac{5}{15} \times 1.585 \\
-&amp;= 0.97 - 1.585 \\
-&amp;= -0.615 \\
-\end{aligned}
-$$
-
-很明显, 由于年龄平分, 所以年龄的信息熵为最大值, 此时我们计算出的信息增益最小, 说明了如果我们选择年龄作为分类标准, 我们的分类效果会很差, 无法通过年龄使得数据的信息熵下降
-
-参考上面的计算方式, 我们计算出每一个属性的信息增益, 选择信息增益最大的一个属性作为分类标准, 然后递归进行此过程, 直到所有特征(属性)都分类完毕, 或者信息熵已经低于一定的阈值, 则完成分类
-
-**以上是最简单的ID3决策树的基本原理, 只能用于处理离散特征的分类问题, 对于连续的分类问题/回归问题, 我们需要使用更先进的决策树模型**
-
----
-
-### 信息增益比
-信息增益比定义公式如下:
-$$Gain\_ratio(D, a)=\frac{Gain(D, a)}{IV(a)}$$
-其中$IV(a)$是属性$a$的属性熵值, 使用熵的公式计算:
-$$IV(a)=-\sum_{v=1}^V \frac{|D^v|}{|D|} \log_2 \frac{|D^v|}{|D|}$$
-
-信息增益偏向于选择取值较多的特征, 信息增益比则是在信息增益的基础上进行了调整, 加上属性熵作为分母, 使得取值较多的特征不会过于占优
-
-这是C4.5决策树的关键优化之一
-
-除此之外, 为了使得连续的属性也能够分类, C4.5决策树采用以下方案来处理连续的属性:
-
-### 二分离散化
-如果我们有某个属性的取值是连续的, 我们可以先将其从小到大进行排序, 然后在相邻的两个取值$v_i$和$v_{i+1}$之间取中间值作为一个阈值, 将其作为分类的划分点, 然后我们可以取到$n-1$个划分点, 依次计算每个划分点的信息增益/信息增益比, 选择最大的一个作为最终的分类划分点即可
-
-### 缺失值处理
-
-对于决策树的缺失值, 我们做如下处理:
-- 首先对于每个样本我们给它们一个权重, 默认的初始值为1
-- 然后我们按照正常流程计算选择每一个属性作为划分标准的信息增益比
-- 在计算含有缺失值的信息增益比时, 我们按照不含缺失值的样本来进行分类, 然后看每一个分类中的样本个数, 对于含有缺失值的样本, 我们将其同时分入全部分类, 但是其权重改为对应分类中所占样本数的比例
-  比如, 如果不含缺失值的样本分为了两类, 一类有3个, 一类有2个, 平分入两个类别的含有缺失值的样本的权重分别为$\frac{3}{5}$和 $\frac{2}{5}$
-- 计算信息增益比时, 我们需要在最后得到的信息增益比上乘上一个比例, 该比例为**不包含该缺失值的样本数所占的比例**, 需要注意的是, 该比例是由权重来计算的, 我们把所有的权重加起来计算未缺失的权重
-
-### 决策树剪枝
-
-#### 预剪枝
-
-预剪枝就是在构建决策树的过程中, 在一个分类的节点构建前评估这一个分类的收益, 如果这一次分类无法使分类的准确度提高, 则直接将该节点作为叶节点不再向下分类
-
-举一个例子, 我们在一个节点上进行分类, 我们先看当前节点中的样本有多少, 将最多的类型作为该节点的判定类别, 然后计算判定的准确率
-|好瓜|好瓜|好瓜|坏瓜|坏瓜|坏瓜|坏瓜|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-比如以上, 我们可以计算出准确率为 $\frac{4}{7}$
-
-然后我们将其进行分类, 分别计算每一个分类后节点的准确率, 如果总体的准确率提高了, 则进行此次分类
-
-预剪枝可以减少决策树构建的开销, 但是由于其**贪心**的性质, 可能导致后续的收益无法得到收获
-
-#### 后剪枝
-
-后剪枝的评价标准和预剪枝一样, 但是在整个决策树构建完成后进行, 从叶节点开始, 评估将一个节点的子树修建后是否能够提高预测的精度, 然后进行剪枝
-
-### 基尼不纯度(Gini impurity)
-$$
-\begin{aligned}
-Gini(D) &amp; =\sum_{k=1}^K p_k(1-p_k) \\
-&amp; = 1 - \sum_{k=1}^K p_k^2
-\end{aligned}
-$$
-基尼不纯度用于估计样本分类错误的概率, $p_k$代表的是一个叶节点中的样本被分类为$k$类的概率, $Gini(D)$越小, 则样本被分类错误的概率越小
-
-以下是作业的代码实现:
-```python
-import math
-import operator
-
-
-def creatDataSet():
-    dataSet = [[0, 0, 0, 0, &#39;no&#39;],
-               [0, 0, 0, 1, &#39;no&#39;],
-               [0, 1, 0, 1, &#39;yes&#39;],
-               [0, 1, 1, 0, &#39;yes&#39;],
-               [0, 0, 0, 0, &#39;no&#39;],
-               [1, 0, 0, 0, &#39;no&#39;],
-               [1, 0, 0, 1, &#39;no&#39;],
-               [1, 1, 1, 1, &#39;yes&#39;],
-               [1, 0, 1, 2, &#39;yes&#39;],
-               [1, 0, 1, 2, &#39;yes&#39;],
-               [2, 0, 1, 2, &#39;yes&#39;],
-               [2, 0, 1, 1, &#39;yes&#39;],
-               [2, 1, 0, 1, &#39;yes&#39;],
-               [2, 1, 0, 2, &#39;yes&#39;],
-               [2, 0, 0, 0, &#39;no&#39;]]
-    labels = [&#39;年龄&#39;, &#39;有工作&#39;, &#39;有自己的房子&#39;, &#39;信贷情况&#39;]
-    return dataSet, labels
-
-
-# 计算样本熵
-def calc_shannon_ent(data_set):
-    num_entries = len(data_set)
-    label_counts = {}
-    for feat_vec in data_set:
-        current_label = feat_vec[-1]
-        if current_label not in label_counts.keys():
-            label_counts[current_label] = 0
-        label_counts[current_label] += 1
-    shannon_ent = 0.0
-    for key in label_counts:
-        prob = float(label_counts[key]) / num_entries
-        shannon_ent -= prob * math.log(prob, 2)
-    return shannon_ent
-
-
-# 选择分类属性并分类样本
-# axis:分类属性的索引
-# value:分类属性的值
-def split_data_set(data_set, axis, value):
-    ret_data_set = []
-    for feat_vec in data_set:
-        if feat_vec[axis] == value:
-            reduced_feat_vec = feat_vec[:axis]
-            reduced_feat_vec.extend(feat_vec[axis + 1:])
-            ret_data_set.append(reduced_feat_vec)
-    return ret_data_set
-
-
-# 计算信息增益
-def calc_info_gain(data_set, base_entropy, axis):
-    feat_list = [example[axis] for example in data_set]
-    unique_vals = set(feat_list)
-    new_entropy = 0.0
-    for value in unique_vals:
-        sub_data_set = split_data_set(data_set, axis, value)
-        prob = len(sub_data_set) / float(len(data_set))
-        new_entropy += prob * calc_shannon_ent(sub_data_set)
-    info_gain = base_entropy - new_entropy
-    return info_gain
-
-
-# 计算信息增益比
-def calc_info_gain_ratio(data_set, base_entropy, axis):
-    info_gain = calc_info_gain(data_set, base_entropy, axis)
-    feat_list = [example[axis] for example in data_set]
-    unique_vals = set(feat_list)
-    split_info = 0.0
-    for value in unique_vals:
-        sub_data_set = split_data_set(data_set, axis, value)
-        prob = len(sub_data_set) / float(len(data_set))
-        split_info -= prob * math.log(prob, 2)
-    info_gain_ratio = info_gain / split_info
-    return info_gain_ratio
-
-
-# 选择最好的分类属性
-def choose_best_feature_to_split(data_set):
-    num_features = len(data_set[0]) - 1
-    base_entropy = calc_shannon_ent(data_set)
-    best_info_gain_ratio = 0.0
-    best_feature = -1
-    print(&#39;base_entropy is %.3f&#39; % base_entropy)
-    for i in range(num_features):
-        info_gain_ratio = calc_info_gain_ratio(data_set, base_entropy, i)
-        print(&#39;info_gain_ratio of %s is %.3f&#39; % (labels[i], info_gain_ratio))
-        if info_gain_ratio &gt; best_info_gain_ratio:
-            best_info_gain_ratio = info_gain_ratio
-            best_feature = i
-    print(&#39;best_feature is %s&#39; % labels[best_feature])
-    return best_feature
-
-
-def majority_cnt(class_list):
-    class_count = {}
-    for vote in class_list:
-        if vote not in class_count.keys():
-            class_count[vote] = 0
-        class_count[vote] += 1
-    sorted_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
-    return sorted_class_count[0][0]
-
-
-# 生成C4.5决策树
-def create_tree(data_set, labels):
-    class_list = [example[-1] for example in data_set]
-    if class_list.count(class_list[0]) == len(class_list):
-        return class_list[0]
-    if len(data_set[0]) == 1:
-        return majority_cnt(class_list)
-    best_feat = choose_best_feature_to_split(data_set)
-    best_feat_label = labels[best_feat]
-    my_tree = {best_feat_label: {}}
-    del (labels[best_feat])
-    feat_values = [example[best_feat] for example in data_set]
-    unique_vals = set(feat_values)
-    for value in unique_vals:
-        sub_labels = labels[:]
-        my_tree[best_feat_label][value] = create_tree(split_data_set(data_set, best_feat, value), sub_labels)
-    return my_tree
-
-
-dataset, labels = creatDataSet()
-my_tree = create_tree(dataset, labels)
-
-print(&#39;my_tree&#39;, my_tree)
-```
-
----
-
-## CART决策树(Classification and Regression Tree)
-
-CART决策树正如其名, 包括了分类和回归两个部分. 下面我们分开来讨论分类和回归的问题:
-
-### 回归问题
-分类问题可以直接用C4.5决策树来解决, 所以我们先讨论回归问题该如何解决
-
-回归问题简单来说, 就是输入的特征和输出的结果都是连续的值
-
-而我们用来分类的评估标准也从信息增益比换为了**均方误差(Mean Squared Error)**
-
-$$MSE(D) = \frac{1}{|D|} \sum_{i=1}^{|D|} (f(x_i) - y_i)^2$$
-
-在分类问题中, 我们可以将不同特征的样本分成不同的类别, 而在回归问题中我们无法这样直接这么分类, 我们需要先找到一个划分点, 然后将样本分成两部分, 而评估标准就是用来帮助我们找到最优特征的合适划分点的
-
-具体的步骤如下:
-- 首先我们遍历每一个特征$j$, 对于每一个特征, 我们遍历它的每一个取值$i$
-- 然后我们计算以这个特征的这个取值为划分点, 将样本分为两类的均方误差, 选择所有均方误差中最小者作为我们的划分点
-- 当划分到一定的程度时, 我们计算该划分中的均值, 作为我们最后返回的答案, 此时就已经分类完毕
-
-以下是作业的代码实现:
-```python
-import numpy as np
-
-
-def creatDataSet():
-    dataSet = [[1, 4.5],
-               [2, 4.75],
-               [3, 4.91],
-               [4, 5.34],
-               [5, 5.80],
-               [6, 7.05],
-               [7, 7.90],
-               [8, 8.23],
-               [9, 8.70],
-               [10, 9.00]]
-    labels = [&#39;x&#39;, &#39;y&#39;]
-    return dataSet, labels
-
-
-# calculate the MSE(mean squared error)
-def calc_mse(cal_res, real_res):
-    return np.sum(np.power(cal_res - real_res, 2)) / len(real_res)
-
-
-# choose the best split point
-def choose_best_split(data_set):
-    min_mse = np.inf
-    best_split = 0
-    for i in range(1, len(data_set)):
-        left = data_set[:i]
-        right = data_set[i:]
-        left_res = [example[-1] for example in left]
-        right_res = [example[-1] for example in right]
-        left_mse = calc_mse(np.mean(left_res), left_res)
-        right_mse = calc_mse(np.mean(right_res), right_res)
-        mse = left_mse + right_mse
-        if mse &lt; min_mse:
-            min_mse = mse
-            best_split = i
-        print(&#39;选择属性值%s为划分点时，MSE为%.3f&#39; % (data_set[i - 1][0], mse))
-    print(&#39;得到最优划分点%s，MSE为%.3f&#39; % (data_set[best_split - 1][0], min_mse))
-    return best_split
-
-
-# create the tree
-def create_tree(data_set, labels, feet=0):
-    if len(data_set) == 1:
-        return data_set[0][-1]
-    print(&#39;第%s层迭代中&#39; % (feet + 1))
-    best_split = choose_best_split(data_set)
-    best_feat = labels[0]
-    my_tree = {best_feat: {}}
-    left = data_set[:best_split]
-    right = data_set[best_split:]
-    my_tree[best_feat][&#39;&lt;=&#39; + str(data_set[best_split - 1][0])] = create_tree(left, labels[:], feet + 1)
-    my_tree[best_feat][&#39;&gt;&#39; + str(data_set[best_split - 1][0])] = create_tree(right, labels[:], feet + 1)
-    return my_tree
-
-
-date_set, labels = creatDataSet()
-print(create_tree(date_set, labels))
-```
-
-### 分类问题
-CART决策树对于分类问题的解决使用的是之前提到过的**基尼不纯度(基尼指数)**
-
-所有的实现细节基本与C4.5决策树一致, 不再赘述
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.4k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/CPPofCPP/">
-        C++面向对象相关的碎片知识
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        记录点碎片就好了
-&lt;!-- more ---&gt;
-
-### 拷贝构造函数
-拷贝构造函数传递的参数必须为引用
-
-如果是传参，在使用初始化时，会需要接受一个对象初始化一个新对象，其中间过程就需要把对象拷贝一次，而拷贝又需要再拷贝，就会导致一个无限循环
-
-**在函数返回、参数传递的过程中都有对象的拷贝**
-
-### 析构函数
-析构函数在对象销毁之前调用，此时对象还没有销毁，对象的销毁发生在隐含的析构阶段
-
-### 三五原则
-- 如果一个类需要一个析构函数，那么往往需要构造和拷贝函数
-- 如果一个类需要拷贝函数，往往需要拷贝赋值运算符
-
-### 删除的函数
-
-通过```default```来设置一个构造(拷贝析构)函数为缺省的函数，告知编译器合成一个默认函数
-
-类似的，通过```delete```来设置一个函数为删除的函数，即只有声明，不可调用   
-像是 ```iostream```中的流对象一样，不允许使用拷贝和赋值
-
-**删除的函数必须在第一次声明时定义**   
-**析构函数删除后，对象无法释放**
-
-- 合成的构造、拷贝、析构函数中，若存在一个成员对象的构造、拷贝、析构函数是删除的，则对应的合成构造、拷贝、析构函数为删除的
-
-### 表现像值的类和表现像指针的类
-
-我认为这和C#中的值类型和引用类型相对应
-
-- 定义一个值类型的类时，需要注意自赋值的情况
-- 定义一个引用类型时，我们可以仿照智能指针的计数器来管理一个对象
-
-### 无关紧要的swap函数
-
-```cpp
-void swap(A&amp; a,A&amp; b)
-{
-    using std::swap;
-    swap(a.l,b.l);
-}
-```
-上面这种情况，当遇到需要调用swap的函数时，对于```A```类型的```l```成员来说，如果存在特定的```swap```函数，则调用之，否则调用std版的```swap```函数
-
-### 移动构造函数和移动操作
-
-书中用了```vector```的自动扩大容量的例子：
-
-在```vector```扩大空间时，需要把原有的元素转移到新的容器中，如果使用拷贝的方式，每次都需要通过拷贝构造创建新对象，再一个个销毁旧对象释放内存，这在使用复杂的对象时会产生大量的资源消耗
-
-C++中的移动操作```std::move```可以转交对象的管理权，避免重新构造的消耗
-
-#### 右值引用
-
-根据reference的说明：```Generally, rvalues are values whose address cannot be obtained by dereferencing them```
-
-右值一般是无法通过解引用地址获得的，比如字面值、临时量等，一般来说这些对象很快就会销毁，但是可以通过右值引用获得这些对象的管理权
-
-比如:
-```cpp
-string rr = string(&#34;123&#34;);
-string &amp;rr1 = string(&#34;123&#34;);
-string &amp;&amp;rr2 = string(&#34;123&#34;);
-```
-其中第二行是错误语句:```cannot bind non-const lvalue reference of type &#39;string&amp;&#39; to an rvalue of type &#39;string&#39;```
-
-而第三行语句则接管了原本的右值字符串```&#34;123&#34;```的管理权
-
-相较于第一行直接拷贝右值对象到变量中，第三行的右值引用更快更节省空间
-
-#### 对象的移动
-C++的对象移动就是通过右值引用来实现的：
-- 对于基本数据类型，```std::move```函数直接拷贝其值
-- 对于需要构造的类的对象，```std::move```将左值强制转换成右值引用
-
-这个感觉并不好理解：   
-对于一个临时变量我无法直接获得其地址，我可以认为右值
-我移动一个对象之后，对象的地址是发生了改变的，或许这样做确实是避免了构造，但是数据的拷贝无法避免
-
-然后我了解了关于符号地址的概念，所以是不是因为我通过```cout```输出的地址并没有直接对应一个绝对地址，而是一个可改变映射关系的地址，这样的话只要从符号地址上改变映射的实际地址，就可以在不拷贝数据的情况下，直接转移实际地址上储存对象的所属
-
-但是上面这段想法有些过于离谱，而网上的说明大多数只说了```std::move```函数的作用和概念，并没有对内存地址的改变的解释
-
-这个问题只能等以后有机会解决了
-
-#### 进一步总结
-首先我需要明确 ```std::move```的作用——将一个左值强制转换成右值并返回
-
-对于堆空间储存的数据：
-```cpp
-string *a = new string(&#34;123&#34;);
-string &amp;&amp;c = std::move(*a);
-string *b = new string(std::move(*a));
-```
-
-- 第二个c作为右值引用，接管了a的数据，但是a仍然可以继续操作原来的数据，所以这里的右值引用可以当作一般的左值引用看待
-- 第三个b会直接接管a的数据，而a的数据将被清空，这里可以理解为移动了数据，数据所在的内存地址变为b所指向的地址
-
-```cpp
-string a = string(&#34;123&#34;);
-string &amp;&amp;c = std::move(a);
-string b = string(std::move(a));
-```
-对于栈内存上的情况和堆内存一样，之前我在实验时把右值引用弄混了，以至于我认为堆栈上的 ```std::move```函数表现不一样，现在可以表明，使用 ```std::move```函数后，原来内存上的数据被直接移动到新的位置上
-
-### 移动构造函数
-
-为了使自定义类型也能支持移动操作，需要自定义移动构造函数
-
-通过在移动构造函数后添加 ```noexcept```来告知STL该函数不会产生异常，这样在使用 ```vector```之类的容器时，才能正确地扩充容器
-
-在移动容器中的元素时如果构造函数抛出了异常，那么原来的容器和新的容器都是不完整的，就会发生无法修复的错误，如果不能保证构造函数不抛出异常，那么容器就会自动使用拷贝构造的方式来避免异常问题
-
-- 注意：在对象移动后往往需要销毁原来的对象，所以需要把原来的对象里的指针设为空，避免析构时删除原数据
-
-```cpp
-class A
-{
-public:
-    int *a;
-    string *b;
-
-    A(int a2, string b2) : a(new int(a2)), b(new string(b2)){};
-    A(A &amp;&amp;in)
-    noexcept
-    {
-        a = in.a;
-        b = in.b;
-        in.a = nullptr;
-        in.b = nullptr;
-    }
-    ~A()
-    {
-        delete a;
-        delete b;
-    }
-};
-```
-
-- 只有当类没有定义任何拷贝控制函数，并且每一个成员都支持移动时，编译器才会自动合成移动构造函数
-
-- 只有在使用缺省定义移动构造函数时，无法合成移动构造函数才会隐式定义移动构造函数为删除的函数
-
-- 移动右值，拷贝左值
-
-- 没有移动构造函数，右值也将被拷贝
-
-### 移动迭代器
-
-```make_move_iterator()```接受一个普通迭代器，返回一个移动迭代器
-
-移动迭代器解引用返回一个右值引用
-
-由于移动迭代器会销毁原对象，标准库不保证所有算法都能适用移动迭代器
-
-### 右值的一点值得注意的地方
-
-非常量的右值可以像左值一样正常调用函数、赋值等，但是并不推荐这么做，至少目前我对这种做法是排斥的
-
-通过对成员函数添加 ```&amp;```或 ```&amp;&amp;```限定符，可以限制函数只能被左值、右值调用
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/DynamicMemery/">
-      C++的动态内存和智能指针
-    </a>
-    <span class="card-abstract">
-      
-关于C++Primer的学习只是补充我所缺少的碎片化知识，而不是系统化的整理或者项目记录什么的
-
-## 智能指针
-
-```cpp
-int main()
-{
-    auto ptr_1 = make_shared&lt;int&gt;(300);
-
-    shared_ptr&lt;int&gt; ptr(new int(100));//use inner &#34;new&#34; to initial a ptr
-
-    cout &lt;&lt; *ptr_1 &lt;&lt; endl;
-}
-```
-包含于```memory```头文件中，智能指针存在一个计数器，记录某个对象的引用次数，当没有指针引用该对象时，自动销毁该对象
-
-智能指针的使用与普通指针一样，创建方式参照代码
-
-智能指针分为两种：```shared```和```unique```
-
-- ```shared```允许多个共享指针引用同一个对象
-- ```unique```只允许一个指针在同一时刻引用该对象
-
-## 浅拷贝深拷贝
-
-涉及指针管理内存的概念，一个对象的成员中可能有指针成员，进行拷贝后的对象中的指针只是和原对象指向同一个地址，而不是在一个新地址上拷贝对象，这样是浅拷贝，反之则为深拷贝
-
-## 关于智能指针和内置new混用的一种问题
-
-```cpp
-int main()
-{
-    int *ptr_1(new int(100));
-    shared_ptr&lt;int&gt; ptr_2(ptr_1);
-    ptr_2 = make_shared&lt;int&gt;(new int(200));
-    //here ptr_1 has been dangling
-}
-```
-
-这里智能指针不会统计指向内置new分配的动态内存的指针，所以在```ptr_2```重定向后，原本的地址被释放，```ptr_1```成为了悬挂指针
-
-## C++中的哑类
-我对这方面知之甚少，有空闲的时间会去好好了解关于哑类的来源之类的
-
-C++中有些类没有良好的析构函数在对象销毁时正确释放资源，使用智能指针来管理这些对象可以减少在编写程序时由于哑类导致的内存泄漏
-
-我按照书上的代码来解释一下自己的理解：
-
-```cpp
-void end_connection(connection *p)
-{
-    disconnection(*p);
-}
-void f(destinction &amp;d)
-{
-    connection c = connect(&amp;d);
-    shared_ptr&lt;connection&gt; p(&amp;c, end_connection);
-}
-```
-
-按照书本思路，这是一个网络库中的连接函数，在断开连接时，使用```disconnection()```函数销毁对象，```connection```自身并没有析构函数释放类资源   
-为了让程序自行管理并释放```connection```对象，使用智能指针指向了一个局部变量，并且绑定了一个删除器函数，这个删除器使得指针在被销毁时不会调用```delete```，而是使用删除器，将自身保存的指针传递给删除器，从而调用```disconnection```释放资源
-
-## unique_ptr
-
-```unique_ptr```不能使用拷贝初始化和赋值，只能采用直接初始化，只能接受通过```new```得到的指针
-
-## weak_ptr
-弱指针，指向一个由```shared_ptr```管理的地址，当```shared_ptr```管理的地址完全释放之后，弱指针仍然指向这个地方
-
-由于指向地址可能已经释放，所以弱指针不能直接解引用，而使用```lock()```函数得到一个```shared_ptr```，若指向地址为空，则返回空 ```shared_ptr``` 指针，否则返回一个指向该地址的```shared_ptr```
-
-利用```weak_ptr```可以方便的检测一个位置上的值是否还存在
-
-## 动态数组
-
-常规动态数组就不说了
-
-需要注意的是，动态数组不是数组，不包含长度信息，无法使用```begin()```、```end()```之类的函数获得头尾，动态数组本身只是分配的一片连续的元素，而内置数组包含了更多的信息和操作
-
-```unique_ptr```支持分配动态数组：
-```cpp
-unique_ptr&lt;int[]&gt; ptr_1(new int[100]);
-ptr_1.release();//delete this ptr
-```
-
-```shared_ptr```本身不支持动态数组，如果一次性分配多个对象的话，需要自行绑定删除器：
- ```cpp
-int main()
-{
-    shared_ptr&lt;int&gt; ptr_1(new int[10], [](int *p)
-                          { delete[] p; });
-}
-```
-以上代码通过lambda表达式定义了一个删除器，模拟删除p指向的动态数组
-
-## allocator类
-
-```allocator```涉及到一个很很重要的东西——内存池
-
-可能不涉及，但是它的存在确实会让人联想起内存池
-
- ```cpp
-allocator&lt;string&gt; alloc;
-auto p = alloc.allocate(100);
-auto q = p;
-```
-
-请求分配了一片用于储存```string```类型的内存
-
-分配的内存没有构造元素，是一片完全空的内存，用于随时动态储存```string```对象
-
-其分配的一大片内存可以看作一个内存池，所谓内存池，就是提前向系统申请的一片内存空间，固定用来管理一堆对象，从而避免每次都要重新分配内存而造成系统资源消耗
-
-同时，一片统一的内存方便对大量的对象进行管理，可以在不需要时清除区域中的全部对象
-
-现在谈及“池”的概念还为时尚早，包括了内存池、线程池、对象池等，在不同的场景都各有作用
-
-```cpp
-alloc.construct(q++);
-alloc.construct(q++,&#34;123&#34;);
-alloc.destroy(--q);
-```
-虽然分配了内存，但是还是要自己用指针管理
-
-- 初始化算法
-
-- ```uninitialized_copy(b,e,b2)```
-- ```uninitialized_fill(b,e,t)```
-
-
-
     </span>
 
   </div>
@@ -2149,7 +1768,7 @@ alloc.destroy(--q);
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/4/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/6/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/4/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/6/">Next</a>
 </div>
     </div>
 

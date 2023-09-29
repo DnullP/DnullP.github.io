@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/pt1ArR7NqO8vMXl.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/a36bWlVynziMrSU.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -244,6 +244,974 @@
         2021-01-01
       </div>
       <div class="card-info">
+        2.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/command/">
+        command pattern
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### Command
+
+命令模式的思想很好理解，而且也非常有用：
+
+现在假设我们有一个GUI程序和它的底层业务逻辑，如果我们要让GUI界面中的按钮能够运行一些底层业务逻辑，简单的解决方式是建立一个基本的按钮基类，然后派生出一系列解决不同功能的按钮子类
+
+但是这样的方式会产生大量的子类，而且如果我们想要在其他组件上实现相同的功能的话，就不得不复制按钮类的实现代码
+
+解决这个问题的方式是使用**命令模式**，我们把底层的业务逻辑实现为一系列方法，然后建立一个接口，名为Command，实现该接口的类包含了我们调用底层方法需要的参数、逻辑等
+
+然后我们的按钮、选择栏等GUI组件需要调用底层逻辑时只需要通过Command调用即可，相当于是将前端和后端分离，中间层通过Command类来交互
+
+下面是来自refactoring.guru的类结构图：
+
+![](https://refactoring.guru/images/patterns/diagrams/command/structure.png)
+
+这里包含了六个要素：
+- Client 
+- Invoker
+  Invoker就是之前举例说的按钮一类的调用底层的对象，其中包含了对Command的引用，可以通过 ```setCommand()```方法进行行为的设定
+
+- Receiver
+  这就是底层逻辑的相关类了，其中的 ```operation()```方法是由Command的具体实现来调用的
+
+- ConcreteCommand
+  具体Command类包含了预设好的参数和底层逻辑需要的对象，可直接执行底层逻辑的代码
+
+下面是来自noob note的代码：
+
+```java
+public interface Order {
+   void execute();
+}
+```
+建立Command接口
+```java
+public class Stock {
+   
+   private String name = &#34;ABC&#34;;
+   private int quantity = 10;
+ 
+   public void buy(){
+      System.out.println(&#34;Stock [ Name: &#34;+name+&#34;, 
+         Quantity: &#34; + quantity +&#34; ] bought&#34;);
+   }
+   public void sell(){
+      System.out.println(&#34;Stock [ Name: &#34;+name+&#34;, 
+         Quantity: &#34; + quantity +&#34; ] sold&#34;);
+   }
+}
+```
+这是底层的逻辑代码，接收Command类的参数和调用
+```java
+public class BuyStock implements Order {
+   private Stock abcStock;
+ 
+   public BuyStock(Stock abcStock){
+      this.abcStock = abcStock;
+   }
+ 
+   public void execute() {
+      abcStock.buy();
+   }
+}
+```
+
+```java
+public class SellStock implements Order {
+   private Stock abcStock;
+ 
+   public SellStock(Stock abcStock){
+      this.abcStock = abcStock;
+   }
+ 
+   public void execute() {
+      abcStock.sell();
+   }
+}
+```
+这两个是具体的Command类
+```java
+import java.util.ArrayList;
+import java.util.List;
+ 
+public class Broker {
+   private List&lt;Order&gt; orderList = new ArrayList&lt;Order&gt;(); 
+ 
+   public void takeOrder(Order order){
+      orderList.add(order);      
+   }
+ 
+   public void placeOrders(){
+      for (Order order : orderList) {
+         order.execute();
+      }
+      orderList.clear();
+   }
+}
+```
+这是调用命令的类，也就是上面说的Invoker，这里是建立了一个命令列表，用户可以向列表中逐条添加命令，然后一次性将其全部按顺序执行
+```java
+public class CommandPatternDemo {
+   public static void main(String[] args) {
+      Stock abcStock = new Stock();
+ 
+      BuyStock buyStockOrder = new BuyStock(abcStock);
+      SellStock sellStockOrder = new SellStock(abcStock);
+ 
+      Broker broker = new Broker();
+      broker.takeOrder(buyStockOrder);
+      broker.takeOrder(sellStockOrder);
+ 
+      broker.placeOrders();
+   }
+}
+```
+
+由上面的例子可以看出，命令模式还有一个作用，就是可以延迟、排序、撤回各种命令操作
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/composite/">
+      Composite pattern
+    </a>
+    <span class="card-abstract">
+      
+### Composite
+
+还是来自Refactorying·Guru网站的UML图
+![](https://refactoring.guru/images/patterns/diagrams/composite/structure-en.png)
+
+Composite pattern contains 4 main members:
+- Component
+- Composite
+- Leaf
+- Client
+
+首先介绍一下Composite的思想：
+对于一些组成树形结构的对象，由于他们类型不同，在遍历时需要的判断不同的条件
+
+To simplify the process of traverse, we declare a **interface** Component to do the process when traveling through the node, Leaf and Composite are both implements of the Component, so they can do the same **operation** to finish the tasks.
+
+There is an example:
+
+```java
+interface Graphic is
+    method move(x, y)
+    method draw()
+
+class Dot implements Graphic is
+    field x, y
+
+    constructor Dot(x, y) { ... }
+
+    method move(x, y) is
+        this.x += x, this.y += y
+
+    method draw() is
+
+class Circle extends Dot is
+    field radius
+
+    constructor Circle(x, y, radius) { ... }
+
+    method draw() is
+
+class CompoundGraphic implements Graphic is
+    field children: array of Graphic
+
+    method add(child: Graphic) is
+
+    method remove(child: Graphic) is
+
+    method move(x, y) is
+        foreach (child in children) do
+            child.move(x, y)
+
+    method draw() is
+
+class ImageEditor is
+    field all: CompoundGraphic
+
+    method load() is
+        all = new CompoundGraphic()
+        all.add(new Dot(1, 2))
+        all.add(new Circle(5, 3, 10))
+
+    method groupSelected(components: array of Graphic) is
+        group = new CompoundGraphic()
+        foreach (component in components) do
+            group.add(component)
+            all.remove(component)
+        all.add(group)
+
+        all.draw()
+```
+
+This piece of pseudocode declare **Graphic** as the component, and **Dot**, **Circle** are Leaf.
+**CompoundGraphic** is the composite, which is able to contain other **Graphic**.
+
+### Summary
+组合模式（composite）的主要思想就是一层一层的盒子（composite），盒子组成树形结构，盒子里面可以装其他的物品（Component），这些物品可能是其它类，也可能是盒子
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/decorator/">
+        decorator pattern
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### decorator
+
+首先依旧是来自Refactorying·Guru的图：
+
+![](https://refactoring.guru/images/patterns/diagrams/decorator/structure.png?id=8c95d894aecce5315cc1b12093a7ea0c)
+
+decorator又称作wrapper（包装模式），非常直观就能看出这个设计模式的思想：通过聚合（aggregation）和组合（composition）来扩展一个类的功能
+
+There are five elements in the graph:
+- Client
+- Component(interface)
+  这是需要扩展的类的接口，只要是符合接口的类都可以通过decorator来扩展功能
+- Concrete Component
+- Base Decorator
+  这是装饰器，通过聚合形成的基本装饰器，包含了一个Component，同样满足Component的接口，使得装饰后的类和原本类接口操作一致
+- Concrete Decorator
+  具体的装饰扩展的方法、变量就在这里面实现声明
+
+下面我们来看一段来自菜鸟笔记的代码：
+
+```java
+public interface Shape {
+   void draw();
+}
+//这个是Component接口，里面有一个draw() 方法
+
+
+public class Rectangle implements Shape {
+ 
+   @Override
+   public void draw() {
+      System.out.println(&#34;Shape: Rectangle&#34;);
+   }
+}
+//这是一个Shape的具体实现
+
+
+public class Circle implements Shape {
+ 
+   @Override
+   public void draw() {
+      System.out.println(&#34;Shape: Circle&#34;);
+   }
+}
+//这是一个Shape的具体实现
+
+public abstract class ShapeDecorator implements Shape {
+   protected Shape decoratedShape;
+ 
+   public ShapeDecorator(Shape decoratedShape){
+      this.decoratedShape = decoratedShape;
+   }
+ 
+   public void draw(){
+      decoratedShape.draw();
+   }  
+}
+//这是一个Shape的一个抽象类实现，它是Base Decorator，接受一个
+//Shape的具体实现，并对其进行扩展修改
+
+public class RedShapeDecorator extends ShapeDecorator {
+ 
+   public RedShapeDecorator(Shape decoratedShape) {
+      super(decoratedShape);     
+   }
+ 
+   @Override
+   public void draw() {
+      decoratedShape.draw();         
+      setRedBorder(decoratedShape);
+   }
+ 
+   private void setRedBorder(Shape decoratedShape){
+      System.out.println(&#34;Border Color: Red&#34;);
+   }
+}
+//这个Base Decorator的子类详细扩展了原本component的行为
+//现在在原本的component完成draw()方法后还会执行setRedBorder()方法
+
+
+public class DecoratorPatternDemo {
+   public static void main(String[] args) {
+ 
+      Shape circle = new Circle();
+      ShapeDecorator redCircle = new RedShapeDecorator(new Circle());
+      ShapeDecorator redRectangle = new RedShapeDecorator(new Rectangle());
+      //这里通过装饰模式扩展了两个Shape接口的实类，从而使得原本的
+      //draw表现不同
+
+      System.out.println(&#34;Circle with normal border&#34;);
+      circle.draw();
+ 
+      System.out.println(&#34;\nCircle of red border&#34;);
+      redCircle.draw();
+ 
+      System.out.println(&#34;\nRectangle of red border&#34;);
+      redRectangle.draw();
+   }
+}
+```
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/factoryMethod/">
+      Abstract Factory
+    </a>
+    <span class="card-abstract">
+      ### 工厂方法模式
+
+在工厂方法模式中，我们主要考虑的就是“方法”
+
+我们之前已经了解过了抽象工厂，通过实现工厂和产品的接口来将产品和client分割开来，而这里的工厂方法模式是从具体的视角来看待抽象工厂
+
+我们在抽象工厂中考虑的工厂的方法全部都是抽象的，产品对应的方法也全部都是抽象的，但是实际上工厂会有一些具体的方法不需要每个工厂单独实现
+
+我们的创造产品的代码就和其他的代码区别开来了，每个不同的工厂单独实现创造产品的模式就是工厂方法模式，这也正是对应其命名，工厂中分别定义的是方法
+
+工厂方法常常和抽象工厂结合使用，我认为他们都是工厂模式的一部分，只是考虑的方式和视角不一样，对此就不对工厂方法模式做更多的例子了
+
+---
+
+在Consquence部分，我看到了一个没有想过的作用：
+
+考虑这样一种情况：
+我们有一个抽象类，其有两个实现，现在我们需要一个控制器来控制这个类，然后我们在抽象类中写了一个Create函数来创建一个通用的控制器
+
+这样的话类图结构就是这样
+
+```plantuml
+@startuml
+hide fields
+Abstract Abstract{
+    +create()
+}
+class ClassA{
+    +create()
+    +...()
+}
+class ClassB{
+    +create()
+    +...()
+}
+Abstract &lt;|-- ClassA
+Abstract &lt;|-- ClassB
+
+hide client circle
+hide client method
+class client
+client -&gt; Abstract
+
+class Handler{
+    +operations()
+}
+
+Handler &lt;- client
+Handler &lt;. ClassA
+Handler &lt;. ClassB
+@enduml
+```
+这么一来Handler就和抽象类是一层的了，因为是抽象类来控制其生产，这样的话Handler就是为了抽象类以及其所有子类负责，如果有改动将会用于所有子类
+
+如果我们通过factory method的思想，make the Handler degrade to the concret class，也就是让每一个具体类实现各自的Handler
+
+```plantuml
+@startuml
+hide fields
+Abstract Abstract{
+    {Abstract}+create()
+}
+class ClassA{
+    +create()
+    +...()
+}
+class ClassB{
+    +create()
+    +...()
+}
+Abstract &lt;|-- ClassA
+Abstract &lt;|-- ClassB
+
+hide client circle
+hide client method
+class client
+client -&gt; Abstract
+
+Abstract AbstractHandler{
+    {Abstract}+operations()
+}
+
+class HandlerA{
+    +operations()
+}
+class HandlerB{
+    +operations()
+}
+AbstractHandler &lt;|-- HandlerA
+AbstractHandler &lt;|-- HandlerB
+
+AbstractHandler &lt;- client
+HandlerA &lt;. ClassA
+HandlerB &lt;. ClassB
+@enduml
+```
+然后我们就让Handler的maintaining降到了和各个具体类一个等级
+
+通过这里这种想法，我们再回过去看一下Builder中的类图：
+
+![avator](https://www.runoob.com/wp-content/uploads/2014/08/20210315-builder-pattern.svg)
+
+之前我就考虑过这里的Builder使用了层级结构，仍然有些不太明了，参考了上面使用Factor methode降层的思想后，我们给Builder一个明确的层级结构
+
+但是Builder不像上面的产品类一样有这么强的inheritance，Builder构造的产品层次结构是灵活多变的，这里的Builder包括了Item、Buger、ColdDrink、Packing，然后考虑到构造是一层层向上构造的，这里一共有两层，一层是Item，一层是Packing，这是Builder的部分，对于Builder的视角来说只有这两个构造的选项，但是我们引入factory method的思想，就会多出Item的subclass和Packing之间的关系了
+
+Burger、ColdDrink可以视作两个抽象工厂，子类为具体工厂，Item为“根工厂”，Packing视作一个抽象工厂，其子类由Burger和ColdDrink调用创建产品，所以Packing可以视作和Item同一层级，而Warpper和Bottle和Burger、ColdDrink一个层级
+
+再考虑把factory method和Builder结合起来看：
+从builder视角来看，只考虑Meal（产品）、mealBuilder（director）、所有的具体类（concrete builder0）、中间的抽象类构成的层级结构不在builder的考虑范围内
+
+从factory method的角度看，Item往上的东西都不考虑，只考虑Item以下以及Packing的关系，Item分三层，Packing分两层，Packing的第二层和Item的第二层之间存在关系
+
+最后做一个逆向解释，像之前factory method的例子一样，我们把创建Packing的位置放到Item上，Item就不再能区别Burger和ColdDrink的Packing，所以使用统一的Packing就行了，直接在Item中创建一个Packing，就像在Burger中创建一样
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        5.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 5 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/flyweight/">
+        flyweight pattern
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+### flyweight
+
+享元模式的思想如下：
+
+当我们需要创建大量对象时，比如游戏中的子弹，每个对象都需要储存一些数据，比如：
+
+```plantuml
+@startuml
+hide Particle method
+class Particle{
+    color
+    speed
+    vector
+    coord
+    sprite
+}
+@enduml
+```
+但是其中只有部分属性是每个对象独有的，像是color, sprite这两个属性对于大多数的对象都是相同的，所以我们把这两个字段提取出来，单独储存，相同的对象共用一个相同属性，以此来节约内存空间
+
+下面我们看一下来自refactoring.guru的图片：
+
+![](https://refactoring.guru/images/patterns/diagrams/flyweight/structure.png)
+
+这个图片里有四个要素：
+
+- Client 
+- Context
+  这个是储存对象中的外部状态（extrinsic）的类，包含了两个字段：
+  - uniqueState
+    这里储存所有的外部状态，值由用户设定
+  - flyweight
+    这里储存内部状态，通过一个factory查找是否存在已经有的相同的状态，如果有，那么则让该Context储存该对象作为字段属性
+- FlyweightFactory
+  这是flyweight的工厂，用于生产新的flyweight或者从已有的flyweight中找到相同的flyweight，并对其进行复用
+- Flyweight
+  这里面包括了重复的状态数据，同时包含了每个对象需要有的方法，这些方法同时需要内部数据和外部数据的参与，所以Context中的方法通过传递外部数据作为参数，调用了Flyweight的方法，以此来使方法可以访问对象的全部数据
+
+
+来自noob note的代码并没有突出Flyweight的特点，所以使用refactoring.guru的代码：
+```java
+package refactoring_guru.flyweight.example.trees;
+
+import java.awt.*;
+
+public class Tree {
+    private int x;
+    private int y;
+    private TreeType type;
+
+    public Tree(int x, int y, TreeType type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+    }
+
+    public void draw(Graphics g) {
+        type.draw(g, x, y);
+    }
+}
+```
+这是我们之前提到过的Context类，拥有 ```x```, ```y```, ```type```三个字段，其中 ```type```是Flyweight，```draw()``` 方法也是通过传递外部状态调用 ```type```的 ```draw()```方法的
+
+```java
+package refactoring_guru.flyweight.example.trees;
+
+import java.awt.*;
+
+public class TreeType {
+    private String name;
+    private Color color;
+    private String otherTreeData;
+
+    public TreeType(String name, Color color, String otherTreeData) {
+        this.name = name;
+        this.color = color;
+        this.otherTreeData = otherTreeData;
+    }
+
+    public void draw(Graphics g, int x, int y) {
+        g.setColor(Color.BLACK);
+        g.fillRect(x - 1, y, 3, 5);
+        g.setColor(color);
+        g.fillOval(x - 5, y - 10, 10, 10);
+    }
+}
+```
+这里是Flyweight，包含了三个内部状态，并且定义了draw方法的实现
+
+
+```java
+package refactoring_guru.flyweight.example.trees;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class TreeFactory {
+    static Map&lt;String, TreeType&gt; treeTypes = new HashMap&lt;&gt;();
+
+    public static TreeType getTreeType(String name, Color color, String otherTreeData) {
+        TreeType result = treeTypes.get(name);
+        if (result == null) {
+            result = new TreeType(name, color, otherTreeData);
+            treeTypes.put(name, result);
+        }
+        return result;
+    }
+}
+```
+这是flyweight的工厂，通过 ```name```字段来识别一个flyweight
+
+
+```java
+package refactoring_guru.flyweight.example.forest;
+
+import refactoring_guru.flyweight.example.trees.Tree;
+import refactoring_guru.flyweight.example.trees.TreeFactory;
+import refactoring_guru.flyweight.example.trees.TreeType;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Forest extends JFrame {
+    private List&lt;Tree&gt; trees = new ArrayList&lt;&gt;();
+
+    public void plantTree(int x, int y, String name, Color color, String otherTreeData) {
+        TreeType type = TreeFactory.getTreeType(name, color, otherTreeData);
+        Tree tree = new Tree(x, y, type);
+        trees.add(tree);
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        for (Tree tree : trees) {
+            tree.draw(graphics);
+        }
+    }
+}
+```
+这一部分代码可以当作Facade的一个例子，flyweight部分的全部要素已经完成了，```Forest```类是利用已经写好的flyweight部分来完成添加新的 ```Tree```以及将所有已有的 ```Tree```画出来的工作，即向用户提供简单的接口，隐藏复杂的 flyweight部分
+
+```java
+package refactoring_guru.flyweight.example;
+
+import refactoring_guru.flyweight.example.forest.Forest;
+
+import java.awt.*;
+
+public class Demo {
+    static int CANVAS_SIZE = 500;
+    static int TREES_TO_DRAW = 1000000;
+    static int TREE_TYPES = 2;
+
+    public static void main(String[] args) {
+        Forest forest = new Forest();
+        for (int i = 0; i &lt; Math.floor(TREES_TO_DRAW / TREE_TYPES); i++) {
+            forest.plantTree(random(0, CANVAS_SIZE), random(0, CANVAS_SIZE),
+                    &#34;Summer Oak&#34;, Color.GREEN, &#34;Oak texture stub&#34;);
+            forest.plantTree(random(0, CANVAS_SIZE), random(0, CANVAS_SIZE),
+                    &#34;Autumn Oak&#34;, Color.ORANGE, &#34;Autumn Oak texture stub&#34;);
+        }
+        forest.setSize(CANVAS_SIZE, CANVAS_SIZE);
+        forest.setVisible(true);
+
+        System.out.println(TREES_TO_DRAW + &#34; trees drawn&#34;);
+        System.out.println(&#34;---------------------&#34;);
+        System.out.println(&#34;Memory usage:&#34;);
+        System.out.println(&#34;Tree size (8 bytes) * &#34; + TREES_TO_DRAW);
+        System.out.println(&#34;+ TreeTypes size (~30 bytes) * &#34; + TREE_TYPES + &#34;&#34;);
+        System.out.println(&#34;---------------------&#34;);
+        System.out.println(&#34;Total: &#34; + ((TREES_TO_DRAW * 8 + TREE_TYPES * 30) / 1024 / 1024) +
+                &#34;MB (instead of &#34; + ((TREES_TO_DRAW * 38) / 1024 / 1024) + &#34;MB)&#34;);
+    }
+
+    private static int random(int min, int max) {
+        return min + (int) (Math.random() * ((max - min) + 1));
+    }
+}
+```
+
+这一部分就是用户代码部分了
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/design-pattern/iterator/">
+      Iterator pattern
+    </a>
+    <span class="card-abstract">
+      
+### Iterator
+
+迭代器是相当熟悉的东西，在C++中，我们使用迭代器来遍历容器或者获得容器中的指定位置
+
+这里的迭代器模式思想和平时我们遇到的迭代器差不多，用于在一个复杂的数据结构中遍历、获得指定元素
+
+比如现在我们有一颗树，我们需要给这棵树广度优先遍历和深度优先遍历，然后又加上了遍历叶节点等等各种遍历方式，但我们并不想要在这个数据结构中加入诸多这样的方法，因为我们并不一定所有的方法都会使用，而且我们的数据结构更重要的是储存数据，而不是实现各类算法
+
+所以我们把这些各种遍历算法提取出来，通过一个统一的接口实现，使得任何适用的类可以通过外界的Iterator来遍历元素，实现代码复用以及算法和数据结构的解耦(decouple)
+
+下面是来自refactoring.guru的类结构图：
+
+![](https://refactoring.guru/images/patterns/diagrams/iterator/structure.png)
+
+其中又五个要素：
+- Client
+- Iterator
+  这是迭代器的接口类，所有具体的迭代器实现自该接口，从而使得所有适用的数据结构都能使用该迭代器
+- IterableCollection
+  这是可迭代的数据结构类的接口，实现自该接口的所有类都可使用 ```createIterator()```方法来创建迭代器
+- 剩下两个是接口的具体实现，不多赘述
+
+下面直接看一段来自noob note的代码：
+
+```java
+public interface Iterator {
+   public boolean hasNext();
+   public Object next();
+}
+```
+这是Iterator的接口
+```java
+public interface Container {
+   public Iterator getIterator();
+}
+```
+这是Collection的接口
+```java
+public class NameRepository implements Container {
+   public String[] names = {&#34;Robert&#34; , &#34;John&#34; ,&#34;Julie&#34; , &#34;Lora&#34;};
+ 
+   @Override
+   public Iterator getIterator() {
+      return new NameIterator();
+   }
+ 
+   private class NameIterator implements Iterator {
+ 
+      int index;
+ 
+      @Override
+      public boolean hasNext() {
+         if(index &lt; names.length){
+            return true;
+         }
+         return false;
+      }
+ 
+      @Override
+      public Object next() {
+         if(this.hasNext()){
+            return names[index++];
+         }
+         return null;
+      }     
+   }
+}
+```
+这里，容器内部有一个字符串数组，然后可以通过内部的函数得到一个迭代器，该迭代器可以通过 ```next()```方法遍历这个数组，并且该迭代器定义在类中，作为一个嵌套类，只有在用到这个容器时，才能通过该容器生产对应的迭代器
+```java
+public class IteratorPatternDemo {
+   
+   public static void main(String[] args) {
+      NameRepository namesRepository = new NameRepository();
+ 
+      for(Iterator iter = namesRepository.getIterator(); iter.hasNext();){
+         String name = (String)iter.next();
+         System.out.println(&#34;Name : &#34; + name);
+      }  
+   }
+}
+```
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        98字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/learnFromJAVA/">
+        从JAVA标准库中了解设计模式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         3.6k字
       </div>
       <div class="card-info">
@@ -255,12 +1223,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/mediator/">
-        mediator
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/design-pattern/mediator/">
+      mediator
+    </a>
+    <span class="card-abstract">
+      
 ### mediator
 
 中介者模式简单来说就是在各个交互的类之间加上一个中间件，使得各个组件之间的交流通过中间件来控制，各个组件只能和中间件通信，对于每个组件来说其他组件都是未知的，这样使得组件之间实现了解耦，组件的代码得以在其他地方得到复用
@@ -368,12 +1335,8 @@ class Checkbox extends Component is
 Mediator通过```notify()```方法被其他组件调用，并传递信息，从而执行规定的行为
 而其他组件又包含在Mediator之中，可以被Mediator调用以完成各类功能响应
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -383,13 +1346,11 @@ Mediator通过```notify()```方法被其他组件调用，并传递信息，从�
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -406,11 +1367,12 @@ Mediator通过```notify()```方法被其他组件调用，并传递信息，从�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/memento/">
-      memento
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/design-pattern/memento/">
+        memento
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### memento
 
 备忘录模式是用于储存类状态的设计模式
@@ -506,8 +1468,12 @@ public class MementoPatternDemo {
 }
 ```
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -517,11 +1483,13 @@ public class MementoPatternDemo {
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -538,12 +1506,11 @@ public class MementoPatternDemo {
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/observer/">
-        memento
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/design-pattern/observer/">
+      memento
+    </a>
+    <span class="card-abstract">
+      
 ### Observer
 
 观察者模式和发布订阅模式有一定的相似之处，但是两者并不完全相同
@@ -672,845 +1639,6 @@ public class ObserverPatternDemo {
 ```
 用户代码中的使用
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        4.6k字
-      </div>
-      <div class="card-info">
-        阅读时间: 4 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/principle/">
-      设计模式
-    </a>
-    <span class="card-abstract">
-      
-#### 1.6 How design pattern solve design problems
-
-there are some tips taken down:
-- **request** is the **only** way to get an object to excute an operation, and **operation** is the only way to change the **internal data**.
-  we call this  **encapsulated**.
-
-How to design a pattern?
-
-- 1.find the appropriate object
-- 2.determine the granularity of objects
-- 3.specifying object interface
-  **signature**: name, parameters, return value of a operation
-  **interface**: it defines all signatures of an object
-  **type**: to call a particular interface
-  different types may share their interface, and we call a type owning a subset of another type&#39;s interface **subtype**.
-  **type is not same as class. class includes implement, field, internal state of an object, while type just refers to its interface which indicates the set of requests that it can handle and respond.**
-  because of the different implement of the same interface of objects, it is a run-time association between requests and operation, which we call **&#34;dynamic binding&#34;**.
-- 4.specifying object implementation
-  objects are **instantiating** from a class to be an **instance**.
-  we use such diagram to describe a pattern:
-
-a class is present as below:
-```plantuml
-@startuml
-class ClassName{
-  Fuction( )
-  Variable
-}
-@enduml
-```
-
-this dashed arrowhead line indicates a class that instantiating objects of another class.
-```plantuml
-@startuml
-class Instantiator
-class Instantiatee
-Instantiator .&gt;Instantiatee
-hide members
-hide circle
-@enduml
-```
-and this indicates an inheritance relationship, and it&#39;s usually vertical.
-```plantuml
-@startuml
-class ParentClass{
-  operation( )
-  Variables
-}
-class Subclass{
-  operation( )
-  Variables
-}
-ParentClass &lt;|-- Subclass
-@enduml
-```
-this is an Abstract class and its Subclass 
-```plantuml
-@startuml
-hide field
-Abstract AbstractClass{
-  operation ( )
-}
-Class ConcreteSubclass{
-  operation ( )
-}
-note right of ConcreteSubclass::&#34;operation ( )&#34;
-  implementation
-  pseudocode
-end note
-AbstractClass &lt;|-- ConcreteSubclass
-@enduml
-```
-
-This is a mixin class which provide an optional interface:
-
-```plantuml
-@startuml
-hide field
-class ExistingClass{
-  operation_1 ( )
-}
-interface MixinClass{
-  operation_2 ( )
-}
-class Subclass{
-  operation_1 ( )
-  operation_2 ( )
-}
-ExistingClass &lt;|-- Subclass
-MixinClass &lt;|-- Subclass
-@enduml
-```
-we emphasize that **program to an interface, not an implementation**.
-the most important is not code-sharing, but the relationship between class, and interface inheritance make sure the change can be carried out more easily.
-
-- class inheritance make let you implement a class in term of another one.
-- interface inheritance describe a kind of classes can be used somewhere.
-if we implement a class in term of a interface, this class can be uesed in everyplace where use the interface.
-
-##### inheritance versus composition
-it&#39;s two kinds of method to reuse code.
-composition is to assembling the objects to get a more complecated functionality, which we also call &#34;black box reuse&#34;, because we don&#39;t know the detailed implementation of each object.
-
-we emphasize that **&#34;Favor object composition over class inheritance&#34;**.
-It enhances the degree of encasulation.
-
-#### delegation
-it is a way to making the composition. we instantiate a class to an object in another class, and forward the require from the superclass to the internal object so that to realize the composition.
-
-dpciting a diagram below:
-
-```plantuml
-@startuml
-hide field
-class Window{
-  +Area ( )
-}
-show Rectangle fields
-class Rectangle{
-  +Area ( )
-  +width
-  +height
-}
-note &#34;return rectangle-&gt;Area ( )&#34; as N1
-Window::Area &lt;-- N1
-note &#34;return width * height&#34; as N2
-Rectangle::Area &lt;--N2
-Window &#34;rectangle&#34; -&gt; Rectangle
-@enduml
-```
-
-#### aggregation and acquaintance
-aggregation implies that one object own another one, which we dpcit as below: (aggregator own the aggregatee)
-
-```plantuml
-@startuml
-hide method
-hide fields
-
-class aggregator
-class aggregatee
-
-aggregator o-&gt; aggregatee
-@enduml
-```
-and the acquaintance implies they just have a somehow relationship, but not responsiblity for one another: 
-```plantuml
-@startuml
-hide method
-hide fields
-
-class ClassA
-class ClassB
-
-ClassA -&gt; ClassB
-@enduml
-```
-
-#### design for change
-different patterns make the system more rebust in a particular kind of change
-
-#### difference between a framework and a pattern
-- a pattern is usually a conception and abstraction, but a framework has concret code and implement.
-- a pattern is a small unit than framework
-- a pattern is less specialized than framework
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        828字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/prototype/">
-        原型模式
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### 原型模式
-
-我们先来看一看之前的abstract factory和factory method
-
-![avator](https://www.tutorialspoint.com/design_pattern/images/abstractfactory_pattern_uml_diagram.jpg)
-
-在这个抽象工厂中，为了得到一个Shape或者RoundedShape，需要两种不同的工厂
-如果我们现在拥有四个具体产品的每一个object，那么我们就可以舍弃工厂，而定义一个Prototype的接口，通过把这四个具体产品实现Prototype的接口，来给与他们自拷贝的能力
-这样一来，我们可以通过一个拷贝来获得Object，而不是工厂，而我们的类的数量就减少了（工厂类全部舍弃了）
-
-通过这种用原型拷贝的方式得到Object的模式，我们可以实现以下应用：
-- 减少框架中的类种类
-- 避免“需要建立平行的hierarchy”的情况，就像工厂方法中那样
-- 需要保存一个object的状态作为标准时，这种情况尤其在运行时发生
-
-![avator](https://www.tutorialspoint.com/design_pattern/images/prototype_pattern_uml_diagram.jpg)
-
-总结下来，原型模式的要点就是实现原型接口，提供clone方法
-
-Some of the tips：
-- 对于原型，需要一个Manage类，因为用户不会亲自去管理这些Prototype，而只是负责储存和retrieve
-- 此外可以给原型类添加初始化，以满足一些需求
-
-- JAVA的Prototype可通过继承Cloneable接口来实现
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/proxy/">
-      Proxy pattern
-    </a>
-    <span class="card-abstract">
-      
-### 代理模式
-
-说起代理就容易让人想起网络上的代理，简单来说，就是在一个数据接收方之前加入一个第三方服务器先接收数据，然后转发给原本的接收方
-
-设计模式上的代理模式也是一样的思想：在某个类提供的服务前加入一个类，这个类有着和原本的类相同的接口，但是实际上是原本类的聚合（aggregate），代理类可以在访问原本类的服务之前或之后进行某些处理
-
-来自refactoring.guru的类图：
-
-![](https://refactoring.guru/images/patterns/diagrams/proxy/structure.png)
-
-以上包含四个要素：
-- Client
-- ServiceInterface
-  这是服务的接口，代理类和原本的服务类都是实现自该接口
-- Service
-  这是服务类，包含一系列的方法(operation)
-- Proxy
-  这是代理类，包含了Service类和代理类的方式
-
-以下是来自noob note的代码：
-
-```java
-public interface Image {
-   void display();
-}
-```
-这是服务接口
-```java
-public class RealImage implements Image {
- 
-   private String fileName;
- 
-   public RealImage(String fileName){
-      this.fileName = fileName;
-      loadFromDisk(fileName);
-   }
- 
-   @Override
-   public void display() {
-      System.out.println(&#34;Displaying &#34; + fileName);
-   }
- 
-   private void loadFromDisk(String fileName){
-      System.out.println(&#34;Loading &#34; + fileName);
-   }
-}
-```
-这是原本提供服务的类
-
-
-```java
-public class ProxyImage implements Image{
- 
-   private RealImage realImage;
-   private String fileName;
- 
-   public ProxyImage(String fileName){
-      this.fileName = fileName;
-   }
- 
-   @Override
-   public void display() {
-      if(realImage == null){
-         realImage = new RealImage(fileName);
-      }
-      realImage.display();
-   }
-}
-```
-这是代理类
-
-
-```java
-public class ProxyPatternDemo {
-   
-   public static void main(String[] args) {
-      Image image = new ProxyImage(&#34;test_10mb.jpg&#34;);
- 
-      // 图像将从磁盘加载
-      image.display(); 
-      System.out.println(&#34;&#34;);
-      // 图像不需要从磁盘加载
-      image.display();  
-   }
-}
-```
-这是用户代码
-
-代理模式的逻辑思想相对简单
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        257字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/singleton/">
-        单例模式
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### 单例模式
-
-单例模式没什么值得多说的，记住几个原则和使用方法
-
-- 保证object只有一个
-- 我们可以定义一个单例接口，然后实现一堆单例类，在不同的环境使用不同的单例类，但是必须保证每个环境只有一个这样的单例类，我们通过构建一个registry来管理注册这些不同的单例类
-
-- 单例类可以用来优化全局变量，减少命名空间的使用
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.9k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/strategy/">
-      Strategy
-    </a>
-    <span class="card-abstract">
-      
-### Strategy
-
-策略模式是与算法的选择有关的设计模式
-现在假设我们有一个地图导航程序，我们通过输入起点和终点，能够得到一条线路，我们通过不同的算法可以得到最短线路、步行线路、经过景点的线路等等
-
-为了实现代码复用和维护方便，我们把不同的算法封装为类，满足一个接口，让程序通过接口调用不同的算法，这样的思想就是策略模式
-
-下面是来自refactoring的UML图：
-
-![](https://refactoring.guru/images/patterns/diagrams/strategy/structure.png)
-
-这里面包含了四个要素：
-- Client
-- Strategy
-  这是策略算法的接口类，其中包含一个接收参数返回结果的方法
-- Context
-  在Context中包含strategy接口，并且可以根据需求改变strategy，用以执行不同的算法
-
-下面是来自noob note的代码：
-
-```java
-public interface Strategy {
-   public int doOperation(int num1, int num2);
-}
-```
-算法策略的接口
-```java
-public class OperationAdd implements Strategy{
-   @Override
-   public int doOperation(int num1, int num2) {
-      return num1 + num2;
-   }
-}
-```
-
-```java
-public class OperationSubtract implements Strategy{
-   @Override
-   public int doOperation(int num1, int num2) {
-      return num1 - num2;
-   }
-}
-```
-
-```java
-public class OperationMultiply implements Strategy{
-   @Override
-   public int doOperation(int num1, int num2) {
-      return num1 * num2;
-   }
-}
-```
-上面实现了三种不同的算法
-```java
-public class Context {
-   private Strategy strategy;
- 
-   public Context(Strategy strategy){
-      this.strategy = strategy;
-   }
- 
-   public int executeStrategy(int num1, int num2){
-      return strategy.doOperation(num1, num2);
-   }
-}
-```
-上下文包含策略的管理方式
-```java
-public class StrategyPatternDemo {
-   public static void main(String[] args) {
-      Context context = new Context(new OperationAdd());    
-      System.out.println(&#34;10 + 5 = &#34; + context.executeStrategy(10, 5));
- 
-      context = new Context(new OperationSubtract());      
-      System.out.println(&#34;10 - 5 = &#34; + context.executeStrategy(10, 5));
- 
-      context = new Context(new OperationMultiply());    
-      System.out.println(&#34;10 * 5 = &#34; + context.executeStrategy(10, 5));
-   }
-}
-```
-使用不同的策略进行计算
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/design-pattern/template/">
-        Template
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-### Template
-
-模板模式和我们平时用的template也有思想相似之处
-
-现在假设我们有一个处理文档的程序，需要先读取文档，然后将其进行处理，最后输出结果。我们读取的文档可能是不同的格式，比如PDF、DOC、TXT等，那么我们的程序在读取文档和输出阶段就会有不同方法，但是对内容的处理是相同的行为
-
-我们可以将这个程序的算法拆为几个部分：读取文档、内容处理、结果输出，既然内容处理都是相同的，就把内容处理的方法实现，作为父类，派生出多个实现了不同文档读取和输出的类，实现了对单个步骤不同的程序的代码复用
-
-下面是来自refactoring的UML图：
-
-![](https://refactoring.guru/images/patterns/diagrams/template-method/structure.png)
-
-上图有三个要素：
-
-- AbstractClass
-  这个抽象类包含了模板方法的执行（按照一定的顺序）
-  然后实现了一部分需要共用的方法，其余方法则作为抽象函数
-- ConcreteClass
-  这里派生的子类实现了其余的方法，需要的话也可以重写父类的方法
-  这样的派生同样可以派生很多层，实现不同情况的多种业务逻辑
-
-下面是来自noob note的代码
-
-```java
-public abstract class Game {
-   abstract void initialize();
-   abstract void startPlay();
-   abstract void endPlay();
- 
-   //模板
-   public final void play(){
- 
-      //初始化游戏
-      initialize();
- 
-      //开始游戏
-      startPlay();
- 
-      //结束游戏
-      endPlay();
-   }
-}
-```
-这里定义了最初的父类，```play()```是业务逻辑函数，所以加上了 ```final```的关键字，使得其不可被子类重写
-```java
-public class Cricket extends Game {
- 
-   @Override
-   void endPlay() {
-      System.out.println(&#34;Cricket Game Finished!&#34;);
-   }
- 
-   @Override
-   void initialize() {
-      System.out.println(&#34;Cricket Game Initialized! Start playing.&#34;);
-   }
- 
-   @Override
-   void startPlay() {
-      System.out.println(&#34;Cricket Game Started. Enjoy the game!&#34;);
-   }
-}
-```
-
-```java
-public class Football extends Game {
- 
-   @Override
-   void endPlay() {
-      System.out.println(&#34;Football Game Finished!&#34;);
-   }
- 
-   @Override
-   void initialize() {
-      System.out.println(&#34;Football Game Initialized! Start playing.&#34;);
-   }
- 
-   @Override
-   void startPlay() {
-      System.out.println(&#34;Football Game Started. Enjoy the game!&#34;);
-   }
-}
-```
-这里的两个派生类分别实现了不同的两种业务逻辑
-```java
-public class TemplatePatternDemo {
-   public static void main(String[] args) {
- 
-      Game game = new Cricket();
-      game.play();
-      System.out.println();
-      game = new Football();
-      game.play();      
-   }
-}
-```
-我们在使用模板时，也是将尖括号中的类型直接替换成另一种，这里的模板方法则是将类型换成了方法，我们可以把不同的方法放进一个固定的业务逻辑中
-
-由此我们也可以区别模板（template）和泛型（generic），模板是一个固定的业务逻辑中，固定替换某些类型或者方法，而泛型是你可以通过一个方法对任意一个满足条件的类型做处理（比如接口做参数）
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/design-pattern/visitor/">
-      Visitor
-    </a>
-    <span class="card-abstract">
-      
-### Visitor
-
-访问者模式
-
-在讨论这个模式之前，我们先讨论一下double dispatch（双分派）
-
-当一个函数存在多个重载时，编译器会怎么选择函数的重载？
-如果这些重载的参数毫无关系，编译器自然是选择符合要求的重载
-
-但是如果接收的参数是一个接口（父类）以及一系列他的子类，编译器会怎么选择呢？
-
-我们看一下下面两种代码（动态绑定和静态绑定）：
-
-```java
-method drawShape(shape: Shape) is
-    shape.draw();
-```
-这里我们能保证每个shape都包含有 ```draw()```函数，具体的使用的哪种```draw()```函数会等到参数传递之后再决定
-
-```java
-method exportShape(shape: Shape) is
-    Exporter exporter = new Exporter()
-    exporter.export(shape);
-```
-然后我们看这种情况，```Exporter```类中包含了许多个Shape及其派生类的函数重载，看起来我们需要用到动态绑定，在传入shape后再决定调用哪个函数，但是实际上函数 ```export()```并不知道自己的重载函数有没有覆盖全部的 ```Shape```的派生类，如果使用动态绑定的话，如果传入了一个没有实现的派生类，则会找不到对应的函数，所以这里采用了早绑定的方式，所有的类传入后都当作参数里确定的类型 ```Shape```处理
-
-为了让这样的重载函数能够被识别，下面使用了一种称为双派发的技巧：
-
-```java
-class Visitor is
-    method visit(s: Shape) is
-        print(&#34;Visited shape&#34;)
-    method visit(d: Dot)
-        print(&#34;Visited dot&#34;)
-
-interface Graphic is
-    method accept(v: Visitor)
-
-class Shape implements Graphic is
-    method accept(v: Visitor)
-        v.visit(this)
-
-class Dot extends Shape is
-    method accept(v: Visitor)
-        v.visit(this)
-
-Visitor v = new Visitor();
-Graphic g = new Dot();
-
-g.accept(v);
-```
-这段代码中，```accept()```函数接收Visitor类，但是函数的重载并不是在```accept()```中实现，而是在被接收的参数类中实现，并且让其将自己作为参数执行重载函数
-
-这时，调用重载函数的对象就从外部对象变成了内部对象（自身），此时编译器就能确定传递给函数的参数一定是对象自己的类，就能够确定调用那个重载函数了
-
-这样的方式我认为还是动态绑定，```this```只有传递了参数后才知道类型，只是函数的重载从外部到了内部，编译器的视角变了，从而能够确定重载函数的调用
-
----
-
-现在让我们把视角转到访问者模式上
-
-现在我们有一个由不同类型组成的图，我们希望遍历这个图，并对这些节点执行某个操作，很明显我们针对每个类编写这个操作的函数，那么我们该怎么样完成遍历部分呢？
-
-通过条件判断节点类型并使用不同函数显然有些麻烦，我们希望把所有的这些函数写到一个类中，方便进行维护管理，所以我们把这个操作写到一个Visitor类中，并使用重载函数的方式使其在不同类型的节点上表现不同
-
-然后我们在所有的节点中实现一个```accept(v: Visitor)```方法，通过这个方法调用 ```v.theMethod(this)```，通过上面介绍的双分配法，让传递的Visitor能够针对不同类型的节点执行不同的操作，这就是访问者模式
-
-下面是来自refactoring的UML图：
-
-![](https://refactoring.guru/images/patterns/diagrams/visitor/structure-en.png)
-
-其中包含两个主要要素：
-
-- Visitor
-  访问者实现不同类型的执行函数的重载，被传入Element并根据其类型运行不同逻辑
-- Element
-  其中实现 ```accept(v: Visitor)```函数，接收访问者，传递自身，这样访问者就能确定传入的类一定是这个类本身，而不用考虑如果传入的是没有实现的类的情况（这是编译器为了防止错误的优化，现在这样的优化只会针对没有实现的类，而不是一视同仁）
-
     </span>
 
   </div>
@@ -1525,7 +1653,7 @@ g.accept(v);
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/9/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/11/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/9/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/11/">Next</a>
 </div>
     </div>
 

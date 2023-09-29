@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/eTYKcWz7jb5mqyo.png" alt="">
+  <img src="https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -241,10 +241,276 @@
 
     <div class="card-info-warp">
       <div class="card-info">
-        2021-01-01
+        2023-03-08
       </div>
       <div class="card-info">
-        532字
+        1.9k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/03/08/signal/signal_2/">
+        信号与系统(二)傅里叶变换
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+## 四类信号变换
+
+### CFT, CFS, DTFT, DFS 
+
+- CFT: Continuous Fourier Transform
+  连续傅里叶变换
+  $$
+  \begin{aligned}
+  X(j\Omega) &amp;= \int_{-\infty}^{\infty}x(t)e^{-j\Omega t}dt\\
+  x(t) &amp;= \int_{-\infty}^{\infty}X(j\Omega)e^{j\Omega t}d\Omega
+  \end{aligned}
+  $$
+  连续非周期信号 - 连续非周期频域
+- CFS: Continuous Fourier Series
+  连续傅里叶级数
+  $$
+  \begin{aligned}
+  X(jn\Omega) &amp;= \frac{1}{T}\int_{-\infty}^{\infty}\tilde{x}(t)e^{-jn\Omega t}dt\\
+  \tilde{x}(t) &amp;= \sum_{n=-\infty}^{\infty}X(n\Omega)e^{jn\Omega t}
+  \end{aligned}
+  $$
+  连续周期信号 - 离散非周期频域
+- DTFT: Discrete Time Fourier Transform
+  离散时间傅里叶变换
+  $$
+  \begin{aligned}
+  X(e^{j\Omega}) &amp;= \sum_{n=-\infty}^{\infty}x[n]e^{-jn\Omega}\\
+  x[n] &amp;= \frac{1}{2\pi}\int_{-\pi}^{\pi}X(e^{j\Omega})e^{jn\Omega}d\Omega
+  \end{aligned}
+  $$
+  离散非周期信号 - 离散非周期频域
+
+- DFS: Discrete Fourier Series
+  离散傅里叶级数
+  $$
+  \begin{aligned}
+  \tilde{X}(k) &amp;= \sum_{n=0}^{N-1}x[n]W_N^{nk}\\
+  \tilde{x}[n] &amp;= \frac{1}{N}\sum_{k=0}^{N-1}\tilde{X}(k)W_N^{-nk}
+  \end{aligned}
+  $$
+  离散周期信号 - 离散周期频域
+
+### DFT
+连续的信号进行采样后, 可以进行DTFT得到连续周期的频域信号
+
+为了让频域信号离散且非周期(有限), 我们对DFTF后的频域信号进行有限采样:
+
+- 在一个周期内进行采样, 多余的周期信号丢弃
+
+这样一来时域只会重复有限的周期, 从而得到有限离散的时域和频域信号
+
+我们称为**DFT(Descrite Fourier Transform)**
+
+所以DFT是从一个有限长离散的时域信号, 转化为一个有限长离散的频域信号
+
+我们记DFT的公式如下:
+$$
+\begin{aligned}
+X[k] &amp;= \sum_{n=0}^{N-1}x[n]W_N^{nk}\\
+x[n] &amp;= \frac{1}{N}\sum_{k=0}^{N-1}X[k]W_N^{-nk}
+\end{aligned}
+$$
+发现其实傅里叶级数的时域周期和频域周期相同, 所以我们在两个域内同时取N个采样点得到主值序列即可
+
+#### 补充理解:
+$N$作为采样点数, 只是对频域的采样点数, 和时域的采样点数没有关系, 一般来说习惯让频域点数和信号序列长度相同
+
+有限离散序列的频域是连续周期的, 所以采样点数只要平分一个周期即可
+
+如果采样点数大于信号长度, 多余部分的信号用0补齐
+如果采样点数小于信号长度, 信号截断, 复原的信号会产生混叠失真
+
+
+### FFT
+
+#### 旋转因子
+我们定义:
+$$
+W_N = e^{-j\frac{2\pi}{N}}
+$$
+
+将FFT按照奇偶拆分成两个序列:
+$$
+\begin{aligned}
+X[k] &amp;= \sum_{n=0}^{N-1}x[n]W_N^{nk}\\
+&amp;= \sum_{n=0}^{N-1}x[2n]W_N^{2nk} + \sum_{n=0}^{N-1}x[2n+1]W_N^{(2n+1)k}\\
+\end{aligned}
+$$
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-06
+      </div>
+      <div class="card-info">
+        2.5k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/03/06/automata-theory/CH2-grammar/">
+      形式语言与自动机 第二章 文法
+    </a>
+    <span class="card-abstract">
+      
+# 文法
+
+**文法的定义**: 一个四元组$G=(V,T,P,S)$，其中$V$是非终结符的有限集合，$T$是终结符的有限集合，$P$是产生式的有限集合，$S$是开始符号，且$S\in V$, 我们称$G$为一个文法
+
+- 变量(variable)：$V$中的元素称为变量, 一个变量是一个非终结符, 可以用来派生出其他的符号, $L(A)$称为语法范畴
+- 终结符(terminal)：$T$中的元素称为终结符, 一个终结符是一个最小的符号, 具有**原子性**(不可再分)
+- 产生式(production)：$P$中的元素称为产生式, 一个产生式是一个从变量到符号的映射, 用来描述变量如何派生出符号
+  **tips**: 符号包括了变量和终结符
+- 开始符号(start symbol)：$S$是一个变量, 用来表示文法的开始, $S$必须是$V$中的一个元素
+
+## 文法的作用
+
+通过文法我们可以描述一个语言, 通过**推导**来得到一个**句子**或**句式**
+
+- 句子: 每个元素都是终结符构成, 无法推出新的符号
+- 句式: 包含变量在其中, 可以由变量推导出句子
+
+从$S$开始, 通过产生式的推导, 最后得到一个句子或句式, 这个过程反过来, 由一个句子或句式通过**产生式**的逆推导得到$S$或者另一个句子(句式)的过程, 称为**归约**
+
+通过文法的推导和规约我们可以系统性的描述一个形式语言, 包括了计算机语法的描述, 判定等
+
+我们用符号:
+$$L(G)=\{w|w \in T^*| S \Rightarrow^* w\}$$
+表示一个由文法$G$生成的语言
+
+## 文法的分类
+
+此处分类按照教科书的乔姆斯基体系进行分类
+
+### 0型文法
+
+**0型文法**, 又叫**短语结构文法(phrase structure grammar/PSG)**, 符号定义如下:
+$$G=(V,T,P,S)$$
+简单来说, 就是没有过多限制的一个文法, 都可以叫做PSG
+
+由PSG生成的语言我们称为**0型语言(短语结构语言/PSL/递归可枚举集)**, 记为$L(G)$
+
+### 1型文法
+
+**1型文法**, 又叫**上下文有关文法(context-sensitive grammar/CFG)**, 符号语言表述如下:
+$$G=(V,T,P,S)$$
+且满足:
+$\forall a \rightarrow b \in P$有$|a|\leq|b|$
+也就是说, 推导出的语句的长度必须满足单调不下降, 这样生成的语言称为**1型语言(上下文有关语言/CSL)**
+
+### 2型文法
+
+**2型文法**, 又叫**上下文无关文法(context-free grammar/CFG)**, 符号语言表述如下:
+$$G=(V,T,P,S)$$
+且满足:
+$\forall a \rightarrow b \in P$有$|a|\leq|b|$ 且 $a\in V$
+也就是说, 只能由变量推断出终结符(标识符)
+
+### 3型文法
+
+**3型文法**, 又叫**正规文法(regular grammar/RG)**, 符号语言表述如下:
+$$G=(V,T,P,S)$$
+且满足:
+对于$\forall a \rightarrow b \in P$满足以下格式:
+$$
+\begin{cases}
+A \rightarrow wB\\
+A \rightarrow w\\
+\end{cases}
+$$
+
+### 线性文法
+
+如果产生式满足如下形式:
+$$
+\begin{cases}
+A \rightarrow wBx\\
+A \rightarrow w\\
+\end{cases}
+$$
+则称该文法为**线性文法(linear grammar)**, 对应的生成语言$L(G)$称为**线性语言(linear language)**
+
+如果只有单个方向的产生式:
+
+$\begin{cases}A \rightarrow wB\\ A \rightarrow w\\ \end{cases}$或者$\begin{cases}A \rightarrow Bx\\ A \rightarrow x\\ \end{cases}$
+则称该文法为**右线性文法(right-linear grammar)**或者**左线性文法(left-linear grammar)**
+
+可以看到, **右线性文法**其实就是**正则文法**
+
+- 定理: 左线性文法等价于右线性文法, 所以左线性文法也是正则文法
+
+### 空语句
+
+只是单纯看这一小节不太理解空语句存在的意义如何, 但是我们可以先假定以下的定理事先成立:
+
+1. 设$G(V,T,P,S)$是一个文法, 则存在一个文法$G&#39;(V&#39;,T,P&#39;,S&#39;)$满足: $S&#39;$只出现在$P&#39;$中的左部, 并且$L(G)=L(G&#39;)$
+   简要证明: 我们令$P&#39; = P \cup \{S&#39; \rightarrow S\}$, 相当于建立一个从$S&#39;$到$S$的产生式, 所以只会从$S&#39;$推导出原来$S$可以推导出来的语言, 所以满足了$L(G)=L(G&#39;)$
+
+2. 对于CSG, CFG, RG有以下性质成立:
+   如果$G(V,T,P,S)$是一个CSG/CFG/RG, 则文法$G(V,T,P\cup \{S\rightarrow\varepsilon\},S)$仍然是一个CSG/CFG/RG, 相应的生成语言也满足:
+   如果$L(G)$是一个CSL/CFG/RG, 则$L(G\cup\{\varepsilon\})$也是一个CSL/CFG/RG
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-06
+      </div>
+      <div class="card-info">
+        1.4k字
       </div>
       <div class="card-info">
         阅读时间: 1 mins.
@@ -256,38 +522,954 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/IOfile/">
-        C++的文件操作
+      <a class="card-title" href="/2023/03/06/math/convolution/">
+        数学基础-卷积
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
-### 几种C++中对文件操作的方式
+# 卷积
+## 定义
+卷积的定义式如下:
+$$
+\begin{aligned}
+f(x) * g(x) &amp; = (f*g)(x)\\
+&amp; = \int_{-\infty}^{\infty}f(\tau)g(x-\tau)d\tau\\
+\end{aligned}
+$$
+从直观的图形角度来解释, 卷积的操作步骤为:
+- 将一个函数先反转, 然后从左到右平移
+- 将两个函数相交的部分做积分, 得到的值就是卷积在$x$处的值
 
+为了更加深刻理解卷积的含义, 我们从离散信号的角度来先看待卷积的含义
+
+## 离散信号的卷积
+现在假设我们有一个线性时不变离散信号系统
+
+**tips**: 系统我们可以暂时认为是一个输入信号输出信号的函数
+
+然后我们有一个离散信号$x[n]$
+现在我们把这个离散信号看作一个单独的脉冲信号和一个冲击函数的乘积
+
+比如说我们有如下图:
+![](/image/draft/convolution_1.png)
+
+这个离散的时间信号我们可以看作若干脉冲信号的叠加, 其中的一个脉冲信号我们可以表示为:
+$$
+y[n] = x[k]  \delta[n-k]
+$$
+
+比如对于处于$k=3$处的脉冲信号, $x[3] = 8$, 我们可以将其表示为:
+$$
+y[n] = 8 \times \delta[n-3]
+$$
+根据冲击函数的采样性质, 我们可以得到:
+$$
+y[n] = 8 \times \begin{cases}
+1, &amp; n=3\\
+0, &amp; n\neq 3
+\end{cases}
+$$
+将这样的单个脉冲函数加起来, 就得到了我们的离散信号$x[n]$
+
+在这样的基础上, 我们将$\delta[n]$函数换成对于一个信号的响应(加权函数), 这样输入的每一个离散的脉冲信号都会在结果的输出信号的每一个位置上有一个加权的影响, 和其他时间点的信号同时对输出结果产生影响, 这样我们就得到了离散时间信号的卷积
+
+我们可以认为卷积是在一个系统中, 输入的信号上的每一个脉冲信号都会影响整体的输出信号的一个叠加运算, 而在连续的时间信号中就可以用最开始提的积分式来表示
+
+---
+
+## 过了许久后的进一步理解
+两个函数的卷积, 我们把一个函数作为信号, 一个函数作为系统, 信号的某一个点的值, 在卷积的过程中相当于通过这个系统, 产生一个输出信号, 所有的输出信号的叠加就是卷积的结果, 也是通过这个系统的输出信号
+
+### 循环卷积:
+循环卷积需要规定一个做卷积的**长度**, 两个序列都必须满足这个长度, 然后之前被视作**系统**的函数会反转后从头开始和**信号**的函数进行卷积, 但是超过长度的部分会循环到另一端, 而不是直接截断
+
+比如:
+$$
+[1,2,3,4]
+$$
+和
+$$
+[1,2,3,4,5,6]
+$$
+做长度为7的卷积
+
+我们把长度补为7, 得到:
+$$
+[1,2,3,4,0,0,0]
+$$
+和
+$$
+[1,2,3,4,5,6,0]
+$$
+然后卷积方式为:
+$$
+y[0] = multiply([1,2,3,4,0,0,0], [1,0,6,5,4,3,2])
+$$
+可以看到, 原本超出序列的部分被循环补充到了尾部
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-06
+      </div>
+      <div class="card-info">
+        1.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/03/06/signal/signal/">
+      信号与系统(一)特殊函数
+    </a>
+    <span class="card-abstract">
+      
+## 矩形函数
+
+矩形函数的定义式如下:
+$$
+\begin{aligned}
+  \text{rect}(t) &amp;= \begin{cases}
+    1, &amp; t \in (-\frac{1}{2}, \frac{1}{2}) \\
+    \frac{1}{2} , &amp; t =\{\frac{1}{2},-\frac{1}{2}\} \\
+    0, &amp; \text{otherwise}
+  \end{cases}
+\end{aligned}
+$$
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Rectangular_function.svg/450px-Rectangular_function.svg.png)
+
+## 单位阶跃函数
+单位阶跃函数(Heaviside function)的定义式如下:
+$$
+\begin{aligned}
+  H(t) &amp;= \begin{cases}
+    0, &amp; t &lt; 0 \\
+    1, &amp; t \geq 0
+  \end{cases}
+\end{aligned}
+$$
+
+## 冲激函数(狄拉克函数)(delt delta function)
+
+冲激函数主要满足以下两个特征(定义):
+
+- 冲激函数值在某一个点(原点)的值为无穷大, 在其他点的值为0
+  由于这个原因, 我们其实并不认为冲激函数是一个&#34;函数&#34;, 而是一个测度或者其他什么的
+
+- 冲激函数在实数域上的积分为$1$:
+  $$\int_{-\infty}^{+\infty}\delta(x)dx = 1$$
+
+对于冲激函数我们可以用以下定义式来表示:
+$$ \delta_a(x) = \frac{1}{|a|\sqrt{\pi}}e^{-\frac{x^2}{a^2}} $$
+其中$a \rightarrow 0$时, $\delta_a(x)$趋近于$\delta(x)$
+
+wikipedia上有相当直观的动图:
+&lt;center&gt;
+&lt;iframe src=&#34;https://upload.wikimedia.org/wikipedia/commons/b/b4/Dirac_function_approximation.gif&#34; width=&#34;200&#34; height=&#34;400&#34; frameborder=&#34;0&#34; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/center&gt;
+
+### 性质
+
+- 缩放性(scaling):
+  $$\delta_{a}(ax) = \frac{1}{|a|}\delta\left(x\right)$$
+  - 证明:
+    $$
+    \begin{aligned}
+    \delta_a(bx) &amp; = \frac{1}{|a|\sqrt{\pi}}e^{-\frac{(bx)^2}{a^2}} \\
+     &amp;= \frac{1}{|bc|\sqrt{\pi}}e^{-\frac{(bx)^2}{(bc)^2}} \\
+     &amp;= \frac{1}{|b|} \frac{1}{|c|\sqrt{\pi}}e^{-\frac{x^2}{c^2}} \\
+     &amp;= \frac{1}{|b|} \delta_c(x)
+    \end{aligned}
+    $$
+  用于逼近$0$的$a$被换为了$c$, 但是冲激函数本身不会变化
+
+- 采样性(sampling):
+  $$\int_{-\infty}^{\infty}f(t)\delta(t-t_0)dt = f(t_0)$$
+  又被称为筛性(sifting)
+
+$$
+x[n] = x_c(nT) = x_c\left(\frac{n}{f}\right)
+$$
+$$ \int_{-\infty}^{\infty} f(t) \delta(t) dt = f(0) $$
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-03-04
+      </div>
+      <div class="card-info">
+        10k字
+      </div>
+      <div class="card-info">
+        阅读时间: 9 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/03/04/ML/decision_tree/">
+        决策树
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 决策树
+
+## 决策树的基本逻辑
+
+决策树简单来说就是一棵多叉树, 一个测试数据从根节点开始, 每到达一个节点, 该节点对数据的某一个属性进行检测, 并决定该数据属于某一个子树的类型, 直到一个叶子节点, 可以完全确定该数据的类型
+
+- 对于这个测试数据的属性, 如果是离散的属性, 那么这个决策树就是一个分类树, 解决机器学习中的分类问题
+- 如果是连续的属性, 那么这个决策树就是一个回归树, 解决机器学习中的回归问题
+
+## 决策树的原理
+
+### 信息增益
+
+在解释信息增益前, 先了解一下简单的信息熵:
+$$H(X)=-\sum_{i=1}^n p_i \log_2 p_i$$
+其中$p_i$是第$i$个事件发生的概率, 在决策树中可以理解为一个类型的物体, 在总物体中数量的占比
+信息熵的取值范围为:
+$$0 \leq H(X) \leq \log_2 n$$
+由于概率的区间为$[0,1]$, 在这个区间范围内的函数图像如下:
+![](/svg/decision_tree_1.svg)
+由上我们可以直觉地理解: 信息熵描述信息的不确定性(复杂度), 当一个随机变量发生的概率越小, 我们就越不能确定该事件的发生, 所以信息的不确定性越大, 信息熵越大
+
+而从总体上来解释, 信息熵描述的是信息的**不纯度**, 信息熵越大, 信息中的杂项越多, 信息的纯度越低
+
+当某一个类概率为$1$时, 信息熵为$0$, 当所有类平分概率时, 信息熵为$1$
+
+然后我们以作业的数据为例, 来演示一下详细过程:
+
+![](/image/draft/decision_tree_1.png)
+
+首先我们计算出需要分类的信息熵:
+
+- 首先统计出可贷款的人数和不可贷款的人数: $9$和$6$
+- 然后计算出熵:
+  $$H(X)=-\frac{9}{15} \log_2 \frac{9}{15} - \frac{6}{15} \log_2 \frac{6}{15} \approx 0.97$$
+
+接下来我们提出**信息增益**的概念:
+$$Gain(D, a)=H(D)-\sum_{v=1}^V \frac{|D^v|}{|D|} H(D^v)$$
+
+其中$\sum_{v=1}^V \frac{|D^v|}{|D|} H(D^v)$我们又称为**条件熵**, 记为$H(D|a)$, 其中$D$是数据集, $a$是属性, $D^v$是数据集$D$中在属性$a$上取值为$v$的子集
+
+于是我们可以计算出某个属性的信息增益, 以年龄为例子(5青年,5中年,5老年): 
+$$
+\begin{aligned}
+  H(D^v) = -\frac{5}{15} \log_2 \frac{5}{15} - \frac{5}{15} \log_2 \frac{5}{15} - \frac{5}{15} \log_2 \frac{5}{15} \approx 1.585
+\end{aligned}  \\
+\begin{aligned}
+Gain(D, age) &amp;= H(D) - \sum_{v=1}^V \frac{|D^v|}{|D|} H(D^v) \\
+&amp;= 0.97 - \frac{5}{15} \times 1.585 - \frac{5}{15} \times 1.585 - \frac{5}{15} \times 1.585 \\
+&amp;= 0.97 - 1.585 \\
+&amp;= -0.615 \\
+\end{aligned}
+$$
+
+很明显, 由于年龄平分, 所以年龄的信息熵为最大值, 此时我们计算出的信息增益最小, 说明了如果我们选择年龄作为分类标准, 我们的分类效果会很差, 无法通过年龄使得数据的信息熵下降
+
+参考上面的计算方式, 我们计算出每一个属性的信息增益, 选择信息增益最大的一个属性作为分类标准, 然后递归进行此过程, 直到所有特征(属性)都分类完毕, 或者信息熵已经低于一定的阈值, 则完成分类
+
+**以上是最简单的ID3决策树的基本原理, 只能用于处理离散特征的分类问题, 对于连续的分类问题/回归问题, 我们需要使用更先进的决策树模型**
+
+---
+
+### 信息增益比
+信息增益比定义公式如下:
+$$Gain\_ratio(D, a)=\frac{Gain(D, a)}{IV(a)}$$
+其中$IV(a)$是属性$a$的属性熵值, 使用熵的公式计算:
+$$IV(a)=-\sum_{v=1}^V \frac{|D^v|}{|D|} \log_2 \frac{|D^v|}{|D|}$$
+
+信息增益偏向于选择取值较多的特征, 信息增益比则是在信息增益的基础上进行了调整, 加上属性熵作为分母, 使得取值较多的特征不会过于占优
+
+这是C4.5决策树的关键优化之一
+
+除此之外, 为了使得连续的属性也能够分类, C4.5决策树采用以下方案来处理连续的属性:
+
+### 二分离散化
+如果我们有某个属性的取值是连续的, 我们可以先将其从小到大进行排序, 然后在相邻的两个取值$v_i$和$v_{i+1}$之间取中间值作为一个阈值, 将其作为分类的划分点, 然后我们可以取到$n-1$个划分点, 依次计算每个划分点的信息增益/信息增益比, 选择最大的一个作为最终的分类划分点即可
+
+### 缺失值处理
+
+对于决策树的缺失值, 我们做如下处理:
+- 首先对于每个样本我们给它们一个权重, 默认的初始值为1
+- 然后我们按照正常流程计算选择每一个属性作为划分标准的信息增益比
+- 在计算含有缺失值的信息增益比时, 我们按照不含缺失值的样本来进行分类, 然后看每一个分类中的样本个数, 对于含有缺失值的样本, 我们将其同时分入全部分类, 但是其权重改为对应分类中所占样本数的比例
+  比如, 如果不含缺失值的样本分为了两类, 一类有3个, 一类有2个, 平分入两个类别的含有缺失值的样本的权重分别为$\frac{3}{5}$和 $\frac{2}{5}$
+- 计算信息增益比时, 我们需要在最后得到的信息增益比上乘上一个比例, 该比例为**不包含该缺失值的样本数所占的比例**, 需要注意的是, 该比例是由权重来计算的, 我们把所有的权重加起来计算未缺失的权重
+
+### 决策树剪枝
+
+#### 预剪枝
+
+预剪枝就是在构建决策树的过程中, 在一个分类的节点构建前评估这一个分类的收益, 如果这一次分类无法使分类的准确度提高, 则直接将该节点作为叶节点不再向下分类
+
+举一个例子, 我们在一个节点上进行分类, 我们先看当前节点中的样本有多少, 将最多的类型作为该节点的判定类别, 然后计算判定的准确率
+|好瓜|好瓜|好瓜|坏瓜|坏瓜|坏瓜|坏瓜|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+比如以上, 我们可以计算出准确率为 $\frac{4}{7}$
+
+然后我们将其进行分类, 分别计算每一个分类后节点的准确率, 如果总体的准确率提高了, 则进行此次分类
+
+预剪枝可以减少决策树构建的开销, 但是由于其**贪心**的性质, 可能导致后续的收益无法得到收获
+
+#### 后剪枝
+
+后剪枝的评价标准和预剪枝一样, 但是在整个决策树构建完成后进行, 从叶节点开始, 评估将一个节点的子树修建后是否能够提高预测的精度, 然后进行剪枝
+
+### 基尼不纯度(Gini impurity)
+$$
+\begin{aligned}
+Gini(D) &amp; =\sum_{k=1}^K p_k(1-p_k) \\
+&amp; = 1 - \sum_{k=1}^K p_k^2
+\end{aligned}
+$$
+基尼不纯度用于估计样本分类错误的概率, $p_k$代表的是一个叶节点中的样本被分类为$k$类的概率, $Gini(D)$越小, 则样本被分类错误的概率越小
+
+以下是作业的代码实现:
+```python
+import math
+import operator
+
+
+def creatDataSet():
+    dataSet = [[0, 0, 0, 0, &#39;no&#39;],
+               [0, 0, 0, 1, &#39;no&#39;],
+               [0, 1, 0, 1, &#39;yes&#39;],
+               [0, 1, 1, 0, &#39;yes&#39;],
+               [0, 0, 0, 0, &#39;no&#39;],
+               [1, 0, 0, 0, &#39;no&#39;],
+               [1, 0, 0, 1, &#39;no&#39;],
+               [1, 1, 1, 1, &#39;yes&#39;],
+               [1, 0, 1, 2, &#39;yes&#39;],
+               [1, 0, 1, 2, &#39;yes&#39;],
+               [2, 0, 1, 2, &#39;yes&#39;],
+               [2, 0, 1, 1, &#39;yes&#39;],
+               [2, 1, 0, 1, &#39;yes&#39;],
+               [2, 1, 0, 2, &#39;yes&#39;],
+               [2, 0, 0, 0, &#39;no&#39;]]
+    labels = [&#39;年龄&#39;, &#39;有工作&#39;, &#39;有自己的房子&#39;, &#39;信贷情况&#39;]
+    return dataSet, labels
+
+
+# 计算样本熵
+def calc_shannon_ent(data_set):
+    num_entries = len(data_set)
+    label_counts = {}
+    for feat_vec in data_set:
+        current_label = feat_vec[-1]
+        if current_label not in label_counts.keys():
+            label_counts[current_label] = 0
+        label_counts[current_label] += 1
+    shannon_ent = 0.0
+    for key in label_counts:
+        prob = float(label_counts[key]) / num_entries
+        shannon_ent -= prob * math.log(prob, 2)
+    return shannon_ent
+
+
+# 选择分类属性并分类样本
+# axis:分类属性的索引
+# value:分类属性的值
+def split_data_set(data_set, axis, value):
+    ret_data_set = []
+    for feat_vec in data_set:
+        if feat_vec[axis] == value:
+            reduced_feat_vec = feat_vec[:axis]
+            reduced_feat_vec.extend(feat_vec[axis + 1:])
+            ret_data_set.append(reduced_feat_vec)
+    return ret_data_set
+
+
+# 计算信息增益
+def calc_info_gain(data_set, base_entropy, axis):
+    feat_list = [example[axis] for example in data_set]
+    unique_vals = set(feat_list)
+    new_entropy = 0.0
+    for value in unique_vals:
+        sub_data_set = split_data_set(data_set, axis, value)
+        prob = len(sub_data_set) / float(len(data_set))
+        new_entropy += prob * calc_shannon_ent(sub_data_set)
+    info_gain = base_entropy - new_entropy
+    return info_gain
+
+
+# 计算信息增益比
+def calc_info_gain_ratio(data_set, base_entropy, axis):
+    info_gain = calc_info_gain(data_set, base_entropy, axis)
+    feat_list = [example[axis] for example in data_set]
+    unique_vals = set(feat_list)
+    split_info = 0.0
+    for value in unique_vals:
+        sub_data_set = split_data_set(data_set, axis, value)
+        prob = len(sub_data_set) / float(len(data_set))
+        split_info -= prob * math.log(prob, 2)
+    info_gain_ratio = info_gain / split_info
+    return info_gain_ratio
+
+
+# 选择最好的分类属性
+def choose_best_feature_to_split(data_set):
+    num_features = len(data_set[0]) - 1
+    base_entropy = calc_shannon_ent(data_set)
+    best_info_gain_ratio = 0.0
+    best_feature = -1
+    print(&#39;base_entropy is %.3f&#39; % base_entropy)
+    for i in range(num_features):
+        info_gain_ratio = calc_info_gain_ratio(data_set, base_entropy, i)
+        print(&#39;info_gain_ratio of %s is %.3f&#39; % (labels[i], info_gain_ratio))
+        if info_gain_ratio &gt; best_info_gain_ratio:
+            best_info_gain_ratio = info_gain_ratio
+            best_feature = i
+    print(&#39;best_feature is %s&#39; % labels[best_feature])
+    return best_feature
+
+
+def majority_cnt(class_list):
+    class_count = {}
+    for vote in class_list:
+        if vote not in class_count.keys():
+            class_count[vote] = 0
+        class_count[vote] += 1
+    sorted_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
+    return sorted_class_count[0][0]
+
+
+# 生成C4.5决策树
+def create_tree(data_set, labels):
+    class_list = [example[-1] for example in data_set]
+    if class_list.count(class_list[0]) == len(class_list):
+        return class_list[0]
+    if len(data_set[0]) == 1:
+        return majority_cnt(class_list)
+    best_feat = choose_best_feature_to_split(data_set)
+    best_feat_label = labels[best_feat]
+    my_tree = {best_feat_label: {}}
+    del (labels[best_feat])
+    feat_values = [example[best_feat] for example in data_set]
+    unique_vals = set(feat_values)
+    for value in unique_vals:
+        sub_labels = labels[:]
+        my_tree[best_feat_label][value] = create_tree(split_data_set(data_set, best_feat, value), sub_labels)
+    return my_tree
+
+
+dataset, labels = creatDataSet()
+my_tree = create_tree(dataset, labels)
+
+print(&#39;my_tree&#39;, my_tree)
+```
+
+---
+
+## CART决策树(Classification and Regression Tree)
+
+CART决策树正如其名, 包括了分类和回归两个部分. 下面我们分开来讨论分类和回归的问题:
+
+### 回归问题
+分类问题可以直接用C4.5决策树来解决, 所以我们先讨论回归问题该如何解决
+
+回归问题简单来说, 就是输入的特征和输出的结果都是连续的值
+
+而我们用来分类的评估标准也从信息增益比换为了**均方误差(Mean Squared Error)**
+
+$$MSE(D) = \frac{1}{|D|} \sum_{i=1}^{|D|} (f(x_i) - y_i)^2$$
+
+在分类问题中, 我们可以将不同特征的样本分成不同的类别, 而在回归问题中我们无法这样直接这么分类, 我们需要先找到一个划分点, 然后将样本分成两部分, 而评估标准就是用来帮助我们找到最优特征的合适划分点的
+
+具体的步骤如下:
+- 首先我们遍历每一个特征$j$, 对于每一个特征, 我们遍历它的每一个取值$i$
+- 然后我们计算以这个特征的这个取值为划分点, 将样本分为两类的均方误差, 选择所有均方误差中最小者作为我们的划分点
+- 当划分到一定的程度时, 我们计算该划分中的均值, 作为我们最后返回的答案, 此时就已经分类完毕
+
+以下是作业的代码实现:
+```python
+import numpy as np
+
+
+def creatDataSet():
+    dataSet = [[1, 4.5],
+               [2, 4.75],
+               [3, 4.91],
+               [4, 5.34],
+               [5, 5.80],
+               [6, 7.05],
+               [7, 7.90],
+               [8, 8.23],
+               [9, 8.70],
+               [10, 9.00]]
+    labels = [&#39;x&#39;, &#39;y&#39;]
+    return dataSet, labels
+
+
+# calculate the MSE(mean squared error)
+def calc_mse(cal_res, real_res):
+    return np.sum(np.power(cal_res - real_res, 2)) / len(real_res)
+
+
+# choose the best split point
+def choose_best_split(data_set):
+    min_mse = np.inf
+    best_split = 0
+    for i in range(1, len(data_set)):
+        left = data_set[:i]
+        right = data_set[i:]
+        left_res = [example[-1] for example in left]
+        right_res = [example[-1] for example in right]
+        left_mse = calc_mse(np.mean(left_res), left_res)
+        right_mse = calc_mse(np.mean(right_res), right_res)
+        mse = left_mse + right_mse
+        if mse &lt; min_mse:
+            min_mse = mse
+            best_split = i
+        print(&#39;选择属性值%s为划分点时，MSE为%.3f&#39; % (data_set[i - 1][0], mse))
+    print(&#39;得到最优划分点%s，MSE为%.3f&#39; % (data_set[best_split - 1][0], min_mse))
+    return best_split
+
+
+# create the tree
+def create_tree(data_set, labels, feet=0):
+    if len(data_set) == 1:
+        return data_set[0][-1]
+    print(&#39;第%s层迭代中&#39; % (feet + 1))
+    best_split = choose_best_split(data_set)
+    best_feat = labels[0]
+    my_tree = {best_feat: {}}
+    left = data_set[:best_split]
+    right = data_set[best_split:]
+    my_tree[best_feat][&#39;&lt;=&#39; + str(data_set[best_split - 1][0])] = create_tree(left, labels[:], feet + 1)
+    my_tree[best_feat][&#39;&gt;&#39; + str(data_set[best_split - 1][0])] = create_tree(right, labels[:], feet + 1)
+    return my_tree
+
+
+date_set, labels = creatDataSet()
+print(create_tree(date_set, labels))
+```
+
+### 分类问题
+CART决策树对于分类问题的解决使用的是之前提到过的**基尼不纯度(基尼指数)**
+
+所有的实现细节基本与C4.5决策树一致, 不再赘述
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/CPP-notes/CPPofCPP/">
+      C++面向对象相关的碎片知识
+    </a>
+    <span class="card-abstract">
+      记录点碎片就好了
 &lt;!-- more ---&gt;
 
-C++包含了三种类对文件进行读写：
-- ifstream
-- ofstream
-- fstream
+### 拷贝构造函数
+拷贝构造函数传递的参数必须为引用
 
-其中前两个都是```fstream```的子类   
+如果是传参，在使用初始化时，会需要接受一个对象初始化一个新对象，其中间过程就需要把对象拷贝一次，而拷贝又需要再拷贝，就会导致一个无限循环
 
-### open()
-成员函数```open(name,mode,access)```包含三个参数:
-- name包含文件路径
-- mode包含打开方式，预制参数包含```ios::in``` ```ios::out``` ```ios::app```
-- 属性取值包括：
-  - 0——普通文件，打开访问
-  - 1——只读文件
-  - 2——隐含文件
-  - 4——系统文件
+**在函数返回、参数传递的过程中都有对象的拷贝**
+
+### 析构函数
+析构函数在对象销毁之前调用，此时对象还没有销毁，对象的销毁发生在隐含的析构阶段
+
+### 三五原则
+- 如果一个类需要一个析构函数，那么往往需要构造和拷贝函数
+- 如果一个类需要拷贝函数，往往需要拷贝赋值运算符
+
+### 删除的函数
+
+通过```default```来设置一个构造(拷贝析构)函数为缺省的函数，告知编译器合成一个默认函数
+
+类似的，通过```delete```来设置一个函数为删除的函数，即只有声明，不可调用   
+像是 ```iostream```中的流对象一样，不允许使用拷贝和赋值
+
+**删除的函数必须在第一次声明时定义**   
+**析构函数删除后，对象无法释放**
+
+- 合成的构造、拷贝、析构函数中，若存在一个成员对象的构造、拷贝、析构函数是删除的，则对应的合成构造、拷贝、析构函数为删除的
+
+### 表现像值的类和表现像指针的类
+
+我认为这和C#中的值类型和引用类型相对应
+
+- 定义一个值类型的类时，需要注意自赋值的情况
+- 定义一个引用类型时，我们可以仿照智能指针的计数器来管理一个对象
+
+### 无关紧要的swap函数
+
+```cpp
+void swap(A&amp; a,A&amp; b)
+{
+    using std::swap;
+    swap(a.l,b.l);
+}
+```
+上面这种情况，当遇到需要调用swap的函数时，对于```A```类型的```l```成员来说，如果存在特定的```swap```函数，则调用之，否则调用std版的```swap```函数
+
+### 移动构造函数和移动操作
+
+书中用了```vector```的自动扩大容量的例子：
+
+在```vector```扩大空间时，需要把原有的元素转移到新的容器中，如果使用拷贝的方式，每次都需要通过拷贝构造创建新对象，再一个个销毁旧对象释放内存，这在使用复杂的对象时会产生大量的资源消耗
+
+C++中的移动操作```std::move```可以转交对象的管理权，避免重新构造的消耗
+
+#### 右值引用
+
+根据reference的说明：```Generally, rvalues are values whose address cannot be obtained by dereferencing them```
+
+右值一般是无法通过解引用地址获得的，比如字面值、临时量等，一般来说这些对象很快就会销毁，但是可以通过右值引用获得这些对象的管理权
+
+比如:
+```cpp
+string rr = string(&#34;123&#34;);
+string &amp;rr1 = string(&#34;123&#34;);
+string &amp;&amp;rr2 = string(&#34;123&#34;);
+```
+其中第二行是错误语句:```cannot bind non-const lvalue reference of type &#39;string&amp;&#39; to an rvalue of type &#39;string&#39;```
+
+而第三行语句则接管了原本的右值字符串```&#34;123&#34;```的管理权
+
+相较于第一行直接拷贝右值对象到变量中，第三行的右值引用更快更节省空间
+
+#### 对象的移动
+C++的对象移动就是通过右值引用来实现的：
+- 对于基本数据类型，```std::move```函数直接拷贝其值
+- 对于需要构造的类的对象，```std::move```将左值强制转换成右值引用
+
+这个感觉并不好理解：   
+对于一个临时变量我无法直接获得其地址，我可以认为右值
+我移动一个对象之后，对象的地址是发生了改变的，或许这样做确实是避免了构造，但是数据的拷贝无法避免
+
+然后我了解了关于符号地址的概念，所以是不是因为我通过```cout```输出的地址并没有直接对应一个绝对地址，而是一个可改变映射关系的地址，这样的话只要从符号地址上改变映射的实际地址，就可以在不拷贝数据的情况下，直接转移实际地址上储存对象的所属
+
+但是上面这段想法有些过于离谱，而网上的说明大多数只说了```std::move```函数的作用和概念，并没有对内存地址的改变的解释
+
+这个问题只能等以后有机会解决了
+
+#### 进一步总结
+首先我需要明确 ```std::move```的作用——将一个左值强制转换成右值并返回
+
+对于堆空间储存的数据：
+```cpp
+string *a = new string(&#34;123&#34;);
+string &amp;&amp;c = std::move(*a);
+string *b = new string(std::move(*a));
+```
+
+- 第二个c作为右值引用，接管了a的数据，但是a仍然可以继续操作原来的数据，所以这里的右值引用可以当作一般的左值引用看待
+- 第三个b会直接接管a的数据，而a的数据将被清空，这里可以理解为移动了数据，数据所在的内存地址变为b所指向的地址
+
+```cpp
+string a = string(&#34;123&#34;);
+string &amp;&amp;c = std::move(a);
+string b = string(std::move(a));
+```
+对于栈内存上的情况和堆内存一样，之前我在实验时把右值引用弄混了，以至于我认为堆栈上的 ```std::move```函数表现不一样，现在可以表明，使用 ```std::move```函数后，原来内存上的数据被直接移动到新的位置上
+
+### 移动构造函数
+
+为了使自定义类型也能支持移动操作，需要自定义移动构造函数
+
+通过在移动构造函数后添加 ```noexcept```来告知STL该函数不会产生异常，这样在使用 ```vector```之类的容器时，才能正确地扩充容器
+
+在移动容器中的元素时如果构造函数抛出了异常，那么原来的容器和新的容器都是不完整的，就会发生无法修复的错误，如果不能保证构造函数不抛出异常，那么容器就会自动使用拷贝构造的方式来避免异常问题
+
+- 注意：在对象移动后往往需要销毁原来的对象，所以需要把原来的对象里的指针设为空，避免析构时删除原数据
+
+```cpp
+class A
+{
+public:
+    int *a;
+    string *b;
+
+    A(int a2, string b2) : a(new int(a2)), b(new string(b2)){};
+    A(A &amp;&amp;in)
+    noexcept
+    {
+        a = in.a;
+        b = in.b;
+        in.a = nullptr;
+        in.b = nullptr;
+    }
+    ~A()
+    {
+        delete a;
+        delete b;
+    }
+};
+```
+
+- 只有当类没有定义任何拷贝控制函数，并且每一个成员都支持移动时，编译器才会自动合成移动构造函数
+
+- 只有在使用缺省定义移动构造函数时，无法合成移动构造函数才会隐式定义移动构造函数为删除的函数
+
+- 移动右值，拷贝左值
+
+- 没有移动构造函数，右值也将被拷贝
+
+### 移动迭代器
+
+```make_move_iterator()```接受一个普通迭代器，返回一个移动迭代器
+
+移动迭代器解引用返回一个右值引用
+
+由于移动迭代器会销毁原对象，标准库不保证所有算法都能适用移动迭代器
+
+### 右值的一点值得注意的地方
+
+非常量的右值可以像左值一样正常调用函数、赋值等，但是并不推荐这么做，至少目前我对这种做法是排斥的
+
+通过对成员函数添加 ```&amp;```或 ```&amp;&amp;```限定符，可以限制函数只能被左值、右值调用
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
   
-### &lt;&lt;和&gt;&gt;
-插入运算符和析取运算符   
+  
+  
 
-参照于控制台的输入输出流```cin```、```cout```，文件流一样可以进行插入和析取。
+<div class="card" style="justify-content: left;">
 
-如果是对二进制数据块进行读写，可以使用```read()```和```wirte()```函数
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/DynamicMemery/">
+        C++的动态内存和智能指针
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+关于C++Primer的学习只是补充我所缺少的碎片化知识，而不是系统化的整理或者项目记录什么的
+
+## 智能指针
+
+```cpp
+int main()
+{
+    auto ptr_1 = make_shared&lt;int&gt;(300);
+
+    shared_ptr&lt;int&gt; ptr(new int(100));//use inner &#34;new&#34; to initial a ptr
+
+    cout &lt;&lt; *ptr_1 &lt;&lt; endl;
+}
+```
+包含于```memory```头文件中，智能指针存在一个计数器，记录某个对象的引用次数，当没有指针引用该对象时，自动销毁该对象
+
+智能指针的使用与普通指针一样，创建方式参照代码
+
+智能指针分为两种：```shared```和```unique```
+
+- ```shared```允许多个共享指针引用同一个对象
+- ```unique```只允许一个指针在同一时刻引用该对象
+
+## 浅拷贝深拷贝
+
+涉及指针管理内存的概念，一个对象的成员中可能有指针成员，进行拷贝后的对象中的指针只是和原对象指向同一个地址，而不是在一个新地址上拷贝对象，这样是浅拷贝，反之则为深拷贝
+
+## 关于智能指针和内置new混用的一种问题
+
+```cpp
+int main()
+{
+    int *ptr_1(new int(100));
+    shared_ptr&lt;int&gt; ptr_2(ptr_1);
+    ptr_2 = make_shared&lt;int&gt;(new int(200));
+    //here ptr_1 has been dangling
+}
+```
+
+这里智能指针不会统计指向内置new分配的动态内存的指针，所以在```ptr_2```重定向后，原本的地址被释放，```ptr_1```成为了悬挂指针
+
+## C++中的哑类
+我对这方面知之甚少，有空闲的时间会去好好了解关于哑类的来源之类的
+
+C++中有些类没有良好的析构函数在对象销毁时正确释放资源，使用智能指针来管理这些对象可以减少在编写程序时由于哑类导致的内存泄漏
+
+我按照书上的代码来解释一下自己的理解：
+
+```cpp
+void end_connection(connection *p)
+{
+    disconnection(*p);
+}
+void f(destinction &amp;d)
+{
+    connection c = connect(&amp;d);
+    shared_ptr&lt;connection&gt; p(&amp;c, end_connection);
+}
+```
+
+按照书本思路，这是一个网络库中的连接函数，在断开连接时，使用```disconnection()```函数销毁对象，```connection```自身并没有析构函数释放类资源   
+为了让程序自行管理并释放```connection```对象，使用智能指针指向了一个局部变量，并且绑定了一个删除器函数，这个删除器使得指针在被销毁时不会调用```delete```，而是使用删除器，将自身保存的指针传递给删除器，从而调用```disconnection```释放资源
+
+## unique_ptr
+
+```unique_ptr```不能使用拷贝初始化和赋值，只能采用直接初始化，只能接受通过```new```得到的指针
+
+## weak_ptr
+弱指针，指向一个由```shared_ptr```管理的地址，当```shared_ptr```管理的地址完全释放之后，弱指针仍然指向这个地方
+
+由于指向地址可能已经释放，所以弱指针不能直接解引用，而使用```lock()```函数得到一个```shared_ptr```，若指向地址为空，则返回空 ```shared_ptr``` 指针，否则返回一个指向该地址的```shared_ptr```
+
+利用```weak_ptr```可以方便的检测一个位置上的值是否还存在
+
+## 动态数组
+
+常规动态数组就不说了
+
+需要注意的是，动态数组不是数组，不包含长度信息，无法使用```begin()```、```end()```之类的函数获得头尾，动态数组本身只是分配的一片连续的元素，而内置数组包含了更多的信息和操作
+
+```unique_ptr```支持分配动态数组：
+```cpp
+unique_ptr&lt;int[]&gt; ptr_1(new int[100]);
+ptr_1.release();//delete this ptr
+```
+
+```shared_ptr```本身不支持动态数组，如果一次性分配多个对象的话，需要自行绑定删除器：
+ ```cpp
+int main()
+{
+    shared_ptr&lt;int&gt; ptr_1(new int[10], [](int *p)
+                          { delete[] p; });
+}
+```
+以上代码通过lambda表达式定义了一个删除器，模拟删除p指向的动态数组
+
+## allocator类
+
+```allocator```涉及到一个很很重要的东西——内存池
+
+可能不涉及，但是它的存在确实会让人联想起内存池
+
+ ```cpp
+allocator&lt;string&gt; alloc;
+auto p = alloc.allocate(100);
+auto q = p;
+```
+
+请求分配了一片用于储存```string```类型的内存
+
+分配的内存没有构造元素，是一片完全空的内存，用于随时动态储存```string```对象
+
+其分配的一大片内存可以看作一个内存池，所谓内存池，就是提前向系统申请的一片内存空间，固定用来管理一堆对象，从而避免每次都要重新分配内存而造成系统资源消耗
+
+同时，一片统一的内存方便对大量的对象进行管理，可以在不需要时清除区域中的全部对象
+
+现在谈及“池”的概念还为时尚早，包括了内存池、线程池、对象池等，在不同的场景都各有作用
+
+```cpp
+alloc.construct(q++);
+alloc.construct(q++,&#34;123&#34;);
+alloc.destroy(--q);
+```
+虽然分配了内存，但是还是要自己用指针管理
+
+- 初始化算法
+
+- ```uninitialized_copy(b,e,b2)```
+- ```uninitialized_fill(b,e,t)```
+
+
 
       </span>
     </div>
@@ -316,6 +1498,71 @@ C++包含了三种类对文件进行读写：
         2021-01-01
       </div>
       <div class="card-info">
+        532字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/CPP-notes/IOfile/">
+      C++的文件操作
+    </a>
+    <span class="card-abstract">
+      
+### 几种C++中对文件操作的方式
+
+&lt;!-- more ---&gt;
+
+C++包含了三种类对文件进行读写：
+- ifstream
+- ofstream
+- fstream
+
+其中前两个都是```fstream```的子类   
+
+### open()
+成员函数```open(name,mode,access)```包含三个参数:
+- name包含文件路径
+- mode包含打开方式，预制参数包含```ios::in``` ```ios::out``` ```ios::app```
+- 属性取值包括：
+  - 0——普通文件，打开访问
+  - 1——只读文件
+  - 2——隐含文件
+  - 4——系统文件
+  
+### &lt;&lt;和&gt;&gt;
+插入运算符和析取运算符   
+
+参照于控制台的输入输出流```cin```、```cout```，文件流一样可以进行插入和析取。
+
+如果是对二进制数据块进行读写，可以使用```read()```和```wirte()```函数
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         2k字
       </div>
       <div class="card-info">
@@ -327,11 +1574,12 @@ C++包含了三种类对文件进行读写：
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/Lambda/">
-      C++的Lambda表达式
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/Lambda/">
+        C++的Lambda表达式
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 Lambda表达式真的是我从来没有接触过的一类语法，于C++11中补充
 
 &lt;!-- more ---&gt;
@@ -428,8 +1676,12 @@ int main()
 这大概算是C++标准库设计的一个缺点
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -439,11 +1691,13 @@ int main()
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -460,12 +1714,11 @@ int main()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/OPPofCPP/">
-        C++中的类的一些碎片知识
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/CPP-notes/OPPofCPP/">
+      C++中的类的一些碎片知识
+    </a>
+    <span class="card-abstract">
+      
 与OPP有关的碎片知识记录
 
 &lt;!-- more ---&gt;
@@ -693,1289 +1946,6 @@ int main()
 在类的内部无法定义第二种运算符的重载，需要在类外定义重载   
 在类内定义的重载默认存在的第一个参数为类本身，但是在类外可以自定义全部参数
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfCPP/">
-      C++中的一些碎片知识
-    </a>
-    <span class="card-abstract">
-      一些不便于归结到系统知识中的碎片知识。
-
-&lt;!-- more ---&gt;
-
-## 顶层const和底层const的区别
-具体内容略过，但是和接下来几个修饰符有关。
-
-## constexpr修饰符
-
-- 加上此修饰符后，认为此变量为常量表达式，在编译阶段即可计算出结果，并且作为常量使用。因此要求右值也是常量表达式。
-
-- ### constexpr函数
-
-  返回值类型为字面值，要求函数有且只有一个```return```并且
-- ### constexpr和const
-  ```constexpr```是字面值常量，在编译阶段计算出结果而不能改变，要求其表达式也能在编译阶段计算出结果   
-  ```const```是标记一个对象为只读，其定义可以在任何时刻
-
-## auto类型说明符
-auto类型符也在编译阶段完成，根据初始化的值来规定变量的基本类型。如果右值为常量（const），则会自动忽略常量的作用。
-
-## decltype类型指示符
-同样在编译阶段完成，根据表达式的值规定变量基本类型，如果使用双重括号包含表达式，则使用的类型为对应类型的引用。   
-
-- 需要注意的是，&lt;font color=Red&gt;在使用数组作为表达式时，并不会得到数组的首地址指针，而是确实得到一个长度相对应的数组&lt;/font&gt;
-
-## void*类型
-无类型指针，可以指向任意非常量地址，但是不可解引用，也不可用来对其他类型指针进行赋值。（目前来说没什么作用）
-
-## 字
-32位上1字一般等于4字节=32bits
-
-## 拷贝初始化和直接初始化
-```cpp
-string str = &#34;123&#34;;
-string str_2 = str;//拷贝初始化
-string str_2(&#34;123&#34;);//直接初始化
-```
-一般来说，直接初始化比拷贝初始化更直观。
-
-## 字符串字面值和string
-
-- 字符串字面值通过`char[]`实现，所以不能够直接对两个字符串常量相加，但是可以转换为string进行运算。
-  
-- C风格的字符串用```char[]```储存，以空字符(&#39;\0&#39;)结尾，与```string```有区别
-  
-- C风格字符串可直接用于```string```的初始化，可作为```string```运算的其中一个值
-  
-- ```string```的方法```.c_str()```可用于将```string```转化为```char[]```，但是不保证返回的数组一直有效，建议对返回的数组进行拷贝
-
-## 范围for语法
-C++11新提供的语法格式，用于遍历所给序列的每一个元素，参考C#中的```foreach```
-
-- **语法**：
-
-  ```cpp
-  string str(&#34;1234&#34;);
-  for(auto ch : str)
-  {
-      putchar(ch);
-  }
-  ```
-
-- 上面的程序遍历了```str```中的每一个字符
-- 需要注意的是，循环代码块中不应该修改所遍历的序列的大小
-- 修改容器容量会使循环的迭代器失效
-
-## size_type类型
-
-需要注意的是，C++自带容器中的```size()```函数所返回的值并不是简单的```int```类型，而是```size_type```类型，其对应的应该是一个无符号整型。   
-
-所以在使用```size()```函数作为依据进行遍历时，建议使用```decltype(x.size())```作为类型说明符，以避免类型产生的错误。
-
-除了```size_type```以外，很多C++标准库内的数字都有对应的类型
-
-## C++的模板
-模板不是类型，只有实例化时，才会生成对应的类型，所以模板不支持分布式编译。在另一个cpp文件中并不包含模板生成的类型。
-
-## 迭代器的运算
-
-- 迭代器相减得到两个迭代器之间的距离，所得类型是名为```difference_type```类型的带符号整型
-- 迭代器进行比较，比较的是他们对应的位置大小
-
-## 数组的指针(iterator)
-- 迭代器支持的运算，数组的指针都支持
-- 在```iterator```头文件中包含两个函数```begin()```和```end()```用于取得函数的头指针和尾后指针（尾后指针不能解引用和递增，不然溢出）
-- 指针使用下标时可以为负数，前提是不溢出。
-
-- 数组本身是一种数据结构，而不是所谓的“指向首地址的指针”。   
-  使用数组名返回首地址指针是C++内部的隐式转换，我们可以通过引用来取消这样的隐式转换，像是```for(auto el:array)```
-
-  如果array是二维数组，返回的el是个指针，是不包含长度信息的，需要改为```for(auto &amp;el:array)```才能得到一维数组
-
-  ```int (*p)[4]```是指向数组的指针，其包含了数组的长度信息，所以可以使用范围for进行遍历
-
-- 使用```decltype(),&amp;,sizeof(),```  时，数组转指针的隐式转换会被自动取消 
-
-- 使用```begin()```和```end()```函数得到的也是数组的指针，也包含了长度信息
-
-## 左值和右值的含义
-不做过多解释，但是是需要理解清楚的概念
-- 在```decltype()```中的表达式为左值时，得到对应类型的引用
-
-## 表达式中的函数调用
-- 在一个表达式```f()*h()```中调用了两个函数，但是并没有规定函数的调用顺序，如果两个函数对同一个对象有修改操作，那程序会产生错误
-- 
-- 同样的，如果赋值表达式两端出现同一个变量，并都进行修改，将产生未定义的错误：```num++ = 3 + num++```
-
-## 变量和函数的声明方式
-
-以变量名为中心，向两边读，先读到什么就是什么类型：
-- ```int(*a)[10];```   
-  指向长度为10的int数组类型的指针   
-- ```int(*a)[10][10];```   
-  指向二维int数组的指针
-- ```const int (*a);```
-  指向const int类型的指针
-- ```int const (*a);```
-  指向int类型的const指针
-
-类似这样的多重修饰的变量很容易就可以理解，对于引用也一样，
-但是我没想到，对于函数的返回类型也有类似的规则，而且还有些特别
-
-- ```int (*func()) [10];```
-  这是一个函数的声明，返回类型是指向一个长度为10的int数组的指针
-
-- 没错，我们把函数的本体当作一个变量，从中间到两边读，来确定返回值的类型
-  这的确是我以往没有注意到的一个细节——函数的声明方式和变量极为相似
-
-- 所以适用于变量的```decltype()```、```auto```等类型符，其原理和用于函数是一样的
-
-## 函数的后置声明方式
-
-```cpp
-auto func(int)-&gt;int (*)[100];
-```
-
-像是这样的函数声明, 箭头后面的才是函数的返回类型, 这样的书写方式比较简单直观
-
-## 函数匹配
-
-这是个理论上的概念，涉及到重载函数的调用问题   
-只需清楚最佳匹配之类的概念便好，不必做多余的记录
-
-- 函数匹配到多个结果时具有二义性，产生报错
-
-## 函数类型
-读到函数的指针这一节我突然意识到，函数也是一种类型，有自己的声明、定义方式，所以才有了之前的关于函数返回值的声明方式   
-
-函数在编译后储存在内存中的一片空间中，可以通过指针访问，甚至可以作为返回值
-
-```cpp
-int (*func(int)) (double,char);
-auto func_2(int) -&gt; int (*)(double, char);
-```
-
-以上两种声明方式是等价的，他们都声明了一个参数为```int```类型的函数，返回值是一个函数的指针，且该函数有两个参数，返回值是```int```
-
-而在我使用函数的指针时是这么使用的：   
-```cpp
-int (*funcPtr)(int, int) = cut;//cut是一个函数
-cout &lt;&lt; funcPtr(10,5) &lt;&lt; endl;
-```
-相当于用指针的名字替代了函数的名字，在我仔细阅读完Primer的说明后，我意识到在调用函数时其实就是将函数类型转化为函数的指针，再把参数传进去使用，这么一想很多事情都能说得通了
-
-## initializer_list
-
-这是在看术语表时发现的一个标准类   
-
-在对数组进行初始化赋值时，其实自动创建了一个```initializer_list```类型   
-他其实就是花括号和里面括起一堆逗号分隔的数的本体：```{1,2,3}```
-
-在后续如果有需要还可以查看其内部实现的代码，而我现在只想感慨我会的还是太少了
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfContainer/">
-        C++的容器的碎片知识
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-容器的使用很频繁，只补充一些碎片化的知识
-
-&lt;!-- more ---&gt;
-
-容器分为顺序容器、关联容器、无序容器
-同一类型的容器具有一些相同的操作，这方便于我们进行记忆
-
-## 顺序容器
-
-- ```vector```
-- ```deque```
-- ```list```
-- ```forword_list```
-- ```array```
-- ```string```
-
-### 迭代器
-- 对于在连续内存上储存数据的容器，才可以使用迭代器（指针）进行相减运算、大小比较，比如```vector```、```deque```等   
-  但是```list```一类的离散储存的数据类型就不能这样操作。
-
-- 但是对于初始化的前后迭代器可以用于```list```类型
-
-- ```swap()```函数交换的是引用，真实的数据储存并不受影响，因为STL的容器都是引用类型
-
-### emplace函数
-```emplace()```函数接收容器元素的构造函数的参数，并直接在容器的内存中构造元素
-
-### sort函数
-- ```sort()```函数只能对支持随机访问的顺序容器进行排序
-
-### at()函数
-- 使用下标运算符不会检查是否越界的问题，但是可以是使用```at(0)```函数，在下标越界后抛出```out_of_range```异常
-
-### erace()函数
-- 使用```erace()```函数删除两个迭代器之间的元素时，结尾的指针是一个区间的尾后指针
-
-### reserve()和resize()函数
-
-- ```reserve()```和```resize()```函数都只能扩张容器的大小，```resize()```只是删除了多余的元素，不影响容器的大小
-
-- 容器的预留空间上不一定有元素，```resize()```会创造新的对象
-- 对应的，需要区别 ```size()```和 ```capacity()```函数
-
----
-其实啊，对于这些函数大概记住主要的集中使用方式就好了，具体有些什么复杂的功能可以在需要的时候再参阅资料，我不可能把一个语言的所有工具的每个细节都记得清清楚楚
-
----
-
-### 有意思的find函数
-
-不是指一般的```find()```函数，而是```find_first_of(arg)```
-
-其寻找字符串中，```arg```中任何一个字符第一次出现的位置
-
-有点正则表达式的味道了
-
-### 字符串的值转换
-
-- ```to_string()```
-- ```stod()```
--  ```stoi()```
-
-之类的
-
-这些都是```string```的外部函数
-
-### 容器的适配器
-这是一种面向对象的概念，应用于STL的容器中
-
-我以前一直以为 ```stack``` ```queue```之类的类也是一种容器，但是现在我明确看到了这种基于现有容器继承而来的类的标准命名——容器适配器
-
-通过现有的容器来限制组合其操作，从而获得的新类
-
-```stack&lt;int,vector&lt;&gt; &gt;```我们通过 ```vector```构造了一个栈，使得这个 ```vector```可以使用栈的操作
-
-而不设置指定实现容器的话，会使用一个默认的容器：
-
-- ```stack```—— ```deque```
-- ```queue```—— ```deque```
-- ```priority_queue```—— ```vector```
-
-## 泛型算法
-
-虽然但是，泛型算法不仅适用于STL容器，而且适用于内置数组
-一般包含于 ```algorithm```和 ```numeric```
-
-### 泛型算法库原则：
-算法不直接调用顺序容器操作，通过迭代器修改内存区间的元素顺序或数值
-
-### 插入迭代器
-
-```back_inserter``` 是一种插入迭代器，当解引用并给其赋值时，会自动调用容器的 ```push_back```操作
-
-此外还有```front_inserter()```、```inserter()```之类的插入迭代器
-
- ```cpp
-vector&lt;int&gt; a;
-
-auto it = back_inserter(a);//now &#34;a&#34; has been the back_inserter of a
-
-*it = 4;//this way, it creates a new element at the end of the vector
-
-fill_n(it,10,10);//this way, we can append 10 new &#34;10&#34; into the vector
- ```
-
-### IO流对象迭代器
-
-标准算法库搭配容器、迭代器玩出来的花样太多了，IO流对象的迭代器大概说明一下吧
-
- ```cpp
-int main()
-{
-    istream_iterator&lt;int&gt; int_in(cin);
-    istream_iterator&lt;int&gt; eof;
-
-    while (++int_in != eof)
-    {
-        cout &lt;&lt; *(int_in);
-    }
-}
-```
-以上这段代码中定义了从流中读取整数的迭代器， ```++```操作为从流中析取一个整数，```*```操作是返回析取的数
-
-需要注意的是，在定义```int_in```时，就已经执行过一次读取了，所以会有一次多出的输入
-
-```cpp
-istream_iterator&lt;int&gt; int_in(cin), eof;
-cout &lt;&lt; accumulate(int_in, eof, 0);
-```
-这是书上比较有趣的一个用法，通过连续的流输入得到一个整数和   
-通过这个例子稍微能理解流对象迭代器的设计思想了
-
-对于顺序容器而言，泛型算法可以在一段连续的元素上执行操作，而流输入的数据也是连续的一整段元素，所以通过流对象迭代器来让泛型算法对用户的输入执行某些操作
-
-基于这种思想，我们可以很容易的理解```ostream_iterator```的使用
-```cpp
-vector&lt;int&gt; a{1, 2, 3, 4};
-ostream_iterator&lt;int&gt; out_(cout);
-copy(a.begin(), a.end(), out_);
-fill_n(out_, 3, 123);
-```
-
-```ostream_iterator```通过赋值进行输出，所以所有在连续迭代器区间上赋值的泛型算法都可以使用它进行输出
-
-## 反向迭代器
-
-这种东西真的只需要略过就好，简单易懂还没什么重要作用（暂时没有）
-
-## 泛型算法的标准
-
-每个算法都接受至少一个迭代器的范围，而算法要求传递的迭代器具有指定的类型
-
-### 迭代器类型
-- 输入输出迭代器
-- 前向迭代器
-- 双向迭代器
-- 随机访问迭代器
-
-有些算法接受第二个迭代器范围，一般涉及两个序列一起进行的操作，比如合并之类的
-
-### 算法命名
-
-- ```_if```——接受一个元素值的算法往往会有一个_if后缀版本的函数，接受的不为元素值，而是一个谓词
-- ```_copy```——将修改的容器拷贝到目标位置
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfoi/">
-      C++的OI对象的碎片知识
-    </a>
-    <span class="card-abstract">
-      关于标准库，大概远不止我们常用的那些容器，C++中还有很多的类值得深究   
-本文只是记录学习（复习）过程中的碎片化知识，不是系统性知识整理
-&lt;!-- more ---&gt;
-
-## wchar_t
-字符类型，一种扩展储存方式，一般用于储存Unicode字符
-
-## istream,ostream,iostream
-三种流的控制类，```cin```，```cout```，```cerr```等都是其对象
-
-## ifstream,ofstream,fstream
-文件的读写流
-
-## 宽字符流输入输出
-- wistream,wostream,wiostream
-- wifstream,wofstream,wfstream
-
-## 流对象的状态
-
-根据Primer和reference上的说明，返回值可以判定当前流对象是否有效，而通过```rdstate()```函数可以得到流对象更具体的状态情况，返回值是一个```ios::iostate```的类型，其储存了状态的位掩码信息
-
-我无需知道每种状态对应的位，在```ios```域中已经定义几种常量表达式：
-- eofbit——文件结束的状态（读到了文件结束符
-- badbit——流崩溃状态
-- goodbit——无错误状态
-- failbit——IO失败状态
-
-用当前状态与对应的状态位掩码做与运算即可得到是否处于某种状态
-
-- ```setstate()```：设置当前流的状态
-- ```clear()```：修复当前流的状态为有效状态
-
-## 输出缓冲
-C++的```cout```中有一个输出缓冲区，其中储存了插入的内容，并把这些内容整合成一个整体，再输出，以节省输出操作的成本   
-
-刷新缓冲区的原因很多，**但是程序崩溃时是不会刷新缓冲区的**
-
-- ```flush```函数可以手动刷新缓冲区
-- 通过查看endl的实现部分：
-```cpp
-basic_ostream&lt;_Elem, _Traits&gt;&amp; __CLRCALL_OR_CDECL endl(
-    basic_ostream&lt;_Elem, _Traits&gt;&amp; _Ostr) { // insert newline and flush stream
-    _Ostr.put(_Ostr.widen(&#39;\n&#39;));
-    _Ostr.flush();
-    return _Ostr;
-}
-```
-  可以发现，endl内部使用了```flush```函数，刷新了缓冲区
-
-### 关联输入和输出流
-
-输入流和输出流都可以和另一个输出流关联，一旦这个输入流（输出流）执行操作，在此之前都会先刷新一遍关联的输出流
-
-- ```tie()```函数返回该流对象的关联流
-- ```tie(ostream)```将流对象关联到一个输出流
-
-## 文件输入输出流
-
-文件操作流继承自输入输出流，所以可用于输入输出流的操作都可适用于文件流
-除此之外，可使用```open(string,mode)```函数把流对象和文件绑定在一起
-
-### 文件模式
-
- - in——读模式
- - out——写模式
- - app——写操作前定位到文件末尾
- - ate——打开文件定位到文件末尾
- - trunc——截断模式
- - binary——以二进制进行IO
-
-文件模式的使用有一套复杂的使用规则，暂且先不讨论每一种模式的使用和叠加   
-
-使用```out```模式时，文件的内容会被自动舍弃，加上```app```模式后可以自动定位到文件末尾追加内容
-
-## string流
-```stringstream```类包含在```sstream```头文件中   
-
-string流使用了一个字符串缓冲区，加入一个字符串在其中，进行析取操作   
-但是加入其缓冲区的字符串仅作为储存，不会像```iostream```一样打印内容
-
-```stringstream```类继承自```iostream```类，所以可以用于流对象的操作，都可用于字符串流对象
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/heritedOfCpp/">
-        C++的继承
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-碎片化记录依旧
-
-&lt;!-- more ---&gt;
-
-### 基类的静态成员在派生类中也共享一个
-
-### 派生类的声明不包含基类列表
-
-### 基类必须是定义了的类，不能只有声明
-- 直接基类
-- 间接基类
-  
-### final关键字
-```class A final{};```   
-
-这样的类无法作为基类被继承
-
-### 几种类型转换规则
-
-- 普通类型可以向 ```const```和引用类型转换
-- 引用类型可以向 ```const``` 转换，但是 ```const``` 不能向引用转换
-    ```cpp
-    int d = 10;
-    int &amp; b = d;
-    const int a = b;//right
-
-    int &amp; e = a;//error
-    ```
-- 基类无法向派生类转换
-- 基类和派生类对象间直接转换
-   ```cpp
-   class A
-  {
-  public:
-      int a;
-      A() { a = 100; };
-  };
-
-  class B : public A
-  {
-  public:
-      int b;
-      B() 
-      {
-          b = 10;
-      }
-  };
-
-  int main()
-  {
-      B b;
-      A a = b;//members in b has been cut off to construct an &#34;A&#34; object
-
-      A* ptr = b;//this way, we can deal &#34;b&#34; as an &#34;A&#34;
-                //class without changing &#34;b&#34; itself
-  }
-  ```
-
-### 静态类型和动态类型
-
-对于一个指针或引用，编译阶段确定的叫静态类型，运行时指向或绑定的是动态类型，动态类型可能是派生类
-
-- 使用默认实参的虚函数，所使用的实参由静态类型决定
-- 通过作用域运算符可以选择使用基类版本的虚函数，避开虚函数机制
-
-### override关键字
-
-加上 ```override```关键字后，如果函数没有正确覆盖一个基类对应的虚函数，则会产生报错
-
-### 纯虚函数
-定义一个抽象基类，无法实例化，作为接口来派生类
-
-- 重构：使用了继承体系中的类的代码无需修改，但是继承体系修改
-
-### 控制访问和继承
-
-- 派生类的友元函数只能通过派生类对象访问基类成员
-
-#### 继承方式
-- public继承为一一对应继承
-- protected继承会将public和protected都继承为protected
-- private继承参考protected的继承方式
-
-### 派生类向基类转换的可访问性
-
-派生类向基类到转换是否可访问由使用该转换到代码决定，同时派生类到派生访问说明符也会有影响。假定D继承自B：
-
-- 只有当D公有继承B时，用户代码才能使用派生类向基类到转换；如果D继承B的方式时受保护的或者私有的，则用户代码不能使用该转换。
-- 不论D以什么方式继承B，D的成员函数和友员函数都能使用派生类向基类的转换；派生类向其直接基类的类型转换对于派生类的成员和友员元而言永远是可访问的。
-- 如果D继承B 的方式是公有的或者受保护的，则D的派生类的成员和友员可以使用D向B 的类型转换；反之，如果D继承B 的方式时私有的，则不能使用
----
-书上给了三句话，看着很绕
-
-在详细理解上面的话之前，我觉得应该先理解一下，类转换的可访问性是在说什么
-
-不管一个类对另一个类的可访问性如何，最后创造的实例都是一个对象，只是这个对象的成员被分成了不同的区域，这些区域间的成员的互相访问的限制就是我们一直在说的类的访问限制
-
-所以基类无法向派生类转换，因为内存中不存在派生类的区域
-
-访问说明符和继承方式都是为了控制一个类的不同层次间的可访问关系
-
-首先弄明白这一点后，就可以开始逐步理解这三句话是在阐述一个什么规则了
-
-**第一句**：
-- 这里说的“派生类派生类向基类的转换，除了限制对象只能访问基类的成员外，还会存在成员访问权限的问题——比如说：当D私有继承了B后，D原本的成员全部成为了私有成员，此时如果B向D转换，原本的D就无法访问公有成员，因为派生类把公有成员修改为了私有。
-
-  而用户代码只能访问公有成员，所以无法复原公有成员的 ```protected```和 ```private```继承方式产生的派生类就不能在用户代码中转化为基类使用，毕竟所有的成员都是用户代码无法访问的
-
-**第二句**
-- 说到这里，接下来的规则已经很容易理解了，派生类的成员函数和友元函数可以访问派生类的全部成员，所以不管基类的访问权限怎样，派生类此时总是可以向基类转换
-
-**第三句**
-- 这里说的是D的派生类，D的派生类默认为公有继承，所以可以访问D的 ```public```和 ```protected```类，所以只要是 ```protected```以前的成员，D的派生类都剋访问
-
-### 友元成员的相关规则
-
-- 友元函数不能传递、继承
-
-### 使用using改变个别成员的访问级别
-
- ```cpp
-class B:private A
-{
-public:
-    using A::n;//By this way, you can change the access level of the certain member
-};
-```
-
-### 结构和类
-
-结构和类的区别主要在于默认的访问说明符不同——结构为 ```public```，类为 ```private```
-
-此外类可以使用模板，结构不行
-
-除此之外，结构和类没有其他不同了，C++的结构已经和C语言的结构完全不同，而两者在堆栈上的分布方式也是完全一样，没有任何不同
-
-### 虚函数
-
-虚函数除了修改了基类成员函数在派生类中的定义，更重要的意义体现在动态绑定上
-
-我们面向对象的继承机制，使得我们可以对同一类的对象做一个统一的操作，但是一个基类可能拥有不同的派生类，它们执行的某种操作可能也有所不同
-
-在一个封装好的处理函数中使用基类指针可以直接指向所有派生类，并且执行的成员函数会先寻找对应的虚函数，这样来实现派生类的统一接口
-
-**tips**：
-- 基类的析构函数往往是虚函数，因为基类指针指向派生类时必须使用派生类的析构函数
-
-- 基类定义了虚析构函数后，将不会默认合成移动操作，其派生类也不会合成移动操作
-
-- 基类的合成函数为删除的函数，则其派生类对应的合成函数也为删除的
-
-**错误纠正**
-- 派生类的默认构造函数会先运行基类的默认构造函数，将基类中的数据成员初始化，然后执行自己的默认构造函数，将数据成员初始化
-- 派生类使用拷贝构造函数时会先运行基类的拷贝构造函数，然后再运行自己的拷贝构造函数，对于拷贝赋值运算符、移动构造函数、移动赋值运算符也都是类似的操作
-- 派生类销毁时先执行自己的析构函数，再执行基类的析构函数
-- 使用非默认构造函数时，需要委托基类构造函数，否则将默认委托基类默认构造函数
-
-### 使用using继承构造函数
-
-```using A::A;```使用这样的语句可以让派生类继承基类中所有的构造函数及其重载
-
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/overloadAssignment/">
-      C++的重载运算符
-    </a>
-    <span class="card-abstract">
-      关于一些重载运算符和类型转换的内容
-&lt;!-- more ---&gt;
-
-- 重载运算符约定：重载运算符必须是类成员函数，或者参数列表至少含有一个类类型
-- 递增递减函数添加一个 ```int```实参，表示后置运算符
-- 输入输出运算符要注意流对象状态的控制
-- 函数对象——可调用的类对象
-- lambda表达式也是一种函数对象，捕获的变量作为成员变量传入，不含默认构造函数析构函数，默认拷贝控制函数由捕获的数据成员决定
-
-### 标准库定义的函数对象
-
-首先，这些函数对象都会执行对应的运算符操作
-
-然后，这些函数对象都是模板
-
-```cpp
-plus&lt;int&gt; intAdd;
-int c = intAdd(3,4);
-```
-类似这样的用法
-
-那么这些函数对象有什么用呢？
-
-Primer上记录的一种用法是改变泛型算法中使用的运算符
-
-比如 ```sort()```函数默认使用的是&lt;运算符，我们可以传入一个参数为函数对象的 ```greater&lt;int&gt;```来使排序的比较方式改变
-
-这种用法本质应该和lambda表达式是相同的
-
-- 此外，标准库的函数对象对于指针来说是定义良好的，直接比较两个无关指针的结果是未定义的，使用标准库的话...咱还不知道会发生什么，原谅咱现在没有空闲去实际验证了
-
-### function类型
-
-在使用模板容器储存可调用对象时，对于lambda表达式和函数对象时，无法使用函数指针存入，所以使用 ```function```类型来规范化可调用对象
-
-```cpp
-class Mult
-{
-public:
-    int operator()(int a, int b)
-    {
-        return a * b;
-    }
-} mult;
-
-int cut(int a, int b)
-{
-    return a - b;
-}
-
-int main()
-{
-    map&lt;string, function&lt;int(int, int)&gt;&gt; myOP;
-
-    auto plus = [](int a, int b) -&gt; int
-    {
-        return a + b;
-    };
-
-    myOP[&#34;+&#34;] = plus;
-    myOP.insert({&#34;-&#34;, cut});
-    myOP.insert({&#34;*&#34;, mult});
-}
-```
-以上的可调用对象都可用一个 ```function&lt;int(int, int)&gt;```储存
-
-### 类型转换运算符
-
-强制类型转换或者隐式类型转换也是由类的内置运算符控制的
-
-```cpp
-class A
-{
-public:
-    int a;
-    A(int in) : a(in) {}
-    A() = default;
-    operator double()
-    {
-        return a + 0.1;
-    }
-};
-
-int main()
-{
-    A a(10);
-    cout &lt;&lt; double(a) &lt;&lt; endl;
-    double b = a;
-    cout &lt;&lt; b &lt;&lt; endl;
-    cout &lt;&lt; static_cast&lt;double&gt;(a);
-}
-```
-上面的代码分别执行了显式类型转换和隐式类型转换
-
-- 使用 ```explicit```来避免隐式转换（蛮重要的）
-- 隐式转换和本身为参数的构造函数同时存在时造成二义性错误:
-  ```cpp
-  class A
-  {
-  public:
-      int a;
-      A() = default;
-      A(int in) : a(in){};
-      // A(const A &amp;in) { a = in.a + 1; }
-      A(const B &amp;in) { a = in.a + 2; }
-  };
-
-  B::operator A() const
-  {
-      return A(a + 1);
-  }
-
-  int main()
-  {
-      auto f = [](const A &amp;a)
-      {
-          cout &lt;&lt; a.a &lt;&lt; endl;
-          return;
-      };
-      B t(10);
-      f(t);//there is an ambiguity error
-  }
-  ```
-  按照Primer上的说法，以上代码的同时存在从B到A的隐式转换和用B来隐式构造A，所以会产生Ambiguity Error，但是实际上运行这段代码是默认使用的A类中的隐式构造
-  我认为是不使用隐式类型转换的函数被编译器认为是更精确的，所以优先选择了构造函数，所以书上的Ambiguity Error有待确定
-
-  至于其他所提到的二义性错误均一一验证（其实只验证了几个）
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        949字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CPP-notes/preCompleteCMD/">
-        C++中的预处理指令
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-挺庞大的一节内容，所以整理为一篇博客   
-注意：记录的是笔者学习中产生的碎片化知识，而不是系统性的整理
-
-&lt;!-- more ---&gt;
-
-## #define宏定义
-
-- 用于预处理阶段替换源码，增加代码可读性
-  ```cpp
-  #define ll long long
-  int main()
-  {
-      ll a = 123;
-  }
-  ```
-
-## #pragma
-该指令后面可跟多种类型的参数：
-
-- pack()   
-  设置类、结构、枚举等自定义类型的内存对齐模式
-
-  - pack(4)
-    ```cpp
-    #pragma pack(4)
-    struct test
-    {
-        int a;
-        char b;
-        long long c;
-    }
-    ```
-    每个元素在内存上以4为单位对齐，a占4字节，b占2字节，c占8字节
-
-## assert()
-这是一个预处理宏，在很多头文件中有定义   
-
-运行时，他会检查括号中的表达式的真假，若为假，则退出程序并显示信息   
-若为真则不执行动作   
-
-此外```assert()```的运行和一个预处理变量有关```NDEBUG```
-
-## NDEBUG
-作为一个预处理变量，当```NDEBUG```被定义时，```assert()```将不会执行
-
-除此之外，可以把```NDEBUG```当作一个普通的预处理变量使用
-
-## 几个预处理宏
-- ```__func__```：当前函数的函数名
-- ```__FILE__```：当前文件名
-- ```__LINE__```：当前行
-- ```__TIME__```：编译时间
-- ```__DATE__```：编译日期
-
-这些预处理宏编译阶段完成，对于程序的调试和报错的处理很有用
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CPP-notes/template/">
-      C++的模板
-    </a>
-    <span class="card-abstract">
-      
-关于模板的相关内容，但事实上这部分的内容会比较简单
-
-&lt;!-- more ---&gt;
-
-### 模板不支持分布式编译
-
-由于模板是在实例化出其中一个版本的对象时才会编译对应的类，所以通过头文件连接不同的源文件时，其他源文件中的模板不能直接在另一个源文件中使用，因为没有创建实例
-
-- 类模板的成员函数在使用时才会实例化，所以就算是创造类模板的对象，也不能正常使用分布式编译。此外，这一特性使得类模板对象可以正常创建，但是对应的成员函数可能无法正常调用
-
-- 类模板内的代码可以省略对应类的模板参数，直接使用模板名：
-
-- 如果类模板包含一个友元成员，则友元成员可以访问所有模板的实例；
-
-###当使用模板参数为类时，使用作用域运算符无法确定访问的成员是数据还是类型
-
-```T::mem```——这样在T实例化之前不能确定mem是数据还是类型
-
-所以 ```T::mem * p```就无法确认是两个数据相乘还是定义一个指针p
-
-默认情况下，C++认为mem会是数据，如果需要认为其是个类型，需要加上说明符 ```typename```
-
-### 成员模板不能是虚函数
-
-### 类模板的成员模板
-
-在类模板外定义成员模板时，连续提供两个模板
-
- ```cpp
-template&lt;T&gt;
-template&lt;It&gt;
-T class&lt;T&gt;::func(It a,It b){;}
-```
-
-就像这样
-
-### 定义、声明、实例化
-
-声明是告诉程序这个对象存在，定义是详细地把这个对象造出来，实例化就是定义对应地过程
-
-当我们声明一个对象、类型存在时，可以加上```extern```修饰符，声明存在后，就相当于向程序承诺定义将在其他地方出现
-
-比如我在多个文件中都将使用 ```class&lt;string&gt;```类型，这样每个文件在编译时都会创建一个```class&lt;string&gt;```的实例，这样会加大系统资源的消耗，但是如果在每个定义```class&lt;string&gt;```的地方加上 ```extern```修饰符，就将定义改为了声明，此时再使用```class&lt;string&gt;```类型时，会去其他作用域寻找实例，而不用创建一个新的实例
-
-具体的原理内容将会在《深入理解计算机结构体系》中学习，在此不做更多了解
-
-实例化是一个很不直观的概念，关系到模板创建自定义类型，编译器可能在不知不觉中创建大量的重复类型，导致资源浪费，所以适当使用 ```extern```声明可以减少不必要的资源开销
-
-链接过程还是很容易出错的
-
-### 实例化定义会实例化所有成员
-
-### 函数模板的参数类型转换
-
-函数模板在调用时不需要写上 ```template&lt;&gt;```，而是直接写入实参就可以了
-
-传递实参之后，函数模板会根据参数类型把函数实例化，或者调用已经实例化的函数，这个时候有个问题，传递的参数是隐式转换成已经实例化的参数模板，还是创建一个新的实例呢？
-
-primer的解释是，普通类型向 ```const```的转换，和指针转换可以调用重复的实例，而其他所有的类型转换都不会发生，而是创造新实例。
-
-- **当函数模板中存在不可推断的类型实参时，需要显式提供参数模板**
-  ```cpp
-  template &lt;typename T1, typename T2, typename T3&gt;
-  T1 fun(T2 a, T3 b) { ; }
-  ```
-  这样的函数模板必须提供参数列表
-
-- **当给定了模板参数后，函数模板的实参进行正常的类型转换**
-
-### 一些模板的用法
-
-- ```cpp
-  template &lt;typename T&gt;
-  using twin = pair&lt;T, T&gt;;
-
-  twin&lt;int&gt; p_a;
-  ```
-  使用 ```using```给模板设置别名
-
-- ```cpp
-  typedef pair&lt;int,int&gt; twin;
-  ```
-  此处给模板的一个实例别名，使用 ```typedef```只能给某个实例取别名，不能直接用模板
-
-### 每个模板的实例都有各自的 ```static```数据
-
-### 使用模板的后置返回类型
-
-当我们想要根据用户的模板参数来确定返回的类型时，使用 ```decltype```作为后置返回类型
-
-```cpp
-template &lt;typename It&gt;
-auto func(It beg, It end) -&gt; decltype(*beg)
-{
-    return *(beg + (end - beg));
-}
-```
-### 类型转换模板
-这是一个用途很多的标准库模板，在这里只记录其一种用途
-
-```cpp
-remove_reference&lt;int&amp;&gt;::type a;
-```
-
-这样a的类型是 ```int```而不是引用   
-这个模板接受一个引用类型，然后其成员 ```type```对应为移除引用后的类型
-
-可以利用这个模板来修改上面的函数，使其返回 ```beg```的拷贝，而不是引用
-
-```cpp
-template &lt;typename It&gt;
-auto func(It beg, It end) -&gt;
-    typename remove_reference&lt;decltype(*beg)&gt;::type
-{
-    return *(beg + (end - beg));
-}
-```
-这样就返回的是 ```*beg```的拷贝，此外，由于 ```type```是一个成员类型，所以需要加上 ```typename```说明符
-
-
-### 当使用函数指针指向模板时，根据指针的参数生成对应实例
-
-```cpp
-template &lt;typename T&gt;
-int func(T a, T b)
-{
-    return a + b;
-}
-
-int(*func_p)(int,int) = func;
-```
-如上代码，自动生成一个 ```T = int```的实例，这样使用的前提是能够确定函数指针的形参
-
-### 引用折叠机制
-
-当我们向一个右值引用的类型传递一个左值时，一般情况是错误的，但是如果这个右值引用类型是模板的参数的话，那么传递的左值会自动识别为左值引用
-
-```cpp
-template &lt;typename T&gt;
-int func(T &amp;&amp;a) {}
-
-int main()
-{
-  int a = 10;
-  func(a);
-}
-```
-
-这时，```main()```中的 ```func()```生成的实例中，T对应的类型是 ```int&amp;```，然后函数中的a变量对应的类型就是 ```int&amp; &amp;&amp;```
-
-这样产生了引用的引用，这在参数类型是模板参数的情况下是特别允许的，此时就会触发**引用折叠**
-
-除了每一重引用都是右值引用的情况，其他所有引用都会折叠为左值引用
-
-- ```T&amp;&amp; &amp;&amp; = T&amp;&amp;```
-- ```T&amp;&amp; &amp; = T&amp;```
-
-#### 问题
-
-这个机制导致代码的情况更加复杂，比如：
-```
-
-```
-
     </span>
 
   </div>
@@ -1990,7 +1960,7 @@ int main()
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/5/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/7/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/5/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/7/">Next</a>
 </div>
     </div>
 

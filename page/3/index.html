@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/PlqeV1XpgQrxI8u.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/HXj7NsSW5vyCoIn.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -241,6 +241,1232 @@
 
     <div class="card-info-warp">
       <div class="card-info">
+        2023-06-30
+      </div>
+      <div class="card-info">
+        3.7k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/06/30/compiler/CH8-CodeGeneration/">
+        代码生成
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+本文不具有教程科普的性质, 只是个人学习过程中的理解记录
+
+---
+
+在得到中间代码以后, 我们可以优化中间代码, 并生成目标代码(一般为汇编代码), 最后通过汇编器生成目标程序
+
+而优化中间代码并生成目标代码部分我们称为后端, 是我们编译器的最后一个阶段
+
+---
+
+代码生成(code generation)包含以下几个重要的部分:
+
+- instruction selection: 选择指令
+- register allocation: 寄存器分配
+- register assignment: 赋值
+- instruction order: 指令排序
+
+## instruction selection
+
+我们需要为对应的中间代码选择合适的指令来完成相应的操作
+
+比如我们需要计算一个表达式`a = b + c`, 我们需要选择`add`指令来完成加法运算, 而在此之前我们需要将`b`和`c`的值分别存入寄存器中, 这又需要选择`load`指令
+
+## register allocation
+
+寄存器的分配是一个复杂的问题, 我们可用的寄存器一般是有限的, 而寄存器中的数据对于CPU来说又可以更快访问, 我们需要选择适合的数据存入寄存器中
+
+## register assignment
+
+选择了要存储的数据, 还需要选择存储的寄存器, 如果寄存器还有空余, 直接存取就行了, 但是如果寄存器满了, 我们就需要选择一个寄存器将其内容存入内存中, 然后再将新的数据存入寄存器中
+
+## instruction order
+
+有些指令可以优化或者更改顺序, 但是有些指令是不能的, 具体细节和规则都将在下面讨论
+
+---
+
+## retargetable compiler
+
+可以从多个指令集生成目标程序的编译器
+
+## Virtual Machine
+
+虚拟机, 把字节码实时翻译成机器码运行, 称为即使编译器(just-in-time compiler)
+
+## CISC and RISC
+
+- CISC: 一般使用两地址码, 以及更复杂的寻址模式
+- RISC: 一般使用三地址码
+
+---
+
+## 如何进行寄存器分配
+
+我们将中间代码表示为一个flow graph, 每个节点表示一个basic block, basic block是由程序的控制流来分割的: 一个basic block的入口只有一个, 一个basic block的出口也只有一个, 除了最后一个basic block, 其余的basic block的出口都是下一个basic block的入口
+
+分割规则如下:
+
+- if语句分割: 从if处分割基本块, 一般包含then和else两个基本块
+- 循环语句分割: 循环语句的出口连接自己的入口, 并且连接跳出循环后的部分
+
+比如以下代码:
+
+```c
+int a = 1;
+int b = 2;
+\\ block1
+
+if (a &gt; 0) {
+    b = a + 1;
+    \\ block2
+} else {
+    b = a - 1;
+    \\ block3
+}
+```
+
+我们可以将其分割为以下几个基本块:
+
+```Mermaid
+graph LR
+    A[entry] --&gt; B[block1]
+    B --&gt; C[block2]
+    B --&gt; D[block3]
+    C --&gt; E[exit]
+    D --&gt; E
+```
+
+然后我们在基本块的出口和入口处按照以下规则标记变量:
+
+- 如果一个变量在基本块中没有被改变(赋值)就被使用了, 那么我们认为这个变量在这个基本块中活跃, 我们将其标记在基本块入口
+- 在出口处连接的所有入口处标记的变量的并集, 我们认为这些变量在出口处活跃, 我们将其标记在基本块出口
+
+使用一个全局寄存器(这里的全局指的是全部的基本块)可以让位于**入口**处的变量减少读取的成本, 可以让位于**出口**的变量减少写回内存和重新读取的成本
+
+### Ershov数
+
+Ershov数是用于计算表达式需要的寄存器数的一种方法
+
+现在假设我们已经有一个表达式树, 现在我们按照以下规则计算:
+
+- 所有叶子节点标号为0
+- 只有一个子节点的节点标号与子节点相同
+- 有两个子节点标号不同, 则其标号为较大子节点的标号
+- 有两个子节点标号相同, 则其标号为子节点的标号加1
+
+最后根节点的值就是计算表达式需要的寄存器数量, 在计算过程中如果寄存器数量不足, 我们需要将一些变量存到内存中, 在需要时再加载回来
+
+### 使用DP来生成表达式代码
+我们可以使用DP来生成子表达式的最优代码, 然后再生成整个表达式的最优代码
+
+对于每个子树使用不同数量的寄存器计算, 代价花费是不同的
+
+---
+
+## 代码的简化
+
+### 表达式化简
+DAG图可以用于表示程序的表达式, 并进行相应的优化
+
+比如以下的代码:
+
+```c
+a = b + c;
+b = b - d;
+c = c + d;
+e = b + c;
+```
+
+我们将其表示为DAG图:
+
+```Mermaid
+graph TD
+    +:e --&gt; -:b
+    +:e --&gt; +:c
+    +:a --&gt; b0
+    +:a --&gt; c0
+    -:b --&gt; b0
+    -:b --&gt; d0
+    +:c --&gt; c0
+    +:c --&gt; d0
+```
+
+其中的`d0, b0, c0`表示在被赋值前的变量
+
+从上到下, 如果某个根节点在后续并没有被用到, 我们就将其视为**死代码(dead code)**, 可以将其删除
+
+如果两个变量的计算表达式相同, 可以使用同一个节点表示, 从而化简代码, 比如:
+
+```c
+a = b + c;
+b = a - d;
+c = b + c;
+d = a - d;
+```
+
+化为DAG:
+
+```Mermaid
+graph TD
+    +:a --&gt; b0
+    +:a --&gt; c0
+    -:b --&gt; +:a
+    -:b --&gt; d0
+    +:c --&gt; -:b
+    +:c --&gt; c0
+    -:d --&gt; +:a
+    -:d --&gt; d0
+```
+
+其中的`-:b`和`-:d`可以合并为一个节点, 从而化简代码:
+
+```Mermaid
+graph TD
+    +:a --&gt; b0
+    +:a --&gt; c0
+    -:bd --&gt; +:a
+    -:bd --&gt; d0
+    +:c --&gt; -:bd
+    +:c --&gt; c0
+
+```
+
+### Peephole优化
+窥孔优化
+
+我们使用一个窗口, 从上至下扫描代码, 对于代码中出现的特定结构进行优化, 就称为窥孔优化, 这种优化可以优化表达式以外的更多代码语句
+
+其中的优化包括了:
+- 冗余指令删除
+- 控制流优化
+- 代数化简
+- 机器特有指令使用
+
+---
+
+## 代码生成的顺序
+
+我们构造DAG中有`a`和`a0`, 其中的`a0`表示`a`在被赋值前的值, 所以在`a`的赋值语句之后, 新的`a`节点取代了`a0`节点, 我们称`a0`节点被**杀死**了
+
+这里需要特别注意的是指针的使用:
+
+- 在`=*`之前的所有值都要当作被`=*`操作使用过, 这影响到死代码消除
+- `*=`会**杀死**所有的之前的节点
+
+由于数组和指针有着相似原理, 所以:
+- `[]=`会杀死所有的`=[]`的节点
+
+---
+
+## 代码的生成
+
+讨论过寄存器的分配, 代码化简和生成顺序后, 代码可以按照基本块来生成
+
+此外, 我们通过为每个寄存器维护一个表, 我们称为Register Descriptor(寄存器描述符), 用来表示有哪些变量的值可以用这个寄存器来表示
+
+相对的, 我们也为每个变量维护一个表, 我们称为Address Descriptor(地址描述符), 用来表示这个变量的值可以在哪些寄存器获得
+
+### 通过树生成代码
+我们通过解析代码树中的某些结构, 来生成对应的代码, 其中解析树可以使用前缀表达式来表示, 于是这最后变成了一个SDT的问题, 我们需要制定相应的语法制导方案
+
+---
+
+## 局部代码优化和全局代码优化
+
+以上的表达式化简, 窥孔优化, 寄存器分配优化都是基于局部的代码优化, 也就是只是在basic block中进行的优化
+
+在第九章中将进行全局代码优化的讨论, 全局代码优化是在完成了局部代码优化后, 对整个程序进行优化
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-06-26
+      </div>
+      <div class="card-info">
+        2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/06/26/compiler/CH7-Environment/">
+      运行时环境
+    </a>
+    <span class="card-abstract">
+      
+### stack and heap
+
+堆栈, 无需解释
+
+### activation record
+
+活动记录表, 过程调用中保存的堆栈信息, 我们称为活动记录表, 也称为栈帧
+
+书中描述的完整结构如下:
+
+|Bottom|
+|:---:|
+|Actual parameters|
+|Returned value|
+|Control link|
+|Access link|
+|Saved machine status|
+|Local datas|
+|Temporaries|
+
+- Actual parameters: 调用使用的参数
+- Returned value: 返回值的预留空间
+- Control link: 指向调用者的活动记录表
+- Access link: 指向被调用过程需要用到的, 但是存在于其他activation record中的数据
+- Saved machine status: 保存机器状态, 如寄存器, 程序计数器等
+- Local datas: 被调用过程的局部变量
+- Temporaries: 临时变量, 比如循环中创建声明的那些变量
+
+### activation tree
+激活树, 其实就是函数调用的DFA过程
+
+### display
+展示表, 在函数可嵌套的语言里, 向上找对应函数的作用域是费时的, 所以使用一个display表来储存每个嵌套深度中的函数活动表的链表
+
+---
+
+### heap management
+堆管理没什么好说的, 关于空闲内存的管理和合并, 以及对于内存的分配都已经在操作系统和CSAPP中看过很多了
+
+### garbage collection
+
+垃圾回收
+
+### type safety
+类型安全是保证能适用垃圾回收的重要条件, 一个数据中每一部分的组成都是确定的, 我们称为类型安全, 像是java的内存是运行时动态分配的, 并不是编译时决定的, 但是运行时的分配的数据始终有唯一的类型, 所以是类型安全的
+
+但是C++对于已经分配的内存可以使用不同的指针来进行操作, 是不安全的
+
+不过只要不乱用指针, C++也是可以使用一些并不健壮(unsound)的垃圾回收机制的
+
+### reference counting
+引用计数, 为每个对象维护一个引用计数器, 每当有一个指针指向这个对象时, 计数器加一, 指针指向其他对象时, 计数器减一, 当计数器为0时, 说明这个对象没有被引用, 可以被回收
+
+### root set
+根集, 包括了所有的全局变量, 静态变量, 寄存器中的变量, 以及栈中的变量, 这些变量是不能被回收的, 所以作为reference的起点
+
+### defered reference counting
+延期引用计数, 在引用为0时并不立即回收, 而是等到需要的时候统一进行回收计算
+
+### mark and sweep
+标记, 扫描, 清除
+
+其中一种优化避免扫描整个heap区域, 而是通过集合运算, 从分配的空间中减去可达的空间, 得到不可达空间
+
+### mark and compact
+扫描出的可达数据重新分配到heap的同一端, 从而保证可达数据在一块, 可分配空间在一块
+
+### copying collector
+将heap分为两块, 其中一块用于分配, 当空间满时, 将其中的可达数据全部复制到另一半heap中, 从而获得更多可用空间
+
+### short-pause collector
+以上几种方式都需要花耗较长的时间来完成GC, 以下提出的几种方式可以减少GC的暂停时间
+
+### incremental collector
+增量式GC将上面的GC需要操作的过程分成几个部分, 分别插入(interleave)到mutator的不同位置, 从而将GC花耗的时间amortize到整个程序的运行中
+
+### partial collector
+只对heap中的一部分进行GC, 从而减少每次暂停的时间
+
+具体的包括了:
+- generational collection: 将heap分为几代, 每次只对最新的几代进行GC
+- train collection: 将heap分为几个车厢, 每次只对一个车厢进行GC
+
+GC中值得注意的是:
+- 需要注意增量式GC中, mutator使得某些对象的引用改变, 从而使得对象无法被扫描到
+- 需要注意在火车算法中, 可能出现无限创建新车厢的情况, 从而导致GC无法完成
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-05-25
+      </div>
+      <div class="card-info">
+        3.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/05/25/compiler/CH6-IR-Generation/">
+        中间代码生成
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+## Three-Address Code
+三地址码, 包含若干种形式:
+
+- `x = y op z`
+- `x = y`
+- `x = op y`
+- `x = *y`
+- `*x = y`
+- `x = &amp;y`
+- `goto L`
+- `if x goto L`
+- `ifFalse x goto L`
+- `param x`
+- `x = call y`
+- `x = y [z]`
+
+## DAG
+Directed Acyclic Graph, 有向无环图, 可以表示表示三地址码:
+
+`a + a * c + (b - c) - (b - c)`
+
+以此为例构建三地址码:
+```C
+t1 = a * c
+t2 = a + t1
+t3 = b - c
+t4 = t2 + t3
+t5 = t4 - t3
+```
+
+同时构造DAG:
+```Mermaid
+graph TD
+    -_2 --&gt; +_1
+    -_2 --&gt; -_1
+    +_1 --&gt; +_2
+    +_1 --&gt; -_1
+    +_2 --&gt; a
+    +_2 --&gt; *
+    * --&gt; a
+    * --&gt; c
+    -_1 --&gt; b
+    -_1 --&gt; c
+```
+
+主要理念就是相同的三地址码, 可以能够重复用来表示代码
+
+## quadruples
+四元式, 用来直接表示三地址码
+
+| op | arg1 | arg2 | result |
+|:--:|:----:|:----:|:------:|
+| +  | a    | c    | t1     |
+| *  | a    | t1   | t2     |
+| -  | b    | c    | t3     |
+
+类似以上结构, 直接储存三地址码
+
+## Triples
+三元式, 用类似于DAG的变量复用模式来构建表
+
+| line | op | arg1 | arg2 |
+|:----:|:--:|:----:|:----:|
+| 1    | *  | a    | c    |
+| 2    | +  | a    | 1    |
+| 3    | -  | b    | c    |
+| 4    | +  | 2    | 3    |
+
+类似以上结构, 数字表示行号, 进行变量的引用
+使用行号在进行编译器优化时有明显的不便: 当移动修改代码时, 行号就改变了, 所以通过建立映射表的方式来解决
+
+## Indirect Triples
+间接三元式
+
+&lt;table&gt;
+
+&lt;th&gt;
+
+| line | pointer |
+|:----:|:-------:|
+| 66    | 1       |
+| 67    | 2       |
+| 78    | 3       |
+
+&lt;/th&gt;
+
+&lt;th&gt;
+
+| op | arg1 | arg2 |
+|:--:|:----:|:----:|
+| *  | a    | c    |
+| +  | a    | 1    |
+| -  | b    | c    |
+| +  | 2    | 3    |
+
+&lt;/th&gt;
+
+&lt;/table&gt;
+
+## static single assignment
+静态单赋值, 简而言之就是三地址码中的每个变量都表示为单独的变量, 以便于编译器的某些优化
+
+---
+
+## Incremental Code Generation
+增量代码生成: 通过生成新的三地址码, 来避免使用很长的字符串属性
+
+## type checking
+
+- sound type system: 这里的sound表示健全的意思
+- strongly typed language: 强类型语言
+
+### synthesis, inference
+两者是类型检查的方式:
+- 类型综合:
+  通过在翻译方案中制定规则, 使得不同的类型之间的组合得到指定的类型:
+  `int = int + int`, `float = int + float`, 像这样的规则就是综合产生的
+- 类型推断:
+  通过上下文来推断一个位置的类型:
+  `if(C) S`这里的`C`一定是`bool`类型, `S`是代码块, 没有类型, 为`void`
+
+### type conversion
+类型转换
+- widening: 拓宽转换, 从信息少的类型到信息多的类型
+- narrowing: 窄化转换, 从信息多的类型到信息少的类型
+
+- coercion: 隐式类型转换, 由编译器自动进行, 我们称之为implicit的
+- cast: 显式类型转换, 由程序员自己进行, 我们称之为explicit的
+
+### overloaded
+重载
+
+### substution, instance, unification
+
+这里首先区别类型变量和类型表达式:
+- 类型变量: 一般用α, β, γ等表示, 表示未知类型`list(α)`就算是一个类型变量
+- 类型表达式: 具有具体值得变量类型
+
+如果我们用某个类型替换类型变量中的变量, 记为$S(list(α)) = list(int)$, 我们称之为替换, 也就是substitution
+
+其中得`list(int)`我们称之为类型变量`list(α)`的实例(instance)
+
+如果通过某个替换, 可以使得两个类型变量相等, 即$S(list(α)) = S(list(β))$, 我们称之为**合一替换**
+
+如果替换后的类型表达式是另一个替换后的类型变量的实例, 即$S(list(α))$是$S(list(β))$的实例, 我们称之为**最一般合一替换**
+
+使用合一的方法可以实现检测和类型推断
+
+$$
+((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_3)) \rightarrow list(\alpha_2) \\
+((\alpha_3 \rightarrow \alpha_4) \times list(\alpha_3)) \rightarrow \alpha_5
+$$
+
+以上的两个函数类型, 通过合一替换, 可以得到:
+$$
+((\alpha_1 \rightarrow \alpha_2) \times list(\alpha_1)) \rightarrow list(\alpha_2) \\
+$$
+
+也就是说我可以用一个函数的多态来同时接受其他两个函数, 因为两者的类型其实可以认为是等价的
+
+### control flow
+控制流包括if, while, for, switch等等影响程序流程的语句
+#### fall
+当条件满足时直接下一句就是对应的执行语句, 而不用使用`goto`进行跳转, 我们称之为**fall(穿透)**
+
+#### backpatching
+回填技术, 简单来说就是一些控制流在生成跳转语句时并不知道需要跳转的代码在哪一行, 所以使用一个临时符号来表示跳转的位置
+
+同时, 我们使用一个集合来表示这个跳转的位置, 将control flow中全部需要跳转到这个位置的代码都加入其中, 在这个位置确定后, 在返回去把这些跳转补全, 此称为回填技术
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-05-21
+      </div>
+      <div class="card-info">
+        3.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/05/21/operating-system/CH3-fileSystem/">
+      文件系统的实现
+    </a>
+    <span class="card-abstract">
+      
+文件系统中的主要要素在一篇Linux的文件指令中已经提及差不多了, 主要就是`inode`的查询和维护, `block`的分配和对应
+
+下面主要介绍一些文件系统中会用到的实现方案
+
+---
+
+# 一个简单的文件系统结构
+
+|bitmap|inode|data|
+|:---:|:---:|:---:|
+
+我们将文件系统分为三个大部分:
+- bitmap: 通过位的方式标记block的占用情况
+- inode: 储存文件, 文件夹, 软链接的元数据&#39;
+- data: 储存文件的实际数据
+
+所谓block为块, 是文件系统中分割硬盘大小的基本单位, 现在的文件系统一般为`4096kb`
+
+磁盘上的数据位置被抽象为了物理地址, 因此现在一般不用考虑如何通过`磁道, 扇区, 盘号`来定位数据, 而直接使用类似于内存地址的方式来寻找block
+
+我们现在如果有一个文件的路径`/home/bar/foo`, 我们可以模拟一下系统是如何找到这个文件的:
+
+1. 首先读取根目录的inode, 读取inode中的数据, 找到`home`的inode位置
+2. 修改`root`的incode的最近访问时间等信息
+3. 读取`home`的inode, 找到`bar`的inode位置, 修改`home`的inode的最近访问时间等信息
+4. 读取`bar`的inode, 找到`foo`的inode位置, 修改`bar`的inode的最近访问时间等信息
+5. 读取`foo`的inode, 找到`foo`的数据位置, 修改`foo`的inode的最近访问时间等信息
+6. 读取`foo`的数据, 修改`foo`的inode的最近访问时间等信息
+
+上面的操作中一共读取了5次磁盘, 4次是在读取`inode`, 如果文件夹中的文件数目过多, 单个block大小的`incode`容纳不下, 那么还可能需要在`data`区中为文件夹分配区域, 于是又要多一层从文件夹`inode`到`data`的读取
+
+如果是创建文件的话, 磁盘的读取和修改次数会更多, 因为写文件的同时除了要不停读取维护`inode`的信息, 还要读取维护`bitmap`的信息, 这样的话读写量又翻了一倍
+
+虽然效率低, 但是这确实是一个比较完善的文件系统
+
+# FFS
+这是一个比较完善的文件系统, 也是现在大多数文件系统的基础, 其中对于上述问题的优化方式仍然值得借鉴
+
+## 基于磁盘原理的优化
+我们读取一个文件时, 会先读取`inode`, 然后再读取对应的`data block`, 如果两个数据在磁盘上相隔较远的话, 会产生额外的寻道时间, 降低效率
+
+FFS优化的第一个思路就是基于磁盘的寻道原理, 将磁盘分为一个个**柱面(cylinder)**, 然后将连续的柱面编组, 然后将同一个文件的`block`或者同一个目录下的相关`block`放在一个柱面组中
+
+最上面的盘面包含了文件系统的元数据, 下面的盘面依次包含`bitmap`, `inode`, `data`, 于是我们查询了一个`inode`后, 往往不需要寻道, 而是简单的更换读取的磁头即可
+
+这种优化方式我们可以总结为**优化文件系统的局部性**
+
+局部性原理在计算机的数据读取中常常提到, 可以参考CSAPP
+
+# 文件检查和修复
+由于各种各样的原因, 在文件系统中可能发生一系列的错误, 可能是`bitmap`部分发生错误, 也可能是`inode`部分发生错误, 也可能是`data`部分发生错误
+
+这时候我们需要对文件系统进行检查和修复, 一般的检查和修复的方式是通过`fsck`指令, 但是这个指令的执行时间可能会很长, 因为它需要对整个文件系统进行扫描, 一般的文件系统都会在启动时自动执行`fsck`指令
+
+对于`bitmap`和`inode`部分正确, 但是`data`部分错误的情况, 文件系统可以建立自洽的`inode`和`bitmap`信息, 只不过对应的文件中的信息就损坏了, 我们称为**垃圾数据**
+
+如果`bitmap`和`inode`其中一个部分错误, 那么文件系统就会处理这种错误, 可以考虑根据`inode`的信息恢复`bitmap`的信息, 或者根据`bitmap`的信息恢复`inode`的信息, 也可以根据情况直接将错误的`inode`删除, 并重建新的`bitmap`
+
+## 日志文件系统
+日志的概念来源于数据库软件, 用于记录数据库的操作, 以便在数据库发生错误时进行恢复
+
+在文件系统中使用日志机制, 可以分为两种: 
+- 数据日志
+- 元数据日志
+
+在我们执行一个写的文件操作前, 我们需要先在磁盘的日志区域写入本次操作的信息, 包括了`bitmap`, `inode`, `data`的修改信息, 然后再执行实际的写操作, 这样的话, 如果写操作失败, 我们可以根据日志信息进行恢复
+
+写入日志的格式如下:
+|TxB|I[v2]|B[v2]|D|TxE|
+|---|---|---|---|---|
+
+前后俩个为单条日志的表示, 中间分别是`inode`, `bitmap`, `data`的数据
+
+这里的流程我们总结为两步:
+- 写入日志(write journaling)
+- 写入数据(checkpoint)
+
+为了提高写入日志的速度, 我们使用并行来写入这五个不同的内容
+但是这产生一个新问题, 如果在写入日志的过程中, 系统崩溃了, 而`TxB`和`TxE`成功写入, 其他部分没有完成写入, 那么文件系统在恢复时就会使用错误的日志信息进行恢复
+
+对此我们有以下解决方式:
+- 给日志加入**校验和**机制来保证日志的正确性
+- 对前面的`TxB`, `I[v2]`, `B[v2]`, `D`进行并行写入作为一个事务, 然后再写入`TxE`作为事务的结束标志
+
+以上是数据日志的大概方式, 而元数据(metadata)的日志方式则是去除了`data`部分, 只保留文件的信息部分
+
+此外还要考虑日志数据的回收, 最后我们得到数据日志的流程:
+- Journal write: 写入前四个部分的日志
+- Journal commit: 写入`TxE`作为事务的结束标志
+- Checkpoint: 将数据写入磁盘
+- Journal recycle: 回收过期的日志
+
+---
+
+相比于数据日志, 元数据日志的性能消耗更少, 并且只提供文件信息的恢复, 不恢复丢失的数据
+
+所以我们要保证其记录的元数据的信息符合对应的数据: 如果一个`data`未完成写操作, 但是元数据的日志已经记录了, 那么恢复时文件就会得到错误的元数据(写操作成功后的数据)
+
+所以数据的写入需要在元数据的修改之前, 于是我们得到以下流程:
+- data write: 写入数据, 等待完成
+- Journal write: 写入元数据的日志
+- Journal commit: 写入`TxE`作为事务的结束标志
+- Checkpoint: 将元数据写入磁盘
+- Journal recycle: 回收过期的日志
+
+元数据的数量远少于数据的数量, 所以元数据日志的性能消耗更少, 一般是用来记录用户对数据的操作, 而不是用于数据的恢复备份
+
+# Log-structured File System
+日志结构文件系统可以带入版本控制的思想, 其大概实现如下:
+
+当一个`data block`被修改时, 我们不会直接修改原来的`data block`, 而是在一块新的空间中写入新的`data block`, 然后通过&#34;指针&#34;将新旧数据连接起来, 当我们需要读取时, 就会从最开始的块开始, 向前寻找最新版本的数据, 然后优化指针结构(更新指针)
+
+当然, 为了优化速度, 我们会在缓存(内存)中先暂存这些数据, 等到积累了一定的数据后, 一次性写入这些数据, 由于这样的写入是顺序写入, 所以需要消耗的更少的寻找时间
+
+并且由于每次写入的数据相对整个磁盘空间较小, 对应的`bitmap`, `inode`, `data`的位置也相对较近, 完全可以结合FFS的优化一起使用
+
+这种文件系统需要注意的主要就是指针的更新, 以及数据的回收
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-05-20
+      </div>
+      <div class="card-info">
+        11k字
+      </div>
+      <div class="card-info">
+        阅读时间: 10 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/05/20/operating-system/CH3-linuxFileCommand/">
+        Linux文件命令
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 文件系统中的三个要素
+
+- 文件
+- 文件夹
+- 软连接
+
+我们可以通过stat命令查看文件的详细信息
+
+```bash
+stat calc
+  File: calc
+  Size: 4096            Blocks: 0          IO Block: 4096   directory
+Device: 50h/80d Inode: 14918173766102459  Links: 1
+Access: (0777/drwxrwxrwx)  Uid: ( 1000/   dnull)   Gid: ( 1000/   dnull)
+Access: 2023-05-20 13:08:53.499645400 +0800
+Modify: 2023-05-03 20:31:58.232250800 +0800
+Change: 2023-05-03 20:31:58.232250800 +0800
+ Birth: -
+```
+
+可以发现, 这是大小为4096kb大小的文件夹, 有一个链接, 有读写执行权限, 创建于2023年5月3日, 修改于2023年5月3日
+
+文件和文件夹都很容易理解, 软连接一般而言讨论较少
+
+## 软链接(soft link)和硬链接(hard link)
+
+### 硬链接
+
+我们可以使用指令`ln src target`来创建硬链接, 创建的硬链接相当于一个文件的别名
+
+我们创建的文件实际上是储存在硬盘上, 通过inode来储存文件或文件夹的信息, 我们寻找一个文件都是通过寻找到指定的inode后, 在通过inode中的硬盘地址来获得数据的
+
+而硬链接相当于对于一个文件, 建立了一个新的inode, 两个inode指向相同的位置, 此时我们可以通过两个inode来访问同一个文件, 但是硬链接不能跨文件系统, 也就是说硬链接不能跨硬盘
+
+当我们为一个文件创建了硬链接后, 文件的link数目就会增加, 表示有多少个inode指向这个文件, 当link数目为0时, 文件就会被删除
+所以说我们删除一个文件时, 删除的只是这个文件的inode, 文件在硬盘中仍然存在, 只有在需要的时候, 硬盘才会将没有引用的数据删除
+
+### 软链接
+
+我们可以用`ln -s src target`来创建软链接, 软链接相当于一个快捷方式, 保存了文件的绝对路径或相对路径, 所以软链接的大小由路径长度决定
+
+软链接并不会增加引用数, 所以当源文件删除后, 软链接就会失效
+
+## 创建和读写文件
+
+创建文件有很多指令可以使用, 但是具体到系统层面的话, 其实都是调用了`open()`的系统调用, 比如我们可以用`strace`指令来跟踪一个进程的系统调用:
+
+```bash
+strace cat ans.txt
+execve(&#34;/usr/bin/cat&#34;, [&#34;cat&#34;, &#34;ans.txt&#34;], 0x7ffd820abd98 /* 24 vars */) = 0
+brk(NULL)                               = 0x55994fa81000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffcb848ae30) = -1 EINVAL (Invalid argument)
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f377e104000
+access(&#34;/etc/ld.so.preload&#34;, R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/etc/ld.so.cache&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=52955, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 52955, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f7000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/lib/x86_64-linux-gnu/libc.so.6&#34;, O_RDONLY|O_CLOEXEC) = 3
+read(3, &#34;\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0&gt;\0\1\0\0\0P\237\2\0\0\0\0\0&#34;..., 832) = 832
+pread64(3, &#34;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&#34;..., 784, 64) = 784
+pread64(3, &#34;\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0&#34;..., 48, 848) = 48
+pread64(3, &#34;\4\0\0\0\24\0\0\0\3\0\0\0GNU\0i8\235HZ\227\223\333\350s\360\352,\223\340.&#34;..., 68, 896) = 68
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=2216304, ...}, AT_EMPTY_PATH) = 0
+pread64(3, &#34;\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0&#34;..., 784, 64) = 784
+mmap(NULL, 2260560, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f377decf000
+mmap(0x7f377def7000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x7f377def7000
+mmap(0x7f377e08c000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bd000) = 0x7f377e08c000
+mmap(0x7f377e0e4000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000) = 0x7f377e0e4000
+mmap(0x7f377e0ea000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f377e0ea000
+close(3)                                = 0
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f377decc000
+arch_prctl(ARCH_SET_FS, 0x7f377decc740) = 0
+set_tid_address(0x7f377decca10)         = 86
+set_robust_list(0x7f377decca20, 24)     = 0
+rseq(0x7f377decd0e0, 0x20, 0, 0x53053053) = 0
+mprotect(0x7f377e0e4000, 16384, PROT_READ) = 0
+mprotect(0x55994df3a000, 4096, PROT_READ) = 0
+mprotect(0x7f377e13e000, 8192, PROT_READ) = 0
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7f377e0f7000, 52955)           = 0
+getrandom(&#34;\x0a\x0d\x6a\x29\x8e\x1d\xb1\x4c&#34;, 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x55994fa81000
+brk(0x55994faa2000)                     = 0x55994faa2000
+openat(AT_FDCWD, &#34;/usr/lib/locale/locale-archive&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/share/locale/locale.alias&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=2996, ...}, AT_EMPTY_PATH) = 0
+read(3, &#34;# Locale name alias data base.\n#&#34;..., 4096) = 2996
+read(3, &#34;&#34;, 4096)                       = 0
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_IDENTIFICATION&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_IDENTIFICATION&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=258, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 258, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e13d000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache&#34;, O_RDONLY) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=27002, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 27002, PROT_READ, MAP_SHARED, 3, 0) = 0x7f377e0fd000
+close(3)                                = 0
+futex(0x7f377e0e9a6c, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_MEASUREMENT&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MEASUREMENT&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=23, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 23, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0fc000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_TELEPHONE&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_TELEPHONE&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=47, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 47, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0fb000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_ADDRESS&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_ADDRESS&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=127, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 127, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0fa000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_NAME&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_NAME&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=62, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 62, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f9000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_PAPER&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_PAPER&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=34, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 34, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f8000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_MESSAGES&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MESSAGES&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFDIR|0755, st_size=4096, ...}, AT_EMPTY_PATH) = 0
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=48, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 48, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377e0f7000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_MONETARY&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_MONETARY&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=270, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 270, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377decb000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_COLLATE&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_COLLATE&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=1406, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 1406, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377deca000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_TIME&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_TIME&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=3360, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 3360, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377dec9000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_NUMERIC&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_NUMERIC&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=50, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 50, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377dec8000
+close(3)                                = 0
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.UTF-8/LC_CTYPE&#34;, O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, &#34;/usr/lib/locale/C.utf8/LC_CTYPE&#34;, O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0644, st_size=353616, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 353616, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f377de71000
+close(3)                                = 0
+newfstatat(1, &#34;&#34;, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x7), ...}, AT_EMPTY_PATH) = 0
+openat(AT_FDCWD, &#34;ans.txt&#34;, O_RDONLY)   = 3
+newfstatat(3, &#34;&#34;, {st_mode=S_IFREG|0777, st_size=6, ...}, AT_EMPTY_PATH) = 0
+fadvise64(3, 0, 0, POSIX_FADV_SEQUENTIAL) = 0
+mmap(NULL, 139264, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f377de4f000
+read(3, &#34;hello\n&#34;, 131072)              = 6
+write(1, &#34;hello\n&#34;, 6hello
+)                  = 6
+read(3, &#34;&#34;, 131072)                     = 0
+munmap(0x7f377de4f000, 139264)          = 0
+close(3)                                = 0
+close(1)                                = 0
+close(2)                                = 0
+exit_group(0)                           = ?
+```
+
+上面的指令打开了`ans.txt`文件，然后读取文件内容，最后输出到标准输出
+
+我们可以从中提取出关键的几个调用
+
+```bash
+openat(AT_FDCWD, &#34;ans.txt&#34;, O_RDONLY)   = 3
+read(3, &#34;hello\n&#34;, 131072)              = 6
+write(1, &#34;hello\n&#34;, 6hello
+)                  = 6
+read(3, &#34;&#34;, 131072)                     = 0
+```
+
+可以看见, `openat`函数打开了`ans.txt`文件，然后`read`函数读取了文件内容，最后`write`函数将内容输出到标准输出
+
+其中`openat`函数的返回值`3`表示该文件描述符的值为3
+
+### 文件描述符
+
+文件描述符是每个进程独有的, 用来表示打开的文件的标志
+
+标准输入输出也被视作了文件, 所以文件描述符`1` `2`都已经被占用了, 所以`openat`函数返回的文件描述符为`3`
+
+然后`read(3, &#34;hello\n&#34;, 131072)`函数读取长度为`131072`的内容到缓冲区中, 这里直接将缓冲区的内容展示出来了
+
+然后`write(1, &#34;hello\n&#34;, 6hello)`函数将缓冲区的内容输出到标准输出
+
+这里是文件描述符的基本使用
+
+### 文件的数据结构
+
+对于一个打开的文件, 进程会使用一个数据结构来维护文件的相关信息, 不同的系统使用的结构各有不同, 以下是书上提到的关于xv6的文件结构:
+
+```c
+struct file {
+    int ref;
+    char readable;
+    char writable;
+    struct inode *ip;
+    uint off;
+};
+```
+其中的`off`表示当前读取的位置, 进程会维护这个位置, 每次读取后会自动更新到读取的位置
+
+此外我们还有一个相关的系统调用:
+`lseek(int fd, int offset, int whence)`
+
+这个调用能够将当前文件的位置移动到`offset`对应位置, 其中`whence`表示相对位置, 有三个值:
+
+- `SEEK_SET` 从文件开头开始
+- `SEEK_CUR` 从当前位置开始
+- `SEEK_END` 从文件结尾开始
+
+此外, 进程会使用一个文件表来维护所有打开的文件
+
+特别的, 一个进程的子进程产生时, 会复制父进程的文件表, 也就是说子进程可以继承父进程打开的文件
+
+---
+
+### 文件系统
+包含若干文件, 文件夹, 和软链接的一起管理的集合, 我们称为文件系统
+
+我们可以把一个磁盘分为多个区域, 每个区域都是独立的文件系统来管理
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-05-18
+      </div>
+      <div class="card-info">
+        1.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2023/05/18/operating-system/CH2-Condition-Varible/">
+      Condition Varible
+    </a>
+    <span class="card-abstract">
+      
+# 条件变量(Condition Varible)
+
+在介绍条件变量前, 我们先来对多线程的资源共享问题做一个形象化的解释:
+
+每一个线程就是一个工人, 每个资源就是一个加工产品, 当一个工人对一个产品进行加工时, 其他工人是不能对其进行加工的, 所以需要所谓**锁**来告诉其他线程: &#34;这个资源正在被使用&#34;
+
+这个需要锁住的资源不一定是某个文件, 而是critical section(临界区)
+
+于是互斥锁为我们实现了这个功能
+
+现在我们要考虑的新问题是:
+
+`如果这个产品的加工必须按照某个顺序进行, 应该如何实现?`
+
+这个时候我们就要用到条件变量了
+
+## 什么是条件变量?
+条件变量是一个全局变量, 用于记录一个条件是否满足的状态
+当我们的线程进行到critical section中需要顺序执行的部分时, 会检查这个条件是否满足, 如果满足, 则继续执行, 否则线程会阻塞, 释放锁, 等待条件变量的状态改变
+
+然后此时其他的线程在改变了条件变量的状态后, 会通知这个线程, 这个线程就会重新获得锁, 并验证状态是否满足条件, 如果满足, 则继续执行, 否则继续阻塞
+
+## 在C中使用条件变量
+在C语言中, 为了使用条件变量, 我们需要三个部分:
+- 一个变量
+- 一个互斥锁
+- 一个条件变量
+
+声明:
+```c
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t c = PTHREAD_COND_INITIALIZER;
+int done = 0;
+```
+
+现在我们的线程进入到了critical section:
+```c
+pthread_mutex_lock(&amp;m);
+while (!done) {
+    pthread_cond_wait(&amp;c, &amp;m);
+}
+pthread_mutex_unlock(&amp;m);
+```
+` pthread_cond_wait(&amp;c, &amp;m);`会自动释放锁, 并阻塞线程, 直到条件变量的状态改变, 然后重新获得锁
+
+然后是其他线程改变这个变量时, 需要发出信号告诉阻塞的线程, 条件变量的状态已经改变了:
+```c
+pthread_mutex_lock(&amp;m);
+done = 1;
+pthread_cond_signal(&amp;c);
+pthread_mutex_unlock(&amp;m);
+```
+
+以上便是条件变量的
+
+好像就完了? 比想象得写得少
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2023-05-18
+      </div>
+      <div class="card-info">
+        992字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/05/18/operating-system/CH2-Samephore/">
+        信号量
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+信号量是我最喜欢的计算机科学家之一: Edsger Dijkstra 发明的一种同步机制, 用于解决多线程的同步问题
+
+---
+
+信号量可以看作互斥锁的超集, 互斥锁只有两种状态: 锁住和未锁住, 而信号量可以有多种状态, 用于解决更复杂的同步问题
+
+## 信号量的定义
+我们实现互斥锁时, 用一个变量储存0或1来表示锁的状态, 当锁为0时则说明锁住了
+
+而信号量在此基础上, 可以有0, 1, 2, 3, ...等多种状态, 每当一个线程获取锁时, 信号量的值减一, 当信号量的值为0 (或小于0) 时, 说明锁住了, 此时其他线程获取锁时, 会阻塞
+
+当一个线程完成了critical section中的操作后, 会将信号量的值加一, 并向所有阻塞的线程发出信号, 通知它们可以继续执行了
+
+当然, 我们将阻塞的线程加入一个等待队列中, 直接从中选取一个线程来继续执行, 而不用让这些线程来&#34;争抢&#34;信号量的资源
+
+这个队列中的线程我们就可以按照之前的进程调度中介绍过的方法来安排调度了: 包括了**优先级调度**, **FIFO**等
+
+## 信号量的使用
+下面是C语言中的信号量使用:
+声明与初始化:
+```c
+sem_t s;
+sem_init(&amp;s, 0, 1);
+```
+- `int sem_init(sem_t *sem, int pshared, unsigned int value);`
+  - 第一个参数是信号量变量
+  - 第二个参数是进程间的共享标志, 如果为0则在当前线程中使用, 如果为其他参数则可以在不同进程中按照参数值进行共享
+  - 第三个参数是信号量的初始值
+
+所以信号量也可以用于进程之间的通信
+
+P操作:
+```c
+sem_wait(&amp;s);
+```
+- 这个操作使信号量的值减一, 如果信号量的值小于0, 则阻塞当前线程
+
+V操作:
+```c
+sem_post(&amp;s);
+```
+- 这个操作使信号量的值加一, 并向所有阻塞的线程发出信号, 通知它们可以继续执行了
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
         2023-05-18
       </div>
       <div class="card-info">
@@ -255,12 +1481,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/05/18/operating-system/CH2-some-error/">
-        一些常见的多线程错误
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/05/18/operating-system/CH2-some-error/">
+      一些常见的多线程错误
+    </a>
+    <span class="card-abstract">
+      
 OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是非死锁错误
 
 ## 死锁错误
@@ -295,12 +1520,8 @@ OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是�
 
 - 顺序执行错误
   这里的顺序并不是指申请资源的顺序导致的死锁, 而是如果没有使用条件变量, 可能导致的顺序执行错误
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -310,13 +1531,11 @@ OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是�
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2023-05-15
@@ -333,11 +1552,12 @@ OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2023/05/15/compiler/CH5-SDD/">
-      语法制导翻译
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2023/05/15/compiler/CH5-SDD/">
+        语法制导翻译
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 关键词记录与解释
 
 ---
@@ -413,8 +1633,12 @@ OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是�
   $M \rightarrow \{M.i=A.i, B.h = f(M.i)\}$
 对于M的读空, 我们特别安排一下栈, 使其能够直接读取到A的属性, 从而实现自底向上
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -424,11 +1648,13 @@ OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是�
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2023-05-03
@@ -445,12 +1671,11 @@ OSTEP上将多线程错误主要分为两类, 一类是死锁错误, 一类是�
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/05/03/compiler/CH4-yacc-and-lex/">
-        Yacc和Lex的基本使用
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2023/05/03/compiler/CH4-yacc-and-lex/">
+      Yacc和Lex的基本使用
+    </a>
+    <span class="card-abstract">
+      
 # 前置准备
 
 - Yacc: parser的生成器
@@ -582,762 +1807,6 @@ Example: &#39;-&#39; E • &#39;+&#39; E
          ↳ 8: &#39;-&#39; E •
 ```
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-27
-      </div>
-      <div class="card-info">
-        3.4k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/04/27/compiler/CH4-Bottom-Up-Parse/">
-      编译原理-自底向上解析
-    </a>
-    <span class="card-abstract">
-      
-## 几个关键词
-
-### shift-reduce parser
-移入-归约解析器, 具体步骤也是维护一个栈, 依次将输入推入栈中, 然后当栈中解析到**句柄(Handle)** 时, 进行归约操作
-
-### Handle
-句柄, 是解析树中最左父子关系的全部叶节点
-
-为了描述清楚这个概念, 我们先解释**短语(Phrase)**和**直接短语(Direct Phrase)**
-
-这是一棵解析树:
-```Mermaid
-graph TD
-    S --&gt; E
-    E --&gt; T
-    E --&gt; E&#39;&#39;
-    E --&gt; E&#39;
-    E&#39; --&gt; id3
-    E&#39;&#39; --&gt; +
-    T --&gt; id1
-    T --&gt; T&#39;
-    T&#39; --&gt; *
-    T&#39; --&gt; id2
-    
-```
-
-- 在这个这个解析树表示的句子是`id3 + id1 * id2`, 其中的任意从左到右的叶子都是一个**短语**, 比如`id3 + id1 * id2`本身或者`id1 * id2`
-我们也可以用**树结构**来解释: 所有叶节点都是non-terminal的树, 我们称之为一个**短语**
-
-- 其中, 只拥有**父子节点关系**的短语我们称为直接短语, 比如`* id2`是一个直接短语, `id3`是一个直接短语, `id1`所在的子树由于和`* id2`之间有`T`节点, 产生了gap, 所以不是直接短语
-
-- 在这些直接短语中, 最左边的直接短语被称为**句柄(Handle)** , 所以上图的句柄为`id3`
-
-### LR(0)
-
-假设现在我们有一个文法:
-$$
-\begin{aligned}
-S &amp;\rightarrow E\\
-E &amp;\rightarrow E + T\\
-E &amp;\rightarrow T\\
-T &amp;\rightarrow T * F\\
-T &amp;\rightarrow F\\
-F &amp;\rightarrow (E)\\
-F &amp;\rightarrow id
-\end{aligned}
-$$
-
-我们构建其**增广文法(Augmented Grammar)**:
-$$
-\begin{aligned}
-S&#39; &amp;\rightarrow S\\
-S &amp;\rightarrow E\\
-E &amp;\rightarrow E + T\\
-E &amp;\rightarrow T\\
-T &amp;\rightarrow T * F\\
-T &amp;\rightarrow F\\
-F &amp;\rightarrow (E)\\
-F &amp;\rightarrow id
-\end{aligned}
-$$
-
-#### Items
-LR(0)文法的状态机的状态我们用Items(项目)来表示, 一个项目是一个产生式, 许多个项目组成产生式集, 产生式集构成状态机的状态
-
-我们先设定一个初始的0状态:
-$$
-\begin{aligned}
-S&#39; &amp;\rightarrow \cdot S\\
-S &amp;\rightarrow \cdot E\\
-E &amp;\rightarrow \cdot E + T\\
-E &amp;\rightarrow \cdot T\\
-T &amp;\rightarrow \cdot T * F\\
-T &amp;\rightarrow \cdot F\\
-F &amp;\rightarrow \cdot (E)\\
-F &amp;\rightarrow \cdot id
-\end{aligned}
-$$
-这里的$\cdot$表示**点(dot)**, 代表了我们读取到的位置, 前面表示已经读取到的终结符或句型, 后面表示接下来希望读到的东西
-
-0状态的构建逻辑为: 以$S&#39;\rightarrow S$为基础, 在dot之后紧接的非终结符将其的产生式加入其中, 所以添加了$S\rightarrow \cdot E$以及后续的一系列产生式
-
-然后针对每个项目, 我们为其构造一个转移状态, 以$E \rightarrow \cdot E + T$为例:
-
-我们构造一个新的状态(项目集), 编号为1, 如下:
-
-$$
-\begin{aligned}
-E &amp;\rightarrow E \cdot + T\\
-\end{aligned}
-$$
-由于点后是个终结符, 所以不需要添加额外的推导项目, 如果是由$F \rightarrow \cdot( E)$读取 $($ 后转移到状态2, 那么状态2中则需要添加的条目为: $F \rightarrow (\cdot E )$, 以及所有可以通过点后的非终结式推导得到: $E \rightarrow \cdot E + T$ 和 $E \rightarrow \cdot T$ 进而还有 $T \rightarrow \cdot T * F$ 和 $T \rightarrow \cdot F$ 以及 $F \rightarrow \cdot (E)$ 和 $F \rightarrow \cdot id$
-
-但是所有这些通过推导添加的项目我们都称为**非核心项目(non-kernel-item)**, 而$F \rightarrow (\cdot E )$称为**核心项目(kernel-item)**
-
-这样, 我们可以构建出一个由项目集做状态的自动机来, 类似于以下的形式:
-![](/image/compiler/3.png)
-
-然后以下的状态机我们可以构造为一张语法分析表:
-
-![](/image/compiler/4.png)
-
-具体构造方式如下:
-- 首先计算出每个句型的FOLLOW集, 比如 $FOLLOW(T) = \{*,(,id\}$
-- 然后对于每一个状态, 对应了表中的每一行, 对于该状态的每一个读取句型(非终结符)的转移, 我们通过GOTO表来保存
-- 如果是读取终结符的转移, 我们在ACTION中对应符号处记录`si`, 表示转移到状态i
-- 如果某个项目的dot在最右端, 那么我们为其FOLLOW集中的对应符号添加ACTION `rj`, 代表按照第j个产生式进行归约(这里没有列出产生式, 但是可以通过状态转移图略知)
-
-有了这个图就可以判断如何对句子进行归约了
-
----
-
-### LR(1)
-将0改为了1, 表示向后多读一个字符, 当执行归约操作时, 只有多读的这个字符满足了条件才会进行归约
-
-比如对于下面的项目:
-$$
-\begin{aligned}
-E &amp;\rightarrow E  + T\cdot , id\\
-\end{aligned}
-$$
-表示只有当向后读取的输入是一个id时, 才会进行归约
-
-需要注意的是, 我们之前移动dot的操作和推导全部非核心项目(即求闭包)的过程有些改变:
-现在我们移动dot获得新项目时需要考虑向后读取字符的变化, 具体的改变方式如下:
-
-- 首先我们记住一个项目规范格式:
-  $$
-    A \rightarrow \alpha \cdot B \beta, a
-  $$
-- 对于以上的标准项目, 我们得到他的下一个项目$A \rightarrow \alpha B \cdot \beta, x$
-  其中的向后读的内容需要改变, 这里用$x$来代替
-- 我们需要求出$FIRST(\beta a)$, 然后用这个集合中的每一个字符来代替$x$, 从而得到若干新的项目
-
----
-
-## viable prefix(可行前缀)
-可行前缀反应到解析的栈中, 就是整个过程中栈的每一个状态, 也就是不会归约的最长串
-
-反应到状态转移图中就是每一条路径
-
-## valid item(有效项目)
-当项目的dot左方的串等于一个可行前缀时, 该项目就是有效项目
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-27
-      </div>
-      <div class="card-info">
-        2.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/04/27/compiler/CH4-Top-Down-Parse/">
-        编译原理-自顶向下解析
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-# 自顶向下解析
-
-## 基本概念
-所谓自顶向下解析, 就是从语法树的最上层开始, 向下推导出目标的语言
-
-比如我们有以下语法:
-$$
-S \rightarrow E\\
-E \rightarrow TE&#39;\\
-E&#39; \rightarrow +TE&#39; | \epsilon\\
-T \rightarrow FT&#39;\\
-T&#39; \rightarrow *FT&#39; | \epsilon\\
-F \rightarrow (E) | id
-$$
-我们可以逐步推导出`id + id * id`这样的语句:
-$$
-\begin{aligned}
-S &amp;\rightarrow E \\ 
-  &amp;\rightarrow TE&#39;\\
-  &amp;\rightarrow FT&#39;E&#39;\\
-    &amp;\rightarrow idT&#39;E&#39;\\
-    &amp;\rightarrow id + TE&#39;\\
-    &amp;\rightarrow id + FT&#39;E&#39;\\
-    &amp;\rightarrow id + idT&#39;E&#39;\\
-    &amp;\rightarrow id + id * FT&#39;\\
-    &amp;\rightarrow id + id * id
-\end{aligned}
-$$
-这个过程其实就是在自动机理论中学的PDA, 我们有一个栈来维护自上而下的推导, 同时读取新的输入, 每个输入和栈顶元素会有不同的&#34;动作&#34;
-
-在详细描述推导过程中如何选择产生式前, 我们先看一下递归下降法
-
-## 递归下降法
-
-我们对每一个产生式构建一个函数, 比如:
-$$E&#39; \rightarrow +TE&#39; | \epsilon$$
-我们可以构建以下函数:
-```cpp
-void E_() {
-    if (lookahead == &#39;+&#39;) {
-        match(&#39;+&#39;);
-        T();
-        E_();
-    }
-}
-```
-而对于$$E \rightarrow TE&#39;\\$$, 我们可以构建以下函数:
-```cpp
-void E() {
-    T();
-    E_();
-}
-```
-其中的`match`表示当前匹配了一个字符的输入, 进行相应的操作并读取下一个字符输入
-
-通过这种一层套一层的函数调用, 我们可以完成对一段输入的解析, 在第二章中的简易翻译程序中, 我们也是通过这种方式来完成的
-
-这其实也是PDA所做的事情, 每一层的调用就相当于进行了一次栈的变化
-
-- 有时候可能会发生调用到一定位置后, 无法继续解析的情况, 需要回溯到某一步重新解析, 此时需要从新扫描之前的输入. 很明显我们这里的代码是不支持回溯的, 而是也很少有代码解析需要用到回溯机制, 所以我们需要设计能够线性读取解析的文法
-
-对于这样不需要回溯就能够解析完成的文法, 我们称为**LL(1)文法**
-
-首先, 对于**左递归**的文法和**二义性**的文法肯定不是LL(1)文法, 所以我们在设计文法时应该消除文法中的左递归, 并尽量减少二义性
-
-### First集和Follow集
-我们对First集和Follow集的定义如下:
-- First(E): 对于非终结符E, 其推导式中可以出现的第一个终结符的集合
-- Follow(E): 对于非终结符E, 在其之后可能紧跟的终结符的集合
-
-对于First我们很容易求得, 至于求Follow的话, 有以下三种情况:
-- $Follow(S)$中自然包含结束符号$\$$, $S$为开始符号
-- 如果有产生式$A \rightarrow \alpha B \beta$, 那么$First(\beta)$中的所有元素都在$Follow(B)$中
-- 如果有产生式$A \rightarrow \alpha B$, 或者$A \rightarrow \alpha B \beta$, 且$First(\beta)$包含$\epsilon$, 那么$Follow(A)$中的所有元素都在$Follow(B)$中
-
-通过这两个集合我们可以构建出类似下图的预测分析表:
-![预测分析表](/image/compiler/1.png)
-当一个各自中出现两个产生式时, 这个文法就产生了二义性, 我们可以通过提取左公因子, 消除左递归等方式来尽量避免二义性, 但是有些文法本身就无法消除二义性, 比如产生的如下预测分析表:
-
-![预测分析表](/image/compiler/2.png)
-
-不过这个文法我们可以选择其中的$S \rightarrow eS$作为保留的产生式, 以此来消除二义性
-
-### 使用栈来模拟
-我们之前就提到了PDA, 递归下降法我们自然可以通过一个带有栈的PDA来模拟, 详细内容就不说明了
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-27
-      </div>
-      <div class="card-info">
-        1.5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/04/27/compiler/CH4-note/">
-      编译原理-语法解析
-    </a>
-    <span class="card-abstract">
-      
-## 关键词记录解释
-
-### Bottom-up-parse, Top-down-parse
-- Bottom-up-parse
-  自底向上的解析, 从最小的语法单元开始解析, 直到解析到最大的语法单元, 使用右线性文法的语言适合使用Bottom-up-parse
-
-- Top-down-parse
-  自顶向下的解析, 从最大的语法单元开始解析, 直到解析到最小的语法单元, 使用左线性文法的语言适合使用Top-down-parse, 需要避免左递归
-
-### Error type
-- Lexical error
-  词法错误, 例如`int a = 10;`中的`int`写成了`intt`
-- Syntactic error
-  语法错误, 例如`case`缺少对应的`switch`, `else`缺少对应的`if`
-- Semantic error
-  语义错误, 例如需要返回`int`类型的函数返回了`string`类型的值, 并且没有支持的隐式转换(implicit conversion)
-- Logical error
-  逻辑错误, 例如`a = a + 1`写成了`a = a - 1`或者`a == 10`写成了`a = 10`, 这些错误并不会导致程序无法运行, 但是会使得程序偏离预期的结果
-
-### viable-prefix property
-可行前缀性, 我们的Lexical analyzer产生了一传的token stream给parser, parser可以接收流并进行解析, 在遇到错误时直接处理, 而不用等到所有的Token都解析完毕
-也就是说我们可以根据语言的前缀来判定解析的可行性, 这样的流式处理也能很好的利用计算资源
-
-但是只有语法解析(Syntactic analysis)可以利用可行前缀性, 语义解析则往往需要向后解析许多后才能确定错误
-
-### 语法解析需要提供的
-
-- report the error presence
-    报告错误的存在, 一般定位到产生错误的行和列
-
-- recover from the error
-    从错误中恢复, 并继续解析, 以便发现后续的错误
-
-- 尽量优化程序解析的效率
-
-### 如何从错误中恢复
-- panic mode recovery
-  恐慌模式恢复, 当遇到错误时, 丢弃当前的token, 直到遇到一个同步符号, 然后继续解析, 例如`int a = 10;`中的`int`写成了`intt`, 那么我们会丢弃`intt`直到遇到`;`为止, 然后继续解析
-
-- phrase-level recovery
-  编译器会尝试修复一些简单的错误, 比如缺少`;`之类的, 会自动补上这些符号, 然后继续解析
-
-- Error productions
-  编译器的设计人员在编译器中加入了一些常见错误语法的产生式, 并执行相应的错误反馈, 比如在python中输入了`;`在statement的结尾, 就会告诉你`python的结尾不需要;`, 这样解析并不会陷入错误, 然后继续解析
-
-- Global correction
-  编译器尝试寻找一个最接近源代码的, 可以正确解析的代码, 尽管这样的代码并不是程序员想要的, 但是可以提供一个修改代码的评估
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-25
-      </div>
-      <div class="card-info">
-        1.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/04/25/compiler/CH3-note/">
-        编译原理-词法解析
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-## 依然还是关键词的记录
-
-### Lexeme, Token, Pattern
-- Token:
-  &lt;id, &#34;a&#34;&gt;
-  &lt;num, 10&gt;
-  像这样已经完成解析, 包含了若干属性的单元我们称为Token
-- Pattern:
-  模式, 用来匹配一个串的, 比较常见的匹配包括了正则匹配
-- Lexeme:
-  最小的语句单元, 我们可以认为一个模式所能匹配的最小单元为一个Lexeme(词素)
-`int a = 10` 
-
-在这里面, `int` `a` `=` `10` 都是词素, 匹配了每一个词素的规则(一般是正则表达式)称为模式, 模式匹配的结果`&lt;id, &#39;a&#39;&gt;`称为Token
-
-### concatenation, exponentiation
-- concatenation
-  连接, 例如`ab`表示`a`和`b`的concatenation
-- exponentiation
-  幂, 例如`a^3 = aaa`表示`a`的0次或多次concatenation
-
-### KMP和DFA
-又见到KMP了, 回头再简单集记篇随笔说说kmp和DFA
-
-### NFA, DFA, Regular Expression
-这部分记自动机内了
-
-### Regular Definition
-正则定义是一些正则表达式定义的变量, 用以组成complex language, 比如: `digit = [0-9]`, `letter = [a-zA-Z]`都是正则定义
-
-### Flex
-Flex是一个词法分析器生成器, 用来生成词法分析器, 词法分析器的输入是一个正则表达式, 输出是一个DFA, 用来匹配输入的字符串, 词法分析器的输出是一个Token序列
-
-- flex中的正则表达式按照最长优先匹配
-- 按照编写的顺序优先匹配
-
-### two buffers
-缓冲区是必要的, 对于大型源码一次性读完浪费, 从磁盘读取又太慢, 但是使用缓冲区必然产生断层, 所以使用两个缓冲区来交替连接
-
-当读到一个缓冲区的结尾时, 将另一个缓冲区进行刷新, 然后读取头移动到另一个缓冲区即可
-
-一般我们编写代码时要避免缓冲区溢出, 比如对于一个超长的字符串, 我们应该拆分为String的concatenation形式
-
-### lexemepos, forward
-lexemepos记录词素的开始位置, forward向后读若干位, 直到到达一个无法转移的状态, 然后再之前的匹配中寻找满足要求的匹配
-
----
-
-## 记几个概念点:
-
-### 词法分析器生成器的架构
-
-flex读取了lex源码后, 会生成对应的词法分析器, 而词法分析器本身是个状态机, 我们可以选择用NFA和DFA来生成这个分析器, 不过一般会选用DFA, 其状态转移更简明
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-21
-      </div>
-      <div class="card-info">
-        3.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 3 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/04/21/network/works-projects/wireShark-4-TCP/">
-      wireshark practice 4 - TCP
-    </a>
-    <span class="card-abstract">
-      
-1.	What is the IP address and TCP port number used by the client computer (source) that is transferring the file to gaia.cs.umass.edu?  To answer this question, it’s probably easiest to select an HTTP message and explore the details of the TCP packet used to carry this HTTP message, using the “details of the selected packet header window” (refer to Figure 2 in the “Getting Started with Wireshark” Lab if you’re uncertain about the Wireshark windows.
-```
-Source Port: 52188
-I am not sure whether it&#39;s due to my proxy
- so that the source port is not 80
-```
-
-
-2.	What is the IP address of gaia.cs.umass.edu? On what port number is it sending and receiving TCP segments for this connection?
-```
-Destination Address: 128.119.245.12
-Port: 80
-```
-If you have been able to create your own trace, answer the following question:
-
-3.	What is the IP address and TCP port number used by your client computer (source) to transfer the file to gaia.cs.umass.edu?  
-```
-Source Address: 10.21.180.15
-Source Port: 52188
-```
----
-4.	What is the sequence number of the TCP SYN segment that is used to initiate the TCP connection between the client computer and gaia.cs.umass.edu?  What is it in the segment that identifies the segment as a SYN segment?
-```
-Seq = 0
-the SYN tag is set in the Flag field
-```
-
-5.	What is the sequence number of the SYNACK segment sent by gaia.cs.umass.edu to the client computer in reply to the SYN?  What is the value of the Acknowledgement field in the SYNACK segment?  How did gaia.cs.umass.edu determine that value? What is it in the segment that identifies the segment as a SYNACK segment?
-```
-Seq = 0
-Ack = 1
-Ack的值取决于服务器接收到的数据包的数量
-服务器会返回流量窗口中的头部(base)位置的编号, 表示下一个需要接收的数据编号
-```
-6.	What is the sequence number of the TCP segment containing the HTTP POST command?  Note that in order to find the POST command, you’ll need to dig into the packet content field at the bottom of the Wireshark window, looking for a segment with a “POST” within its DATA field.
-```
-Seq = 1 contains the POST command
-```
-
-7.	Consider the TCP segment containing the HTTP POST as the first segment in the TCP connection. What are the sequence numbers of the first six segments in the TCP connection (including the segment containing the HTTP POST)?  At what time was each segment sent?  When was the ACK for each segment received?  Given the difference between when each TCP segment was sent, and when its acknowledgement was received, what is the RTT value for each of the six segments?  What is the EstimatedRTT value (see Section 3.5.3, page 242 in text) after the receipt of each ACK?  Assume that the value of the EstimatedRTT is equal to the measured RTT for the first segment, and then is computed using the EstimatedRTT equation on page 242 for all subsequent segments.
-Note: Wireshark has a nice feature that allows you to plot the RTT for each of the TCP segments sent.  Select a TCP segment in the “listing of captured packets” window that is being sent from the client to the gaia.cs.umass.edu server.  Then select: Statistics-&gt;TCP Stream Graph-&gt;Round Trip Time Graph.
-
-```
-计算部分就不算了, 但是在使用wireshark RTT图时, 
-示例中的传输时间可能太短了, 所以整个RTT只显示了
-一个点
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-10
-      </div>
-      <div class="card-info">
-        947字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2023/04/10/compiler/CH1-note/">
-        编译原理-引言
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-## 一些关键词的记录
-
-### name, identifier, variable
-- name
-  名字关联的是一个实体, 例如变量, 函数, 类型, 常量等, 并且会根据环境(environment)的不同而有不同的内存位置
-- identifier
-  标识符, 是名字的一个子集
-  相对于标识符, 名字还包括了表达式, 比如成员变量的表示`a.b`
-- variable
-  变量表示内存中的一个位置, 一个变量可以有多个名字
-
-### environment, state
-- environment
-  环境是一个映射, 用来表示名字和变量(内存位置)之间的关系
-- state
-    状态是一个映射, 用来表示变量和值之间的关系
-
-### phase, pass
-- phase
-  编译器的阶段, 包括lexcial analysis, syntax analysis, semantic analysis, intermediate code generation, code optimization, code generation等
-- pass
-  对程序的一次扫描称为一次pass
-
-### compiler, interpreter, assembler
-- compiler
-  编译器, 将源程序翻译成目标程序代码
-- interpreter
-  解释器, 直接读取源程序运行
-- assembler
-  汇编器, 将汇编语言翻译成机器码, 可直接被内存加载运行
-
-### scope, block
-- scope
-  作用域, 一个声明的作用范围
-- block
-  代码块, 其中的声明作为一个作用域
-- static scope
-  静态作用域, 作用域是在编译时确定的, 向上寻找包含声明的作用域
-- dynamic scope
-    动态作用域, 作用域是在运行时确定的, 从运行堆栈中寻找包含声明的作用域
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2023-04-10
-      </div>
-      <div class="card-info">
-        1.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2023/04/10/compiler/CH2-note/">
-      编译原理-A-Simple-directed-translator
-    </a>
-    <span class="card-abstract">
-      
-## 一些关键词及含义的记录
-
-### left-associative, right-associative
-
-- left-associative
-  如果一个运算符的结果是从左到右结合的, 则为left-associative, 比如加减乘除都是left-associative的
-
-- right-associative
-  如果一个运算符的结果是从右到左结合的, 则为right-associative, 比如幂运算和赋值就是right-associative的
-  
-### ambiguity
-如果一个语言可以通过文法产生多个不同的语法树, 则称该文法是ambiguous的
-
-可以通过给运算加上优先级来消除ambiguity, 比如可以写出四则运算的文法如下:
-    
-```ebnf
-&lt;expr&gt; ::= &lt;expr&gt; + &lt;term&gt; | &lt;expr&gt; - &lt;term&gt; | &lt;term&gt;
-&lt;term&gt; ::= &lt;term&gt; * &lt;factor&gt; | &lt;term&gt; / &lt;factor&gt; | &lt;factor&gt;
-&lt;factor&gt; ::= ( &lt;expr&gt; ) | &lt;number&gt;
-&lt;number&gt; ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-```
-
-### abstract syntax tree, concrete syntax tree
-
-- abstract syntax tree
-  语法树, 用来表示语法结构, 一般用来表示语法分析的结果
-  使用程序中的结构来作为节点, 比如`a + b + c`的语法树如下:
-  ```Mermaid
-  graph TD
-  p1[+] --&gt; a
-  p1 --&gt; p2[+]
-  p2 --&gt; b
-  p2 --&gt; c
-  ```
-- concrete syntax tree
-  解析树(parse tree), 用非终结符作为节点, 用来表示语法结构
-  使用文法中的符号来作为节点, 比如`a + b + c`的解析树如下:
-  ```Mermaid
-  graph TD
-  p1[expr] --&gt; p2[expr]
-  p1 --&gt; p3[+]
-  p1 --&gt; p4[term]
-  p2 --&gt; p5[expr]
-  p2 --&gt; p6[+]
-  p2 --&gt; p7[term]
-  p5 --&gt; p8[term]
-  p4 --&gt; p9[c]
-  p7 --&gt; p10[b]
-  p8 --&gt; p11[a]
-  ```
-
-
     </span>
 
   </div>
@@ -1352,7 +1821,7 @@ Note: Wireshark has a nice feature that allows you to plot the RTT for each of t
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/2/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/4/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/2/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/4/">Next</a>
 </div>
     </div>
 

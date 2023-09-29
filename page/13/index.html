@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/1BgtkI3Aw58qrGv.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/z8naFUvWV7BfKud.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -244,7 +244,854 @@
         2021-01-01
       </div>
       <div class="card-info">
-        3.4k字
+        729字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-Segmentation/">
+        段式内存管理
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 段式内存管理
+
+## 段
+
+进程的虚拟内存空间是这样的(简化版):
+| 代码段 | 堆 |空闲内存| 栈 |
+| :---: | :---: | :---: |:---:|
+
+其中的空闲内存不能占用物理内存空间, 所以我们考虑把进程的内存分成**段**(segment), 进程的内存将在物理内存中以段为单位分布
+
+为了在段式分布的内存管理下完成内存翻译, 我们需要以下的信息:
+
+- 段表: 参考之前说过的页表, 也是储存在内存中, 一个进程拥有一个的地址查找表, 但是记录的是进程分段的地址
+- 段号: 说明段是哪一个段, 从而在段表中查询到该段的基地址
+- 偏移量: 地址的段内偏移
+
+整个过程也和分页查询很相似:
+
+- 首先段式内存管理的内存地址如下:
+
+  | 段号 | 偏移量 |
+  | :---: | :---: |
+- 然后CPU也有一个对应基址寄存器, 用来指向当前进程的段表, 我们用段号查询段表中的基址, 然后返回MMU
+- 使用的得到的基址, 加上偏移量即可得到物理地址
+
+---
+段式内存管理系统已经被淘汰了, 在linux系统中的段基址都被设置为了0, 所以段只被用于进程的保护和权限控制, 而不再用于内存管理
+
+为此, 段地址的会加上权限位, 搭配硬件的支持可以对不同的段进行不同的权限控制
+
+段式内存也引发了**内存碎片**问题, 相关的说明和解决不在本章的讨论范围之内
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-directExecution/">
+      直接运行程序
+    </a>
+    <span class="card-abstract">
+      
+这一部分主要分为两个主题：
+- 如何限制进程对设备的访问更改，又能让进程一定程度上调用设备
+- 如何在多个进程之间切换
+
+### Restricted Operations
+
+#### 引入权限分层
+为了限制进程对内存或者其他设备的访问、更改等，OS引入了两个不同的模式：
+- user mode
+- kernel mode
+
+在user mode中，程序只能执行有限的指令、访问有限的空间，如果程序试图访问一个非法的内存位置，那么OS将会中断程序
+
+在kernel mode中，程序能够访问任何地方，执行任何指令
+
+通过引入一个权限的分层，使得进程无法随意访问其他位置，那么现在的问题是如何让进程执行一些允许的内存访问与操作，比如我们的程序需要从硬盘读取数据，或者需要知道现在的内存剩余量为多少等等
+
+#### 设置API
+为了让用户模式的进程能够在OS的管理下访问内存和设备，OS为kernel mode制定了一系列的操作和面向user mode开放的API
+
+比如我们之前就提到过的```exec```、```kill```等都属于系统调用（API of system）
+
+用户模式下，通过把指定的参数写入规定的寄存器（register）中，然后使用 ```int```指令（一条汇编指令），搭配中断码```0x80```表示系统调用，OS会转入内核态，设备控制由进程交给OS，OS从寄存器中读取响应的参数，包括对应系统调用的代码，然后执行相应的系统调用，完成之后将返回值写入对应的寄存器，然后将context从栈中重新读取出
+
+切换到内核态时，进程的context会被存入kernel stack中，类似于用户调用函数的原理一样，但是kernel stack相比user space stack需要在内核态才能使用
+
+#### trap机制
+系统的中断是通过trap机制实现的
+来自硬件的错误、异常，来自进程的系统调用，来自用户输入的指令，都会向OS发送trap信号，接收到信号后如果没有特别设定中断处理程序，trap机制会根据信号的类型，依据trap table找到默认的中断处理程序的位置，并进行调用
+
+trap table在OS启动时就已经读取完毕，一般在OS的源码内部就以及编写好了
+
+### Switching Between Processes
+上下文切换已经相对熟悉，不用做太多介绍，但是有一个问题是：
+如果在一次中断中，正在进行上下文切换，此时另一个中断发生了，那么OS会如何操作呢？
+这一部分将在并发（concurrency）中讲述，将关系到锁的一系列问题
+
+此外，CPU在同一时间只能运行一个程序，当一般进程占用了CPU时，OS无法直接获得设备的操作权，所以OS一般有两种途径获得一个正在运行其他进程的CPU的操作权：
+- 当进程触发了中断或者系统调用时，OS可以获得CPU操作权，并判断是否继续运行该进程
+- 系统启动时会启动一个timer interrupter，每隔一定的时间就触发一次中断，强制将操作递给OS，并进行相应的管理
+
+### summary
+
+重点关键词：
+
+- kernel mode和user mode
+- system call和trap机制
+- context Switching
+
+### homework
+
+课后要求估计上下文切换的时间和系统调用的时间
+
+系统调用的时间比较好测量，在一次系统调用前后加上一个时间获取函数，然后相减即可，为提高精度还需要再减去两次连续使用的时间函数（去掉时间函数调用本身花耗的时间），并且提高测量次数
+
+上线文切换相对比较麻烦，为了完成上下文切换的性能评估需要关注几点：
+
+- 保证两个进程在同一个CPU上运行
+- 排除时间函数本身的函数调用时间
+
+为此我们需要写两个进程，一个运行无限循环，并在每次循环中放弃进程（通过`sched_yield()`方法），然后再写一个进程进行有限次数的循环，在每次循环中放弃进程，这样有限次循环花费的时间就大约是进程间上下文切换的总和，除以进程次数就是一轮切换的平均时间
+
+代码如下：
+固定次数部分：
+```c
+#define _GNU_SOURCE
+#include &lt;assert.h&gt;
+#include &lt;sched.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    int pid = getpid();
+    printf(&#34;%d\n&#34;, pid);
+    struct timeval tv;
+    struct timeval tv_2;
+    struct timezone tz;
+    cpu_set_t cst;
+    CPU_SET(0, &amp;cst);
+
+    int t_0 = sched_setaffinity(getpid(), sizeof(cst), &amp;cst);
+
+    double t_1 = gettimeofday(&amp;tv, &amp;tz);
+
+    printf(&#34;%ld.%ld\n&#34;, tv.tv_sec, tv.tv_usec);
+
+    int times = 0;
+
+    t_1 = gettimeofday(&amp;tv, &amp;tz);
+
+    for (int j = 1; j &lt;= 2000000; j++) {
+        sched_yield();
+    }
+    t_1 = gettimeofday(&amp;tv_2, &amp;tz);
+    printf(&#34;%ld.%ld\n&#34;, tv_2.tv_sec - tv.tv_sec, tv_2.tv_usec - tv.tv_usec);
+}
+```
+首先`sched_setaffinity()`设置了一个进程只能运行的cpu集合，把该进程固定在一个CPU上
+然后 ```gettimeofday()```获得当前的时间，固定循环记录上下文切换的总时间，但是上面的代码并没有考虑 ```gettimeofday()```本身函数调用花耗的时间
+
+无限循环部分：
+```c
+#define _GNU_SOURCE
+#include &lt;sched.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    int pid = getpid();
+    printf(&#34;%d\n&#34;, pid);
+
+    cpu_set_t cst;
+    CPU_SET(0, &amp;cst);
+    sched_setaffinity(getpid(), sizeof(cst), &amp;cst);
+
+    while (1) {
+        sched_yield();
+    }
+}
+```
+和上面类似，但是是无限循环，所以需要先启动这个进程
+
+最后计算结果一轮上下文切换为1600ns左右，一次则为800ns左右，由于我使用的是虚拟机，所以和实际机器的上下文切换可能有所不同，另外，由于OS的进程调度机制，所以上下文切换的次数可能会比循环次数多许多，难以验证这样的计算结果
+
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-free-memory-management/">
+        空闲内存的管理
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        # 空闲内存的管理
+
+关于这一段我还是相对熟悉的, 在做数据结构的大作业时选择了一个空闲链表的实现, 这一段的记录也会相对简洁
+
+## 内存碎片
+
+- 内部碎片(internal fragmentation): 内部碎片是由于最小分配的内存块大小大于实际分配大小所导致的内存碎片, 例如, 一个进程需要分配 10 个字节的内存, 但是内存管理器只能分配 16 个字节的内存块, 这样就会产生 6 个字节的内部碎片
+- 外部碎片(external fragmentation): 当我们分配的内存空间不是最小分配单元时, 我们可以通过分割一个内存块来分配需要的内存空间, 而剩下的部分会形成一个新的空闲空间, 被称为外部碎片
+
+空闲内存和碎片的合理分配可以让内存可以分配更大的内存块, 为此我们需要先在决定管理策略前, 实现基本的内存维护机制
+
+## 空闲链表和已占用空间
+
+对于一片内存中的空闲空间, 我们是通过空闲链表来管理的, 并且该链表是就在内存空间中**集成(embedded)** 的, 比如说我们有一片空闲的内存空间如下:
+|size:1000|next:0x1000|data:...|size:1000|next:0x2000|data:...|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+通过在空间头部加入两个字段, 来构成一个空闲链表
+需要注意的是, 像这样连续的两空闲空间, 在产生时我们就应该将两块合并为一个, 以减少碎片的产生
+
+同时, 对于一个已分配的空间也添加相应的字段来描述器大小和做验证:
+|size:1000|magic:1234567|data:...|
+|:-:|:-:|:-:|
+我们可以向`free()`传递指向该占用块开头的指针, 知道该占用块的大小, 然后检测下一个字段的`magic`值是否为我们希望的值, 来判定这是一个完整的占用块(不能检测到一个大小就随意清楚后面的内存块)
+需要注意的是, 我们在进程中调用`free()`传递的是虚拟内存的地址, 但是这个地址映射到物理内存上是不同的的地方
+
+## 空闲链表的维护策略
+
+当我们分配申请内存时, 需要先找到物理内存中足够大的空闲空间, 然后再将新分配的内存映射到这个区域之上, 但是我们希望在分配完了这个空间后能够产生尽量少的内存碎片, 所以就有了空闲链表的维护(分配)策略
+
+需要注意的是, 我们所说的内存碎片也是物理内存中所产生的东西, 我们直接打交道的虚拟内存是不存在这种概念的, 这些策略都是OS来采用的方法, 只有OS才能和物理内存打交道
+
+- 首次适应(first-fit): 首次适应是最简单的一种策略, 也是最容易实现的一种策略, 它的思想是从空闲链表的头部开始遍历, 找到第一个满足要求的空闲空间, 然后将其分配出去
+- 最佳适应(best-fit): 最佳适应是从空闲链表中找到一个最小的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少内部碎片的产生
+- 最坏适应(worst-fit): 最坏适应是从空闲链表中找到一个最大的空闲空间, 使得该空闲空间的大小刚好满足要求, 这样就能够减少外部碎片的产生
+- 下一次适应(next-fit): 下一次适应是在首次适应的基础上进行的优化, 它的思想是从上一次分配的空闲空间的下一个空闲空间开始遍历, 这样能够使得内存的分配位置更加均匀
+
+以上是四种简单的分配策略, 但是还有一些更加优秀, 但是也更加复杂的分配方式
+
+在提及这些方式之前, 我们需要先明确, 我们上面讨论的情况是基于段式储存的, 一是段本身就已经是长度不固定的内存块了, 二是我们在段内部分配空间时也是按长度来取内存块的, 所以才会产生**外部碎片**
+但是当我们采用分页式储存时, 我们的内存块大小都为固定的页大小, 我们分配内存的最小单位从字节变成了页, 所以我们的占用内存块和空闲内存块大小都是页大小(一般为4kb)的整数倍, 这样就不会产生外部碎片了——我们总能找到一块刚刚好大小的页来分配
+所以针对外部碎片的这些策略都是基于段式储存或者直接映射物理内存的, 广泛采用的分页式储存不会产生外部碎片, 只有内部碎片(页大小固定, 大多数情况使用不完)
+
+---
+
+然后我们就能提及一个稍微复杂的针对非分页式的分配策略: **Segregated Free List(分离空闲链表)**
+
+既然我们已经知道固定长度的分块不会产生外部碎片, 那么我们就尽量在不定长的分块中找到长度相同的区块, 然后把他们单独连成一个**隔离开的**链表, 这种部分的**类分页**方式就能一定程度上减少外部碎片的产生
+
+其中的slab allocator就是这种方式的一种实现, 这个内存分配器将OS常用的那些对象单独创建一个空闲链表, 比如锁, 信号量, int等等, 同时减少了内部和外部碎片的产生
+
+---
+然后要介绍的是另一个强大的分配算法: **伙伴系统(buddy system)**:
+我们对于一段大小为$2^n$的空闲空间, 将其**递归地**二分出一个最小的满足我们分配需求的空间, 比如我们现在有一块大小为$64kb$的空间, 需要分配一个$7kb$的空间:
+
+- 我们可以通过二分分出一块$8kb$的空间, 此时产生了$1kb$的内部碎片, 此时的内存我们可以表示如下:
+
+  |8kb|8kb|16kb|32kb|
+  |:-:|:-:|:-:|:-:|
+  |占用7kb|空闲8kb|空闲16kb|空闲32kb|
+
+这个算法在分配方面只能分配$2$的幂次方大小的内存, 产生的内部碎片不确定和分页相比谁更优, 但是该算法在合并空闲内存(碎片)时更有优势:
+- 我们释放了一个占用的空间后, 可以直接检测相邻的内存空间是否被占用, 然后可以直接将两个相同大小的内存空间合并
+- 树形数组的原理可以和伙伴算法做一个比较参考, 两者都是大小为二进制数来分割区间的
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        858字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-memoryTransflate/">
+      地址翻译
+    </a>
+    <span class="card-abstract">
+      这一章讲的比较浅显，我会结合CSAPP更详细地记录相关的过程原理
+
+### 地址翻译是什么
+
+地址翻译就是将我们已知的虚拟地址，通过MMU（Memory Management Unit）和CPU的协助转换为物理地址的过程
+
+### 需要的专业名词
+
+- 页（page）：内存中的一个连续的区域，是OS进行内存管理的最小单位
+- 虚拟页（VP）：虚拟内存的一个连续的区域，对应于页
+- 物理页（PP）：类比虚拟页
+- 页表（page table）：一个表，储存在物理内存中，记录了虚拟页到物理页的映射关系
+- 页表条目（PTE）：页表中的一项，记录了虚拟页到物理页的映射关系
+- 基址寄存器（base register）：存储的进程起始地址
+
+内存可以看作磁盘的一级缓存，我们用缓存机制来看待查询内存的过程：
+
+- 查询内存中是否存在一个值，如果存在则直接读取，如果不存在则从磁盘读入
+
+而我们通过虚拟地址查询内存的过程如下：
+
+- 首先我们有一个虚拟地址, 这个地址属于一个进程, 而这个进程有自己基址寄存器对应的值, 而虚拟地址的字段如下:
+
+| 页号 | 页内偏移 |
+| --- | --- |
+
+- 每一个进程都有自己对应的页表, 而基址寄存器指向了这个页表, 我们使用虚拟地址页号在页表中查询到对应的表项, 这个表项包含了虚拟页号对应的物理页号, 然后利用对应的物理页号和页内偏移就可以找到对应的物理地址
+
+- 这个过程需要先访问一次内存查询一次PT, 再通过结果查询PP
+
+---
+
+书上将这一段内容时还没有引入内存分页, 所以只讲了简单的映射关系, 并没有涉及到页号和偏移这些, 但是也算是把分页系统下的地址翻译理了一下, 没有提到的细节可能会在之后的分页部分再说
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 4 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-paging/">
+        分页
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+# 分页
+
+之前我们已经对分页有了一个大概的概念, 现在我们详细描述一下分页过程以及中间产生的一些问题:
+
+## 分页储存下的地址翻译
+
+我们在地址翻译的相关内容中已经描述了分页时的地址翻译过程:
+
+- 查询页表, 获取物理地址
+- 查询物理地址, 获取数据
+
+其中, 页表是储存在物理内存中由操作系统管理的 (书中说操作系统能够对自身进行虚拟化, 所以页表实际上也要经过从虚拟地址到物理地址的转换), 所以这个地方需要查询两次物理内存才能的到最后要得到的数据
+
+这个过程会花耗大量的时间, 所以OS引入了一个硬件来加速这个过程, 我们称之为TLB(Translation Lookaside Buffer), 也就是翻译旁路缓冲器, 其本质就是一个缓存机制而已, 通过将频繁查询的PTE储存在一个高速缓存中, 供MMU快速查询数据的物理地址
+
+## PTE的结构
+
+我们引用来自文章[Page Table Entries in Page Table](https://www.geeksforgeeks.org/page-table-entries-in-page-table/)的图片:
+![](https://media.geeksforgeeks.org/wp-content/uploads/Capture-24.png)
+
+PTE的结构包括以上几个部分:
+
+- Frame Number: 用于存储数据的物理页的页号
+
+**tips**: 我们称物理页(Physical Page)又叫物理帧(Physical Frame)
+
+- present/absent: 用于标记该页是否在内存中, 如果为0, 则表示该页不在内存中, 需要从磁盘中读取, MMU会产生一个缺页错误, 然后调用OS进行磁盘的读取; 如果为1, 则表示该页在内存中, 可以直接访问
+- protection: 用于标记该页的访问权限, 包括: 可读, 可写, 可执行等
+- reference: 用于标记该页在一个时钟周期内是否被访问过, 一般用于缓存机制的实现: 当内存满时, 如果此位为0, 说明该页属于不常用页, 所以被新页替换, 此外的替换算法还有许多, 如果有需要的话会在缓存部分再做说明
+- Caching: 用于标记该页是否被缓存, 部分的数据并不需要缓存, 而是必须实时更新, 这一位用于取消对数据的缓存(缓存是指相对内存更高一级的缓存, 一般位于CPU内)
+- Dirty(modified): 这一位用于标记内存数据是否被修改过, 修改过的数据需要写回磁盘中, 仅此而已
+
+## 时间局部性和空间局部性
+
+本来这部分在CSAPP中已经有了详细的描述, 但是这一部分中我没有做相应的笔记, 所以在此对两类局部性做一个记录
+
+- 空间局部性: 假如我们有一个数组, 我们循环访问该数组的元素, 此时我们访问的元素是分布在同一个内存页上的(同一个虚拟页和物理页), 那么我们已经访问了一个page的首个元素后, 后面的一部分元素的PTE就已经缓存到了TLB中, 由此加速了地址查询, 同时如果发生了缓存不命中, 后面的元素也不会再发生缓存不命中的情况, 这样就加速了对数组元素的访问
+
+- 时间局部性: 一个已经被缓存的元素, 接下来可能被多次访问, 我们则称为时间局部性, 频繁访问的数据更容易被缓存, 从而加速访问
+
+## 处理TLB missing
+
+处理这种缓存不命中, 有两种方法: 通过硬件或软件来实现
+
+- 硬件实现: 比较传统的方式, 需要硬件设备的支持
+- 软件实现: 一般来说被现代OS所采用, 此时硬件(TLB所在的硬件)在发生缺页异常时, 只会引起一个中断, 然后由OS来处理这个中断, 即执行一个缺页处理程序
+  这个程序在一个未被映射的物理内存中, 同时TLB中始终位置其位置(不会因为缓存替换)
+
+## 进程切换时的TLB处理
+
+TLB是页表的缓存, 而每个进程的页表都是单独储存的, 所以上下文切换时需要维护TLB的正确性
+
+### 简单的方式
+
+简单的方式就是直接清除TLB, 这样在切换进程后重新构建TLB表, 可以保证TLB的正确性, 但是这样会导致TLB的命中率下降, 从而导致性能下降, 所以常见的OS通常采用下面这种方式
+
+### ASID
+
+ASID(Adress Space IDentifier)是一个硬件支持的特性, 用于区分不同进程的页表, 我们为每一个TLB中的条目添加一个`ASID`字段, 用于标记该条目所属的进程, 然后为每个进程再单独维护一个`ASID`的属性, 然后进行TLB查询时就可以区别不同进程使用的TLB条目了
+
+---
+
+处理了时间上的缺点后, 页表同样存在空间上的缺点: 页表占用空间过大
+我们只需要为进程中使用的虚拟地址分配物理地址, 但是没有使用的虚拟地址仍然需要一个页表来维护其映射, 否则就会造成内存地址不连续, 影响指针等地址相关的操作
+
+## 多级页表
+
+多级页表可以看作一棵树, 我们把页表分成多层, 用类似线段树的方式来储存, 然后参考**懒标记**的原理, 只有我们确实为某个虚拟地址分配了物理地址后, 才会在相应的路径中分配页表
+
+而没有实际分配的虚拟地址只会记录到有分配的地址为止, 我们可以参考下面这张图来理解多级页表:
+
+下面是来自CSDN的多级页表示意图:
+  
+![](https://img-blog.csdn.net/20180111231317615?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZm9yRHJlYW1ZdWU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+其中用箭头连接的页表项才是有对应物理页映射的, 中间的空的区域就没有下一级的页表, 这么一来就节约了未分配空间的页表储存(这些页表概念上存在, 但是并没有实际储存)
+
+## 倒页表(Inverted Page Table)
+
+倒页表又是一种特殊的页表, 其通过虚拟地址管理分配整个物理地址空间, 只有唯一的一个页表用于管理全部内存
+程序使用的内存的位置通过一个hash表来储存
+
+## 内存交换
+
+一般来说, 我们分配给进程的内存地址空间(虚拟地址空间)要大于实际可以分配的物理内存, 这是为了进程可以更灵敏自由的使用需要的内存, 但是这也就导致我们的内存空间存在满载的情况
+
+这个时候我们需要找到一部分未被使用的数据, 将其写入磁盘中的一块特殊的预留区域 **交换区(swap area)**, 然后将其从物理内存中**驱逐(evict)**
+被驱逐到磁盘中的数据也有自己的虚拟地址, 储存在页表(或者TLB)之中, 但是其指向的将不是物理内存, 而是对应的**磁盘地址**, 这样我们就可以在需要的时候将其从磁盘中读取到内存中, 从而实现内存的交换
+
+这一部分位于磁盘中的内存区域我们称为**虚拟内存(virtual memory)**, 内存交换机制可以看作位于内存和磁盘之间的一个缓存机制, 可以采用以下较为经典的内存交换策略:
+
+- 先进先出(FIFO)
+  找到最早进入内存的数据作为驱逐对象. 这个方案表现比较落后, 不多考虑
+- 最久未使用(Least Recently Used, LRU)
+  最少使用(Least Frequently Used, LFU)
+  找到最久未使用或者最少使用的数据作为驱逐对象. 这两个方案是目前最常用的方案, 但是存在一个问题: 寻找这么一个数据需要遍历整个内存, 这样的开销是非常大的, 所以我们提出了下面一种优化方案
+- 时钟算法LRU
+  我们通过一个硬件时钟来周期性的给内存中的数据打上标记, 如果一个数据被使用读取就去掉它的标记, 如果我们需要找到一个用来驱逐的数据, 只需找一个有标记的数据即可, 这说明这个数据被读取到内存后有一段时间没有被读取过了
+
+以上算法都无法达到最优的优化, 内存的交换策略还有可以优化的空间
+
+### 内存交换的细节和小优化
+
+#### 水位线(watermark)
+
+我们对于一个内存的**满**的概念有所不同, 我们使用一个水位线来标记内存的使用情况, 当内存占用高于一个水位线(阈值), 则开始进行驱逐操作, 保持一个适量的可用空间作为缓冲
+
+而当内存低于某个水位线时, 我们可以从磁盘(虚拟内存)中选取一些数据到内存中, 从而减少后续可能需要的内存交换所花耗的时间(总所周知IO操作是非常耗时的)
+
+#### 抖动(thrashing)
+
+由于某些原因, 我们的内存交换策略可能会导致内存中的数据频繁的被驱逐和读取, 这样的现象我们称为thrashing
+一种简单的导致thrashing的情况是, 内存占用到达上限, 而进程还在不断地增加用量, 我们就只能驱逐, 然后存入新数据, 然后驱逐...进而产生大量的IO消费
+
+Linux中解决这种问题的一个方案是直接杀死部分进程, 防止thrashing的发生
+
+#### 一次读入多个连续页面
+
+由于程序具有局部性, 我们可以一次性读入多个连续的页面, 可以减少IO的读取操作
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        5.6k字
+      </div>
+      <div class="card-info">
+        阅读时间: 5 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-processAPI/">
+      进程的API
+    </a>
+    <span class="card-abstract">
+      
+这一段被作为间章，介绍了几种UNIX系统使用的进程相关的系统调用
+
+---
+
+### fork()
+
+首先我们有一段使用 ```fork()```函数的代码：
+
+```c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+int main(int argc, char *argv[])
+{
+    printf(&#34;hello world (pid:%d)\n&#34;, (int)getpid());
+    int rc = fork();
+    if (rc &lt; 0)
+    {
+        // fork failed
+        fprintf(stderr, &#34;fork failed\n&#34;);
+        exit(1);
+    }
+    else if (rc == 0)
+    {
+        // child (new process)
+        printf(&#34;hello, I am child (pid:%d)\n&#34;, (int)getpid());
+    }
+    else
+    {
+        // parent goes down this path (main)ss
+        printf(&#34;hello, I am parent of %d (pid:%d)\n&#34;,
+               rc, (int)getpid());
+    }
+    return 0;
+}
+```
+- PID
+  这是对进程的标识符，对应当前OS中唯一的一个进程
+
+```fork()```函数会创建一个和当前进程**完全一样**的进程，完全一样包括了两者的context也完全一致，也就是说，当父进程运行到第7行执行了 ``` fork()```时，新创建的子进程也运行到相同的位置，刚刚执行完相同的函数
+
+但是有一点区别，父进程得到的 ```fork()```的返回值是子进程的PID，而子进程在相同地方的到的返回值是**0**，所以程序可以由此设置条件判断，从而使子进程和父进程产生不一样的行为
+
+此外如果多运行几次我们就会发现，子进程和父进程的输出先后是随机的，因为两者分开后就各自运行了，双方谁先运行到输出语句是不确定的，详细的细节我们会在并发（concurrency）的章节和多线程一起讨论
+
+我们可以通过使用下面的 ```wait()```来使输出的顺序固定
+### wait()
+这个系统调用可以让程序等待一个进程结束，再进行下面的操作，根据传递的参数不同，等待的对象也不同
+
+下面是一段使用了 ```wait()```的代码：
+
+```c
+ #include &lt;stdio.h&gt;
+ #include &lt;stdlib.h&gt;
+ #include &lt;unistd.h&gt;
+ #include &lt;sys/wait.h&gt;
+int main(int argc, char *argv[])
+{
+    printf(&#34;hello world (pid:%d)\n&#34;, (int)getpid());
+    int rc = fork();
+    if (rc &lt; 0)
+    { // fork failed; exit
+        fprintf(stderr, &#34;fork failed\n&#34;);
+        exit(1);
+    }
+    else if (rc == 0)
+    { // child (new process)
+        printf(&#34;hello, I am child (pid:%d)\n&#34;, (int)getpid());
+    }
+    else
+    { // parent goes down this path (main)
+        int rc_wait = wait(NULL);
+        printf(&#34;hello, I am parent of %d (rc_wait:%d) (pid:%d)\n&#34;,
+               rc, rc_wait, (int)getpid());
+    }
+    return 0;
+}
+ ```
+上面的代码让父进程在输出之前暂停，然后等到子进程结束后才继续运行
+
+### exec()
+
+这个调用可以让程序启动不同的进程，作为当前进程继续运行：
+```c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(int argc, char *argv[])
+{
+    printf(&#34;hello world (pid:%d)\n&#34;, (int)getpid());
+    int rc = fork();
+    if (rc &lt; 0)
+    { // fork failed; exit
+        fprintf(stderr, &#34;fork failed\n&#34;);
+        exit(1);
+    }
+    else if (rc == 0)
+    { // child (new process)
+        printf(&#34;hello, I am child (pid:%d)\n&#34;, (int)getpid());
+        char *myargs[3];
+        myargs[0] = strdup(&#34;wc&#34;);   // program: &#34;wc&#34; (word count)
+        myargs[1] = strdup(&#34;p3.c&#34;); // argument: file to count
+        myargs[2] = NULL;           // marks end of array
+        execvp(myargs[0], myargs);  // runs word count
+        printf(&#34;this shouldn’t print out&#34;);
+    }
+    else
+    { // parent goes down this path (main)
+        int rc_wait = wait(NULL);
+        printf(&#34;hello, I am parent of %d (rc_wait:%d) (pid:%d)\n&#34;,
+               rc, rc_wait, (int)getpid());
+    }
+    return 0;
+}
+```
+
+输出结果如下：
+```
+hello world (pid:49490)
+hello, I am child (pid:49491)
+ 32 119 970 p3.c
+hello, I am parent of 49491 (rc_wait:49491) (pid:49490)
+```
+
+这个程序把上面说的三种调用全部使用了，首先创建一个拷贝的子进程然后在子进程中启动了 ```wc```指令，并且让父进程调用 ```wait()```等待子进程结束
+
+### 上面的API有何用？
+
+当我们需要创建一个进程时，使用 ```fork()```和 ```exec()```组合是相当有用的，打开shell输入指令，shell会先拷贝一份当前进程，然后设置一系列的执行程序需要的环境，然后才 ```exec()```启动接下来的程序
+
+比如下面一段代码：
+```c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/wait.h&gt;
+int main(int argc, char *argv[])
+{
+    int rc = fork();
+    if (rc &lt; 0)
+    {
+        // fork failed
+        fprintf(stderr, &#34;fork failed\n&#34;);
+        exit(1);
+    }
+    else if (rc == 0)
+    {
+        // child: redirect standard output to a file
+        close(STDOUT_FILENO);
+        open(&#34;./p4.output&#34;, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+
+        // now exec &#34;wc&#34;...
+        char *myargs[3];
+        myargs[0] = strdup(&#34;wc&#34;);   // program: wc (word count)
+        myargs[1] = strdup(&#34;p4.c&#34;); // arg: file to count
+        myargs[2] = NULL;           // mark end of array
+        execvp(myargs[0], myargs);  // runs word count
+    }
+    else
+    {
+        // parent goes down this path (main)
+        int rc_wait = wait(NULL);
+    }
+    return 0;
+}
+```
+程序在开始新的 ```execvp()```程序运行之前，会先关闭当前的屏幕输出，然后打开一个文件
+```open()```函数的第二个参数我们称为打开标志（open flag），这里的三个参数表示：
+- O_CREAT
+  不存在文件则创建
+- O_WRONLY
+  以只写的方式打开文件
+- O_TRUNC
+  打开文件后若可写，则清空文件内容
+
+### 进程控制和用户
+用户通过 ```kill```指令向一个进程发送**信号（signal）** 来杀死一个进程，也可以通过组合键 ```ctrl C```、```ctrl Z```等方式发送信号
+发送信号可以说是用户和其他进程直接控制进程的方式，同时，为了防止任何用户都可以发送信号来随意控制进程，OS还有着为不同的用户管理进程分配资源的工作，不同的用户只能控制自己创建的进程
+
+### 有用的小工具
+
+- ps
+  显示某些进程
+- top
+  显示系统进程，并显示其对资源的占用
+- kill 和 killall
+  杀死进程，不说了
+
+### homework
+
+记几个值得记录的问题
+
+1. 如何不使用 ```wait()```调用来保证子进程和父进程的执行顺序？
+   使用进程间信号量，包括SYSTEM V和POSIX的信号量
+2. exec函数族为啥有一堆函数和指令？
+   首先看一下六种指令的接口：
+   ```c
+   int execl(const char *path, const char *arg, ...);
+   int execlp(const char *file, const char *arg, ...);
+   int execle(const char *path, const char *arg,
+   ..., char * const envp[]);
+   int execv(const char *path, char *const argv[]);
+   int execvp(const char *file, char *const argv[]);
+   int execvpe(const char *file, char *const argv[],
+   char *const envp[]);
+   ```
+   我们可以先按照 ```l```和 ```v```两类分，```l```使用的是若干个参数的指针，一个参数代表一个输入，而 ```v```传递了一个数组，数组内包含要传递的参数
+   然后最后的 ```e```表示最后一个参数传入一个环境变量的参数
+   中间的 ```p```则代表了寻找可执行程序的方式不同，对于 ```p```类型来说，如果可执行程序不带有斜杠```/```，则从shell中查找可执行程序
+
+3. 写一个程序，用```pipe()```连接两个进程
+   除了使用进程间信号量，使用pipe也可以控制两个进程的执行先后，本质还是进程间通信，pipe本质是OS创建一个指针变量 ```file pipe[2]```这两个文件指针一个指向写进程，一个指向读进程，中间用一个缓冲区连接，通过向指针指向的位置读写实现进程通信
+
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.1k字
       </div>
       <div class="card-info">
         阅读时间: 3 mins.
@@ -256,11 +1103,178 @@
       </svg>
     </div>
     <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/operating-system/CH1-proportionalShare/">
-        分比例调度
+      <a class="card-title" href="/2021/01/01/operating-system/CH1-processes/">
+        进程
       </a>
       <span class="card-abstract" style="transform: translateX(0px);">
         
+第一章第一节是进程相关内容，我们在CSAPP中已有过些许了解
+另外本文是我学习的记录，具有局部性，其中的描述并不一定正确完整，只是跟随书的思路把关键点记录下来
+
+## 进程
+进程就是一个运行的程序，而现在我们希望计算机能够同时运行多个程序，我们希望计算机在运行浏览器时播放音乐等等，所以我们需要之前提及的CPU虚拟化技术
+
+也就是说，我们在进程之间不停地切换，来制造程序同时运行的假象，这样做当然会降低每个进程的平均速度，产生更大的性能消耗
+为了实现CPU虚拟化，我们需要从底层机制和高级机制两个方面来考虑：
+- 底层机制包括上下文切换（context switching），通过这种机制来实现进程的切换，并且保证切换回原进程后能够以之前的状态继续运行
+- 高级机制是OS对底层机制的智能操作，举个例子：OS需要一种策略来判断一个时刻执行哪个进程才是更高效的选择，通过记录进程的历史信息、进程类型等信息来对进程进行评估，并决定切换到哪个进程
+
+### 进程的组成
+
+一个进程可以由以下内容组成：
+
+- 内存
+  内存中储存了程序的指令、数据
+- 寄存器
+  寄存器是进程直接操作的对象，包括PC寄存器，栈寄存器等
+- I/O设备
+  进程需要记录下I/O设备中读取的文件的信息等，便于修改和保存、拷贝等
+
+### 进程相关的API
+
+- create
+  创建一个进程
+- destroy
+  杀死一个进程
+- wait
+  等待一个进程结束
+- miscellaneous control
+  包括暂停、继续之类的各种控制进程的方式
+- status
+  获取进程的相关信息
+
+### 创建一个进程的更多细节
+- 从I/O设备中读取指令和静态数据，存入内存
+- 为程序分配栈空间，压入相关的数据、参数
+- 建立和I/O设备的交互工作
+
+完成准备后程序进入 ```main()```函数开始进程
+
+### 进程状态
+
+```plantuml
+@startuml
+hide empty description
+state Running
+state Ready
+state Blocked
+Running -&gt; Ready : Descheduled
+Ready -&gt; Running : Scheduled
+Blocked -&gt; Ready : I/O done
+Running --&gt; Blocked : I/O initiate
+@enduml
+```
+
+- Running
+  此时进程正在进行，占用内存、寄存器、CPU等资源
+- Ready
+  此时进程处于准备完成状态，指令和数据已经存入内存中，等待OS开始执行
+- Blocked
+  阻塞状态，此时程序由于某些操作需要使用I/O设备，所以停止运行，并等待I/O设备运行完成，然后进入Ready状态
+
+进入Ready状态的进程会排队等待Running的进程完成或者进入Blocked状态
+
+### 进程相关数据结构
+
+OS需要保存足够的进程信息，以便查找到指定的进程进行操作，不同的OS会使用不同的数据结构储存这些信息，我们称该数据结构为**进程控制块（process control block）**，下面是xv6系统的进程信息的数据结构：
+
+```c
+// the registers xv6 will save and restore
+// to stop and subsequently restart a process
+struct context {
+int eip;
+int esp;
+int ebx;
+int ecx;
+int edx;
+int esi;
+int edi;
+int ebp;
+};
+// the different states a process can be in
+enum proc_state { UNUSED, EMBRYO, SLEEPING,
+RUNNABLE, RUNNING, ZOMBIE };
+// the information xv6 tracks about each process
+// including its register context and state
+struct proc {
+char *mem; // Start of process memory
+uint sz; // Size of process memory
+char *kstack; // Bottom of kernel stack
+// for this process
+enum proc_state state; // Process state
+int pid; // Process ID
+struct proc *parent; // Parent process
+void *chan; // If !zero, sleeping on chan
+int killed; // If !zero, has been killed
+struct file *ofile[NOFILE]; // Open files
+struct inode *cwd; // Current directory
+struct context context; // Switch here to run process
+struct trapframe *tf; // Trap frame for the
+// current interrupt
+};
+```
+
+我们可以看见context结构中储存了当前的寄存器的值，自然也包括了PC寄存器和栈寄存器等，OS把context保存着，然后可以停止进程的运行，并使其阻塞，然后运行其他进程
+
+在需要的时候，OS将context的值重新写入寄存器中，这就是我们说的上下文切换
+
+除此之外，```proc```中还包括了进程状态、内存大小、pid等信息，代码中有详细的每个变量的说明
+
+一个进程除了之前说过的三种状态外，还可能处于initial状态，此时进程刚刚创建，还没有从I/O设备读取数据指令
+还有final状态，此时进程已经完成，但是OS还没有将其清理（从内存中删除），UNIX-based OS将其称为僵尸进程（zombie process），僵尸进程一般用于在一个程序结束后检查其返回码（return code），来确定其完成状态
+
+- 在一个进程结束前，它会最后调用一次 ```wait()```调用，等待其子进程的结束
+
+---
+
+## HOMEWORK
+课后的工作中给了一个模拟进程指令的py程序，通过输入参数来模拟CPU处理多个进程的上下文切换，其中最主要的对比任务是，当一个进程完成I/O设备工作后，是立刻切换回这个进程继续工作，还是按照顺序优先完成Running的工作更快
+
+通过对比和查找资料我们可以得知，现在的CPU计算速度越来越快，进程更加趋向于I/O密集型进程，也就是说进程运行中的绝大部分时间是消耗在I/O运作上，所以我们应该偏向于在一个进程完成I/O操作后立刻切换到其进行CPU计算，这样能有更大的概率让进程都处于I/O处理的阻塞状态，提高I/O设备利用率
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.4k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/operating-system/CH1-proportionalShare/">
+      分比例调度
+    </a>
+    <span class="card-abstract">
+      
 # 分比例调度
 分比例调度就是每个进程都获得一个比例，所占比例越大的进程越容易被调度运行
 
@@ -354,12 +1368,8 @@ https://dnullp.github.io/2023/01/25/data_struct/RBTree/
 
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -369,13 +1379,11 @@ https://dnullp.github.io/2023/01/25/data_struct/RBTree/
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -392,11 +1400,12 @@ https://dnullp.github.io/2023/01/25/data_struct/RBTree/
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/operating-system/leading-chapter/">
-      Operating System Chapter 1
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/operating-system/leading-chapter/">
+        Operating System Chapter 1
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 The document I am learning is *Operating Systems: Three Easy Pieces*, and there is the address https://pages.cs.wisc.edu/~remzi/OSTEP/.
 
 This is a online free ebook, and someone recommended it to me.
@@ -473,8 +1482,12 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
 
 之后就是现代操作系统的诞生，不再多讲述
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -484,11 +1497,13 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -505,12 +1520,11 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-1-inro/">
-        wireshark practice 1
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-1-inro/">
+      wireshark practice 1
+    </a>
+    <span class="card-abstract">
+      
 计网开课了, 复习一下遗忘的东西, 顺便做一下课本后的wireshark实验
 
 # lab1: intro to wireshark
@@ -548,1035 +1562,6 @@ OS便是因此诞生的程序，通过将硬件虚拟化，映射到程序中，
 [print_1](/pdf/wireshark1.pdf)
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/algorithm/discrete-mathematic/master-theorem/">
-      分治算法和主定理
-    </a>
-    <span class="card-abstract">
-      
-#### 首先我们来看一道算法题
-
----
-
-# 平面最近点对（加强版）
-
-## 题目背景
-
-[P7883](/problem/P7883) 平面最近点对（加强加强版）
-
-## 题目描述
-
-给定平面上 $n$ 个点，找出其中的一对点的距离，使得在这 $n$ 个点的所有点对中，该距离为所有点对中最小的
-
-## 输入格式
-
-第一行：$n$ ，保证 $2\le n\le 200000$ 。
-
-接下来 $n$ 行：每行两个实数：$x\ y$ ，表示一个点的行坐标和列坐标，中间用一个空格隔开。
-
-## 输出格式
-
-仅一行，一个实数，表示最短距离，精确到小数点后面 $4$ 位。
-
-## 样例 #1
-
-### 样例输入 #1
-
-```
-3
-1 1
-1 2
-2 2
-```
-
-### 样例输出 #1
-
-```
-1.0000
-```
-
-## 提示
-
-数据保证 $0\le x,y\le 10^9$
-
----
-
-我们要求平面上的最小点对的距离，如果两两比较时间复杂度为$O(n^2 + n)$
-此处我们采用分治算法：
-- 首先将所有点按照x-y的优先级，从小到大排序
-  ```cpp
-    cin &gt;&gt; n;
-    for (int i = 0; i &lt; n; i++)
-    {
-        double x, y;
-        cin &gt;&gt; x &gt;&gt; y;
-        point.push_back(make_pair(x, y));
-    }
-    sort(point.begin(), point.end());
-    ```
-- 然后考虑分治算法，我们按照横坐标把点集平均分为两部分
-  ![](/image/algorithm/master_theorem_1.png)
-  图中P1~P5 为一组，P6~P10 为一组，此时的分治可以考虑把问题分解为左右两边的点集中的最小点对距离，合并时再考虑最小点对分布在两个点集之间的情况
-  由此可以写出分治部分的代码：
-  ```cpp
-    double merge(int left_border, int right_border)
-    {
-        if (left_border == right_border)
-        {
-            return 1e300;
-        }
-        if (left_border == right_border - 1)
-        {
-            return distance(point[left_border], point[right_border]);
-        }
-        int mid = (left_border + right_border) &gt;&gt; 1;
-
-        double d_1 = merge(left_border, mid);
-        double d_2 = merge(mid + 1, right_border);
-
-        double d = min(d_1, d_2);
-    }
-  ```
-- 现在要考虑最小点对跨越中间线的情况
-  简单点说，就是一种剪枝的想法，首先限制这样的点对一定在以中间线中心，宽度为2d的带状区域内，然后对于每一个点，做出如图的长方形：
-  ![](/image/algorithm/master_theorem_2.png)
-  由于同一边的点对一定比d大，所以每个正方形中最多有六个点，每个点最多要和其他五个点比较，由此可以得到分治算法的时间复杂的表达式：
-  $f(n) = 2f(n/2) + 5n$
-  其中5n是最差情况下，每个点都至少要比较五次
-
-  代码如下：
-  ```cpp
-    vector&lt;pair&lt;int, int&gt;&gt; temp;
-    for (int i = left_border; i &lt; right_border; i++)
-    {
-        if (abs(point[i].first - point[mid].first) &lt;= d)
-        {
-            temp.push_back(point[i]);
-        }
-    }
-    sort(temp.begin(), temp.end());
-
-    int num = temp.size();
-    for (int i = 0; i &lt; num; i++)
-    {
-
-        for (int j = i + 1; j &lt; num; j++)
-        {
-            if (temp[j].second &gt; temp[i].second + d)
-            {
-                break;
-            }
-            d = min(d, distance(temp[i], temp[j]));
-        }
-    }
-  ```
-
-#### 主定理
-对于形如
-$$f(n) = af(n/b) + cn^d$$
-表示的递推式，可以通过主定理来估计其时间复杂度：
-
-- $\frac{a}{b^d}&gt;1$
-  $f(n) =O(a^{log_bn})$
-
-- $\frac{a}{b^d}=1$
-  $f(n)=n^dlogn$
-
-- $\frac{a}{b^d}&lt;1$
-  $f(n)=n^d$
-
-推导过程大概就是把原来的递推式 通过迭代化简得到的
-通过主定理我们可以得到上面一题通过分治算法优化后的时间复杂度：
-$$O(nlogn)$$
-
-以上
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        4.4k字
-      </div>
-      <div class="card-info">
-        阅读时间: 4 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/works-projects/wireShark-2/">
-        wireshark practice 2
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-the data is as follows:
-[print_data_2_1](/pdf/wireshark_2_1.pdf)
-
-1. Is your browser running HTTP version 1.0 or 1.1?  What version of HTTP is the server running?
-
-    两者都是`HTTP/1.1`
-
-2. What languages (if any) does your browser indicate that it can accept to the server?
-    `ccept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,en-GB; q=0.6\r\n`
-    由上可知优先的语言包括: 中文, 英文
-    其中zh-CN是中文普通话, 包括繁体和简体, 而zh包括了方言在内的所有中   文
-
-3. What is the IP address of your computer?  Of the gaia.cs.umass.edu server?
-
-    Mine is `10.122.242.69`
-    gaia.cs.umass.edu is `128.119.245.12`
-
-4. What is the status code returned from the server to your browser?
-
-    `200 OK`
-
-5. When was the HTML file that you are retrieving last modified at the server?
-
-    `Fri, 24 Feb 2023 06:08:02 GMT`
-
-6. How many bytes of content are being returned to your browser?
-
-    `Content-Length 128`
-
-7. By inspecting the raw data in the packet content window, do you see any headers within the data that are not displayed in the packet-listing window?  If so, name one.
-
-我没看出来, 网上答案也说没有
-
----
-
-第二部分是关于缓存和检测文件是否修改的测试:
-
-[print_data_2_2](/pdf/wireshark_2_2.pdf)
-
-8. Inspect the contents of the first HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE” line in the HTTP GET?
-
-    No, I don&#39;t see it.
-
-9. Inspect the contents of the server response. Did the server explicitly return the contents of the file?   How can you tell?
-
-    Yes, the server explicitly return the contents of the file. I can see the content of the file in the packet content window.
-
-10. Now inspect the contents of the second HTTP GET request from your browser to the server.  Do you see an “IF-MODIFIED-SINCE:” line in the HTTP GET? If so, what information follows the “IF-MODIFIED-SINCE:” header?
-
-    yes, I see it.
-    The information is `If-Modified-Since: Thu, 02 Mar 2023 06:59:01 GMT`
-
-11. What is the HTTP status code and phrase returned from the server in response to this second HTTP GET?  Did the server explicitly return the contents of the file?   Explain.
-
-    The status code is `304 Not Modified`, and the server didn&#39;t explicitly return the contents of the file.
-    Because the file has cached in the browser, so the server have no need to return the contents of the file.
-
----
-
-第三部分是关于大文件的分段传输:
-
-[print_data_2_3](/pdf/wireshark_2_3.pdf)
-
-12. How many HTTP GET request messages did your browser send?  Which packet number in the trace contains the GET message for the Bill or Rights?
-    Only 1 send. And the packet number contains 300, 301, 302, 303.
-
-13. Which packet number in the trace contains the status code and phrase associated with the response to the HTTP GET request?
-
-    there is the relative print:
-    [print_data_2_3_1](/pdf/wireshark_2_3_1.pdf)
-    From the print we can leran that all the mentioned information is contained in the **packet 300**.
-
-14. What is the status code and phrase in the response?
-
-    `200 OK`
-
-15. How many data-containing TCP segments were needed to carry the single HTTP response and the text of the Bill of Rights?
-
-    `4`, for each the maximum payload of HTTP is 1380 bytes, and 1436 bytes is the total length of the packet.
-
----
-
-第四部分是关于包含内部object资源的html的 ( 比如含有图片的网络)
-
-[print_data_4](/pdf/wireshark_2_4.pdf)
-
-16.	How many HTTP GET request messages did your browser send?  To which Internet addresses were these GET requests sent?
-
-    `5`GETs were sent, and the addresses are:
-    - `Destination Address: 128.119.245.12`-request the HTML, ico and pearson.png
-    - `Destination Address: 178.79.137.164`-request the image
-
-17.	Can you tell whether your browser downloaded the two images serially, or whether they were downloaded from the two web sites in parallel?  Explain.
-
-    They are downloaded serially from two different web sites(2 IP addresses)
-
----
-
-下一部分是关于认证的内容:
-
-18.	What is the server’s response (status code and phrase) in response to the initial HTTP GET message from your browser?
-
-    `401 Unauthorized`
-
-19.	When your browser’s sends the HTTP GET message for the second time, what new field is included in the HTTP GET message?
-
-    `Authorization: Basic ZG51bGxfUFBQUFA6MTMxMzExMzQ1YXNk\r\n`
-    anyone can decode it by base64, and the result is 
-    `Credentials: dnull_PPPPP:131311345asd`
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.2k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-25/">
-      关于IP任播、BGP选择以及应用
-    </a>
-    <span class="card-abstract">
-      
-### IP任播
-首先**任播**的寻址策略为，在一群的接收节点中，只有一个可以得到接收
-
-可以想象成主机向各个节点执行**广播**，当有一个节点接收到主机的信息时，其他节点就无法再接收主机的信息，即在一群可能的接收节点只有一个接收节点
-
-### BGP协议
-#### 内部和外部
-跨越AS的BGP链接称为外部BGP，相同AS中的两台路由器之间的BGP称为内部BGP
-#### BGP是什么
-BGP是AS之间的路由选择协议，在路由器之间通过TCP链接交换进行AS间的路由选择的必要信息（称为BGP attribute）：
-- AS-Path —— 包含目前已经通告的路径的列表
-- NEXT-HOP ——  AS-Path起始AS的路由器（网关路由器）的与外部相连的接口
-
-BGP的选择由以下规则集确定：
-- 1）路由被指派一个**local preference**作为最高级别的优先选择
-- 2）使用DV算法计算具有最短AS-Path的路径，使用的是AS的跳数而非路由的跳数
-- 3）对于剩下的拥有相同AS-Path的路径，使用**hot potato routing**进行选择，即选择离开当前AS可以到达的最短AS**内**路径
-- 4）剩下如果还有多条路由，则使用BGP标识符
-
-可以注意到这里的BGP是高于DV和LS的路由协议（DV和LS是算法，但是也可以考虑它们是一种路由协议），它通过制定一个规则集、使用DV路由、HP路由等方式进行路由选择，并且传递的必要信息是从起始点一步步传播的
-
-我们称之为**path-vector routing protocol**，这表示它在一条路径上传播路由向量信息，如果反复感受这个过程，也可以理解
-
-BGP最终是用来控制网络层的路由选择的，但是由于使用TCP进行路由器之间的通信，所以实际上BGP被划分为一个应用层的协议
-
-#### BGP和IP任播
-我们说IP任播的实现原理是通过BGP来实现的
-
-我们直接以书上的例子来说明。现在假设我们访问一个视频，视频网站将会在很多个服务器上拥有视频的复制，这些服务器就是之前我们所学习过的CDN，这些CDN被分配了相同的IP地址
-当客户端发出视频的请求时，通过BGP选择路由的方式，一定会有一个符合条件的CDN首先接收到BGP传输的path-vector message，此时路由配置中就会选择这个最先匹配到的服务器作为路由的目标，其他的服务器就不再会和客户端建立连接，从而实现了IP任播
-
-#### BGP是从接收端向网络中发送路由信息的
-并将自己的路由信息通知到整个网络
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        8.1k字
-      </div>
-      <div class="card-info">
-        阅读时间: 7 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-30/">
-        SNMP与网络管理
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-关于SNMP这一节的内容在第七版上的内容已经过时了，第八版采用的英文版原书，所以在此对原文进行中文的思路整理
-
-### 5.7.1 network management framework
-网络管理框架中包含以下要素：
-- managing server
-  是一个应用，由网络管理员参与对整个网络的信息和指令进行收集、运行、分析、调度
-
-- managed device
-  被管理网络中的设备，包括host,router,middlebox,modern,switch
-
-- Date
-   包括configuration data and operational data
-   前者是人为配置的managed device的状态(state)，后者是其操作运行时才能获得的信息，比如运行OSPF时获得的邻居的信息等
-   device statistic
-   随着运行而更新的数据，比如设备接收的包的数量，丢弃的包的数量
-   managed device中的数据在manage server中也会有备份
-
-- network management agent
-  网络管理代理是运行在managed device中的应用，manage server通过与代理连接交流来控制managed device的本地行为
-
-- network management protocol
-  网络管理协议用于在managing server和managed device之间进行通信，中间通过agent代理
-
-![](/image/network/2022_10_30_pic_1.png)
-
-如图可以直观理解网络管理的框架
-
-在这个框架中，一般使用三种方式进行管理：
-
-- CLI(command line interface)
-  命令行接口.
-  直接通过输入指令或者编写脚本，在managed device上进行操作，或者远程(telnet,ssh)通过managing server对其他设备进行操作，但是这样难以应用到大型网络上
-
-- SNMP/MIB (simple network management protocol / management information base)
-  MIB中储存了之前提到过的数据，并且管理员（运营商）可以使用SNMP协议查询和监控这些数据，然后使用CLI去主动配置设备
-
-- NETCONF/YANG
-  相比于SNMP/MIB更加抽象的模型，在之后再说吧
-
-### 5.7.2 SNMP/MIB
-
-MIB对象由SMI (structure of management information)描述，使用正式的定义语言来确保网络管理数据的语法(syntax)和语义(semantics)的正确性
-
-#### PDU (protocol data unit)
-由SNMP定义的七种消息类型：
-
-![](/image/network/2022_10_30_pic_2.png)
-
-``` The MIB objects whose values are being requested are specified in the variable binding portion of the PDU```
-在PDU的变量部分中 指定了 被请求某个值的MIB对象
-
-```GetRequest, GetNextRequest, and GetBulkRequest differ in the granularity of their data requests.``` 
-前三个类型的PDU在请求数据的粒度上不同（请求数据量不同）
-
-
-```GetRequest can request an arbitrary set of MIB values;```
-第一个PDU可以请求任意一组MIB的值
-
-```multiple  GetNextRequests can be used to sequence through a list or table of MIB objects;```
-多个GetNextRequests指令可以用于顺序通过一个list表或者table表的MIB对象
-
-```GetBulkRequest allows a large block of data to be returned, avoiding the overhead incurred if multiple GetRequest or GetNextRequest messages were to be sent.```
-允许一次返回一大块的数据，从而避免多次发送GetRequest或GetNextRequest产生的开销(incurred overhead)
-
-
-```In all three cases, the agent responds with a Response PDU containing the object identifiers and their associated values```
-在三种情况中，代理会响应一个 包含了对象身份标识符 和 其对应数值 的PDU
-
-```The SetRequest PDU is used by a managing server to set the value of one or more MIB objects in a managed device. An agent replies with a Response PDU with the “noError” error status to confirm that the value has indeed been set```
-SetRequest是managing server使用的PDU，用于设置一个或多个managed device中描述的MIB对象
-代理会返回一个PDU，来告诉managing server没有错误，并且目标值已经得到了设置
-
-```The InformRequest PDU is used by a managing server to notify another managing server of MIB information that is remote to the receiving server```
-InformRequest是用于在managing server之间转发MIB信息的，有些MIB远离目标服务器，所以需要通过InformRequest传递信息
-
-```The final type of SNMPv3 PDU is the trap message. Trap messages are generated asynchronously; that is, they are not generated in response to a received request but rather in response to an event for which the managing server requires notification. RFC 3418 defines well-known trap types that include a cold or warm start by a device, a link going up or down, the loss of a neighbor, or an authentication failure event. A received trap request has no required response from a managing server```
-
-最后一类是trap message，它是异步生成的，也就是说，它不会用来回应请求，而是用来告知managing server所需要知道的事件，比如设备的冷启动，热启动，一个连接的建立和关闭，邻居的缺失等。managing server接收到trap message后不需要回应
-
----
-
-```Given the request-response nature of SNMP, it is worth noting here that although SNMP PDUs can be carried via many different transport protocols, the SNMP PDU is typically carried in the payload of a UDP datagram.```
-
-由于SNMP的“请求回应”特性，值得注意，尽管SNMP PDU可以被很多不同的运输协议携带，但是SNMP PDU通常作为UDP数据报的负载
-
-```Indeed, RFC 3417 states that UDP is “the preferred transport mapping.”However, since UDP is an unreli- able transport protocol, there is no guarantee that a request, or its response, will be received at the intended destination.```
-
-实际上在RFC3417中描述UDP是一种“首选的传输映射”，然而，由于UDP是一种不可靠传输协议，对于UDP传输的请求和回应都没有保证能够到达目的地
-
-```The request ID field of the PDU (see Figure 5.21) is used by the managing server to number its requests to an agent;the agent’s response takes its request ID from that of the received request.```
-
-PDU中有一个请求ID字段，managing server用来对它向代理发送的请求进行编号，而代理的响应中也带有接收到的请求的ID
-
-```Thus, the request ID field can be used by the managing server to detect lost requests or replies.```
-
-这样managing server就可以检测丢失的请求或回答
-
-```It is up to the managing server to decide whether to retransmit a request if no corresponding response is received after a given amount of time.```
-至于一段时间后确定了PDU的丢失，是否要重新传输PDU，则是由managing server决定
-
-```In particular, the SNMP standard does not mandate any particular procedure for retransmission, or even if retransmission is to be done in the first place.```
-
-即便重传是第一时间要做的事情，但是SNMP并没有规定重传的方式
-
-```It only requires that the managing server “needs to act responsibly in respect to the frequency and duration of retransmissions.”This, of course, leads one to wonder how a “responsible” protocol should act!```
-唯一的要求就是managing server 需要根据重传的频率和间隔来保证可靠性
-这必然让人疑惑一个可靠的协议应该如何运作
-
-
-#### MIB
-
-```We learned earlier that a managed device’s operational state data (and to some extent its configuration data) in the SNMP/MIB approach to network management are represented as objects that are gathered together into an MIB for that device.```
-
-我们早些时候学过：在网络管理的SNMP/MIB方法中，受控设备的操作状态数据(或者某些配置数据)被描述为对象，并储存在该设备的MIB中
-
-```An MIB object might be a counter, such as the number of IP datagrams discarded at a router due to errors in an IP datagram header;or the number of carrier sense errors in an Ethernet interface card;descriptive information such as the version of the software running on a DNS server;status information such as whether a particular device is functioning correctly;or protocol-specific information such as a routing path to a destination.```
-
-一个MIB对象可以是一个计数器，比如由于IP数据报头部受损而在路由器中被丢弃的IP数据报数量，以太网接口卡中的载波侦听错误数(链路层，没学)，像DNS服务器中运行的软件的版本这种 描述性信息，一个设备是否运行正常 这样的状态信息，或者路由选择目标 这样的基于协议的信息
-
-```Related MIB objects are gathered into MIB modules.There are over 400 MIB modules defined in various IETC RFC’s;there are many more device-andvendor-specific MIBs.[RFC 4293] specifies the MIB module that defines managed objects (including ipSystemStatsInDelivers) for managing implementations of the Internet Protocol (IP) and its associated Internet Control Message Protocol (ICMP).[RFC 4022] specifies the MIB module for TCP, and [RFC 4113] specifies the MIB module for UDP.```
-
-关联的MIB对象被储存在MIB模块中，RFC定义了超过400种MIB模块，同时还有更多的基于厂商和设备特有的MIB
-RFC 4293 制定的MIB模块 为IP协议和ICMP协议的实现 定义了受控对象
-RFC 4022 为TCP制定，而RFC 4113为UDP制定
-
-```While MIB-related RFCs make for rather tedious and dry reading, it is nonetheless instructive (i.e., like eating vegetables, it is “good for you”) to consider an example of a MIB object, The ipSystem-StatsInDelivers object-type definition from [RFC 4293] defines a 32-bit read-only counter that keeps track of the number of IP datagrams that were received at the managed device and were successfully delivered to an upper-layer protocol.In the example below, Counter32 is one of the basic data types defined in the SMI.```
-尽管MIB相关的RCF读起来相当枯燥，它仍然具有指导性
-考虑一个MIB对象的例子，一个ipSystem-StatsInDelivers对象类型的定义，来自RFC 4239，定义了一个32位只读计数器，用来维护成功接收并向上层协议分发的IP数据报的数量的track
-Counter32是SMI中定义的基本数据类型之一
-
-### NETCONF and YANG
-
-```text
-The NETCONF protocol operates between the managing server and the managed 
-network devices, providing messaging to 
-
-(i) retrieve, set, and modify con-
-figuration data at managed devices; 
-
-(ii) to query operational data and statistics
-at managed devices;
-
-(iii) to subscribe to notifications generated by managed
-devices. 
-```
-NETCONF协议运行于managing server 和 受控网络设备之间，用于发送：
-
-- 检索、设置、设定managed device的配置数据
-- 查询managed device的操作数据
-- 订阅以监听managed device生成的通知（习惯了订阅这个说法）
-
-NETCONF使用xml来传输，通过RPC的方式
-
-NETCONF操作表：
-![](/image/network/2022_10_31_pic_1.png)
-
-使用这种方式可以很容易的配置复杂庞大的网络业务逻辑，使厂商把注意力放到整个网络的配置上，而不是单个的设备
-
-#### YANG
-类比于SMI，超过本书范围
-
----
-
-以上我们讨论的SNMP/MIB和NETCONF/YANG都是应用层协议，是SDN软件
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        2.7k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-10-9/">
-      计算机网络第三章的一点思路整理
-    </a>
-    <span class="card-abstract">
-      
-## 可靠数据传输
-
-运输层在不可靠的网络层IP协议的基础上搭建了一个可靠的传输协议，但是其中的实现原理有些许复杂，在此做一下记录
-
-### 流水线
-流水线是后续的多种重传机制的基础，假如每个报文段在被接收方收到之后，返回一个ACK响应，再传输下一个报文段，在两次传输报文段之间的等待时间是不可忽视的长
-参考cpu的指令处理流水线，网络数据分组的传输也使用了流水线机制，一次性传输多个分组，并且根据后续的响应做出重传
-
-### 流水线的基本重传方式
-
-首先，流水线的实现中有一个“滑动窗口”，没错，就和单调队列例题中的滑动窗口是同一个东西，窗口在分成报文段的报文上滑动，每个段就是一个分组，窗口的长度就是当前可以容纳的已经发送但是未接收到确认响应的分组数量，我们用**base**标记窗口的起始位置，表示未接受到的编号最小的分组的序号，用**nextseqnum**标记可用的“流水线空位”的起始位置
-
-#### 累计确认
-base标记的位置之前的全部分组，我们认为它们已经全部被接收并确认，这样的确认方式称为**累计确认**
-
-#### 回退N步
-在回退N步中采用了累计确认的方式，接收方会丢弃全部的**失序**的分组，并发送最近的成功接收的分组的ACK
-对于发送方来说，则一直等待base标记处的ACK，如果发生超时事件，则从base处重新发送所有的未确认分组
-
-#### 选择重传
-选择重传往往是我们最常见的重传方式
-对于接收方和发送方都需要维护一个窗口
-对于接收方来说，窗口内的报文段就是等待接收的分组，在窗口范围之内的编号的分组被接收到时，则返回一个对于编号的ACK，如果是Base_recv标记的位置的分组，则窗口滑动，否则将分组进行缓存，在前面的分组到达后再一并上交给上层
-特别的，对于base_recv以前的分组被接收到时，也需要发送ACK信号回去，这里涉及到一种特殊情况，一会儿讨论
-
-对于发送方来说，窗口内的每个分组都有一个单独的逻辑计时器，用来控制超时事件，窗口的滑动位置由最早的未发送分组控制
-
-##### 选择重传的bug
-窗口长度比序号空间小得不够多时无法正常工作，因为在ACK丢失的情况下，发送方重传了一个分组，但是接收方接收了正确的分组后窗口向下滑动了，那么相同序号的分组可能进入窗口等待，那么此时接收方就会把一个重传的分组当作新的分组接收
-
-解决这种问题，一般需要吧窗口长度设为小于或等于序号空间大小的一半
-
-### TCP协议中的更多的细节实现
-
-TCP协议的实现在可靠数据传输的基础上进行了更多的细节实现
-
-#### TCP连接
-首先TCP是面向连接的协议，在正式开始通话前会交换信息，建立一条逻辑连接，以确保可靠信息传输的进行，这个过程就是考试常考的“三次握手四次挥手”
-
-##### TCP报文结构
-这篇思考主要是理清可靠数据传输的逻辑，所以会跳过一些无关知识点
-
-TCP的报文结构如下：
-
-![](/image/network/1_1.png)
-
-与可靠性有关的部分包括
-- 数据序号：报文段的首**字节**在字节流中的序号
-- 确认序号：即之前说过的ACK响应，表示希望接收的序号(NAK已经被优化掉了)
-- ACK标志：表示确认序号是有效的
-- 包校验和：检测报文段的完整性
-
-#### TCP使用的可靠性措施
-- 累计确认
-- ACK响应都是被**捎带**在一个数据报文段中的
-
-##### 发送方的策略
-
-- 传输层从上层获得报文，生成具有Nextseqnum序号的TCP报文段，并启动计时器
-- 定时器超时，重传序号最小的未传输报文段。重启定时器
-- 收到ACK，如果ACK字段的值大于SendBase，则滑动窗口
-
-因为TCP采用的累计确认，所以返回的ACK响应必然会标记出接收方以全部接收的最小编号
-书上讨论了三种特殊情况，到目前为止，我们可以认为运输层的数据传输已经保证可靠
-
-### 总结TCP所使用的可靠数据传输机制
-TCP协议的发送方只会根据ACK重传序号最小的一个分组，这一点和GBN协议类似，但是接收方会选择性地缓存失序的分组，这一点和SR协议类似，TCP使用的这种可靠数据传输协议我们称为**选择确认**
-
-#### 流量控制
-
-数据到达接收方后，并不是立即上传给上层的，而是会停留在一个“缓存区”中，等待上层读取，这样的缓存区通过一个窗口实现，称为**接收窗口**，接收方将接收窗口的大小写在接收窗口字段中，告诉发送方如何控制**发送但未确认的报文段**
-
-### 拥塞原因和代价中的数值计算思路
-
-首先主机A、B向路由器提供流量的速率是$\lambda_{in}$
-接受方的接收速率（吞吐量）为$\lambda_{out}$
-初始数据+重传数据为$\lambda_{in}^{&#39;}$
-
-分为下面三种情况讨论：
-- 情况1：
-  有一台无限缓存的路由器
-  这时，两台机器同时向目标传输数据，在速率接近最大吞吐量时，链路的利用率达到理想状态，但是此时的排队时延也会达到最高
-
-- 情况2：
-  有一台缓存有限的路由器
-  有限的缓存容量会导致丢包重传的问题， 我们假设发送方在路由器缓存容量满时不再发送分组，则链路吞吐量理想最大为$R/2$，由于拥塞控制一定小于这个值
-  如果考虑确定丢失了一个包后进行重传，吞吐量一般为$R/3$，所以一般有$0.333R$是初始数据，$0.166R$是重传数据
-  tips:由于链路上的缓存空间有限，在$\lambda_{in}$过高时，会发生下面的情况：
-  数量为a的数据到达路由器，其中有b数量的数据丢失，剩下的部分被发送到接收方，然后b数量的数据才重传，这样，接收方接收数据的时间就加上了重传b部分的时间
-
-  考虑到并不是所有数据都会丢失，而只是传输时间过长，所以还会产生不必要的重传
-
-- 情况3
-  采用多台路由器和多跳路径时，两条连接会在使用同一个路由器时产生竞争，当一个$\lambda_{in}^{&#39;}$接近无限大时，其他的连接的吞吐量将接近于0
-
-#### 最后一部分是对一些术语的记录
-- 快重传
-  快重传指的是在发送方收到三个连续的**冗余ACK**后，确认这个分组已经丢失，所以不等待超时事件直接进行重传
-
-- 快速恢复
-  快重传不需要等待慢启动，而是直接快速将速率调整到阈值
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        17k字
-      </div>
-      <div class="card-info">
-        阅读时间: 15 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/network/self-studying-notes/2022-11-5/">
-        6.7节阅读与翻译
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-只是阅读时用于辅助记忆的笔记翻译，所以很多地方略过未翻译，请勿当作翻译参考
-
-## Retrospective: A Day in the Life of a Web Page Request
-## 回顾：一次网页请求的历程
-
-```Now that we’ve covered the link layer in this chapter, and the network, transport and application layers in earlier chapters, our journey down the protocol stack is complete!```
-
-现在我们已经在这章中涉及了链路层，在之前学习了网络层，传输层和应用层，我们的自顶向下协议栈的旅程已经结束了
-
-```In the very beginning of this book (Section 1.1), we wrote “much of this book is concerned with computer network protocols,” and in the first five chapters, we’ve certainly seen that this is indeed the case! Before heading into the topical chapters in second part of this book, we’d like to wrap up our journey down the protocol stack by taking an integrated, holistic view of the protocols we’ve learned about so far.One way then to take this “big picture” view is to identify the many (many!) protocols that are involved in satisfying even the simplest request: downloading a Web page.```
-
-在这本书的最开始，我们说“这本书是关于计算机网络协议的”，并且在前五章中，我们确实这么学习了。
-在开始这本书第二部分之前，让我们先对我们已学内容做一个融合的、整体的概览，以此来对自顶向下的协议栈做一个总结。
-其中一种总结方式就是对 满足一个最简单的请求中的大量的相关协议做认识，比如请求一个网页。
-
-
-```Figure 6.32 illustrates our setting: a student, Bob, connects a laptop to his school’s Ethernet switch and downloads a Web page (say the home page of www.google.com).As we now know, there’s a lot going on “under the hood” to satisfy this seemingly simple request.A Wireshark lab at the end of this chapter examines trace files containing a number of the packets involved in similar scenarios in more detail.```
-
-6.32图阐述了我们的setting：
-
-![](/image/network/2022_11_5_pic_1.png)
-
-学生Bob用一台笔记本电脑连接上了学校的以太网交换机，并下载以一个网页
-我们知道，这样一个简单的请求下面有很多隐藏的细节，这一章的最后有一个wireshark实验，检查了更多包含相关场景下package的追踪文件
-
-#### Getting Started: DHCP, UDP, IP, and Ethernet
-
-```Let’s suppose that Bob boots up his laptop and then connects it to an Ethernet cable connected to the school’s Ethernet switch, which in turn is connected to the school’s router, as shown in Figure 6.32.The school’s router is connected to an ISP, in this example, comcast.net.In this example, comcast.net is providing the DNS service for the school;thus, the DNS server resides in the Comcast network rather than the school network.We’ll assume that the DHCP server is running within the router, as is often the case.```
-
-我们假设，Bob启动了他的电脑，然后连接到了以太网电缆，从而连接到学校的以太网交换机，从而又连接到了学校的路由器
-学校路由器连接到ISP，这里的例子是Comcast
-同时Comcast. net也是DNS服务的提供者，因此，DNS服务器在Comcast网络中，而不是在学校里
-我们假设DHCP服务器在路由器里运行，就像通常情况一样
-
-```When Bob first connects his laptop to the network, he can’t do anything (e.g., download a Web page) without an IP address.Thus, the first network-related action taken by Bob’s laptop is to run the DHCP protocol to obtain an IP address, as well as other information, from the local DHCP server:```
-
-当Bob第一次连接到网络中时，他还没有IP地址，什么都做不了
-所以，第一件要干的和网络相关的事情就是执行DHCP协议来获得IP地址 以及其它信息
-
-```1. The operating system on Bob’s laptop creates a DHCP request message (Section 4.3.3) and puts this message within a UDP segment (Section 3.3) with destination port 67 (DHCP server) and source port 68 (DHCP client).The UDP segment is then placed within an IP datagram (Section 4.3.1) with a broadcast IP destination address (255.255.255.255) and a source IP address of 0.0.0.0, since Bob’s laptop doesn’t yet have an IP address.```
-
-Bob电脑上的操作系统创建了一个DHCP请求信息，并且将其装入一个UDP报文中，目标端口为67（DHCP server），源端口为68（DHCP client）
-然后UDP报文被装入IP数据报中，并通过广播地址255.255.255.255发送，源地址为0.0.0.0
-
-```2. The IP datagram containing the DHCP request message is then placed within an Ethernet frame (Section 6.4.2).The Ethernet frame has a destination MAC addresses of FF:FF:FF:FF:FF:FF so that the frame will be broadcast to all devices connected to the switch (hopefully including a DHCP server);the frame’s source MAC address is that of Bob’s laptop, 00:16:D3:23:68:8A.```
-
-然后IP数据报被装入一个链路层帧中
-链路层帧有一个MAC地址（FF:FF:FF:FF:FF:FF），所以帧会被广播到所有相连接的交换机（其中很可能包括DHCP服务器），帧的源地址为Bob电脑的网卡接口的MAC地址
-
-```3. The broadcast Ethernet frame containing the DHCP request is the first frame sent by Bob’s laptop to the Ethernet switch.The switch broadcasts the incoming frame on all outgoing ports, including the port connected to the router.```
-
-包含DCHP请求的帧是Bob电脑向以太网交换机发出的第一个帧，交换机将接收到的帧向所有出端口广播
-
-```4. The router receives the broadcast Ethernet frame containing the DHCP request on its interface with MAC address 00:22:6B:45:1F:1B and the IP datagram is extracted from the Ethernet frame.The datagram&#39;s broadcast IP destination address indicates that this IP datagram should be processed by upper layer protocols at this node, so the datagram&#39;s payload (a UDP segment) is thus demultiplexed (Section 3.2) up to UDP, and the DHCP request message is extracted from the UDP segment.The DHCP server now has the DHCP request message.```
-
-路由器 通过带有一个MAC地址的接口 接收到了广播的 包含DCHP请求的帧，并把IP数据报提取出来，IP数据报中的目的地址 指定了 数据报的荷载应该上交给当前节点的 上层协议，所以其中的UDP报文段被多路分解到了UDP协议中，然后DCHP协议报文被分解到指定的端口
-现在DCHP服务器有请求信息了
-
-```5. Let’s suppose that the DHCP server running within the router can allocate IP addresses in the CIDR (Section 4.3.3) block 68.85.2.0/24.In this example, all IP addresses used within the school are thus within Comcast’s address block.Let’s suppose the DHCP server allocates address 68.85.2.101 to Bob’s laptop.The DHCP server creates a DHCP ACK message (Section 4.3.3) containing this IP address, as well as the IP address of the DNS server (68.87.71.226), the IP address for the default gateway router (68.85.2.1), and the subnet block (68.85.2.0/24) (equivalently, the “network mask”).The DHCP message is put inside a UDP segment, which is put inside an IP datagram, which is put inside an Ethernet frame.The Ethernet frame has a source MAC address of the router&#39;s interface to the home network (00:22:6B:45:1F:1B) and a destination MAC address of Bob&#39;s laptop (00:16:D3:23:68:8A).```
-
-我们假设路由器内运行的DHCP服务器 可以在某个CIDR地址块内分配地址，此处的所有的学校分配的IP地址都是在Comcast网络段内的
-假设现在已经为Bob的电脑分配好了IP地址，DCHP服务器创建了一个ACK信息，其中包含了分配给Bob的IP地址、DNS服务器的地址、默认网关的服务器地址，以及子网的IP范围（CIDR，也可以说是子网掩码）
-这些信息通过UDP发送，向下传入数据报、数据帧，这一次链路层帧的目的MAC地址是已知的，不用通过广播MAC地址，但是IP地址依然还是要广播（Bob电脑还没有IP地址）
-
-题外话：DCHP请求前会先发送 DCHP发现报文，这样Bob的主机可能发现多个DCHP服务器，然后设备会在其中选择更优的服务器发送请求
-
-```6. The Ethernet frame containing the DHCP ACK is sent (unicast) by the router to the switch.Because the switch is self-learning (Section 6.4.3) and previously received an Ethernet frame (containing the DHCP request) from Bob&#39;s laptop, the switch knows to forward a frame addressed to 00:16:D3:23:68:8A only to the output port leading to Bob&#39;s laptop.7. Bob’s laptop receives the Ethernet frame containing the DHCP ACK, extracts the IP datagram from the Ethernet frame, extracts the UDP segment from the IP datagram, and extracts the DHCP ACK message from the UDP segment.Bob’s DHCP client then records its IP address and the IP address of its DNS server.It also installs the address of the default gateway into its IP forwarding table (Section 4.1).Bob’s laptop will send all datagrams with destination address outside of its subnet 68.85.2.0/24 to the default gateway.At this point, Bob’s laptop has initialized its networking components and is ready to begin processing the Web page fetch.(Note that only the last two DHCP steps of the four presented in Chapter 4 are actually necessary.)```
-
-包含DCHP ACK的帧被发送到交换机，由于交换机的 自学习性，在先前已经接收过一个来自目的地的帧，所以交换机知道向哪个方向转发这个帧
-Bob的电脑接收帧，并上传到IP层，复用到UDP，最后DCHP协议接收到信息，然后电脑记录下自己的IP地址，并且配置DNS服务器
-同时，电脑也会根据DCHP配置默认网关，如果电脑发送的IP数据报的目标地址超过了当前子网，该数据包会发往默认网关
-
-至此，Bob的电脑已经完成了网络基础组件的初始化，做好了取得网页的准备
-
-#### Still Getting Started: DNS and ARP
-
-```When Bob types the URL for www.google.com into his Web browser, he begins the long chain of events that will eventually result in Google’s home page being displayed by his Web browser.Bob’s Web browser begins the process by creating a TCP socket (Section 2.7) that will be used to send the HTTP request (Section 2.2) to www.google.com.In order to create the socket, Bob’s laptop will need to know the IP address of www.google.com. We learned in Section 2.5, that the DNS protocol is used to provide this name-to-IP-address translation service.```
-
-当Bob在浏览器内输入www.google.com时，一连串的事件接连发生，最后使得Google的主页出现在了Bob的浏览器中
-Bob的浏览器开始时，建立一个TCP连接用于发送HTTP请求，为了建立这个Socket，他需要先知道Google的IP地址
-DNS协议便是用于此处，以提供 域名到地址的转化
-
-```8. The operating system on Bob’s laptop thus creates a DNS query message (Section 2.5.3), putting the string “www.google.com” in the question section of the DNS message.This DNS message is then placed within a UDP segment with a destination port of 53 (DNS server).The UDP segment is then placed within an IP datagram with an IP destination address of 68.87.71.226 (the address of the DNS server returned in the DHCP ACK in step 5) and a source IP address of 68.85.2.101.```
-
-Bob电脑的操作系统创建DNS请求信息，在该信息内装入“www.google.com”的字符串，然后置入一个UDP报文段中，目标地址为DNS服务器（在DHCP阶段已经配置），端口为53（DNS服务的端口）
-然后UDP报文段置入一个IP数据报中，其中包含了目的地址和源地址
-
-```9. Bob’s laptop then places the datagram containing the DNS query message in an Ethernet frame.This frame will be sent (addressed, at the link layer) to the gateway router in Bob’s school’s network.However, even though Bob’s laptop knows the IP address of the school’s gateway router (68.85.2.1) via the DHCP ACK message in step 5 above, it doesn’t know the gateway router’s MAC address.In order to obtain the MAC address of the gateway router, Bob’s laptop will need to use the ARP protocol (Section 6.4.1).```
-
-然后Bob的电脑把包含DNS查询信息的数据段置入以太网帧中，发送到学校的网关路由器
-此时信息中不知道网关路由器的地址，所以Bob的电脑需要使用ARP协议
-
-```10. Bob&#39;s laptop creates an ARP query message with a target IP address of 68.85.2.1 (the default gateway), places the ARP message within an Ethernet frame with a broadcast destination address (FF:FF:FF:FF:FF:FF)and sends the Ethernet frame to the switch, which delivers the frame to all connected devices, including the gateway router.```
-
-Bob的电脑创建了一个ARP请求，目标地址为默认网关的IP地址，将ARP信息置入一个带有广播地址的链路层帧中（FF:FF:FF:FF:FF:FF），交换机于是在以太网中广播这个信息
-
-```11. The gateway router receives the frame containing the ARP query message on the interface to the school network, and finds that the target IP address of 68.85.2.1 in the ARP message matches the IP address of its interface.The gateway router thus prepares an ARP reply, indicating that its MAC address of 00:22:6B:45:1F:1B corresponds to IP address 68.85.2.1.It places the ARP reply message in an Ethernet frame, with a destination address of 00:16:D3:23:68:8A (Bob’s laptop) and sends the frame to the switch, which delivers the frame to Bob’s laptop.```
-
-网关路由器在学校网络一端的接口上 接收到了包含ARP请求信息的帧，并且发现目标IP和自己相匹配，于是准备一个ARP响应，其中解释了它的与IP地址对应的MAC地址，并向Bob的电脑发送（此时它知道Bob电脑的MAC地址）
-
-```12. Bob’s laptop receives the frame containing the ARP reply message and extracts the MAC address of the gateway router (00:22:6B:45:1F:1B) from the ARP reply message.```
-
-Bob的电脑接收到ARP回应，并得到网关的MAC地址，向其发送DNS请求
-
-```13. Bob’s laptop can now (finally!) address the Ethernet frame containing the DNS query to the gateway router’s MAC address.Note that the IP datagram in this frame has an IP destination address of 68.87.71.226 (the DNS server), while the frame has a destination address of 00:22:6B:45:1F:1B (the gateway router).Bob’s laptop sends this frame to the switch, which delivers the frame to the gateway router.```
-
-仍然是从运输层到网络层到链路层，然后向交换机发送帧，交换机向网关路由器发送
-
-#### Still Getting Started: Intra-Domain Routing to the DNS Server
-
-```14. The gateway router receives the frame and extracts the IP datagram containing the DNS query. The router looks up the destination address of this datagram (68.87.71.226) and determines from its forwarding table that the datagram should be sent to the leftmost router in the Comcast network in Figure 6.32.The IP datagram is placed inside a link-layer frame appropriate for the link connecting the school’s router to the leftmost Comcast router and the frame is sent over this link.```
-
-网关路由器接收到IP数据报，确定地址后查询转发表，以确定要转发的子网的“最左路由器”（就像是最近的可达网关路由器），然后将其放入对应的链路缓存中，进行转发
-
-```15. The leftmost router in the Comcast network receives the frame, extracts the IP datagram, examines the datagram&#39;s destination address (68.87.71.226) and determines the outgoing interface on which to forward the datagram toward the DNS server from its forwarding table, which hasbeen filled in by Comcast&#39;s intra-domain protocol (such as RIP, OSPF or IS-IS, Section 5.3) as well as the Internet&#39;s inter-domain protocol, BGP (Section 5.4).```
-
-最左路由器收到帧后，依然查看转发表（已经被SA内部路由协议和外部协议填写好了），然后转发
-
-```16. Eventually the IP datagram containing the DNS query arrives at the DNS server.The DNS server extracts the DNS query message, looks up the name www.google.com in its DNS database (Section 2.5), and finds the DNS resource record that contains the IP address (64.233.169.105) for www.google.com.(assuming that it is currently cached in the DNS server).Recall that this cached data originated in the authoritative DNS server (Section 2.5.2) for google.com.The DNS server forms a DNS reply message containing this hostname-to-IP- address mapping, and places the DNS reply message in a UDP segment, and the segment within an IP datagram addressed to Bob’s laptop (68.85.2.101).This datagram will be forwarded back through the Comcast network to the school’s router and from there, via the Ethernet switch to Bob’s laptop.17. Bob’s laptop extracts the IP address of the server www.google.com from the DNS message.Finally, after a lot of work, Bob’s laptop is now ready to con- tact the www.google.com server!```
-
-最后数据报到达DNS服务器，DNS分解出DNS请求，并查询其数据库，发现了其中对应的IP地址（我们假设该服务器已经 缓存了这个地址）
-回想一下，这个缓存的数据 源自于一个权威DNS服务器
-这个DNS服务器组建了一个DNS回应信息，其中包括了域名到IP的映射信息，并将其置入UDP报文段中， 通过同样的方式到数据报、帧、转发，到达Bob的电脑
-终于得到了最后的地址，Bob可以上网了
-
-#### Web Client-Server Interaction: TCP and HTTP
-
-```18. Now that Bob’s laptop has the IP address of www.google.com, it can create the TCP socket (Section 2.7) that will be used to send the HTTP GET message (Section 2.2.3) to www.google.com.When Bob creates the TCP socket, the TCP in Bob’s laptop must first perform a three-way handshake (Section 3.5.6) with the TCP in www.google.com.Bob&#39;s laptop thus first creates a TCP SYN segment with destination port 80 (for HTTP), places the TCP segment inside an IP datagram with a destination IP address of 64.233.169.105 (www.google.com), places the datagram inside a frame witha destination MAC address of 00:22:6B:45:1F:1B (the gateway router) and sends the frame to the switch.```
-
-现在Bob的电脑有了IP地址，可以创建一个TCP socket连接了，这将用于发送HTTP的GET信息
-当Bob创建了TCP socket时，Bob的电脑首先要执行三次握手，因此，首先创建一个带有目标地址的TCP SYN数据段，将该报文段传输过去
-
-```19. The routers in the school network, Comcast’s network, and Google’s network forward the datagram containing the TCP SYN toward www.google.com, using the forwarding table in each router, as in steps 14–16 above.Recall that the router forwarding table entries governing forwarding of packets over the inter-domain link between the Comcast and Google networks are determined by the BGP protocol (Chapter 5).```
-
-和之前一样的传输步骤，回想一下路由器的转发表的域间传输是由BGP协议决定的
-
-
-```20. Eventually, the datagram containing the TCP SYN arrives at www.google.com.The TCP SYN message is extracted from the datagram and demultiplexed to the welcome socket associated with port 80. A connection socket (Section 2.7) is created for the TCP connection between the Google HTTP server and Bob’s laptop.A TCP SYNACK (Section 3.5.6) segment is generated, placed inside a datagram addressed to Bob’s laptop, and finally placed inside a link-layer frame appropriate for the link connecting www.google.com to its first-hop router.```
-
-最后，TCP SYN到达服务器，并被分解给80号端口的welcome socket，，然后一个TCP链接建立了（服务器预留资源，分配起始编号），然后一个TCP SYNACK报文生成，并被传输到Bob的电脑上
-
-```21. The datagram containing the TCP SYNACK segment is forwarded through the Google, Comcast, and school networks, eventually arriving at the Ethernet controller in Bob’s laptop.The datagram is demultiplexed within the operating system to the TCP socket created in step 18, which enters the connected state.```
-
-Bob的电脑接收到了TCP SYNACK，并被分解到TCP协议中，使其进入连接状态
-
-```22. With the socket on Bob’s laptop now (finally!) ready to send bytes to www.google.com, Bob’s browser creates the HTTP GET message (Section 2.2.3) containing the URL to be fetched.The HTTP GET message is then written into the socket, with the GET message becoming the payload of a TCP segment.The TCP segment is placed in a datagram and sent and delivered to www.google.com as in steps 18–20 above.```
-
-现在Bob电脑上的Socket准备好发送字节了，浏览器首先创建一个HTTP GET请求，包含了即将去取得的URL
-然后GET请求被写入socket，传输到目标
-
-```23. The HTTP server at www.google.com reads the HTTP GET message from the TCP socket, creates an HTTP response message (Section 2.2), places the requested Web page content in the body of the HTTP response message, and sends the messageinto the TCP socket.```
-
-HTTP服务器收到了请求后，创建回应信息，把对应的网页置入其中，发送回来
-
-```24. The datagram containing the HTTP reply message is forwarded through the Google, Comcast, and school networks, and arrives at Bob’s laptop.Bob’s Web browser program reads the HTTP response from the socket, extracts the html for the Web page from the body of the HTTP response, and finally (finally!) displays the Web page!```
-
-最后浏览器接收到网页信息，解析并在浏览器中显示出来
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        839字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/network/self-studying-notes/2023-4-21/">
-      重温TCP细节
-    </a>
-    <span class="card-abstract">
-      半年过去了, 学校开始了计算机网络课程, 在重温并完成实验的过程中, 对一些细节和原理有了一些新的理解, 在此记录一下
-## TCP的全双工传输
-
----
-
-首先, TCP协议是双全工传输, 也就是说, 数据可以在两个方向上进行传输
-
-然后在抓包时, 对这种传输方式有了直观的反应:
-
-![](/image/network/wireshark-4.png)
-
-这是一段服务器接收文件的抓包, 服务器接收到报文返回ACK的编号增长是可以理解的, 但是传输文件的报文也有ACK的编号, 并且一直为1, 这是才反应过来, 在TCP中的ACK是传输文件捎带的, 只是为了让接收的一方知道自己发送的报文被接收到哪个序号了
-
-在这里的服务器并没有向我发送过报文, 所以我发送捎带的ACK一直为1
-
---- 
-
-## TCP的窗口大小
-![](/image/network/wireshark-4-2.png)
-我们知道接收方会告诉发送方自己的窗口剩余大小, 表示自己还能接收多少数据, 并且窗口的起点固定为最早的还未被接收的数据, 后面的数据可以被暂时缓存在窗口之中
-起点的数据包收到后开始向后滑动
-
-发送方会根据剩余的窗口大小来决定是否继续发送新的数据
-
-按照传统的TCP报文格式, window字段有16位, 最大值为65535, 但是现在的网速一般很快, 这么小的窗口很快就会被塞满
-
-所以我们在TCP的optional field中加入了一个新的字段, 叫做window scale, 按照倍数来扩展窗口大小
-
----
-## PSH位的作用
-![](/image/network/wireshark-4-3.png)
-
-按照文档说明, PSH位说明该报文需要立刻传递给上层协议, 而不是留在缓存窗口中等待处理
-
-
-
     </span>
 
   </div>
@@ -1591,7 +1576,7 @@ HTTP服务器收到了请求后，创建回应信息，把对应的网页置入�
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/12/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/14/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/12/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/">Next</a>
 </div>
     </div>
 

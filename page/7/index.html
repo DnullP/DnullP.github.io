@@ -46,7 +46,7 @@
   <div class="background">
   
 
-  <img src="https://s2.loli.net/2023/07/23/IPq4HsZCOfTMGxk.jpg" alt="">
+  <img src="https://s2.loli.net/2023/07/23/EVeCvBAt1LOgJSU.jpg" alt="">
 
   <div class="title-text animate__animated animate__bounce">
     <h1>This is
@@ -138,7 +138,7 @@
                   Post
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  156
+                  163
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                   Cate
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  37
+                  40
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
                   Tag
                 </div>
                 <div class="subinfo-1-left-info-back random-color">
-                  191
+                  198
                 </div>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 This Month
               </div>
               <div class="subinfo-1-right-back random-color">
-                2
+                9
               </div>
             </div>
           </div>
@@ -244,6 +244,1290 @@
         2021-01-01
       </div>
       <div class="card-info">
+        3.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfCPP/">
+        C++中的一些碎片知识
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        一些不便于归结到系统知识中的碎片知识。
+
+&lt;!-- more ---&gt;
+
+## 顶层const和底层const的区别
+具体内容略过，但是和接下来几个修饰符有关。
+
+## constexpr修饰符
+
+- 加上此修饰符后，认为此变量为常量表达式，在编译阶段即可计算出结果，并且作为常量使用。因此要求右值也是常量表达式。
+
+- ### constexpr函数
+
+  返回值类型为字面值，要求函数有且只有一个```return```并且
+- ### constexpr和const
+  ```constexpr```是字面值常量，在编译阶段计算出结果而不能改变，要求其表达式也能在编译阶段计算出结果   
+  ```const```是标记一个对象为只读，其定义可以在任何时刻
+
+## auto类型说明符
+auto类型符也在编译阶段完成，根据初始化的值来规定变量的基本类型。如果右值为常量（const），则会自动忽略常量的作用。
+
+## decltype类型指示符
+同样在编译阶段完成，根据表达式的值规定变量基本类型，如果使用双重括号包含表达式，则使用的类型为对应类型的引用。   
+
+- 需要注意的是，&lt;font color=Red&gt;在使用数组作为表达式时，并不会得到数组的首地址指针，而是确实得到一个长度相对应的数组&lt;/font&gt;
+
+## void*类型
+无类型指针，可以指向任意非常量地址，但是不可解引用，也不可用来对其他类型指针进行赋值。（目前来说没什么作用）
+
+## 字
+32位上1字一般等于4字节=32bits
+
+## 拷贝初始化和直接初始化
+```cpp
+string str = &#34;123&#34;;
+string str_2 = str;//拷贝初始化
+string str_2(&#34;123&#34;);//直接初始化
+```
+一般来说，直接初始化比拷贝初始化更直观。
+
+## 字符串字面值和string
+
+- 字符串字面值通过`char[]`实现，所以不能够直接对两个字符串常量相加，但是可以转换为string进行运算。
+  
+- C风格的字符串用```char[]```储存，以空字符(&#39;\0&#39;)结尾，与```string```有区别
+  
+- C风格字符串可直接用于```string```的初始化，可作为```string```运算的其中一个值
+  
+- ```string```的方法```.c_str()```可用于将```string```转化为```char[]```，但是不保证返回的数组一直有效，建议对返回的数组进行拷贝
+
+## 范围for语法
+C++11新提供的语法格式，用于遍历所给序列的每一个元素，参考C#中的```foreach```
+
+- **语法**：
+
+  ```cpp
+  string str(&#34;1234&#34;);
+  for(auto ch : str)
+  {
+      putchar(ch);
+  }
+  ```
+
+- 上面的程序遍历了```str```中的每一个字符
+- 需要注意的是，循环代码块中不应该修改所遍历的序列的大小
+- 修改容器容量会使循环的迭代器失效
+
+## size_type类型
+
+需要注意的是，C++自带容器中的```size()```函数所返回的值并不是简单的```int```类型，而是```size_type```类型，其对应的应该是一个无符号整型。   
+
+所以在使用```size()```函数作为依据进行遍历时，建议使用```decltype(x.size())```作为类型说明符，以避免类型产生的错误。
+
+除了```size_type```以外，很多C++标准库内的数字都有对应的类型
+
+## C++的模板
+模板不是类型，只有实例化时，才会生成对应的类型，所以模板不支持分布式编译。在另一个cpp文件中并不包含模板生成的类型。
+
+## 迭代器的运算
+
+- 迭代器相减得到两个迭代器之间的距离，所得类型是名为```difference_type```类型的带符号整型
+- 迭代器进行比较，比较的是他们对应的位置大小
+
+## 数组的指针(iterator)
+- 迭代器支持的运算，数组的指针都支持
+- 在```iterator```头文件中包含两个函数```begin()```和```end()```用于取得函数的头指针和尾后指针（尾后指针不能解引用和递增，不然溢出）
+- 指针使用下标时可以为负数，前提是不溢出。
+
+- 数组本身是一种数据结构，而不是所谓的“指向首地址的指针”。   
+  使用数组名返回首地址指针是C++内部的隐式转换，我们可以通过引用来取消这样的隐式转换，像是```for(auto el:array)```
+
+  如果array是二维数组，返回的el是个指针，是不包含长度信息的，需要改为```for(auto &amp;el:array)```才能得到一维数组
+
+  ```int (*p)[4]```是指向数组的指针，其包含了数组的长度信息，所以可以使用范围for进行遍历
+
+- 使用```decltype(),&amp;,sizeof(),```  时，数组转指针的隐式转换会被自动取消 
+
+- 使用```begin()```和```end()```函数得到的也是数组的指针，也包含了长度信息
+
+## 左值和右值的含义
+不做过多解释，但是是需要理解清楚的概念
+- 在```decltype()```中的表达式为左值时，得到对应类型的引用
+
+## 表达式中的函数调用
+- 在一个表达式```f()*h()```中调用了两个函数，但是并没有规定函数的调用顺序，如果两个函数对同一个对象有修改操作，那程序会产生错误
+- 
+- 同样的，如果赋值表达式两端出现同一个变量，并都进行修改，将产生未定义的错误：```num++ = 3 + num++```
+
+## 变量和函数的声明方式
+
+以变量名为中心，向两边读，先读到什么就是什么类型：
+- ```int(*a)[10];```   
+  指向长度为10的int数组类型的指针   
+- ```int(*a)[10][10];```   
+  指向二维int数组的指针
+- ```const int (*a);```
+  指向const int类型的指针
+- ```int const (*a);```
+  指向int类型的const指针
+
+类似这样的多重修饰的变量很容易就可以理解，对于引用也一样，
+但是我没想到，对于函数的返回类型也有类似的规则，而且还有些特别
+
+- ```int (*func()) [10];```
+  这是一个函数的声明，返回类型是指向一个长度为10的int数组的指针
+
+- 没错，我们把函数的本体当作一个变量，从中间到两边读，来确定返回值的类型
+  这的确是我以往没有注意到的一个细节——函数的声明方式和变量极为相似
+
+- 所以适用于变量的```decltype()```、```auto```等类型符，其原理和用于函数是一样的
+
+## 函数的后置声明方式
+
+```cpp
+auto func(int)-&gt;int (*)[100];
+```
+
+像是这样的函数声明, 箭头后面的才是函数的返回类型, 这样的书写方式比较简单直观
+
+## 函数匹配
+
+这是个理论上的概念，涉及到重载函数的调用问题   
+只需清楚最佳匹配之类的概念便好，不必做多余的记录
+
+- 函数匹配到多个结果时具有二义性，产生报错
+
+## 函数类型
+读到函数的指针这一节我突然意识到，函数也是一种类型，有自己的声明、定义方式，所以才有了之前的关于函数返回值的声明方式   
+
+函数在编译后储存在内存中的一片空间中，可以通过指针访问，甚至可以作为返回值
+
+```cpp
+int (*func(int)) (double,char);
+auto func_2(int) -&gt; int (*)(double, char);
+```
+
+以上两种声明方式是等价的，他们都声明了一个参数为```int```类型的函数，返回值是一个函数的指针，且该函数有两个参数，返回值是```int```
+
+而在我使用函数的指针时是这么使用的：   
+```cpp
+int (*funcPtr)(int, int) = cut;//cut是一个函数
+cout &lt;&lt; funcPtr(10,5) &lt;&lt; endl;
+```
+相当于用指针的名字替代了函数的名字，在我仔细阅读完Primer的说明后，我意识到在调用函数时其实就是将函数类型转化为函数的指针，再把参数传进去使用，这么一想很多事情都能说得通了
+
+## initializer_list
+
+这是在看术语表时发现的一个标准类   
+
+在对数组进行初始化赋值时，其实自动创建了一个```initializer_list```类型   
+他其实就是花括号和里面括起一堆逗号分隔的数的本体：```{1,2,3}```
+
+在后续如果有需要还可以查看其内部实现的代码，而我现在只想感慨我会的还是太少了
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.1k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfContainer/">
+      C++的容器的碎片知识
+    </a>
+    <span class="card-abstract">
+      
+容器的使用很频繁，只补充一些碎片化的知识
+
+&lt;!-- more ---&gt;
+
+容器分为顺序容器、关联容器、无序容器
+同一类型的容器具有一些相同的操作，这方便于我们进行记忆
+
+## 顺序容器
+
+- ```vector```
+- ```deque```
+- ```list```
+- ```forword_list```
+- ```array```
+- ```string```
+
+### 迭代器
+- 对于在连续内存上储存数据的容器，才可以使用迭代器（指针）进行相减运算、大小比较，比如```vector```、```deque```等   
+  但是```list```一类的离散储存的数据类型就不能这样操作。
+
+- 但是对于初始化的前后迭代器可以用于```list```类型
+
+- ```swap()```函数交换的是引用，真实的数据储存并不受影响，因为STL的容器都是引用类型
+
+### emplace函数
+```emplace()```函数接收容器元素的构造函数的参数，并直接在容器的内存中构造元素
+
+### sort函数
+- ```sort()```函数只能对支持随机访问的顺序容器进行排序
+
+### at()函数
+- 使用下标运算符不会检查是否越界的问题，但是可以是使用```at(0)```函数，在下标越界后抛出```out_of_range```异常
+
+### erace()函数
+- 使用```erace()```函数删除两个迭代器之间的元素时，结尾的指针是一个区间的尾后指针
+
+### reserve()和resize()函数
+
+- ```reserve()```和```resize()```函数都只能扩张容器的大小，```resize()```只是删除了多余的元素，不影响容器的大小
+
+- 容器的预留空间上不一定有元素，```resize()```会创造新的对象
+- 对应的，需要区别 ```size()```和 ```capacity()```函数
+
+---
+其实啊，对于这些函数大概记住主要的集中使用方式就好了，具体有些什么复杂的功能可以在需要的时候再参阅资料，我不可能把一个语言的所有工具的每个细节都记得清清楚楚
+
+---
+
+### 有意思的find函数
+
+不是指一般的```find()```函数，而是```find_first_of(arg)```
+
+其寻找字符串中，```arg```中任何一个字符第一次出现的位置
+
+有点正则表达式的味道了
+
+### 字符串的值转换
+
+- ```to_string()```
+- ```stod()```
+-  ```stoi()```
+
+之类的
+
+这些都是```string```的外部函数
+
+### 容器的适配器
+这是一种面向对象的概念，应用于STL的容器中
+
+我以前一直以为 ```stack``` ```queue```之类的类也是一种容器，但是现在我明确看到了这种基于现有容器继承而来的类的标准命名——容器适配器
+
+通过现有的容器来限制组合其操作，从而获得的新类
+
+```stack&lt;int,vector&lt;&gt; &gt;```我们通过 ```vector```构造了一个栈，使得这个 ```vector```可以使用栈的操作
+
+而不设置指定实现容器的话，会使用一个默认的容器：
+
+- ```stack```—— ```deque```
+- ```queue```—— ```deque```
+- ```priority_queue```—— ```vector```
+
+## 泛型算法
+
+虽然但是，泛型算法不仅适用于STL容器，而且适用于内置数组
+一般包含于 ```algorithm```和 ```numeric```
+
+### 泛型算法库原则：
+算法不直接调用顺序容器操作，通过迭代器修改内存区间的元素顺序或数值
+
+### 插入迭代器
+
+```back_inserter``` 是一种插入迭代器，当解引用并给其赋值时，会自动调用容器的 ```push_back```操作
+
+此外还有```front_inserter()```、```inserter()```之类的插入迭代器
+
+ ```cpp
+vector&lt;int&gt; a;
+
+auto it = back_inserter(a);//now &#34;a&#34; has been the back_inserter of a
+
+*it = 4;//this way, it creates a new element at the end of the vector
+
+fill_n(it,10,10);//this way, we can append 10 new &#34;10&#34; into the vector
+ ```
+
+### IO流对象迭代器
+
+标准算法库搭配容器、迭代器玩出来的花样太多了，IO流对象的迭代器大概说明一下吧
+
+ ```cpp
+int main()
+{
+    istream_iterator&lt;int&gt; int_in(cin);
+    istream_iterator&lt;int&gt; eof;
+
+    while (++int_in != eof)
+    {
+        cout &lt;&lt; *(int_in);
+    }
+}
+```
+以上这段代码中定义了从流中读取整数的迭代器， ```++```操作为从流中析取一个整数，```*```操作是返回析取的数
+
+需要注意的是，在定义```int_in```时，就已经执行过一次读取了，所以会有一次多出的输入
+
+```cpp
+istream_iterator&lt;int&gt; int_in(cin), eof;
+cout &lt;&lt; accumulate(int_in, eof, 0);
+```
+这是书上比较有趣的一个用法，通过连续的流输入得到一个整数和   
+通过这个例子稍微能理解流对象迭代器的设计思想了
+
+对于顺序容器而言，泛型算法可以在一段连续的元素上执行操作，而流输入的数据也是连续的一整段元素，所以通过流对象迭代器来让泛型算法对用户的输入执行某些操作
+
+基于这种思想，我们可以很容易的理解```ostream_iterator```的使用
+```cpp
+vector&lt;int&gt; a{1, 2, 3, 4};
+ostream_iterator&lt;int&gt; out_(cout);
+copy(a.begin(), a.end(), out_);
+fill_n(out_, 3, 123);
+```
+
+```ostream_iterator```通过赋值进行输出，所以所有在连续迭代器区间上赋值的泛型算法都可以使用它进行输出
+
+## 反向迭代器
+
+这种东西真的只需要略过就好，简单易懂还没什么重要作用（暂时没有）
+
+## 泛型算法的标准
+
+每个算法都接受至少一个迭代器的范围，而算法要求传递的迭代器具有指定的类型
+
+### 迭代器类型
+- 输入输出迭代器
+- 前向迭代器
+- 双向迭代器
+- 随机访问迭代器
+
+有些算法接受第二个迭代器范围，一般涉及两个序列一起进行的操作，比如合并之类的
+
+### 算法命名
+
+- ```_if```——接受一个元素值的算法往往会有一个_if后缀版本的函数，接受的不为元素值，而是一个谓词
+- ```_copy```——将修改的容器拷贝到目标位置
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        1.8k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/SomeOfoi/">
+        C++的OI对象的碎片知识
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        关于标准库，大概远不止我们常用的那些容器，C++中还有很多的类值得深究   
+本文只是记录学习（复习）过程中的碎片化知识，不是系统性知识整理
+&lt;!-- more ---&gt;
+
+## wchar_t
+字符类型，一种扩展储存方式，一般用于储存Unicode字符
+
+## istream,ostream,iostream
+三种流的控制类，```cin```，```cout```，```cerr```等都是其对象
+
+## ifstream,ofstream,fstream
+文件的读写流
+
+## 宽字符流输入输出
+- wistream,wostream,wiostream
+- wifstream,wofstream,wfstream
+
+## 流对象的状态
+
+根据Primer和reference上的说明，返回值可以判定当前流对象是否有效，而通过```rdstate()```函数可以得到流对象更具体的状态情况，返回值是一个```ios::iostate```的类型，其储存了状态的位掩码信息
+
+我无需知道每种状态对应的位，在```ios```域中已经定义几种常量表达式：
+- eofbit——文件结束的状态（读到了文件结束符
+- badbit——流崩溃状态
+- goodbit——无错误状态
+- failbit——IO失败状态
+
+用当前状态与对应的状态位掩码做与运算即可得到是否处于某种状态
+
+- ```setstate()```：设置当前流的状态
+- ```clear()```：修复当前流的状态为有效状态
+
+## 输出缓冲
+C++的```cout```中有一个输出缓冲区，其中储存了插入的内容，并把这些内容整合成一个整体，再输出，以节省输出操作的成本   
+
+刷新缓冲区的原因很多，**但是程序崩溃时是不会刷新缓冲区的**
+
+- ```flush```函数可以手动刷新缓冲区
+- 通过查看endl的实现部分：
+```cpp
+basic_ostream&lt;_Elem, _Traits&gt;&amp; __CLRCALL_OR_CDECL endl(
+    basic_ostream&lt;_Elem, _Traits&gt;&amp; _Ostr) { // insert newline and flush stream
+    _Ostr.put(_Ostr.widen(&#39;\n&#39;));
+    _Ostr.flush();
+    return _Ostr;
+}
+```
+  可以发现，endl内部使用了```flush```函数，刷新了缓冲区
+
+### 关联输入和输出流
+
+输入流和输出流都可以和另一个输出流关联，一旦这个输入流（输出流）执行操作，在此之前都会先刷新一遍关联的输出流
+
+- ```tie()```函数返回该流对象的关联流
+- ```tie(ostream)```将流对象关联到一个输出流
+
+## 文件输入输出流
+
+文件操作流继承自输入输出流，所以可用于输入输出流的操作都可适用于文件流
+除此之外，可使用```open(string,mode)```函数把流对象和文件绑定在一起
+
+### 文件模式
+
+ - in——读模式
+ - out——写模式
+ - app——写操作前定位到文件末尾
+ - ate——打开文件定位到文件末尾
+ - trunc——截断模式
+ - binary——以二进制进行IO
+
+文件模式的使用有一套复杂的使用规则，暂且先不讨论每一种模式的使用和叠加   
+
+使用```out```模式时，文件的内容会被自动舍弃，加上```app```模式后可以自动定位到文件末尾追加内容
+
+## string流
+```stringstream```类包含在```sstream```头文件中   
+
+string流使用了一个字符串缓冲区，加入一个字符串在其中，进行析取操作   
+但是加入其缓冲区的字符串仅作为储存，不会像```iostream```一样打印内容
+
+```stringstream```类继承自```iostream```类，所以可以用于流对象的操作，都可用于字符串流对象
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/CPP-notes/heritedOfCpp/">
+      C++的继承
+    </a>
+    <span class="card-abstract">
+      
+碎片化记录依旧
+
+&lt;!-- more ---&gt;
+
+### 基类的静态成员在派生类中也共享一个
+
+### 派生类的声明不包含基类列表
+
+### 基类必须是定义了的类，不能只有声明
+- 直接基类
+- 间接基类
+  
+### final关键字
+```class A final{};```   
+
+这样的类无法作为基类被继承
+
+### 几种类型转换规则
+
+- 普通类型可以向 ```const```和引用类型转换
+- 引用类型可以向 ```const``` 转换，但是 ```const``` 不能向引用转换
+    ```cpp
+    int d = 10;
+    int &amp; b = d;
+    const int a = b;//right
+
+    int &amp; e = a;//error
+    ```
+- 基类无法向派生类转换
+- 基类和派生类对象间直接转换
+   ```cpp
+   class A
+  {
+  public:
+      int a;
+      A() { a = 100; };
+  };
+
+  class B : public A
+  {
+  public:
+      int b;
+      B() 
+      {
+          b = 10;
+      }
+  };
+
+  int main()
+  {
+      B b;
+      A a = b;//members in b has been cut off to construct an &#34;A&#34; object
+
+      A* ptr = b;//this way, we can deal &#34;b&#34; as an &#34;A&#34;
+                //class without changing &#34;b&#34; itself
+  }
+  ```
+
+### 静态类型和动态类型
+
+对于一个指针或引用，编译阶段确定的叫静态类型，运行时指向或绑定的是动态类型，动态类型可能是派生类
+
+- 使用默认实参的虚函数，所使用的实参由静态类型决定
+- 通过作用域运算符可以选择使用基类版本的虚函数，避开虚函数机制
+
+### override关键字
+
+加上 ```override```关键字后，如果函数没有正确覆盖一个基类对应的虚函数，则会产生报错
+
+### 纯虚函数
+定义一个抽象基类，无法实例化，作为接口来派生类
+
+- 重构：使用了继承体系中的类的代码无需修改，但是继承体系修改
+
+### 控制访问和继承
+
+- 派生类的友元函数只能通过派生类对象访问基类成员
+
+#### 继承方式
+- public继承为一一对应继承
+- protected继承会将public和protected都继承为protected
+- private继承参考protected的继承方式
+
+### 派生类向基类转换的可访问性
+
+派生类向基类到转换是否可访问由使用该转换到代码决定，同时派生类到派生访问说明符也会有影响。假定D继承自B：
+
+- 只有当D公有继承B时，用户代码才能使用派生类向基类到转换；如果D继承B的方式时受保护的或者私有的，则用户代码不能使用该转换。
+- 不论D以什么方式继承B，D的成员函数和友员函数都能使用派生类向基类的转换；派生类向其直接基类的类型转换对于派生类的成员和友员元而言永远是可访问的。
+- 如果D继承B 的方式是公有的或者受保护的，则D的派生类的成员和友员可以使用D向B 的类型转换；反之，如果D继承B 的方式时私有的，则不能使用
+---
+书上给了三句话，看着很绕
+
+在详细理解上面的话之前，我觉得应该先理解一下，类转换的可访问性是在说什么
+
+不管一个类对另一个类的可访问性如何，最后创造的实例都是一个对象，只是这个对象的成员被分成了不同的区域，这些区域间的成员的互相访问的限制就是我们一直在说的类的访问限制
+
+所以基类无法向派生类转换，因为内存中不存在派生类的区域
+
+访问说明符和继承方式都是为了控制一个类的不同层次间的可访问关系
+
+首先弄明白这一点后，就可以开始逐步理解这三句话是在阐述一个什么规则了
+
+**第一句**：
+- 这里说的“派生类派生类向基类的转换，除了限制对象只能访问基类的成员外，还会存在成员访问权限的问题——比如说：当D私有继承了B后，D原本的成员全部成为了私有成员，此时如果B向D转换，原本的D就无法访问公有成员，因为派生类把公有成员修改为了私有。
+
+  而用户代码只能访问公有成员，所以无法复原公有成员的 ```protected```和 ```private```继承方式产生的派生类就不能在用户代码中转化为基类使用，毕竟所有的成员都是用户代码无法访问的
+
+**第二句**
+- 说到这里，接下来的规则已经很容易理解了，派生类的成员函数和友元函数可以访问派生类的全部成员，所以不管基类的访问权限怎样，派生类此时总是可以向基类转换
+
+**第三句**
+- 这里说的是D的派生类，D的派生类默认为公有继承，所以可以访问D的 ```public```和 ```protected```类，所以只要是 ```protected```以前的成员，D的派生类都剋访问
+
+### 友元成员的相关规则
+
+- 友元函数不能传递、继承
+
+### 使用using改变个别成员的访问级别
+
+ ```cpp
+class B:private A
+{
+public:
+    using A::n;//By this way, you can change the access level of the certain member
+};
+```
+
+### 结构和类
+
+结构和类的区别主要在于默认的访问说明符不同——结构为 ```public```，类为 ```private```
+
+此外类可以使用模板，结构不行
+
+除此之外，结构和类没有其他不同了，C++的结构已经和C语言的结构完全不同，而两者在堆栈上的分布方式也是完全一样，没有任何不同
+
+### 虚函数
+
+虚函数除了修改了基类成员函数在派生类中的定义，更重要的意义体现在动态绑定上
+
+我们面向对象的继承机制，使得我们可以对同一类的对象做一个统一的操作，但是一个基类可能拥有不同的派生类，它们执行的某种操作可能也有所不同
+
+在一个封装好的处理函数中使用基类指针可以直接指向所有派生类，并且执行的成员函数会先寻找对应的虚函数，这样来实现派生类的统一接口
+
+**tips**：
+- 基类的析构函数往往是虚函数，因为基类指针指向派生类时必须使用派生类的析构函数
+
+- 基类定义了虚析构函数后，将不会默认合成移动操作，其派生类也不会合成移动操作
+
+- 基类的合成函数为删除的函数，则其派生类对应的合成函数也为删除的
+
+**错误纠正**
+- 派生类的默认构造函数会先运行基类的默认构造函数，将基类中的数据成员初始化，然后执行自己的默认构造函数，将数据成员初始化
+- 派生类使用拷贝构造函数时会先运行基类的拷贝构造函数，然后再运行自己的拷贝构造函数，对于拷贝赋值运算符、移动构造函数、移动赋值运算符也都是类似的操作
+- 派生类销毁时先执行自己的析构函数，再执行基类的析构函数
+- 使用非默认构造函数时，需要委托基类构造函数，否则将默认委托基类默认构造函数
+
+### 使用using继承构造函数
+
+```using A::A;```使用这样的语句可以让派生类继承基类中所有的构造函数及其重载
+
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        2.2k字
+      </div>
+      <div class="card-info">
+        阅读时间: 2 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/overloadAssignment/">
+        C++的重载运算符
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        关于一些重载运算符和类型转换的内容
+&lt;!-- more ---&gt;
+
+- 重载运算符约定：重载运算符必须是类成员函数，或者参数列表至少含有一个类类型
+- 递增递减函数添加一个 ```int```实参，表示后置运算符
+- 输入输出运算符要注意流对象状态的控制
+- 函数对象——可调用的类对象
+- lambda表达式也是一种函数对象，捕获的变量作为成员变量传入，不含默认构造函数析构函数，默认拷贝控制函数由捕获的数据成员决定
+
+### 标准库定义的函数对象
+
+首先，这些函数对象都会执行对应的运算符操作
+
+然后，这些函数对象都是模板
+
+```cpp
+plus&lt;int&gt; intAdd;
+int c = intAdd(3,4);
+```
+类似这样的用法
+
+那么这些函数对象有什么用呢？
+
+Primer上记录的一种用法是改变泛型算法中使用的运算符
+
+比如 ```sort()```函数默认使用的是&lt;运算符，我们可以传入一个参数为函数对象的 ```greater&lt;int&gt;```来使排序的比较方式改变
+
+这种用法本质应该和lambda表达式是相同的
+
+- 此外，标准库的函数对象对于指针来说是定义良好的，直接比较两个无关指针的结果是未定义的，使用标准库的话...咱还不知道会发生什么，原谅咱现在没有空闲去实际验证了
+
+### function类型
+
+在使用模板容器储存可调用对象时，对于lambda表达式和函数对象时，无法使用函数指针存入，所以使用 ```function```类型来规范化可调用对象
+
+```cpp
+class Mult
+{
+public:
+    int operator()(int a, int b)
+    {
+        return a * b;
+    }
+} mult;
+
+int cut(int a, int b)
+{
+    return a - b;
+}
+
+int main()
+{
+    map&lt;string, function&lt;int(int, int)&gt;&gt; myOP;
+
+    auto plus = [](int a, int b) -&gt; int
+    {
+        return a + b;
+    };
+
+    myOP[&#34;+&#34;] = plus;
+    myOP.insert({&#34;-&#34;, cut});
+    myOP.insert({&#34;*&#34;, mult});
+}
+```
+以上的可调用对象都可用一个 ```function&lt;int(int, int)&gt;```储存
+
+### 类型转换运算符
+
+强制类型转换或者隐式类型转换也是由类的内置运算符控制的
+
+```cpp
+class A
+{
+public:
+    int a;
+    A(int in) : a(in) {}
+    A() = default;
+    operator double()
+    {
+        return a + 0.1;
+    }
+};
+
+int main()
+{
+    A a(10);
+    cout &lt;&lt; double(a) &lt;&lt; endl;
+    double b = a;
+    cout &lt;&lt; b &lt;&lt; endl;
+    cout &lt;&lt; static_cast&lt;double&gt;(a);
+}
+```
+上面的代码分别执行了显式类型转换和隐式类型转换
+
+- 使用 ```explicit```来避免隐式转换（蛮重要的）
+- 隐式转换和本身为参数的构造函数同时存在时造成二义性错误:
+  ```cpp
+  class A
+  {
+  public:
+      int a;
+      A() = default;
+      A(int in) : a(in){};
+      // A(const A &amp;in) { a = in.a + 1; }
+      A(const B &amp;in) { a = in.a + 2; }
+  };
+
+  B::operator A() const
+  {
+      return A(a + 1);
+  }
+
+  int main()
+  {
+      auto f = [](const A &amp;a)
+      {
+          cout &lt;&lt; a.a &lt;&lt; endl;
+          return;
+      };
+      B t(10);
+      f(t);//there is an ambiguity error
+  }
+  ```
+  按照Primer上的说法，以上代码的同时存在从B到A的隐式转换和用B来隐式构造A，所以会产生Ambiguity Error，但是实际上运行这段代码是默认使用的A类中的隐式构造
+  我认为是不使用隐式类型转换的函数被编译器认为是更精确的，所以优先选择了构造函数，所以书上的Ambiguity Error有待确定
+
+  至于其他所提到的二义性错误均一一验证（其实只验证了几个）
+
+
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        949字
+      </div>
+      <div class="card-info">
+        阅读时间: 1 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <a class="card-title" href="/2021/01/01/CPP-notes/preCompleteCMD/">
+      C++中的预处理指令
+    </a>
+    <span class="card-abstract">
+      
+挺庞大的一节内容，所以整理为一篇博客   
+注意：记录的是笔者学习中产生的碎片化知识，而不是系统性的整理
+
+&lt;!-- more ---&gt;
+
+## #define宏定义
+
+- 用于预处理阶段替换源码，增加代码可读性
+  ```cpp
+  #define ll long long
+  int main()
+  {
+      ll a = 123;
+  }
+  ```
+
+## #pragma
+该指令后面可跟多种类型的参数：
+
+- pack()   
+  设置类、结构、枚举等自定义类型的内存对齐模式
+
+  - pack(4)
+    ```cpp
+    #pragma pack(4)
+    struct test
+    {
+        int a;
+        char b;
+        long long c;
+    }
+    ```
+    每个元素在内存上以4为单位对齐，a占4字节，b占2字节，c占8字节
+
+## assert()
+这是一个预处理宏，在很多头文件中有定义   
+
+运行时，他会检查括号中的表达式的真假，若为假，则退出程序并显示信息   
+若为真则不执行动作   
+
+此外```assert()```的运行和一个预处理变量有关```NDEBUG```
+
+## NDEBUG
+作为一个预处理变量，当```NDEBUG```被定义时，```assert()```将不会执行
+
+除此之外，可以把```NDEBUG```当作一个普通的预处理变量使用
+
+## 几个预处理宏
+- ```__func__```：当前函数的函数名
+- ```__FILE__```：当前文件名
+- ```__LINE__```：当前行
+- ```__TIME__```：编译时间
+- ```__DATE__```：编译日期
+
+这些预处理宏编译阶段完成，对于程序的调试和报错的处理很有用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </span>
+
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+
+<div class="card" style="justify-content: left;">
+
+  <div class="card-content">
+
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
+        3k字
+      </div>
+      <div class="card-info">
+        阅读时间: 3 mins.
+      </div>
+    </div>
+    <div style="display: flex;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
+        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
+      </svg>
+    </div>
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CPP-notes/template/">
+        C++的模板
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
+关于模板的相关内容，但事实上这部分的内容会比较简单
+
+&lt;!-- more ---&gt;
+
+### 模板不支持分布式编译
+
+由于模板是在实例化出其中一个版本的对象时才会编译对应的类，所以通过头文件连接不同的源文件时，其他源文件中的模板不能直接在另一个源文件中使用，因为没有创建实例
+
+- 类模板的成员函数在使用时才会实例化，所以就算是创造类模板的对象，也不能正常使用分布式编译。此外，这一特性使得类模板对象可以正常创建，但是对应的成员函数可能无法正常调用
+
+- 类模板内的代码可以省略对应类的模板参数，直接使用模板名：
+
+- 如果类模板包含一个友元成员，则友元成员可以访问所有模板的实例；
+
+###当使用模板参数为类时，使用作用域运算符无法确定访问的成员是数据还是类型
+
+```T::mem```——这样在T实例化之前不能确定mem是数据还是类型
+
+所以 ```T::mem * p```就无法确认是两个数据相乘还是定义一个指针p
+
+默认情况下，C++认为mem会是数据，如果需要认为其是个类型，需要加上说明符 ```typename```
+
+### 成员模板不能是虚函数
+
+### 类模板的成员模板
+
+在类模板外定义成员模板时，连续提供两个模板
+
+ ```cpp
+template&lt;T&gt;
+template&lt;It&gt;
+T class&lt;T&gt;::func(It a,It b){;}
+```
+
+就像这样
+
+### 定义、声明、实例化
+
+声明是告诉程序这个对象存在，定义是详细地把这个对象造出来，实例化就是定义对应地过程
+
+当我们声明一个对象、类型存在时，可以加上```extern```修饰符，声明存在后，就相当于向程序承诺定义将在其他地方出现
+
+比如我在多个文件中都将使用 ```class&lt;string&gt;```类型，这样每个文件在编译时都会创建一个```class&lt;string&gt;```的实例，这样会加大系统资源的消耗，但是如果在每个定义```class&lt;string&gt;```的地方加上 ```extern```修饰符，就将定义改为了声明，此时再使用```class&lt;string&gt;```类型时，会去其他作用域寻找实例，而不用创建一个新的实例
+
+具体的原理内容将会在《深入理解计算机结构体系》中学习，在此不做更多了解
+
+实例化是一个很不直观的概念，关系到模板创建自定义类型，编译器可能在不知不觉中创建大量的重复类型，导致资源浪费，所以适当使用 ```extern```声明可以减少不必要的资源开销
+
+链接过程还是很容易出错的
+
+### 实例化定义会实例化所有成员
+
+### 函数模板的参数类型转换
+
+函数模板在调用时不需要写上 ```template&lt;&gt;```，而是直接写入实参就可以了
+
+传递实参之后，函数模板会根据参数类型把函数实例化，或者调用已经实例化的函数，这个时候有个问题，传递的参数是隐式转换成已经实例化的参数模板，还是创建一个新的实例呢？
+
+primer的解释是，普通类型向 ```const```的转换，和指针转换可以调用重复的实例，而其他所有的类型转换都不会发生，而是创造新实例。
+
+- **当函数模板中存在不可推断的类型实参时，需要显式提供参数模板**
+  ```cpp
+  template &lt;typename T1, typename T2, typename T3&gt;
+  T1 fun(T2 a, T3 b) { ; }
+  ```
+  这样的函数模板必须提供参数列表
+
+- **当给定了模板参数后，函数模板的实参进行正常的类型转换**
+
+### 一些模板的用法
+
+- ```cpp
+  template &lt;typename T&gt;
+  using twin = pair&lt;T, T&gt;;
+
+  twin&lt;int&gt; p_a;
+  ```
+  使用 ```using```给模板设置别名
+
+- ```cpp
+  typedef pair&lt;int,int&gt; twin;
+  ```
+  此处给模板的一个实例别名，使用 ```typedef```只能给某个实例取别名，不能直接用模板
+
+### 每个模板的实例都有各自的 ```static```数据
+
+### 使用模板的后置返回类型
+
+当我们想要根据用户的模板参数来确定返回的类型时，使用 ```decltype```作为后置返回类型
+
+```cpp
+template &lt;typename It&gt;
+auto func(It beg, It end) -&gt; decltype(*beg)
+{
+    return *(beg + (end - beg));
+}
+```
+### 类型转换模板
+这是一个用途很多的标准库模板，在这里只记录其一种用途
+
+```cpp
+remove_reference&lt;int&amp;&gt;::type a;
+```
+
+这样a的类型是 ```int```而不是引用   
+这个模板接受一个引用类型，然后其成员 ```type```对应为移除引用后的类型
+
+可以利用这个模板来修改上面的函数，使其返回 ```beg```的拷贝，而不是引用
+
+```cpp
+template &lt;typename It&gt;
+auto func(It beg, It end) -&gt;
+    typename remove_reference&lt;decltype(*beg)&gt;::type
+{
+    return *(beg + (end - beg));
+}
+```
+这样就返回的是 ```*beg```的拷贝，此外，由于 ```type```是一个成员类型，所以需要加上 ```typename```说明符
+
+
+### 当使用函数指针指向模板时，根据指针的参数生成对应实例
+
+```cpp
+template &lt;typename T&gt;
+int func(T a, T b)
+{
+    return a + b;
+}
+
+int(*func_p)(int,int) = func;
+```
+如上代码，自动生成一个 ```T = int```的实例，这样使用的前提是能够确定函数指针的形参
+
+### 引用折叠机制
+
+当我们向一个右值引用的类型传递一个左值时，一般情况是错误的，但是如果这个右值引用类型是模板的参数的话，那么传递的左值会自动识别为左值引用
+
+```cpp
+template &lt;typename T&gt;
+int func(T &amp;&amp;a) {}
+
+int main()
+{
+  int a = 10;
+  func(a);
+}
+```
+
+这时，```main()```中的 ```func()```生成的实例中，T对应的类型是 ```int&amp;```，然后函数中的a变量对应的类型就是 ```int&amp; &amp;&amp;```
+
+这样产生了引用的引用，这在参数类型是模板参数的情况下是特别允许的，此时就会触发**引用折叠**
+
+除了每一重引用都是右值引用的情况，其他所有引用都会折叠为左值引用
+
+- ```T&amp;&amp; &amp;&amp; = T&amp;&amp;```
+- ```T&amp;&amp; &amp; = T&amp;```
+
+#### 问题
+
+这个机制导致代码的情况更加复杂，比如：
+```
+
+```
+
+      </span>
+    </div>
+  </div>
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+</div>
+
+
+
+  
+  
+  
+<div class="card" style="justify-content: right;">
+
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="card-info-warp">
+      <div class="card-info">
+        2021-01-01
+      </div>
+      <div class="card-info">
         7.7k字
       </div>
       <div class="card-info">
@@ -255,12 +1539,11 @@
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter2/">
-        信息的表示与处理
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter2/">
+      信息的表示与处理
+    </a>
+    <span class="card-abstract">
+      
 该文是对阅读过程中，认为有必要记录、思考内容的文字记录，并不是系统性的知识整理或者教程，如果有错误的说法可以留言提出
 
 ### 16进制和2进制
@@ -624,12 +1907,8 @@ int int_shifts_are_arithmetic()
 
 
 
-      </span>
-    </div>
-  </div>
+    </span>
 
-  <div class="card-img">
-    <div class="img-container"></div>
   </div>
 
 </div>
@@ -639,13 +1918,11 @@ int int_shifts_are_arithmetic()
   
   
   
-<div class="card" style="justify-content: right;">
 
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
+<div class="card" style="justify-content: left;">
 
   <div class="card-content">
+
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -662,11 +1939,12 @@ int int_shifts_are_arithmetic()
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter3/">
-      机器级程序和汇编
-    </a>
-    <span class="card-abstract">
-      
+    <div style="transform: translateX(10px);">
+      <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter3/">
+        机器级程序和汇编
+      </a>
+      <span class="card-abstract" style="transform: translateX(0px);">
+        
 ### 处理器状态
 
 - 程序计数器
@@ -1663,8 +2941,12 @@ test_3:
 初步编译出来的汇编中并没有使用这样的指令，所以咱暂时认为这个操作被优化删除了
 
 
-    </span>
+      </span>
+    </div>
+  </div>
 
+  <div class="card-img">
+    <div class="img-container"></div>
   </div>
 
 </div>
@@ -1674,11 +2956,13 @@ test_3:
   
   
   
+<div class="card" style="justify-content: right;">
 
-<div class="card" style="justify-content: left;">
+  <div class="card-img">
+    <div class="img-container"></div>
+  </div>
 
   <div class="card-content">
-
     <div class="card-info-warp">
       <div class="card-info">
         2021-01-01
@@ -1695,12 +2979,11 @@ test_3:
         <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
       </svg>
     </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter4/">
-        处理器体系结构
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
+    <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter4/">
+      处理器体系结构
+    </a>
+    <span class="card-abstract">
+      
 这一章比汇编更底层，关于处理器原理
 
 ## Y86-64
@@ -1970,811 +3253,6 @@ CPI - Cyscles Per Instruction（执行一条指令所需周期数）
 $$CPI = \frac{C_i+C_b}{C_i}$$
 
 
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        4.5k字
-      </div>
-      <div class="card-info">
-        阅读时间: 4 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter5/">
-      优化程序性能
-    </a>
-    <span class="card-abstract">
-      
-这一节主要是解释编译优化的相关内容，如何编写代码，可以使编译器产生更加良好的优化，从而加快程序的速度
-
-
-### 编译器的优化
-
-看看以下两段代码的区别：
-
-```cpp
-void fun1(long *xp, long *yp)
-{
-    *xp += *yp;
-    *xp += *yp;
-}
-
-void fun2(long *xp, long *yp)
-{
-    *xp += 2 * *yp;
-}
-```
-
-一般情况下，```fun2```的性能比```fun1```的更好，因为执行更少的读地址操作，但是如果```*xp```和```*yp```指向同一个地址，两个函数会产生不一样的效果，所以编译器不会把第一种代码优化成第二种，这便是编译器的保守性——不会为了优化速度而改变代码任何可能改变的逻辑
-
-以上这种情况我们称为**内存别名使用**，在任何对于指针相关的优化中，编译器都必须考虑到这种情况带来的差别
-
-#### 函数的副作用
-
-考虑以下函数：
-
-```cpp
-long fun3()
-{
-    return f() + f() + f() + f();
-}
-
-long fun4()
-{
-    return 4 * f();
-}
-```
-
-在```f()```函数独立存在的情况下，```fun4()```函数的时空间占用明显更少，但是如果```f()```函数对于某些全局变量有修改的话，那么```fun3()```需要保证四次```f()```函数全部执行，这样的情况我们称为**函数的副作用**
-
-### 程序性能的表示
-
-CPE —— Cycles Per Element
-计算每个元素需要的时钟周期
-
-#### 优化程序的性能
-
-**循环展开**：在每次迭代循环中增加操作，从而减少迭代循环的次数，虽然我们直接看来运算次数并没有减少，但是程序的速度变得更快了，具体原因我们会在后面学习
-
-![](/image/CS/5_1.png)
-
-如图所示，使用了循环展开的程序运行时间，线性上优于原程序，由此可以推测每次的循环迭代有着固定的时间消耗
-
-**代码移动**：将每次循环中得到相同结果的部分提取出来，放到循环外面，减少其调用次数
-
-像是```strlen()```函数需要的时间复杂度就很高，如果每次循环都读取一次字符串的长度，时间消耗巨大
-
-```cpp
-for(int i=1;i&lt;=1000;i++)
-{
-    *dest = *dest + a[i];
-}
-```
-像上面这种代码进行一次循环时有两次读地址，一次写地址，如果我们把```*dest```改成一个局部变量，速度将能提升很多
-
-由此可知，**消除不必要的内存读写可以有效提升程序效率**
-
-### 理解现代处理器
-
-![](/image/CS/5_2.png)
-
-现代处理器分为两部分，一部分为**指令控制单元（ICU）**，一部分为**执行单元（EU）**
-
-上图中的指令控制单元从指令缓存中读取指令，将其分解为一系列**微操作**，即从内存中读数据，写数据，两个数字相加之类的操作
-
-这些操作在现代处理器中通过复杂的结构，能够并行执行，并且是乱序执行，这样能够达成更好的**指令级并行度**
-
-#### 分支预测的处理
-
-分支预测和前面一章中写的一样，这里在执行单元中使用分支单元检测预测是否正确，如果预测错误再将状态修改为之前的状态，我们称这种技术为**投机执行**
-
-分支点之后的所有指令的结果我们保存在退役单元中，如果指令执行完后判断预测正确，那么退役单元中的所有结果就可以落实修改到寄存器上，如果预测错误，那么所有结果就会被清空
-
-### 功能单元及其性能
-
-上面的各个功能单元往往功能不止一项，一个单元可以执行整数运算、浮点运算、乘、分支等多种功能，这样每个周期可以同时执行多种功能，这些资源将给程序带来巨大的性能影响
-
-**延迟界限**：一条指令必须等待上一条指令完成后才能进行，带来的限制
-**吞吐量界限**：根据处理器计算量的极限得到的最快速度
-
-**单元性能的指标**：
-- 延迟（latency）：完成运算花费的时间
-- 发射（issue）：两个同类型指令之间最小需要的周期数
-- 容量（capacity）：能够同时执行该指令的数量
-
-#### 处理器操作的抽象模型
-
-![](/image/CS/5_3.png)
-
-上面是一组处理器指令CPE的指标，其整数乘法延迟界限为3.00，是由于issue和capacity都是1，那么消耗时间就为3.00，而加法的吞吐量界限为0.50，由于读写单元每个周期只能读入和写出两个数据，所以即便capacity为4，也只能有两个指令同时进行，所以throughput为0.5
-
-之所以处理器会产生延迟界限，是因为指令的操作之间存在依赖关系，比如计算操作必须在加载操作之后执行，对于这些操作的**数据相关**我们可以通过数据流图来表示（微操作是乱序并行执行的，不是汇编指令一样一行一行）
-
-![](/image/CS/5_4.png)
-combine4是进行了2*1循环展开以及代码移动优化的函数，但是其执行效率仍然没有超过延迟界限，接下来我们将从**数据流图**进行分析，从而找出代码的进一步优化方案，从而使代码效率更加接近吞吐量界限
-
-**combine4中的循环部分**：
-```cpp
-for (int i = 0; i &lt; length; i++)
-{
-    acc = acc OP data[i];
-}
-```
-
-**对应汇编代码**
-
-```asm
-.L25:
-    vmulsd (%rdx), %xmm0, %xmm0
-    addq $8, %rdx
-    cmpq %rax, %rdx
-    jne .L25
-```
-
-将其改写成数据流图之后如下：
-
-![](/image/CS/5_5.png)
-
-图中的vmulsd指令被分解成一个load操作和一个mul操作，而addq是加上一个常数，所以只有一次add操作，cmpq操作直接从add的结果和%rax处取值，修改条件码寄存器给jne操作使用
-
-对操作进行整理后如右图，去掉%rax及其相关操作后，剩下的部分便是循环的主要部分，%xmm和%rdx寄存器既作为读取的数据，又作为输出写的数据，我们称为**循环寄存器**
-
-其余的分为**只读寄存器**、**只写寄存器**、**局部寄存器**（只在循环内部使用，比如条件码寄存器）
-
-由图可以看到，循环的进行主要有一个mul和一个add操作影响，并且两者之间存在数据相关，乘法的计算时间为3，而加法为1，所以程序的每个循环周期数为3
-
-接下来我们看看之前的循环展开后的汇编代码和数据流图：
-
-```asm
-.L35
-    vmulsd (%rax, %rdx, 8), %xmm0, %xmm0
-    vumlsd 8(%rax, %rdx, 8), %xmm0, %xmm0
-    addq $2, %rdx
-    cmpq %rdx, %rbp
-    jg .L35
-```
-
-![](/image/CS/5_6.png)
-
-由上可见，2*1的循环展开依然需要执行连续的mul指令，其速度依然被乘法操作限制
-现在我们将代码修改为下面的combine6
-**combine6中的循环部分**：
-```cpp
-for (int i = 0; i &lt; length; i+=2)
-{
-    acc1 = acc1 OP data[i];
-    acc2 = acc2 OP data[i+1]
-}
-acc = acc1 + acc2;
-```
-
-这样一来，循环部分的汇编代码便成为：
-
-```asm
-.L35
-    vmulsd (%rax, %rdx, 8), %xmm0, %xmm0
-    vmulsd 8(%rax, %rdx, 8), %xmm1, %xmm1
-    addq $2, %rdx
-    cmpq %rdx, %rbp
-    jg .L35
-```
-
-这里的汇编代码与combine5基本一致，但是第二次乘法指令的寄存器是%xmm1，画成数据流图后如下所示：
-
-![](/image/CS/5_7.png)
-
-在两个不同的寄存器上进行累加，使得一条关键路径变成两条，并且两次乘法操作之间没有相关依赖，这样一来，循环的时间便得到了减半
-
-```cpp
-for (int i = 0; i &lt; length; i+=2)
-{
-    acc1 = acc1 OP (data[i] OP data[i+1]);
-}
-```
-上面这种写法也有关键路径的优化：
-
-![](/image/CS/5_8.png)
-
-通过2*2的多路循环展开，可以有效加快程序的速度，如果我们按照这样的方式进行3\*3乃至更多的10\*10循环展开，程序的效率将会无限接近于**吞吐量界限**
-
-### 寄存器溢出
-
-指令级的并行需要在多个寄存器上进行计算，x86-64处理器有16个寄存器使用，如果使用超过16路并行的展开，处理器就不得不在内存中开辟空间来实现，这样的速度远不如寄存器中的计算速度，反而会拖累程序的整体运行速度，我们称之为**寄存器溢出**
-
-### 预测错误的惩罚
-在程序分支预测错误时，需要清除流水线中的指令，并重新填充，这必然是相当费时间的
-在有规律可循的条件分支，比如循环的条件判断中，有效的预测往往可以正确选择分支并减少时间，但是面对一些随机的条件分支，不使用投机执行而是等待条件判断完成再跳转，会是更加有效的方式
-
-所以在编写代码时，我们可以刻意编写让编译器趋向于使用条件数据转移的代码，比如说使用三目运算符来做条件数据转移，我们称这样的代码更具有“功能性”
-
-### 内存的性能
-
-关于内存的性能限制，我们考虑下面这种情况
-
-```cpp
-long list_len(list_ptr ls)
-{
-    long len = 0;
-    while(ls){
-        len++;
-        ls = ls-&gt;next;
-    }
-    return len;
-}
-```
-这里的ls每次循环都和自己存在数据相关，在汇编代码中即```movq (%rdi), %rdi```这样的指令，需要上一次的移动指令之后才能执行，每个时钟周期只能读取一个指令，完成一个元素的转移需要4个时钟周期，CPE为4
-
-类似的在不同寄存器之间存在数据相关的情况，也会限制程序的性能，形成更长的关键路径，减小程序指令级的并行
-
-
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        465字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter6/">
-        链接
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-这一节学习链接相关内容
-
-### 静态链接
-
-链接器将编译完成的**可重定位目标文件**，通过**符号解析**将其中的内存地址**重定位**在一起，构成可执行程序
-
-### 目标文件
-- 可重定位目标文件
-- 可执行目标文件
-- 共享目标文件
-
-目标的的翻译为object，所以目标可以理解为一个对象、主体一样的东西
-
-Linux上使用的目标文件为**ELF**格式，其中包含了一个16字节的文件头、若干section，以及节头部表，其中的section包含以下部分：
-
-- .text——已编译的机器代码
-- .data——已初始化的全局和静态变量
-- .bss——未初始化的全局和静态变量，这只是一个占位符
-- .symtab——符号表，储存程序中定义和引用的函数和全局变量的信息 
-...
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        425字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/CSAPP-notes/Chapter8/">
-      异常控制流
-    </a>
-    <span class="card-abstract">
-      
-## 信号
-该部分暂时只记录信号部分，作为比较重要且难懂的一个内容
-
-**反思**：
-首先，我们先不用纠结信号的具体实现方式，其表示的含义就是一条小信息，用来告诉进程发生了什么事
-进程是系统内核向进程发送的信息，就算是其他进程发出的信号也是经过内核再发出的
-
-#### 发送信号
-内核可以通过改变进程上下文（context）中的某些信息，来表示信号的发送
-发送信号有以下两种原因：
-- 内核检测到的系统事件
-- 一个进程调用某些函数，显式地要求内核发送信号
-
-#### 处理信号
-接收信号的进程在从内核模式切换到用户模式时，会检查进程的未被阻塞的信号的集合，并操控逻辑流去处理对应的信号（调用信号处理程序）
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.8k字
-      </div>
-      <div class="card-info">
-        阅读时间: 2 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/CSAPP-notes/Practice-1/">
-        CSAPP练习一——位运算的各类实现
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-以下所有做的题目都来源于Github项目中的实验题目：
-https://github.com/jlu-xiurui/csapp-labs
-
-### BitXor
-
-只是自己进行学习的记录，不提供任何保证
-
-```c
-/* bitXor - x^y using only ~ and &amp; 
-*   Example: bitXor(4, 5) = 1
-*   Legal ops: ~ &amp;
-*   Max ops: 14
-*   Rating: 1
-*/
-int bitXor(int a,int b){
-    return ~(~a&amp;~b)&amp;(~(a&amp;b));
-}
-```
-$\begin{aligned} a \oplus b &amp;=(a \mid b) \&amp;(\sim(a \&amp; b)) \\ &amp;=(A \vee B) \wedge(\neg( A \wedge B)) \\ &amp;=\neg(\neg A\wedge \neg B) \wedge(\neg(A \wedge B)) \\ &amp;=\sim(\sim a \&amp; \backsim b) \&amp;(\sim(a \&amp; b)) \end{aligned}$
-
-德摩根律改变合取（析取）
-
-### Tmin
-
-```c
-/* tmin - return minimum two&#39;s complement integer 
-*   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
-*   Max ops: 4
-*   Rating: 1
-*/
-int Tmin(){
-    return 0x80000000;
-}
-```
-返回值的大小为：$(100...000)_2 = 0x80000000 = -2^{63}$
-
-### isTMax
-
-```c
-/* isTmax - returns 1 if x is the maximum, two&#39;s complement number,
-*     and 0 otherwise 
-*   Legal ops: ! ~ &amp; ^ | +
-*   Max ops: 10
-*   Rating: 1
-*/
-_Bool isTMax(int x)
-{
-    return !(~(x + 0x80000000));
-}
-```
-最大数加上最小数一定是-1，取反后得到0，通过这个“0”来判断是否为最大值
-
-### allOddBits
-
-```c
-/* allOddBits - return 1 if all odd-numbered bits in word set to 1
-*   where bits are numbered from 0 (least significant) to 31 (most significant)
-*   Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1
-*   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
-*   Max ops: 12
-*   Rating: 2
-*/
-_Bool allOddBits(int x){
-    return (x &amp; 0xAAAAAAAA) ^ 0xAAAAAAAA;
-}
-```
-我傻了，在有限位数内比较所有奇数位就行了，我还考虑左移和右移的对位这些
-
-这里的异或可以化简，但是会比较复杂，允许使用异或就直接使用了
-
-### negate
-
-```c
-/* 
-* negate - return -x 
-*   Example: negate(1) = -1.
-*   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
-*   Max ops: 5
-*   Rating: 2
-*/
-int negete(int x)
-{
-    return ~x + 1;
-}
-```
-补码特性
-
-
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        399字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/Csharp/Array/">
-      c#中的数组
-    </a>
-    <span class="card-abstract">
-      
-# 多维数组
-C#的多维数组不同于C++
-
-- C#的多维数组可以看作一个矩阵，是一个数集
-
-```csharp
-int[,,] a = {{1,2,3},
-                {1,2,3},
-                {1,2,3}};//此时的a的行列在定义时就决定了
-```
-
-# 交错数组
-- C#的多维数组可以参考C++的多维数组，是一种数组的数组
-
-```csharp
-int[][] a = new int[3][];//定义数组的数组
-
-a[0] = new int[10];
-a[1] = new int[20];
-a[2] = new int[30];//每个数组可以不同
-```
-
-    </span>
-
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-
-<div class="card" style="justify-content: left;">
-
-  <div class="card-content">
-
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        481字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <div style="transform: translateX(10px);">
-      <a class="card-title" href="/2021/01/01/Csharp/NullableTypeModifier/">
-        C#中的可空类型修饰符
-      </a>
-      <span class="card-abstract" style="transform: translateX(0px);">
-        
-
-
-在我有限的代码经验里还没有见识过**可空类型修饰符**   
-但是直觉告诉我：它一定很重要
-&lt;!-- more --&gt;
-## ？
-
-- 在c#中，可空类型修饰符就是一个问号
-- **用法一**
-```csharp
-int? a;//若a为空，则返回NULL
-```
-
-- **用法二**
-```csharp
-a??b//若a为空则返回b，优先返回a
-
-a??b??c = a??(b??c);
-```
-- **用法三**
-```csharp
-Point p = new Point(3, 2); 
-   
-Console.WriteLine(p?.X.GetType() == typeof(int?));//若p为空则返回NULL
-                                                  //不进行后续函数调用
-```
-
-      </span>
-    </div>
-  </div>
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-</div>
-
-
-
-  
-  
-  
-<div class="card" style="justify-content: right;">
-
-  <div class="card-img">
-    <div class="img-container"></div>
-  </div>
-
-  <div class="card-content">
-    <div class="card-info-warp">
-      <div class="card-info">
-        2021-01-01
-      </div>
-      <div class="card-info">
-        1.3k字
-      </div>
-      <div class="card-info">
-        阅读时间: 1 mins.
-      </div>
-    </div>
-    <div style="display: flex;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="392" height="2" viewBox="0 0 392 2" fill="none">
-        <path d="M0 1L392 1.00003" stroke="#A5BFF2" />
-      </svg>
-    </div>
-    <a class="card-title" href="/2021/01/01/Csharp/SomeofCsharp/">
-      c#的一些碎片
-    </a>
-    <span class="card-abstract">
-      
-# foreach
-```csharp
-int[] a = new int[10];
-for(int i=0;i&lt;10;i++){
-    a[i] = i;
-}
-forezch(int element in a){
-    Console.Writeline(element);
-}
-```
-&lt;!-- more --&gt;
-诸如此般的用法
-
-# internal修饰符
-
-internal修饰的成员可以被**其所在程序**的所有函数、类调用
-
-# ref
-- 与c++不同，c#中向函数传址时，使用ref
-
-```csharp
-int a = 1,b = 100;
-int func(ref int a,ref int b){
-    return a&gt;b?a-b:b-a;//a,b的值发生改变
-}
-func(ref a,ref b);
-```
-
-# out
-- 用法与**ref**相同，但是ref不可传入未赋值的变量，**out**可以
-```csharp
-int a,b;
-int func(out int a,out int b){
-    return a&gt;b?a-b:b-a;//a,b的值发生改变
-}
-func(out a,out b);
-```
-
-# c#的扩展方法
-- 每次看到这种东西总是会很兴奋
-
-```csharp
-static public class StringOut
-{
-    static public void StringOut_(this string text)
-    {
-        Console.WriteLine(text);
-    }
-}
-```
-像是这样，在一个静态类中定义的静态类，其第一个参数加上this之后   
-可以产生这种用法：
-
-```csharp
-static public void Main(string[] args)
-    {
-        Console.WriteLine(123);
-        &#34;33223&#34;.StringOut_();//像这样更加明确的使用方式
-    } 
-```
-
-# params
-
-- params   
-  - 传递数目可变的参数
-
-```csharp
-public static void UserParame(params int[] list){
-   for (int i = 0; i &lt; list.Length; i++)
-        {
-            Console.Write(list[i] + &#34; &#34;);
-        }
-        Console.WriteLine();
-   }
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </span>
 
   </div>
@@ -2789,7 +3267,7 @@ public static void UserParame(params int[] list){
 
 
 <div id="paginator">
-  <a class="extend prev" rel="prev" href="/page/6/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/8/">Next</a>
+  <a class="extend prev" rel="prev" href="/page/6/">Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/8/">Next</a>
 </div>
     </div>
 
